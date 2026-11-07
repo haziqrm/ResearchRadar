@@ -209,3 +209,67 @@ clipped to [-1, 2]; signals from one paper always on the same side of a split.
   the new features on the last training fold, permutation importance.
 - Expectation: a clear win is still unlikely with about 200 signals; `liquid_share` is the
   input most likely to help.
+
+---
+
+# Correction after an evaluation audit (2026-11-07, after H7 and H8 results were known)
+
+An audit checked H7 and H8 for evaluation bugs: same target and test rows for every
+model, no test data in the baseline, time split by paper, a synthetic series with a
+known 56% retained share recovered exactly. It found no bug behind the null results,
+but led to these changes. They were made after seeing results, so they are corrections,
+not new tests, and they do not change any verdict.
+- `citation_pct` dropped as a feature: it counts citations in years Y+1 to Y+3, which
+  are not known at publication. (Model results were essentially unchanged.)
+- Squared error (MSE) reported alongside MAE. Ridge minimises squared error and so
+  shrinks toward the training *mean*, while MAE rewards the *median*: most of ridge's
+  small H7 loss on MAE comes from that mismatch.
+- Added, descriptive only: a constant at the training mean, and a median (quantile 0.5)
+  regression with an L1 penalty chosen the same way as ridge, so the estimator matches
+  the metric. Each row records the chosen penalty and whether it sits at the grid edge.
+- Guards: a zero-variance in-sample series gives a missing t-stat instead of infinity,
+  and an all-missing feature column no longer crashes the fit.
+
+---
+
+# H9. Short-horizon forecasts for published signals (written before any H9 number was computed)
+
+Known when this was written: H1-H8 results and the published literature on factor
+momentum (Ehsani and Linnainmaa 2022) and volatility-managed portfolios (Moreira and
+Muir 2017). No H9 forecast, portfolio or loss had been computed on this data.
+
+## Question
+H7 and H8 found that *how much* edge a signal keeps after publication cannot be predicted
+at publication. H9 asks two month-ahead questions a trader of published signals can act on:
+(a) does a published signal's recent return predict its next month's return, and
+(b) does its recent volatility predict next month's volatility better than its long-run level?
+
+## Data
+- OSAP original-paper long-short returns (decimals), 212 predictors.
+- Only **post-publication** months are scored (date year > publication year), so every
+  signal is public when it is traded. Trailing windows may reach back before
+  publication: those returns were already observable at the forecast date.
+- Every forecast for month t uses returns up to month t-1 only.
+
+## H9a. Factor momentum
+- Signal: trailing 12-month mean return (months t-12 to t-1; all 12 required).
+- Each month with at least 10 eligible signals and at least one in each group:
+  spread_t = mean return of signals with trailing mean > 0 minus mean of the rest.
+- Test: mean spread > 0, Newey-West t (12 lags), one-sided p < 0.05.
+- Descriptive: the share of months with a positive spread; mean returns and annualised
+  Sharpe ratios of equal-weighting all published signals vs only the past winners.
+
+## H9b. Volatility forecast
+- Forecast of month-t volatility for each signal: model = square root of the mean
+  squared return over t-12 to t-1; baseline = the same over all months before t
+  (at least 36 required).
+- Loss: |r_t| against sqrt(2/pi) x forecast (the expected |r| under a normal), absolute error.
+- Test: monthly mean of (model loss - baseline loss) across signals; its time-series mean
+  < 0, Newey-West t (12 lags), one-sided p < 0.05.
+- Descriptive: a volatility-managed equal-weight portfolio of published signals, each
+  weighted by 1 / forecast variance (scaled to the full-sample volatility of the plain
+  version, which changes no Sharpe ratio). Sharpe ratios before trading costs.
+
+## What would change the conclusions
+- H9a p >= 0.05: no evidence that recent winners among published signals keep winning.
+- H9b p >= 0.05: recent volatility is no better a guide than long-run volatility.

@@ -13,6 +13,7 @@ python -m src.signal_decay.run_decay --charts     # 7 Ken French signals -> cont
 python -m src.signal_decay.run_osap --charts      # 212 OSAP signals -> data/osap_*.csv
 python -m src.signal_decay.decay_model --charts   # decay predictor (H7) -> data/osap_model_*.csv
 python -m src.signal_decay.decay_model_h8 --charts  # second attempt (H8) -> data/osap_h8_*.csv
+python -m src.signal_decay.forecasts --charts       # month-ahead forecasts (H9) -> data/osap_h9_summary.csv, data/signal_forecasts.csv
 ```
 
 Citations need `OPENALEX_API_KEY` and `OPENALEX_EMAIL` in `.env`. Every OpenAlex and
@@ -30,11 +31,22 @@ OSAP download is cached in `data/cache/`, so reruns are fast and offline.
 | H6 | More early attention, more decay? | 111 OSAP papers | rho = 0.11, p = 0.12 | Not supported |
 | H7 | Can decay be predicted at publication? | 127 train / 81 test | Ridge and random forest both fail to beat "keep 37%" on 2007-2016 papers | Not supported |
 | H8 | Do trading-cost, novelty and crowding inputs help? | 181 test signals over 3 walk-forward folds | Pooled error 0.447 vs baseline 0.435; ridge is slightly *worse* (CI +0.002 to +0.023) | Not supported |
+| H9a | Do recent winners among published signals keep winning next month? | 195+ OSAP, 479 months | Past-year winners earn 0.64%/month vs about 0% for the rest, t = 4.1 | Supported |
+| H9b | Does recent volatility predict next month's better than long-run volatility? | 624 months | Lower forecast error, t = 4.7; volatility-managed Sharpe 1.55 vs 1.01 (before costs) | Supported |
 
 **In one line:** published signals keep roughly 40-45% of their in-sample edge, part
 of the drop is caused by publication itself, and neither attention nor other features
 known at publication predict which signals fade more, even with trading-cost, novelty
-and crowding inputs (H8).
+and crowding inputs (H8). What *is* predictable is month-ahead: published signals that
+won over the past year keep winning, and recent volatility forecasts next month's (H9).
+
+**Evaluation audit.** H7 and H8 were checked for evaluation bugs (same target and test
+rows for every model, no test data in the baseline, time split by paper, a synthetic
+signal recovered exactly). None was found. Afterwards the early-citation feature was
+dropped (it counts citations after publication), and squared error, a training-mean
+constant and a median regression were added. No verdict changed: on 2007-2016 papers,
+ridge MAE is 0.368 and the median regression 0.437, against 0.366 for the baseline. See
+the correction note at the end of [HYPOTHESES.md](HYPOTHESES.md).
 
 Exploratory, not pre-registered: across the 181 H8 test signals, signals whose edge
 holds up in big stocks kept *more* of it (Spearman 0.15, p = 0.04, one of three
@@ -50,6 +62,8 @@ uncorrected checks), the opposite of the H8 expectation. Treat it as a lead, not
 | `data/osap_decay_results.csv`, `data/osap_papers.csv`, `data/osap_summary.csv` | OSAP per signal, per paper, H4-H6 |
 | `data/osap_model_summary.csv`, `_predictions.csv`, `_importance.csv` | H7 decay predictor |
 | `data/osap_h8_summary.csv`, `_predictions.csv`, `_features.csv`, `_coefficients.csv` | H8 walk-forward predictor and its new inputs |
+| `data/osap_h9_summary.csv` | H9 tests and descriptive Sharpe ratios |
+| `data/signal_forecasts.csv` | Latest month-ahead forecast per signal (OSAP and the 7 Ken French signals, with D's signal names in `name`) |
 
 ## Limits
 
@@ -70,7 +84,8 @@ uncorrected checks), the opposite of the H8 expectation. Treat it as a lead, not
   out of H6 rather than guessed.
 - **Selection.** OSAP covers signals that were published and later replicated; signals
   that never got published, or got dropped, are missing.
-- **No trading costs.** Returns are before costs. High-turnover signals such as
+- **No trading costs.** Returns are before costs. H9's momentum and volatility-managed
+  portfolios trade more and change leverage, so their edge after costs would be smaller. High-turnover signals such as
   short-term reversal would earn less in practice.
 - **Small samples.** 7 signals for H1-H3; about 130 training signals for H7, which is
   little for any model. H8's first walk-forward fold trains on only 27 signals.
