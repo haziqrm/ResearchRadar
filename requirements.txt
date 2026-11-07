@@ -1,0 +1,34 @@
+# Python 3.12. Add lines, don't rewrite; keep each section sorted to avoid merge conflicts.
+
+# --- Core (everyone) ---
+matplotlib
+numpy
+pandas
+plotly
+pyarrow
+pytest
+python-dotenv
+requests
+scikit-learn
+scipy
+statsmodels
+
+# --- A: signal decay ---
+openassetpricing
+
+# --- B: research map ---
+networkx
+
+# --- C: app ---
+streamlit
+
+# --- D: live layer ---
+elevenlabs
+feedparser
+google-genai
+
+# --- Optional (B stretch, install manually) ---
+# bertopic
+# hdbscan
+# sentence-transformers
+# umap-learn

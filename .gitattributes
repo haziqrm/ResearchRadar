@@ -1,0 +1,5 @@
+# Normalise line endings so Windows and macOS/Linux checkouts don't produce whole-file diffs
+* text=auto eol=lf
+*.mp3 binary
+*.png binary
+*.parquet binary

@@ -1,0 +1,27 @@
+# Secrets: keys live in each person's own .env
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Data: raw downloads and API caches stay local; contract outputs in data/*.csv are committed
+data/raw/
+data/cache/
+*.parquet
+
+# IDE / OS (per-machine settings cause merge conflicts)
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Streamlit secrets
+.streamlit/secrets.toml

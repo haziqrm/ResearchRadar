@@ -1,0 +1,9 @@
+date,signal,return
+1993-01-31,momentum,0.0112
+1993-02-28,momentum,-0.0045
+1993-01-31,value,0.0061
+1993-02-28,value,0.0230
+1993-01-31,size,-0.0018
+1993-02-28,size,0.0094
+1993-01-31,profitability,0.0035
+1993-02-28,profitability,0.0012

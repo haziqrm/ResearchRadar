@@ -1,0 +1,7 @@
+signal,paper,publication_date,pre_mean,post_mean,half_life_months,ci_low,ci_high,early_citations
+momentum,Jegadeesh and Titman (1993),1993-03-01,0.0110,0.0062,96,0.0010,0.0086,410
+value,Fama and French (1992),1992-06-01,0.0048,0.0021,120,-0.0004,0.0058,890
+size,Banz (1981),1981-03-01,0.0035,0.0004,48,0.0012,0.0050,150
+profitability,Novy-Marx (2013),2013-04-01,0.0040,0.0029,180,-0.0010,0.0032,260
+investment,Titman Wei and Xie (2004),2004-12-01,0.0037,0.0019,110,0.0001,0.0035,120
+short_term_reversal,Jegadeesh (1990),1990-07-01,0.0072,0.0030,60,0.0018,0.0066,95

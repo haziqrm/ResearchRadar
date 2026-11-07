@@ -1,0 +1,8 @@
+signal,paper,publication_date,date_rule,ken_french_column,source_verified
+momentum,Jegadeesh and Titman (1993),1993-03-01,journal_issue,Mom,no
+value,Fama and French (1992),1992-06-01,journal_issue,HML,no
+size,Banz (1981),1981-03-01,journal_issue,SMB,no
+profitability,Novy-Marx (2013),2013-04-01,journal_issue,RMW,no
+investment,Titman Wei and Xie (2004),2004-12-01,journal_issue,CMA,no
+short_term_reversal,Jegadeesh (1990),1990-07-01,journal_issue,ST_Rev,no
+long_term_reversal,De Bondt and Thaler (1985),1985-07-01,journal_issue,LT_Rev,no

@@ -1,0 +1,9 @@
+area,year,growth_score,boom_probability,predicted_boom,actual_boom
+Factor and anomaly research,2026,-0.12,0.05,0,
+Machine learning for returns,2026,0.35,0.41,0,
+Market microstructure,2026,0.02,0.08,0,
+Portfolio and risk,2026,-0.04,0.06,0,
+Derivatives and volatility,2026,0.10,0.15,0,
+Alternative data and text,2026,0.28,0.33,0,
+Crypto and DeFi,2026,0.22,0.27,0,
+LLMs in finance,2026,1.40,0.82,1,
