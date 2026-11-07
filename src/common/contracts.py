@@ -39,6 +39,10 @@ CONTRACTS: dict[str, tuple[str, list[str]]] = {
     "network_edges": ("B", ["source_id", "target_id"]),
     "area_forecasts": ("B", ["area", "year", "growth_score", "boom_probability",
                              "predicted_boom", "actual_boom"]),
+    # topic_ids / topic_scores are ";"-separated, topic_labels are " | "-separated,
+    # all parallel. Heavy vectors live in data/paper_vectors.parquet (not a contract).
+    "paper_encodings": ("B", ["paper_id", "top_topic", "topic_ids", "topic_scores",
+                              "topic_labels", "model", "text_quality"]),
     "crowding": ("D", ["date", "area", "paper_count", "crowding_score"]),
     "backtest_results": ("D", ["date", "strategy", "monthly_return",
                                "cumulative_return"]),

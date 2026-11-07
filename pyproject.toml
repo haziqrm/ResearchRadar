@@ -6,3 +6,5 @@ requires-python = ">=3.12"
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+markers = ["slow: downloads or runs a real model; run with `pytest -m slow`"]
+addopts = "-m 'not slow'"

@@ -1,0 +1,9 @@
+paper_id,top_topic,topic_ids,topic_scores,topic_labels,model,text_quality
+W001,0,0,0.93,"momentum, anomalies, returns",allenai/specter2_base+allenai/specter2,full
+W002,1,1;0,0.61;0.35,"machine learning, neural networks | momentum, anomalies, returns",allenai/specter2_base+allenai/specter2,full
+W003,2,2,0.90,"liquidity, trading, hedging",allenai/specter2_base+allenai/specter2,full
+W004,1,1;0,0.70;0.22,"machine learning, neural networks | momentum, anomalies, returns",allenai/specter2_base+allenai/specter2,full
+W005,2,2,0.88,"liquidity, trading, hedging",allenai/specter2_base+allenai/specter2,partial
+W006,1,1,0.95,"machine learning, neural networks",allenai/specter2_base+allenai/specter2,full
+W007,2,2;1,0.58;0.38,"liquidity, trading, hedging | machine learning, neural networks",allenai/specter2_base+allenai/specter2,full
+W008,0,0,0.97,"momentum, anomalies, returns",allenai/specter2_base+allenai/specter2,full
