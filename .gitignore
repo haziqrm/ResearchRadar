@@ -1,4 +1,4 @@
-# Secrets: keys live in each person's own .env
+so # Secrets: keys live in each person's own .env
 .env
 .env.*
 !.env.example

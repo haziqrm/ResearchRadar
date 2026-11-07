@@ -1,0 +1,1196 @@
+paper_id,top_topic,topic_ids,topic_scores,topic_labels,model,text_quality
+W2559831142,9,9,0.953,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4205382623,6,6;9,0.538;0.437,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3124232363,9,9,0.910,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2405604099,9,9,0.968,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2888744807,9,9;6,0.782;0.214,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3125823882,9,9,0.909,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3125500648,9,9,0.981,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3122157632,9,9,0.961,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4414285431,9,9,0.856,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2103175468,0,0,0.939,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2994902235,6,6,0.793,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W4413910745,9,9;8,0.492;0.323,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3102277267,9,9,0.961,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3122135977,9,9;0,0.750;0.158,"stock returns, cross-section, financial, risk | volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4300612851,9,9,0.949,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4415321410,9,9,0.895,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3216942798,9,9,0.967,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4401073178,9,9;6,0.800;0.176,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4211170237,9,9,0.986,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4382934414,9,9,0.932,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3125891473,6,6,0.835,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W1990647692,9,9,0.958,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3122227240,9,9,0.962,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W1982965717,9,9,0.965,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4281773666,9,9;6,0.636;0.346,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2264833756,9,9,0.887,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7140110518,9,9,0.925,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3124956233,6,6;9,0.618;0.299,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4387571919,9,9,0.956,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3123597175,9,9,0.919,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2599928964,9,9,0.983,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3122668391,9,9;6,0.776;0.185,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W3125529221,9,9,0.979,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2997033014,9,9,0.880,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2519065067,9,9,0.969,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4387975527,9,9,0.864,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4415241877,9,9,0.932,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3021860846,9,9;0,0.732;0.184,"stock returns, cross-section, financial, risk | volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2788528222,9,9,0.635,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W1497007483,9,9,0.963,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4416735692,9,9;6,0.540;0.449,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4386367591,6,6;9,0.669;0.182,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4310736107,9,9,0.773,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7171404623,6,6;9,0.613;0.226,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4412068220,9,9,0.915,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4404091095,9,9,0.840,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3122609836,9,9;8,0.600;0.238,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3137718623,9,9,0.832,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4401590262,9,9;8,0.702;0.163,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7203663205,9,9,0.987,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3153766978,9,9,0.836,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3021711601,9,9,0.904,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7120118563,9,9,0.942,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3122006067,9,9;6,0.577;0.239,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W1953865322,9,9,0.980,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2924295088,9,9,0.952,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4390745366,9,9,0.964,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3202068348,9,9,0.914,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2899778744,9,9,0.882,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2034312267,9,9,0.984,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4410112075,9,9;8,0.613;0.290,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2795900860,9,9,0.961,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W1918254182,9,9;0,0.538;0.380,"stock returns, cross-section, financial, risk | volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4386425663,9,9,0.823,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3093968402,6,6,0.882,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W2899182600,9,9,0.974,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2280484658,9,9,0.961,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3125127984,9,9,0.916,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2801771255,9,9,0.911,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4291145005,9,9;8;3,0.403;0.360;0.174,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4412417242,10,10;8,0.548;0.159,"cryptocurrency, bitcoin, volatility, cryptocurrencies | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4409150255,9,9,0.886,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4205713541,9,9;8;2,0.374;0.279;0.174,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4401047035,6,6;9,0.727;0.189,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2896887271,9,9,0.963,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2084938831,9,9,0.993,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4321366497,9,9,0.902,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4313828866,9,9,0.970,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3121180265,9,9,0.899,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W1548299331,9,9;6,0.765;0.215,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2766563838,9,9,0.906,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3121770849,9,9,0.977,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4310147724,9,9;8,0.640;0.264,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3201547690,6,6,0.898,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W3216671235,3,3;6;9,0.387;0.322;0.279,"trading, market, liquidity, high-frequency | stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4212946809,9,9;6,0.484;0.450,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4381336477,9,9,0.904,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2901874635,6,6;9,0.622;0.322,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4362591374,9,9,0.928,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3024233237,9,9;6,0.644;0.217,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4398766692,11,11;6,0.488;0.457,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W1803393046,6,6;9,0.611;0.358,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2092967706,9,9,0.979,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4310014942,9,9,0.920,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3011236531,9,9;3,0.546;0.296,"stock returns, cross-section, financial, risk | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4412545712,9,9;6,0.520;0.444,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3095760117,9,9,0.792,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2182828423,9,9,0.893,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4386280571,9,9,0.882,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2336683413,9,9,0.989,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4391160925,6,6,0.947,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2915374522,9,9,0.933,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2808921716,9,9,0.984,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4380666938,6,6,0.928,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4327621891,9,9;6,0.682;0.261,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2162701416,9,9,0.956,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2832693079,9,9,0.902,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3194161198,9,9,0.961,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4328095908,6,6,0.947,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2336127407,9,9,0.977,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3122781175,9,9,0.954,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3159842514,9,9,0.877,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4286559460,9,9,0.841,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7220214701,9,9,0.962,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W131120311,9,9,0.883,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2401258151,9,9,0.988,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3038420597,9,9;6,0.732;0.214,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3187861614,9,9,0.886,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2772809806,9,9,0.779,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4389763235,9,9,0.809,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3122747710,9,9;6,0.839;0.153,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7172423894,9,9,0.813,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2908357711,9,9;6,0.696;0.203,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4309569177,9,9,0.937,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2916674575,9,9,0.695,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2900546994,9,9,0.848,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4318613865,9,9;3,0.598;0.351,"stock returns, cross-section, financial, risk | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2970754375,6,6,0.889,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2618237977,6,6;9,0.744;0.205,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3138493713,9,9;6,0.769;0.213,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2946809076,9,9;6,0.639;0.300,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W7224007006,6,6;9,0.539;0.371,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7215141774,6,6,0.966,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2322979667,6,6;9,0.573;0.266,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4413832462,6,6,0.914,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4214815345,9,9;6,0.478;0.369,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3184540692,6,6,0.915,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4396232260,10,10,0.795,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4289130759,6,6,0.878,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4226457457,9,9;8,0.712;0.246,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7117568703,9,9,0.953,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7164921282,6,6;9,0.510;0.344,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2777147424,6,6;9,0.593;0.377,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4220729751,6,6;9,0.634;0.296,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2901894729,9,9,0.819,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4412072397,6,6,0.969,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4293555976,8,8;9,0.797;0.158,"prediction, machine learning, stock, return | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2981327327,9,9,0.963,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4313572981,9,9,0.967,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3006078402,9,9,0.871,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4409795004,8,8;2,0.453;0.369,"prediction, machine learning, stock, return | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3083080466,8,8;2,0.747;0.243,"prediction, machine learning, stock, return | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2982553783,8,8,0.936,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4376865861,8,8,0.958,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W3122866873,8,8;9,0.664;0.291,"prediction, machine learning, stock, return | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4411354764,8,8,0.762,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4407997171,8,8;2,0.539;0.264,"prediction, machine learning, stock, return | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3029280738,7,7,0.997,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3166025867,7,7,0.988,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4220710523,7,7,0.969,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4415371059,7,7,0.993,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3119024981,8,8,0.982,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4397032636,8,8,0.907,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4401996391,8,8;9,0.680;0.292,"prediction, machine learning, stock, return | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4394957380,8,8,0.970,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W4389994238,8,8,0.975,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W4296991393,8,8;10,0.752;0.162,"prediction, machine learning, stock, return | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4412437983,8,8,0.904,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4416714858,8,8;10,0.760;0.182,"prediction, machine learning, stock, return | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4414338229,2,2;8,0.562;0.420,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W4415016338,8,8;10,0.569;0.331,"prediction, machine learning, stock, return | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7140224406,8,8,0.929,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4290182684,8,8,0.763,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W7225386989,8,8,0.947,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4415680401,8,8,0.944,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W7123892301,8,8,0.965,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4407938964,8,8,0.976,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W4405551301,8,8,0.960,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7124386694,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3126324938,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4412996583,8,8,0.841,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4298149386,8,8;2,0.555;0.414,"prediction, machine learning, stock, return | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4412190092,7,7,0.995,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2801441706,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7223216256,8,8,0.944,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4405037444,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4281396624,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4391841249,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W7140727792,8,8,0.982,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4381051247,2,2,0.894,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2606916050,7,7;8,0.740;0.171,"machine learning, prediction, artificial, neural | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W3209746933,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3134698835,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4402023344,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W7209521927,8,8,0.927,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2976323739,8,8,0.865,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4405333018,8,8,0.813,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7205708137,8,8,0.948,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4407289286,7,7,0.991,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4412495323,8,8,0.748,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4244543378,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4415260737,8,8,0.958,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7127408156,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3182818004,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4417332268,8,8,0.973,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7166513911,7,7,0.997,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7127321733,9,9;7,0.480;0.374,"stock returns, cross-section, financial, risk | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4389490991,8,8,0.845,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4319039935,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3016540417,7,7,0.995,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3196503391,8,8,0.809,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2899023746,7,7,0.991,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4205556360,8,8;7,0.694;0.183,"prediction, machine learning, stock, return | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7204790366,8,8,0.805,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4297492116,8,8,0.924,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4408342919,8,8,0.925,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7214932270,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3082542432,7,7,0.994,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2993491036,8,8,0.984,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3133508302,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4400510976,8,8,0.967,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2605253636,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2138632244,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4402028449,9,9;8,0.563;0.384,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W2953226774,7,7,0.876,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4390770086,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7128309746,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3035216280,8,8,0.967,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2754846726,7,7,0.944,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2424728784,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4383737329,8,8;7,0.557;0.287,"prediction, machine learning, stock, return | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2915473933,8,8,0.966,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3015481177,8,8;10,0.777;0.165,"prediction, machine learning, stock, return | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W3126338114,8,8;2,0.717;0.255,"prediction, machine learning, stock, return | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2905074323,7,7,0.788,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4225114471,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2808720320,7,7,0.916,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2582046539,7,7,0.983,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W2790939418,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4392700952,8,8,0.680,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2923537029,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3039232647,7,7,0.963,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4403608596,7,7,0.991,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4415184303,8,8,0.965,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7130535768,2,2,0.880,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4285481359,7,7,0.991,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2962727772,7,7,0.986,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3008571545,7,7,0.996,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W2556461377,7,7,0.994,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2966129221,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4281729686,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7116401201,7,7,0.995,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2995106228,7,7,0.997,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2801491268,7,7,0.989,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4320486670,7,7,0.985,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W1563853840,7,7,0.765,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3011287741,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2998186396,7,7;9,0.678;0.174,"machine learning, prediction, artificial, neural | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3020776760,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3088053597,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2788484525,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4280545699,7,7,0.997,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3006150655,7,7,0.997,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4205539948,8,8,0.787,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3189940786,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4386220319,7,7,0.985,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3102782390,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4224282610,7,7,0.994,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4389046557,7,7,0.855,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4411023892,8,8,0.833,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7212183636,7,7,0.983,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4404692727,7,7,0.997,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3127122299,8,8,0.788,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7172272031,2,2;8,0.782;0.200,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4294042945,7,7,0.994,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3198695886,7,7,0.982,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2959341153,7,7,0.996,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2979358647,7,7,0.741,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W3126004264,7,7,0.986,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4281483251,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2962724414,7,7,0.979,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2969376125,7,7,0.990,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4391026828,7,7,0.953,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2897620540,7,7,0.989,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3214286852,8,8,0.895,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2607757716,7,7,0.899,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2982632536,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4315853251,8,8,0.808,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4306737005,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4283747812,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3198090055,7,7,0.986,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3131722778,7,7,0.999,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2520022941,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3094245237,7,7,0.996,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2566564364,8,8,0.971,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W4366988472,7,7,0.985,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4210558868,7,7,0.998,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2518963095,7,7,0.984,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3025850044,7,7,1.000,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4403493448,2,2;8,0.834;0.153,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W7170055913,3,3;10,0.832;0.165,"trading, market, liquidity, high-frequency | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W3177723674,3,3,0.982,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2337555425,3,3,0.986,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4417517894,3,3,0.984,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2238750598,3,3,0.995,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1985445641,3,3,0.947,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2060331219,3,3,0.993,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W2741590134,3,3,0.974,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4410457620,3,3,0.997,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2932643517,3,3,0.981,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W7160998385,3,3,0.990,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1825609847,3,3;9,0.738;0.245,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4390196856,3,3,0.982,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3084034510,3,3,0.995,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4411354760,3,3,0.998,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2117178771,3,3,0.997,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2951367089,3,3,0.961,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4408824082,3,3,0.891,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4409812375,3,3,0.973,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3097592532,3,3,0.993,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3005574943,3,3,0.988,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2261633589,3,3,0.993,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4413288270,3,3,0.972,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2414387709,3,3,0.997,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3017295255,3,3,0.995,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3186047650,3,3,0.975,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2175202862,3,3,0.987,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7225189286,3,3;6,0.595;0.192,"trading, market, liquidity, high-frequency | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W1866305091,3,3,0.980,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3122781972,3,3,0.999,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2670661612,3,3,0.999,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4410453381,3,3,0.947,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2950204582,3,3,0.963,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3121280053,3,3,0.994,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W3121768691,3,3,0.993,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4296823960,3,3,0.996,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2547157549,3,3,0.979,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4321186893,3,3,0.963,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3121144282,3,3,0.989,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W3018440540,3,3,0.904,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4400268938,3,3,0.915,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7143282245,3,3,0.970,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3039384615,3,3,0.910,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7160194849,10,10;3,0.736;0.211,"cryptocurrency, bitcoin, volatility, cryptocurrencies | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3122228090,3,3,0.984,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3122879523,3,3,0.947,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1533722573,3,3;9,0.748;0.183,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W4409921745,3,3;8,0.776;0.182,"trading, market, liquidity, high-frequency | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3124731229,3,3,0.777,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W4413042459,10,10,0.898,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W2604718837,3,3;9,0.715;0.239,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4200345729,3,3,0.988,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7217189472,3,3,0.996,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2271851073,3,3,0.963,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3122276123,3,3;10,0.783;0.157,"trading, market, liquidity, high-frequency | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W2949619241,3,3,0.899,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4409649600,3,3;0,0.499;0.480,"trading, market, liquidity, high-frequency | volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4410794884,3,3,0.967,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7215216878,3,3;2,0.510;0.428,"trading, market, liquidity, high-frequency | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2773272452,3,3,0.922,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W1999642685,3,3,0.794,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1972470933,3,3,0.996,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3043870474,3,3,0.996,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2791939073,3,3,0.997,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7217054613,3,3,0.983,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4411656265,3,3,0.946,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3121460584,3,3,0.952,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W4406333696,3,3,0.900,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2949723346,3,3,0.987,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7214933127,3,3,0.703,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1831702401,3,3,0.853,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4297985079,3,3,0.933,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3119037867,3,3,0.984,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W3124980136,3,3,0.972,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W2790889490,3,3,0.986,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4407704035,3,3,0.960,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7166335958,3,3,0.788,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7221710230,3,3,0.980,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7203650433,3,3,0.908,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7161566721,3,3,0.986,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2888462079,3,3,0.977,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2791512324,3,3,0.957,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2040833514,3,3,0.820,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1647452707,3,3;9,0.675;0.230,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4416145081,3,3,0.989,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4313593181,3,3,0.861,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2724535195,3,3,0.984,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4221029479,3,3,0.990,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2564498078,3,3,0.994,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2316339743,3,3,0.955,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4379796303,3,3,0.822,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1926086289,3,3,0.900,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4382449117,3,3,0.986,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W305324811,3,3,0.998,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2147215357,3,3;9,0.624;0.352,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2103467996,3,3,0.984,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7118121406,3,3;10,0.823;0.168,"trading, market, liquidity, high-frequency | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W2560062215,3,3,0.955,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2889628546,3,3,0.978,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2079544355,3,3,0.956,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7160063506,3,3,0.707,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2969394928,3,3;9,0.695;0.255,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W2794488740,3,3,0.970,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3167978665,3,3,0.765,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W2603387108,3,3,0.991,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3186338892,3,3;10,0.671;0.230,"trading, market, liquidity, high-frequency | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4387057251,3,3,0.899,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7163556113,3,3,0.911,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1572570246,3,3,0.976,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7147602860,3,3,0.954,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2963404887,3,3,0.961,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3101489993,3,3,0.983,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W3042405649,3,3,0.955,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2783581506,3,3,0.968,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2763979394,3,3,0.940,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W4388792683,3,3;7,0.729;0.246,"trading, market, liquidity, high-frequency | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2762274549,3,3,0.971,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4320002907,3,3,0.860,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2227430751,3,3,0.856,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1947019458,3,3;9,0.656;0.310,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7160446393,3,3,0.921,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3125000207,3,3,0.998,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7217965967,3,3,0.930,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4388793527,3,3,0.950,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2952841121,3,3,0.943,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W2914185930,3,3,0.927,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2727019312,3,3,0.855,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W4410125790,3,3,0.978,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2903152633,3,3,0.954,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4408276644,8,8;3,0.518;0.375,"prediction, machine learning, stock, return | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2803829552,3,3,0.854,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2949405765,3,3,0.904,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W3212086670,10,10;3,0.774;0.217,"cryptocurrency, bitcoin, volatility, cryptocurrencies | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3122071869,3,3,0.915,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W3124945780,3,3;9,0.517;0.381,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W952161278,3,3,0.974,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4389267218,3,3;8,0.634;0.198,"trading, market, liquidity, high-frequency | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2957775836,3,3,0.939,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W4387494375,3,3,0.969,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4414691918,3,3,0.841,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2603460033,3,3,0.995,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4406622342,3,3,0.917,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2611902358,3,3;9,0.768;0.198,"trading, market, liquidity, high-frequency | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2901926467,3,3,0.994,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W2519458038,3,3,0.982,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3123055377,3,3,0.961,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W4405592737,3,3,0.836,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3122873785,3,3,0.953,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3005006798,3,3,0.897,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2888348582,3,3,0.969,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7223171874,2,2,0.874,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7124572992,2,2,0.806,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W1997557071,2,2,0.981,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2965158744,2,2,0.995,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4401358226,2,2;8,0.798;0.172,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4412986010,2,2,0.955,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4396562842,2,2,0.904,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4409242131,2,2;8,0.554;0.310,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4407663860,2,2,0.998,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2041320445,2,2,0.974,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2296903305,2,2,0.972,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4410527524,2,2,0.991,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4240744580,2,2,0.988,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3021018651,2,2,0.977,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4414811275,2,2,0.951,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4415975231,2,2;9,0.629;0.195,"portfolio optimization, risk management, financial, risk portfolio | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7130648616,2,2;9,0.619;0.184,"portfolio optimization, risk management, financial, risk portfolio | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2741140527,2,2,0.997,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2765173029,2,2,0.998,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7125218644,2,2,0.966,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4386507583,2,2,0.880,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2348896537,2,2,0.937,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2080930498,2,2,0.929,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W3038748787,2,2,0.959,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2035013171,2,2,0.996,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7127093246,2,2,0.885,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2045251559,2,2,0.993,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2805093358,2,2,0.987,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2330211728,2,2,0.996,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4416355673,7,7;2,0.607;0.218,"machine learning, prediction, artificial, neural | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7155846721,2,2,0.940,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4408592233,2,2,0.962,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2945749348,2,2,0.995,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4410282098,2,2,0.865,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W7212443323,2,2,0.756,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4412500954,2,2,0.755,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4412778902,2,2,0.755,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7197889056,2,2,0.981,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W7160855590,2,2;9,0.602;0.155,"portfolio optimization, risk management, financial, risk portfolio | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2343546308,2,2;3,0.730;0.167,"portfolio optimization, risk management, financial, risk portfolio | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W7148628086,2,2,0.978,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7138001944,2,2,0.982,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7160856488,2,2;10,0.608;0.327,"portfolio optimization, risk management, financial, risk portfolio | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7127045146,2,2,0.972,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4391452962,2,2,0.993,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2887974685,2,2,0.992,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W3038461170,2,2,0.985,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7225052267,2,2,0.972,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2946567230,2,2,0.927,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7125907643,2,2,0.955,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7221251920,7,7,0.891,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4407907442,2,2,0.880,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4414110856,2,2,0.960,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4410215377,2,2,0.935,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7166322017,2,2,0.888,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7160523388,2,2,0.968,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4405645408,2,2;8,0.705;0.256,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W2945427943,2,2,0.995,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4404527903,2,2,0.906,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7202386924,2,2,0.990,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W7167499935,2,2,0.946,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7130399478,2,2,0.790,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4414980160,10,10,0.885,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7140407668,2,2,0.921,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4413379359,2,2,0.929,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7171632571,2,2,0.810,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7144185387,2,2,0.933,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7131378983,2,2,0.883,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2606652155,2,2,0.933,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2974164145,2,2,0.997,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7124839729,2,2,0.968,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W816347767,2,2,0.929,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4408294312,2,2,0.991,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4283380329,2,2;8,0.614;0.216,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4382518171,2,2;0,0.648;0.309,"portfolio optimization, risk management, financial, risk portfolio | volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2073103707,2,2,0.993,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2769218858,2,2,0.852,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4414567182,2,2,0.993,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4405156265,2,2;7,0.619;0.345,"portfolio optimization, risk management, financial, risk portfolio | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3125830636,2,2,0.943,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W18753452,2,2,0.898,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3127344653,2,2,0.978,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2750201565,2,2,0.916,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2808810946,2,2,0.994,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4399054026,2,2,0.922,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4213438406,2,2,0.831,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4403694670,2,2,0.996,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7208734200,2,2,0.994,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4405717919,2,2,0.891,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2155169482,2,2,0.932,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4411535800,2,2,0.795,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2786613847,2,2,0.991,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4372109279,2,2,0.963,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W1493538317,2,2,0.920,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2555763236,2,2,0.957,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4210449711,2,2,0.813,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4406704681,8,8,0.845,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2064317526,2,2,0.975,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W7220627690,2,2,0.977,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3209018772,2,2,0.965,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4396862615,2,2,0.917,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2969303097,2,2,0.998,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3167302910,2,2,0.994,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2068727170,2,2,0.967,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W4403399564,2,2,0.964,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4214950627,2,2,0.951,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3104737672,2,2,0.915,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4386999474,2,2,0.993,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2344372063,2,2,0.857,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3216828079,2,2,0.992,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3032048943,2,2;8,0.703;0.272,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4406488705,2,2;8,0.793;0.185,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4387737582,2,2,0.977,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4410581006,2,2,0.842,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2989580318,2,2,0.931,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4417397087,2,2,0.983,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7160175089,2,2;8,0.773;0.180,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4414256450,2,2;8,0.508;0.434,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4404042241,2,2,0.963,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4406115865,2,2,0.897,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4404113711,2,2;8,0.787;0.201,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W2527577118,2,2,0.755,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4416694506,2,2,0.849,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2737782954,2,2,0.962,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2021217552,2,2,0.959,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W7217546133,2,2,0.846,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W3173729662,2,2;10,0.797;0.173,"portfolio optimization, risk management, financial, risk portfolio | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7217403336,2,2,0.989,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4312219863,2,2;7,0.577;0.421,"portfolio optimization, risk management, financial, risk portfolio | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W2076870328,2,2,0.969,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2469662325,3,3,0.820,"trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W1969446698,2,2,0.996,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2320746918,2,2,0.958,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4415917412,2,2,0.975,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7115084932,2,2,0.966,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7202123687,2,2,0.966,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7163050586,2,2,0.929,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2189213970,2,2,0.886,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W7108234312,2,2;8,0.630;0.349,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4415119146,2,2,0.994,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4387431647,2,2;8,0.793;0.160,"portfolio optimization, risk management, financial, risk portfolio | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W2186773231,2,2,0.988,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4407368522,2,2;7,0.753;0.213,"portfolio optimization, risk management, financial, risk portfolio | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3034020590,2,2,0.908,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W1568452400,2,2,0.982,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W2893421648,2,2,0.953,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W2154562380,2,2,0.847,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,partial
+W7131964930,2,2,0.984,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4402577330,2,2,0.994,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4389170854,2,2,0.993,"portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W4307739784,0,0,0.989,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3155694684,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4401461768,0,0,0.886,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2944970552,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3124181924,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4388662623,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4410029716,0,0,0.979,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2261815358,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4392721586,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3197288076,0,0,0.966,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W1995549841,0,0,0.995,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4380442708,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2168907566,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3125375790,0,0,0.960,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2951072815,0,0,0.971,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2801556347,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3014936314,0,0,0.989,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2296373944,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W7220121103,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2952037034,0,0,0.987,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2057814308,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4383878384,0,0,0.987,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2064243848,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3123658675,0,0,0.938,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4296107522,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3122719261,0,0,0.984,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7217265711,0,0;3,0.788;0.185,"volatility, pricing, stochastic, options | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W2503128934,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4412931707,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2920704292,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2790994167,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2095050605,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3002902166,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4411235805,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3028422437,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4365813486,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4386638652,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4398174806,0,0,0.887,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2594877954,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2603921594,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2311302458,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4388535606,0,0,0.974,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2004829202,0,0,1.000,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4388344700,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4307125783,0,0,1.000,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3122746416,0,0,0.974,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3193574981,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7133647478,0,0,0.884,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2911619923,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2588426171,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2048150729,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3033515836,0,0,0.941,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2951861894,0,0,0.990,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4291781619,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2312895920,0,0,0.911,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2785123668,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2088843545,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2191169687,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4212958527,0,0,0.988,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4416679124,0,0,0.932,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3124818666,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3089174173,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7166839373,0,0,0.993,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2757948228,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2186491824,0,0,0.985,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2100490553,0,0,0.970,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2346729281,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2916042448,0,0,0.972,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2794957183,0,0,0.982,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2963562428,0,0,0.990,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3125617838,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2018136945,0,0,0.881,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4392756600,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4392665047,0,0,0.995,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4312841668,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3124278359,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2914530128,0,0,0.995,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2074995140,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4399920647,0,0,0.944,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W1969018669,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W1578126880,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2977209570,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2788897242,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3044980328,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7128906729,0,0,0.956,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3033155756,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2099793575,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3172817658,0,0,0.985,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7166338594,0,0,0.941,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2809865636,0,0,0.930,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2136380216,0,0,0.987,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2773216186,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2054226113,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2548861215,0,0,0.999,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4210479299,0,0,0.995,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7136302382,0,0;9,0.779;0.159,"volatility, pricing, stochastic, options | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4407320030,0,0,0.991,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2600337946,0,0,0.957,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4401964955,0,0,0.938,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2524195942,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3095372661,0,0,0.925,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3124129175,0,0,0.986,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3151301589,0,0,0.926,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3010944926,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W1995061916,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4390583646,0,0,0.919,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3127912097,0,0,0.728,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4382769656,0,0,0.928,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2413409321,0,0,0.993,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2755633863,0,0,0.957,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2039766938,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2597724362,0,0;7,0.708;0.205,"volatility, pricing, stochastic, options | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4396867545,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4405116536,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4415002934,0,0,0.976,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W1640695810,0,0,0.971,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4387218149,0,0,0.973,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3080437743,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3128256563,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2616402233,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W4410835515,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3111440175,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W7148466398,0,0;2;7,0.303;0.182;0.167,"volatility, pricing, stochastic, options | portfolio optimization, risk management, financial, risk portfolio | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4366457245,0,0,0.904,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2605254628,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3123001466,0,0,0.993,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2008257130,0,0,0.860,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W1977918979,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2609285991,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3163909849,0,0,1.000,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2009978161,0,0,0.884,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4408180452,0,0;2,0.668;0.157,"volatility, pricing, stochastic, options | portfolio optimization, risk management, financial, risk portfolio",allenai/specter2_base+allenai/specter2,full
+W1982030118,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2770640374,0,0,0.992,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2926764455,0,0,0.839,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2399897946,0,0,0.996,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4205543849,0,0,0.974,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4392812764,0,0,0.811,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W2940682323,0,0,0.995,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4389204697,0,0,0.983,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W875885787,0,0,0.988,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2050547088,0,0,0.764,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2785688177,0,0,0.989,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W2966506330,10,10;3,0.636;0.268,"cryptocurrency, bitcoin, volatility, cryptocurrencies | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W2149057478,0,0,0.998,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4411468936,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3047082415,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4390452399,0,0,0.997,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,partial
+W3169945700,0,0,0.994,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W3122840348,0,0,0.932,"volatility, pricing, stochastic, options",allenai/specter2_base+allenai/specter2,full
+W4406622000,11,11;6,0.703;0.292,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4390398326,6,6;11,0.670;0.320,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7155186995,6,6,0.812,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7117485355,6,6,0.958,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7213984360,6,6;11,0.733;0.188,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W3213134804,11,11,0.937,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W2112262445,6,6;11,0.758;0.233,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4362607916,11,11,0.912,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4205952458,11,11;6,0.684;0.230,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7160448600,6,6;11,0.795;0.195,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2801210206,11,11;6,0.546;0.444,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7220219982,11,11;6,0.655;0.183,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4413375874,11,11;6,0.837;0.155,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3123615702,6,6,0.918,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3122926939,6,6;11,0.756;0.226,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W3125521553,6,6;11,0.512;0.479,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4281675547,11,11,0.972,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7126252234,11,11;6,0.620;0.323,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3202919151,11,11,0.915,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W772669483,6,6,0.758,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W4409539828,6,6,0.917,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4401060582,11,11,0.903,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4321004996,6,6,0.883,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W4307941912,11,11,0.916,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4206239216,8,8,0.969,"prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,partial
+W4402550610,11,11;6,0.564;0.309,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7223408958,6,6;11,0.827;0.150,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2569625516,9,9;6,0.591;0.303,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W4312873310,11,11,0.896,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2407623339,6,6;9,0.734;0.225,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,partial
+W3123164189,9,9;3,0.699;0.200,"stock returns, cross-section, financial, risk | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,partial
+W4415559708,6,6,0.827,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4394713807,6,6,0.756,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4402206550,6,6,0.846,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7164858217,6,6,0.961,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2253519362,11,11,0.910,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4388504305,6,6,0.938,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4403333422,6,6,0.954,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2400062504,6,6,0.838,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2724780495,6,6;11,0.551;0.439,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2190007662,11,11;6,0.619;0.316,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4210827551,11,11,0.983,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W2551885355,9,9,0.873,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2262974065,11,11;6,0.839;0.154,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2963717166,6,6;11,0.808;0.179,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4404345780,11,11,0.956,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7167258188,11,11;6,0.785;0.214,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4417220295,11,11,0.866,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W3132725388,11,11,0.937,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4388335799,11,11,0.983,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4327909421,11,11,0.965,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2210347503,6,6;11,0.763;0.220,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W2789255210,6,6;11,0.650;0.268,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4412693451,6,6;11,0.681;0.303,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4385360916,11,11;6,0.771;0.170,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7204248072,6,6,0.968,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3184834965,11,11,0.907,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7127735023,9,9;6,0.504;0.478,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3035056367,11,11,0.975,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4297178699,6,6;11,0.689;0.290,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2918890480,9,9,0.805,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7166108232,11,11,0.981,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4390788722,11,11,0.914,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W3108892404,11,11;6,0.695;0.297,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3043424630,11,11,0.994,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2619016901,11,11;8,0.521;0.440,"sentiment, stock market, news, financial | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4311716207,6,6;11,0.688;0.299,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2888501547,11,11,0.980,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2951883999,11,11;6,0.678;0.312,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4283168218,11,11,0.950,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7164044189,6,6,0.742,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4396720521,11,11;7,0.797;0.194,"sentiment, stock market, news, financial | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3112391426,11,11,0.911,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7225182232,11,11;6,0.657;0.329,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3123041584,9,9;3,0.774;0.202,"stock returns, cross-section, financial, risk | trading, market, liquidity, high-frequency",allenai/specter2_base+allenai/specter2,full
+W3012856531,6,6;9,0.525;0.423,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4415085065,9,9;8,0.503;0.233,"stock returns, cross-section, financial, risk | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W4381052812,6,6;11,0.583;0.409,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7213558942,6,6,0.927,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4412601070,11,11,0.881,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4404906485,11,11,0.868,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2939207438,9,9,0.746,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7163902467,11,11;6,0.807;0.173,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4415126627,9,9;6,0.516;0.286,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4391361335,6,6;9,0.767;0.163,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7123354880,6,6,0.968,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7116350876,11,11;6,0.763;0.206,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4390838178,11,11,0.945,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W1625122672,11,11;6,0.744;0.195,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4406617590,11,11;6,0.839;0.155,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4413480956,6,6;11,0.569;0.376,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4377093871,6,6,0.895,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2122522916,11,11,0.910,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4407281039,6,6,0.850,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4416592915,11,11,0.883,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4416230107,9,9;6,0.580;0.238,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4311070134,11,11;6,0.631;0.344,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4395478370,6,6;9,0.707;0.253,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4391040003,6,6;11,0.597;0.197,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4414778201,11,11,0.942,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4417497265,11,11,0.891,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4392663109,6,6;11,0.733;0.234,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2951494616,11,11,0.891,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2072247651,9,9;6,0.589;0.309,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2938903045,11,11,0.885,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W2141179513,11,11;7,0.809;0.158,"sentiment, stock market, news, financial | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W3143493396,8,8;11,0.569;0.239,"prediction, machine learning, stock, return | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7115949458,6,6,0.896,"stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W2185385890,11,11;6,0.790;0.208,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4240123593,6,6;7;9,0.412;0.239;0.201,"stock, investor sentiment, returns, market | machine learning, prediction, artificial, neural | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W3164235215,11,11;8,0.710;0.153,"sentiment, stock market, news, financial | prediction, machine learning, stock, return",allenai/specter2_base+allenai/specter2,full
+W3208529717,9,9,0.932,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W7160993492,6,6;11,0.799;0.184,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4392161509,11,11,0.991,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7105878375,10,10,0.810,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4285392431,11,11,0.988,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7223653940,6,6;9,0.774;0.217,"stock, investor sentiment, returns, market | stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W2595186334,11,11,0.975,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W7118312284,11,11,0.964,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W3122106326,11,11;6,0.737;0.195,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7202360170,11,11;6,0.595;0.403,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3206229451,11,11;7,0.462;0.231,"sentiment, stock market, news, financial | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7215973947,11,11;6,0.832;0.164,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W3190888839,11,11,0.928,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2965553163,11,11,0.960,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2742966458,9,9;6,0.649;0.220,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W4386737188,11,11;6,0.567;0.341,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4307216807,11,11,0.864,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4402805277,11,11,0.947,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2992941683,11,11,0.848,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4402673443,11,11,0.988,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4391188074,9,9,0.856,"stock returns, cross-section, financial, risk",allenai/specter2_base+allenai/specter2,full
+W4408207391,11,11,0.868,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4401545735,5,5;11,0.665;0.294,"large language, llms, applications, intelligence | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4366996344,11,11;6,0.747;0.156,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4220840803,9,9;6,0.685;0.269,"stock returns, cross-section, financial, risk | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7220779291,6,6;11,0.819;0.173,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4411354828,11,11,0.939,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7205013603,11,11;6,0.517;0.376,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W7127592057,6,6;11,0.705;0.207,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7125011057,6,6;11,0.658;0.287,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4307562882,11,11,0.901,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4396642289,6,6;11,0.519;0.368,"stock, investor sentiment, returns, market | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W2797669327,11,11,0.960,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4391097216,11,11,0.895,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4312672545,1,1,0.994,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4385376375,10,10,0.982,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4317745733,1,1;10,0.597;0.403,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4205731913,10,10,0.924,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4213027993,10,10,0.967,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4388442018,10,10,0.982,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W7128216356,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7128499464,10,10,0.929,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4382338499,1,1,0.988,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4327955628,1,1;10,0.591;0.404,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4388427999,1,1,0.997,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4377823432,10,10,0.990,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7168244989,10,10,0.993,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4390847772,1,1,0.958,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7131120275,1,1,0.928,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4319659194,10,10,0.992,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4414543152,1,1,0.981,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4403623085,10,10,0.859,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4415706420,1,1;10,0.703;0.297,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4296982637,10,10;1,0.785;0.202,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4414209593,10,10,0.992,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4296197059,10,10,0.970,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4386260220,10,10;1,0.499;0.473,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4406072316,1,1,0.926,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4224280336,10,10,0.672,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4313434542,1,1,0.958,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4385724460,10,10,0.935,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W3164067048,10,10,0.982,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4220790190,10,10,0.980,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4362452273,10,10,0.991,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7216999087,1,1,0.994,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391859383,10,10;1,0.602;0.397,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391127135,10,10,0.994,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4390670255,10,10,0.917,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4396508625,1,1,0.957,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4382795247,1,1,0.996,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4411973029,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4393231809,10,10,0.918,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4390655980,10,10,0.989,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4410159847,1,1,0.996,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4280609072,1,1;10,0.654;0.344,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7217469527,1,1,0.992,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4406592161,10,10;1,0.614;0.384,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4405367531,1,1,0.953,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391469348,1,1;10,0.745;0.250,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7220217971,1,1;10,0.787;0.213,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7169683896,1,1,0.991,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4294877148,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7117475801,10,10,0.994,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4411258162,10,10,0.978,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7216452904,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4413231862,1,1,0.858,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7207571464,10,10,0.918,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4392884622,10,10,0.995,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7105878635,10,10,0.954,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4213121311,10,10,0.963,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4411175541,1,1,0.892,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7204704592,1,1,0.926,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4282924312,1,1,0.923,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W7216290868,1,1,0.960,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7127335558,10,10,0.932,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4226322297,1,1,0.997,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4405913223,1,1,0.987,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4307891224,1,1;10,0.784;0.211,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4283362735,10,10;1,0.618;0.368,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4405890651,1,1,0.964,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7164879598,10,10;1,0.763;0.236,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4200586074,10,10,0.955,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4392157208,1,1;10,0.785;0.207,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391350320,1,1;10,0.507;0.481,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4289884627,1,1,0.989,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4386639052,1,1,0.993,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4409601710,10,10,0.983,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4410963417,10,10,0.864,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391782947,10,10,0.857,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4401451478,1,1,0.997,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7223473887,1,1;10,0.817;0.183,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7168439963,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391430996,1,1,0.995,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7213467369,10,10,0.958,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4414310960,1,1;10,0.531;0.466,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4294868691,1,1,0.995,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7155640160,1,1,0.940,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4401368430,10,10,0.987,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4410733818,10,10,0.951,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4413272798,10,10;1,0.748;0.249,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7219996273,1,1,0.948,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7164886927,10,10,0.992,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7223189142,10,10,0.987,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7220294722,1,1,0.996,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7117304722,10,10,0.975,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4407973099,1,1,0.856,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4416957015,1,1,0.945,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4391259142,1,1;10,0.711;0.288,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4408824331,1,1;10,0.710;0.261,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4416654917,10,10;1,0.620;0.252,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7217471702,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4366411693,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W2954761992,1,1,0.996,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4379911849,1,1,0.995,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4321374039,10,10,0.994,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7204477969,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4393047303,1,1,0.997,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7121485187,1,1,0.997,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4394604524,1,1,0.996,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7215975975,10,10,0.927,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7204066432,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4412856539,1,1,0.926,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4415770097,11,11,0.957,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W7168136863,10,10;1,0.800;0.198,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7131631242,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4401814538,10,10,0.900,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4405818369,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7220794111,1,1;10,0.753;0.244,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4408410021,1,1,0.921,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W3205120242,10,10,0.947,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4392209177,1,1,0.983,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4404819051,1,1,0.991,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4413155049,10,10,0.862,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4416267709,10,10,0.852,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4367844556,10,10,0.941,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7139031289,10,10,0.918,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4308941738,1,1,0.934,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4388286837,1,1;10,0.617;0.379,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4386191209,1,1,0.909,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7124148561,1,1,0.990,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4390519593,1,1,0.993,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4280585582,1,1,0.983,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4377141228,1,1;10,0.787;0.211,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,partial
+W4410339176,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4415844613,1,1,0.994,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7221352352,10,10,0.962,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7204941135,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7155534328,10,10,0.873,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4389147637,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4406821151,1,1,0.986,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4385278262,1,1;10,0.648;0.350,"cryptocurrency, blockchain, digital, cryptocurrencies | cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4392382929,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391062606,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4407927478,1,1,0.998,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7159804383,1,1,0.995,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4411298146,1,1,0.993,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7127327336,10,10,0.863,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7224713495,1,1,0.991,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4391886596,10,10;1,0.641;0.322,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4321786584,10,10;1,0.588;0.409,"cryptocurrency, bitcoin, volatility, cryptocurrencies | cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4412198593,1,1,0.999,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7220168414,1,1,0.871,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7165484237,10,10,0.848,"cryptocurrency, bitcoin, volatility, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4408488308,1,1,0.941,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W4406272066,5,5;4,0.602;0.385,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,partial
+W7204559801,4,4;5,0.757;0.238,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W7203704142,5,5,0.816,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4416147619,11,11,0.831,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4414373936,11,11;5,0.782;0.162,"sentiment, stock market, news, financial | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4412883476,5,5,0.938,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4409064336,5,5,0.870,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4313334409,5,5,0.862,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7127971052,5,5,0.770,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7118418853,5,5,0.935,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4407377523,5,5,0.704,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4412475058,5,5,0.865,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4415958197,5,5,0.945,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7125427045,5,5,0.873,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4398150124,5,5,0.975,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7142172303,1,1,0.732,"cryptocurrency, blockchain, digital, cryptocurrencies",allenai/specter2_base+allenai/specter2,full
+W7207733685,5,5;11,0.569;0.387,"large language, llms, applications, intelligence | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W7214607450,4,4;5,0.839;0.158,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4411196017,7,7,0.860,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7117319658,7,7,0.594,"machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4405310541,11,11,0.951,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,partial
+W7138058036,8,8;11,0.735;0.224,"prediction, machine learning, stock, return | sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4410226794,5,5;11;7,0.631;0.199;0.165,"large language, llms, applications, intelligence | sentiment, stock market, news, financial | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4414011746,5,5,0.966,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7205709869,3,3;5,0.527;0.308,"trading, market, liquidity, high-frequency | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7211892899,7,7;5,0.774;0.169,"machine learning, prediction, artificial, neural | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7170158520,11,11;6,0.761;0.200,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,full
+W4409626943,5,5,0.885,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4407047865,5,5,0.912,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4409074062,5,5,0.922,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4362515116,5,5,0.958,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4298110867,11,11,0.896,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4411403346,5,5,0.914,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4396835373,5,5,0.934,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4390490761,5,5;4,0.739;0.260,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4410964376,5,5;4,0.686;0.313,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4414014501,5,5,0.955,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7125975657,5,5,0.950,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4410823183,4,4;5,0.628;0.352,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4394994587,5,5,0.938,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4390692489,5,5,0.990,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4405107520,4,4,0.974,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4408929481,5,5;4,0.584;0.415,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4323655724,5,5;4,0.821;0.178,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W7143810702,5,5,0.988,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4410251374,5,5;4,0.815;0.171,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4392859372,11,11,0.942,"sentiment, stock market, news, financial",allenai/specter2_base+allenai/specter2,full
+W4403753254,4,4;5,0.759;0.195,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7148355944,4,4;5,0.830;0.170,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4400047099,4,4;5,0.828;0.171,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4406800520,5,5,0.985,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4406297511,5,5,0.997,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4415725257,5,5,0.932,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4404208640,5,5,0.893,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4376643691,4,4,0.850,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4406302454,4,4,0.991,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4406756422,5,5;4,0.757;0.242,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4409634738,5,5,0.968,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4409663470,5,5,0.978,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4402685935,5,5,0.888,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4416298062,4,4;5,0.779;0.219,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4401615828,5,5,0.891,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4404682098,4,4;5,0.570;0.430,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4389903865,5,5,0.921,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4393177920,5,5;4,0.711;0.284,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4401709416,5,5,0.966,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4402901320,5,5,0.893,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4413169625,5,5;4,0.673;0.324,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4386161583,5,5,0.973,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4410371768,5,5,0.918,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4403665988,5,5,0.930,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7220679581,5,5,0.897,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4383346782,5,5;4,0.603;0.394,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4380290798,5,5,0.967,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4415915064,5,5,0.974,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7135408515,5,5,0.991,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4406617631,5,5,0.913,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4414320956,4,4;5,0.616;0.384,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4392353733,4,4,0.972,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4410407045,5,5,0.941,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4404534210,4,4;5,0.627;0.372,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4404570405,4,4,0.909,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4401671778,5,5,0.923,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4401545746,4,4;7,0.744;0.223,"llms, large language, bias, llm | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4402567763,4,4;5,0.582;0.413,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4403401276,5,5,0.906,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W4401857176,5,5,0.869,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4412158322,4,4,0.885,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4364320763,11,11;6,0.530;0.192,"sentiment, stock market, news, financial | stock, investor sentiment, returns, market",allenai/specter2_base+allenai/specter2,partial
+W4411001734,4,4,0.997,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4391855109,5,5,0.946,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4415604498,5,5,0.974,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4400118952,5,5,0.984,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4408043112,4,4;5,0.561;0.432,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7172394695,5,5,0.838,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4392740847,5,5,0.966,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4401815218,5,5;4,0.504;0.495,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,partial
+W4404906917,7,7;5,0.639;0.352,"machine learning, prediction, artificial, neural | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4387705013,5,5,0.938,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4406151280,5,5,0.974,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4412925667,5,5,0.888,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4400933678,5,5,0.928,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W7130841482,5,5,0.978,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4399594884,7,7;5,0.805;0.186,"machine learning, prediction, artificial, neural | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4400647460,5,5;4,0.837;0.162,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4406214400,5,5;7,0.710;0.158,"large language, llms, applications, intelligence | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W4410061981,5,5,0.912,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4406171745,5,5,0.899,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4319662928,5,5,0.965,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4400606525,5,5,0.937,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4417305769,5,5;4,0.833;0.166,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4395465733,5,5,0.920,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4412152284,5,5,0.975,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,partial
+W7223178368,4,4,0.955,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4391569498,5,5;4,0.791;0.206,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4403201088,5,5,0.958,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4401717638,5,5;4,0.760;0.195,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W2511832088,11,11;5,0.541;0.226,"sentiment, stock market, news, financial | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7140281545,4,4,0.948,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W7115937163,5,5,0.975,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4397034170,5,5,0.984,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4399984180,5,5,0.897,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7154463230,4,4,0.890,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W7160668969,5,5,0.828,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7160249288,5,5,0.976,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4391477171,5,5;4,0.844;0.156,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4408941302,4,4,0.975,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4407542088,5,5,0.977,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4405740130,5,5,0.910,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4410049680,5,5,0.934,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4404470804,5,5,0.929,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4417122875,5,5;4,0.731;0.269,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,partial
+W4392362609,4,4;5,0.802;0.195,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4409385489,5,5,0.992,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7118468219,5,5,0.982,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4410857897,4,4;7,0.710;0.183,"llms, large language, bias, llm | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,partial
+W4404313857,5,5;4,0.837;0.154,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W7219408293,4,4,0.909,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4410949934,5,5,0.976,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4390730779,5,5,0.981,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4403499178,5,5;4,0.753;0.246,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4406343535,4,4;5,0.637;0.360,"llms, large language, bias, llm | large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4415186975,4,4,0.896,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4405366282,4,4,0.968,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4402400123,5,5;4,0.643;0.341,"large language, llms, applications, intelligence | llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4409318329,5,5,0.949,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W4402352041,5,5;7,0.708;0.283,"large language, llms, applications, intelligence | machine learning, prediction, artificial, neural",allenai/specter2_base+allenai/specter2,full
+W7147297351,5,5,0.956,"large language, llms, applications, intelligence",allenai/specter2_base+allenai/specter2,full
+W7118168534,4,4,0.976,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full
+W4408117953,4,4,0.995,"llms, large language, bias, llm",allenai/specter2_base+allenai/specter2,full

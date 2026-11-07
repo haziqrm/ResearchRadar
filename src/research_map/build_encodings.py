@@ -119,9 +119,10 @@ def _summarize(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Build paper encodings from OpenAlex.")
-    parser.add_argument("--query", required=True, help="OpenAlex search query")
+    parser.add_argument("--query", required=True, action="append",
+                        help="OpenAlex search query; repeat to combine several queries")
     parser.add_argument("--max", type=int, default=1000, dest="max_results",
-                        help="maximum number of papers to fetch (default 1000)")
+                        help="maximum number of papers to fetch per query (default 1000)")
     parser.add_argument("--filters", default=None, help='OpenAlex filter, e.g. "from_publication_date:2015-01-01"')
     parser.add_argument("--k-min", type=int, default=2)
     parser.add_argument("--k-max", type=int, default=12)
@@ -145,8 +146,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         FakeEmbedder() if args.fake else Specter2Embedder(batch_size=args.batch_size)
     )
 
-    print(f"Fetching up to {args.max_results} papers for {args.query!r}")
-    papers = fetch_papers(args.query, args.max_results, filters=args.filters)
+    frames = []
+    for query in args.query:
+        print(f"Fetching up to {args.max_results} papers for {query!r}")
+        frames.append(fetch_papers(query, args.max_results, filters=args.filters))
+    papers = pd.concat(frames, ignore_index=True).drop_duplicates("paper_id")
     if papers.empty:
         print("No papers found; nothing written.")
         return 1

@@ -83,6 +83,22 @@ def test_cli_fake_run_writes_to_scratch_dir_not_data(tmp_path, monkeypatch, caps
     assert "topic" in capsys.readouterr().out
 
 
+def test_cli_combines_repeated_queries_and_dedupes(tmp_path, monkeypatch):
+    monkeypatch.setattr(contracts, "DATA_DIR", tmp_path)
+    everything = make_papers()
+    calls = []
+
+    def fake_fetch(query, *a, **k):
+        calls.append(query)
+        return everything.iloc[:24] if query == "a" else everything.iloc[12:]
+
+    monkeypatch.setattr(build_encodings, "fetch_papers", fake_fetch)
+    assert main(["--query", "a", "--query", "b", "--fake", "--k-max", "5"]) == 0
+    assert calls == ["a", "b"]
+    written = pd.read_csv(tmp_path / "cache" / "fake_run" / "paper_encodings.csv")
+    assert len(written) == 36 and written["paper_id"].is_unique
+
+
 def test_cli_with_no_results_exits_nonzero(tmp_path, monkeypatch):
     monkeypatch.setattr(contracts, "DATA_DIR", tmp_path)
     monkeypatch.setattr(build_encodings, "fetch_papers",
