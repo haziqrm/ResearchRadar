@@ -23,6 +23,7 @@ MODULES = [
     "src.signal_decay.run_decay",
     "src.signal_decay.run_osap",
     "src.signal_decay.decay_model",
+    "src.signal_decay.decay_model_h8",
 ]
 
 PAPER_COLS = contracts.CONTRACTS["papers"][1]
@@ -782,3 +783,65 @@ def test_paper_bootstrap_resamples_whole_papers():
     err_base = np.array([0.3, 0.3, 0.3, 0.3])
     lo, hi = paper_bootstrap_ci(err_model, err_base, np.array(["a", "a", "b", "b"]), draws=500)
     assert lo == pytest.approx(-0.2) and hi == pytest.approx(0.2)
+
+
+# ---------- H8 walk-forward predictor ----------
+
+def _h8_doc():
+    rows = [("A", 1990, "momentum"), ("B", 1995, "momentum"), ("C", 1996, "value"), ("D", 1999, "momentum")]
+    return pd.DataFrame([{
+        "Acronym": sig, "Cat.Signal": "Predictor", "Authors": f"Au{sig}", "Year": y, "Journal": "JF",
+        "SampleStartYear": 1960, "SampleEndYear": y - 2, "GScholarCites202509": 10, "Cat.Economic": cat,
+    } for sig, y, cat in rows])
+
+
+def test_h8_features_use_pre_publication_data():
+    from src.signal_decay.decay_model_h8 import compute_h8_features
+
+    dates = pd.date_range("1960-01-31", "2010-12-31", freq="ME")
+    rng = np.random.default_rng(0)
+    base = rng.normal(0.01, 0.02, len(dates))
+    series = {"A": base, "B": base * 2, "C": rng.normal(0.01, 0.02, len(dates)), "D": rng.normal(0.01, 0.02, len(dates))}
+    tidy = lambda d: pd.concat([pd.DataFrame({"date": dates, "signal": k, "return": v}) for k, v in d.items()])
+    liquid = tidy({k: v * 0.5 for k, v in series.items()})
+    f = compute_h8_features(_h8_doc(), tidy(series), liquid).set_index("signal")
+
+    assert f.loc["A", "liquid_share"] == pytest.approx(0.5)
+    assert np.isnan(f.loc["A", "prior_max_corr"])           # nothing published before A
+    assert f.loc["B", "prior_max_corr"] == pytest.approx(1.0)  # B is a scaled copy of A
+    assert f.loc["D", "category_heat"] == 1                 # B (1995) is within 5 years; A (1990) is not
+    assert f.loc["C", "category_heat"] == 0                 # different category
+
+
+def _h8_frame(signal_in_feature=True, seed=0):
+    df = _model_frame(n_papers=80, seed=seed, signal_in_feature=False)
+    rng = np.random.default_rng(seed + 1)
+    df["year"] = 1980 + (np.arange(len(df)) // 2) % 37
+    df["paper_key"] = df["authors"] + "|" + df["year"].astype(str) + "|JF"
+    df["liquid_share"] = rng.uniform(0, 1, len(df))
+    df["prior_max_corr"] = rng.uniform(0, 1, len(df))
+    df["category_heat"] = rng.integers(0, 5, len(df)).astype(float)
+    if signal_in_feature:
+        df["target"] = 1.0 - df["liquid_share"] + rng.normal(0, 0.05, len(df))
+    return df
+
+
+def test_h8_walk_forward_finds_signal_without_lookahead():
+    from src.signal_decay.decay_model_h8 import FOLDS, walk_forward
+
+    res = walk_forward(_h8_frame(True))
+    s = res["summary"].set_index(["fold", "model"])
+    assert s.loc[("pooled", "ridge_h8"), "verdict"] == "beats baseline"
+    assert s.loc[("pooled", "ridge_h7_only"), "verdict"] == "does not beat baseline"
+    p = res["predictions"]
+    for start, end in FOLDS:
+        years = p.loc[p["fold"] == f"{start}-{end}", "year"]
+        assert years.between(start, end).all()
+        assert s.loc[(f"{start}-{end}", "baseline"), "n_train"] == (_h8_frame(True)["year"] < start).sum()
+
+
+def test_h8_walk_forward_rejects_noise():
+    from src.signal_decay.decay_model_h8 import walk_forward
+
+    s = walk_forward(_h8_frame(False))["summary"].set_index(["fold", "model"])
+    assert s.loc[("pooled", "ridge_h8"), "verdict"] == "does not beat baseline"

@@ -11,7 +11,8 @@ computed: see [HYPOTHESES.md](HYPOTHESES.md).
 ```bash
 python -m src.signal_decay.run_decay --charts     # 7 Ken French signals -> contract files
 python -m src.signal_decay.run_osap --charts      # 212 OSAP signals -> data/osap_*.csv
-python -m src.signal_decay.decay_model --charts   # decay predictor -> data/osap_model_*.csv
+python -m src.signal_decay.decay_model --charts   # decay predictor (H7) -> data/osap_model_*.csv
+python -m src.signal_decay.decay_model_h8 --charts  # second attempt (H8) -> data/osap_h8_*.csv
 ```
 
 Citations need `OPENALEX_API_KEY` and `OPENALEX_EMAIL` in `.env`. Every OpenAlex and
@@ -28,10 +29,16 @@ OSAP download is cached in `data/cache/`, so reruns are fast and offline.
 | H5 | Is the drop tied to the publication date? | 196 OSAP | Real drop about twice the fake-date drop, p < 0.0001 | Strongly supported |
 | H6 | More early attention, more decay? | 111 OSAP papers | rho = 0.11, p = 0.12 | Not supported |
 | H7 | Can decay be predicted at publication? | 127 train / 81 test | Ridge and random forest both fail to beat "keep 37%" on 2007-2016 papers | Not supported |
+| H8 | Do trading-cost, novelty and crowding inputs help? | 181 test signals over 3 walk-forward folds | Pooled error 0.447 vs baseline 0.435; ridge is slightly *worse* (CI +0.002 to +0.023) | Not supported |
 
 **In one line:** published signals keep roughly 40-45% of their in-sample edge, part
 of the drop is caused by publication itself, and neither attention nor other features
-known at publication predict which signals fade more.
+known at publication predict which signals fade more, even with trading-cost, novelty
+and crowding inputs (H8).
+
+Exploratory, not pre-registered: across the 181 H8 test signals, signals whose edge
+holds up in big stocks kept *more* of it (Spearman 0.15, p = 0.04, one of three
+uncorrected checks), the opposite of the H8 expectation. Treat it as a lead, not a result.
 
 ## Output files
 
@@ -42,6 +49,7 @@ known at publication predict which signals fade more.
 | `data/paper_ids.csv` | Hand-checked OpenAlex IDs for the 7 papers |
 | `data/osap_decay_results.csv`, `data/osap_papers.csv`, `data/osap_summary.csv` | OSAP per signal, per paper, H4-H6 |
 | `data/osap_model_summary.csv`, `_predictions.csv`, `_importance.csv` | H7 decay predictor |
+| `data/osap_h8_summary.csv`, `_predictions.csv`, `_features.csv`, `_coefficients.csv` | H8 walk-forward predictor and its new inputs |
 
 ## Limits
 
@@ -65,4 +73,6 @@ known at publication predict which signals fade more.
 - **No trading costs.** Returns are before costs. High-turnover signals such as
   short-term reversal would earn less in practice.
 - **Small samples.** 7 signals for H1-H3; about 130 training signals for H7, which is
-  little for any model. Nulls here mean "not detectable with this data", not "proven absent".
+  little for any model. H8's first walk-forward fold trains on only 27 signals.
+- **H8 reuses the H7 test years.** The 2007-2016 fold was already seen in H7; the H8
+  verdict uses all three folds pooled so it does not rest on that fold alone. Nulls here mean "not detectable with this data", not "proven absent".

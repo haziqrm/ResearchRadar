@@ -156,3 +156,56 @@ a signal keeps afterwards, better than assuming every signal keeps the same shar
   test set, and permutation feature importance.
 - Expectation: with about 130 training signals, a clear win is unlikely. A tie with the
   baseline means "decay is not predictable from these features beyond the average".
+
+---
+
+# H8. Decay predictor, second attempt with new inputs (written before any H8 feature was computed)
+
+Known when this was written: the H7 result (no H7 model beats the constant baseline on
+2007-2016 papers), the count of predictors per publication-year range, and that OSAP
+release 2026.10 has a liquidity-screened portfolio file (`ex_nyse_p20_me`: stocks above
+the NYSE 20th size percentile) covering all 212 predictors. No H8 feature value, model
+fit or error had been computed.
+
+## Why a second attempt
+H7 used descriptive paper details. Published work (McLean and Pontiff 2016) finds decay
+is larger where arbitrage is cheap, so H8 adds inputs about trading cost, novelty and
+how crowded the idea was. This is a second attempt and is reported as one.
+
+## Data and target
+Same as H7: OSAP predictors with IS mean > 0 and POST data; target = POST mean / IS mean,
+clipped to [-1, 2]; signals from one paper always on the same side of a split.
+
+## New features (all computed only from data before publication)
+- `liquid_share`: IS-period mean of the liquidity-screened long-short return divided by
+  the IS-period mean of the original-paper long-short return, same months, clipped to
+  [-1, 2]. Missing if fewer than 60 IS months in the screened series.
+  Expectation: higher (edge survives in big stocks, cheap to trade) -> lower retained share.
+- `prior_max_corr`: largest absolute correlation between the signal's IS-period monthly
+  long-short returns and those of every predictor published in an earlier year, over
+  overlapping months (at least 60). Missing if no earlier predictor qualifies.
+  No directional expectation.
+- `category_heat`: number of OSAP predictors with the same `Cat.Economic` published in the
+  5 years before (Year - 5 to Year - 1). Expectation: higher -> lower retained share.
+- Missing values filled with the training-fold median, plus a missing flag. All H7
+  features are kept.
+
+## Evaluation: expanding-window walk-forward
+- Three test folds by publication year: 1996-2000, 2001-2006, 2007-2016. Each trains on
+  all papers published before the fold starts. Medians, scaling and the ridge penalty are
+  set on the training fold only.
+- Models: baseline (training-fold median retained share), ridge with H7 + H8 features
+  (primary), random forest with H7 + H8 features (500 trees, depth 3, min leaf 5, seed 0),
+  and ridge with H7 features only (to show what the new inputs add; descriptive).
+- Ridge penalty: grid logspace(-2, 3, 30), 5-fold GroupKFold by paper on the training fold.
+- Disclosure: the 2007-2016 fold is the H7 test set, already seen once. The primary test
+  pools all three folds so it does not rest on that fold alone.
+
+## Pass mark
+- Primary: pooled over all test folds, the 95% interval of MAE(ridge H7+H8) - MAE(baseline),
+  bootstrap over test papers (2,000 draws, seed 0), lies entirely below zero.
+- Secondary: the same for the random forest.
+- Descriptive only: per-fold MAE, Spearman of predicted vs actual, ridge coefficients of
+  the new features on the last training fold, permutation importance.
+- Expectation: a clear win is still unlikely with about 200 signals; `liquid_share` is the
+  input most likely to help.
