@@ -19,7 +19,10 @@ MODULES = [
     "src.signal_decay.decay",
     "src.signal_decay.attention",
     "src.signal_decay.plots",
+    "src.signal_decay.robustness",
     "src.signal_decay.run_decay",
+    "src.signal_decay.run_osap",
+    "src.signal_decay.decay_model",
 ]
 
 PAPER_COLS = contracts.CONTRACTS["papers"][1]
@@ -377,7 +380,7 @@ def test_build_results_matches_contract_and_flags_rows():
         ["value", "C", "1992-06-01", "journal_issue", "HML", "no"],
     ]))
     inc, exc = select_for_results(papers)
-    results, details = build_results(factors, inc, exc, citations=False)
+    results, details = build_results(factors, inc, exc, citations=False, bootstrap_draws=50)
 
     contracts.validate("decay_results", results)
     assert list(results["signal"]) == ["momentum", "late"]
@@ -387,3 +390,395 @@ def test_build_results_matches_contract_and_flags_rows():
     assert status["momentum"] == "ok"
     assert status["late"] == "insufficient_post:60"
     assert status["value"] == "excluded_unverified"
+
+
+# ---------- era-adjusted attention (H3 input) ----------
+
+class _RoutingSession:
+    """Fake OpenAlex: answers work lookups, peer listings and citing counts offline."""
+
+    def __init__(self, counts):
+        self.counts, self.calls = counts, 0
+
+    def get(self, url, params=None, timeout=None):
+        self.calls += 1
+        f = params.get("filter", "")
+        if url.endswith("/works/W1"):
+            payload = {"id": "https://openalex.org/W1", "publication_year": 1993,
+                       "primary_location": {"source": {"id": "https://openalex.org/S9"}}}
+        elif f.startswith("primary_location.source.id"):
+            payload = {"results": [{"id": f"https://openalex.org/{w}"} for w in self.counts],
+                       "meta": {"next_cursor": None}}
+        else:
+            wid = f.split(",")[0].split(":")[1]
+            payload = {"meta": {"count": self.counts[wid]}}
+        return _FakeResponse(payload)
+
+
+def test_era_adjusted_attention_ranks_against_peers(tmp_path, monkeypatch):
+    from src.signal_decay import attention
+
+    monkeypatch.setenv("OPENALEX_API_KEY", "test-key")
+    counts = {"W1": 30, "W2": 5, "W3": 10, "W4": 30, "W5": 50}
+    session = _RoutingSession(counts)
+    att = attention.era_adjusted_attention("W1", 1993, cache_dir=tmp_path, session=session)
+
+    assert att["early_citations"] == 30
+    assert att["peer_n"] == 4  # the paper itself is not its own peer
+    assert att["peer_median"] == 20
+    assert att["percentile"] == pytest.approx(100 * (2 + 0.5) / 4)
+
+    calls = session.calls
+    attention.era_adjusted_attention("W1", 1993, cache_dir=tmp_path, session=session)
+    assert session.calls == calls  # everything served from cache
+
+
+def test_peer_sample_is_deterministic_and_capped():
+    from src.signal_decay.attention import sample_peers
+
+    pool = [f"W{i}" for i in range(200)]
+    a, b = sample_peers(pool, "W0", n=50), sample_peers(list(reversed(pool)), "W0", n=50)
+    assert a == b and len(a) == 50 and "W0" not in a
+
+
+# ---------- H3 test ----------
+
+def test_attention_decay_test_exact_permutation():
+    from src.signal_decay.attention import attention_decay_test
+
+    a = pd.Series([10, 20, 30, 40, 50, 60, 70])
+    res = attention_decay_test(a, a * 0.01)  # perfectly increasing
+    assert res["spearman"] == pytest.approx(1.0)
+    assert res["p_one_sided"] == pytest.approx(1 / 5040)
+
+    res = attention_decay_test(a, -a)  # perfectly decreasing: no support for H3
+    assert res["p_one_sided"] == pytest.approx(1.0)
+
+
+def test_attention_decay_test_needs_three_points():
+    from src.signal_decay.attention import attention_decay_test
+
+    res = attention_decay_test(pd.Series([1.0, np.nan]), pd.Series([0.5, 0.2]))
+    assert res["n"] == 1 and np.isnan(res["p_one_sided"])
+
+
+# ---------- H2 placebo ----------
+
+def test_split_differences_match_direct_means():
+    from src.signal_decay.robustness import split_differences
+
+    s = _monthly(np.random.default_rng(3).normal(0, 0.01, 300))
+    diffs = split_differences(s, min_months=120)
+    assert len(diffs) == 300 - 2 * 120 + 1
+    k = 150
+    direct = s.iloc[k:].mean() - s.iloc[:k].mean()
+    assert diffs.loc[s.index[k]] == pytest.approx(direct)
+
+
+def test_placebo_flags_real_break_and_not_noise():
+    from src.signal_decay.robustness import placebo_test
+
+    rng = np.random.default_rng(4)
+    broken = _monthly(np.r_[np.full(300, 0.01), np.full(300, 0.0)] + rng.normal(0, 0.003, 600))
+    assert placebo_test(broken, broken.index[300])["placebo_p"] < 0.05
+
+    noise = _monthly(rng.normal(0.005, 0.02, 600))
+    assert placebo_test(noise, noise.index[300])["placebo_p"] > 0.05
+
+
+def test_pooled_placebo_detects_common_break():
+    from src.signal_decay.robustness import pooled_placebo_test
+
+    rng = np.random.default_rng(5)
+    series, dates = {}, {}
+    for i, brk in enumerate([200, 300, 400]):
+        v = np.r_[np.full(brk, 0.01), np.full(600 - brk, 0.0)] + rng.normal(0, 0.003, 600)
+        series[f"s{i}"] = _monthly(v)
+        dates[f"s{i}"] = series[f"s{i}"].index[brk]
+    res = pooled_placebo_test(series, dates, draws=2000)
+    assert res["n_signals"] == 3 and res["p_one_sided"] < 0.05
+
+
+# ---------- half-life and retained-share intervals ----------
+
+def test_bootstrap_interval_covers_known_half_life():
+    from src.signal_decay.robustness import bootstrap_decay
+
+    rng = np.random.default_rng(6)
+    t = np.arange(400)
+    post = 0.01 * np.exp(-np.log(2) / 60 * t) + rng.normal(0, 0.001, 400)
+    s = _monthly(np.r_[np.full(240, 0.01) + rng.normal(0, 0.001, 240), post])
+    res = bootstrap_decay(s, s.index[240], draws=200)
+    assert res["half_life_fit_rate"] > 0.8
+    assert res["half_life_ci_low"] < 60 < res["half_life_ci_high"]
+    assert res["half_life_reportable"]
+    assert res["retained_ci_low"] < res["retained_share"] < res["retained_ci_high"]
+
+
+def test_noisy_series_half_life_not_reportable():
+    from src.signal_decay.robustness import bootstrap_decay
+
+    s = _monthly(np.random.default_rng(7).normal(0.005, 0.04, 600))
+    res = bootstrap_decay(s, s.index[300], draws=200)
+    assert not res["half_life_reportable"]
+
+
+def test_build_summary_rows():
+    from src.signal_decay.papers import select_for_results, validate_papers
+    from src.signal_decay.run_decay import SUMMARY_COLUMNS, build_results, build_summary
+
+    rng = np.random.default_rng(8)
+    s = _monthly(np.r_[np.full(300, 0.01), np.full(300, 0.002)] + rng.normal(0, 0.003, 600), "1940-01-31")
+    factors = pd.DataFrame({"date": s.index, "signal": "Mom", "return": s.values})
+    papers = validate_papers(_papers([["momentum", "A", s.index[300].strftime("%Y-%m-%d"),
+                                       "journal_issue", "Mom", "yes"]]))
+    inc, exc = select_for_results(papers)
+    _, details = build_results(factors, inc, exc, citations=False, bootstrap_draws=20)
+    summary = build_summary(factors, inc, details)
+    assert list(summary.columns) == SUMMARY_COLUMNS
+    assert summary.set_index("test").loc["H2 pooled placebo", "p_value"] < 0.05
+    assert summary.set_index("test").loc["H3 attention vs decay", "n"] == 0  # no citations
+
+
+# ---------- OSAP extension (H4-H6) ----------
+
+@pytest.mark.parametrize(
+    "authors, expected",
+    [
+        ("Banz", ["Banz"]),
+        ("Jegadeesh and Titman", ["Jegadeesh", "Titman"]),
+        ("Chan, Jegadeesh and Lakonishok", ["Chan", "Jegadeesh", "Lakonishok"]),
+        ("Jegadeesh et al.", ["Jegadeesh"]),
+        ("Avramov et al", ["Avramov"]),
+    ],
+)
+def test_parse_surnames(authors, expected):
+    from src.signal_decay.osap import parse_surnames
+
+    assert parse_surnames(authors) == expected
+
+
+@pytest.mark.parametrize(
+    "surname, name, ok",
+    [
+        ("Titman", "Sheridan D. Titman", True),
+        ("Novy-Marx", "Robert Novy‐Marx", True),
+        ("DeBondt", "Werner F. M. De Bondt", True),
+        ("Li", "William Lin", False),
+        ("Fama", "Eugene F. Fama Jr.", True),
+    ],
+)
+def test_surname_matches(surname, name, ok):
+    from src.signal_decay.osap import surname_matches
+
+    assert surname_matches(surname, name) is ok
+
+
+def _osap_papers():
+    return pd.DataFrame({"signal": ["A", "B"], "authors": ["X", "Y"], "year": [1990, 1995],
+                         "journal": ["JF", "JF"], "sample_start": [1960, 1960],
+                         "sample_end": [1985, 1985], "gs_cites": [100.0, 50.0]})
+
+
+def _osap_returns(is_level=0.01, oos_level=0.008, post_level=0.004, seed=0):
+    rng = np.random.default_rng(seed)
+    dates = pd.date_range("1955-01-31", "2020-12-31", freq="ME")
+    rows = []
+    for sig, year in [("A", 1990), ("B", 1995)]:
+        y = dates.year
+        mu = np.where(y <= 1985, is_level, np.where(y <= year, oos_level, post_level))
+        rows.append(pd.DataFrame({"date": dates, "signal": sig, "return": mu + rng.normal(0, 0.002, len(dates))}))
+    return pd.concat(rows, ignore_index=True)
+
+
+def test_period_panel_labels_and_drops_pre_sample():
+    from src.signal_decay.osap import period_panel
+
+    panel = period_panel(_osap_returns(), _osap_papers())
+    a = panel[panel["signal"] == "A"].set_index("date")["period"]
+    assert a.index.min() == pd.Timestamp("1960-01-31")  # months before sample start dropped
+    assert a["1985-12-31"] == "IS" and a["1986-01-31"] == "OOS"
+    assert a["1990-12-31"] == "OOS" and a["1991-01-31"] == "POST"  # end-of-publication-year rule
+
+
+def test_mp_regression_recovers_known_drops():
+    from src.signal_decay.osap import mp_regression, period_panel
+
+    panel = period_panel(_osap_returns(0.01, 0.008, 0.004), _osap_papers())
+    h4 = mp_regression(panel)
+    assert h4["n_signals"] == 2
+    assert h4["b_oos"] == pytest.approx(-0.2, abs=0.03)
+    assert h4["b_post"] == pytest.approx(-0.6, abs=0.03)
+    assert h4["post_minus_oos"] < 0 and h4["post_minus_oos_p_one_sided"] < 0.05
+
+
+def test_mp_regression_excludes_nonpositive_in_sample():
+    from src.signal_decay.osap import mp_regression, period_panel
+
+    r = _osap_returns()
+    r.loc[(r["signal"] == "B") & (r["date"].dt.year <= 1985), "return"] -= 0.05
+    h4 = mp_regression(period_panel(r, _osap_papers()))
+    assert h4["n_signals"] == 1 and h4["n_excluded_nonpositive_is"] == 1
+
+
+def test_signal_period_stats_relative_decay():
+    from src.signal_decay.osap import period_panel, signal_period_stats
+
+    st = signal_period_stats(period_panel(_osap_returns(), _osap_papers())).set_index("signal")
+    assert st.loc["A", "relative_decay"] == pytest.approx(0.6, abs=0.05)
+    assert st.loc["A", "n_is"] == 26 * 12
+
+
+def test_within_year_percentile_uses_other_papers_only():
+    from src.signal_decay.osap import within_year_percentile
+
+    v = pd.Series([10.0, 20.0, 30.0, 5.0])
+    y = pd.Series([1990, 1990, 1990, 2000])
+    pct = within_year_percentile(v, y)
+    assert pct.tolist()[:3] == [0.0, 50.0, 100.0]
+    assert np.isnan(pct.iloc[3])  # no other paper that year
+
+
+def test_match_paper_unique_ambiguous_and_no_journal(tmp_path, monkeypatch):
+    from src.signal_decay import osap
+
+    monkeypatch.setenv("OPENALEX_API_KEY", "test-key")
+
+    def author(n):
+        return {"author": {"display_name": n}, "raw_author_name": n}
+
+    class Session:
+        def __init__(self, works):
+            self.works = works
+
+        def get(self, url, params=None, timeout=None):
+            if url.endswith("/sources"):
+                return _FakeResponse({"results": [{"id": "https://openalex.org/S1",
+                                                   "display_name": "The Journal of Finance"}]})
+            return _FakeResponse({"results": self.works})
+
+    jt = {"id": "https://openalex.org/W9", "display_name": "Returns to buying winners",
+          "publication_year": 1993, "authorships": [author("N. Jegadeesh"), author("Sheridan Titman")]}
+    other = {"id": "https://openalex.org/W8", "display_name": "Other", "publication_year": 1993,
+             "authorships": [author("N. Jegadeesh")]}
+
+    m = osap.match_paper("Jegadeesh and Titman", 1993, "JF", cache_dir=tmp_path / "a", session=Session([jt, other]))
+    assert m["match_status"] == "matched" and m["openalex_id"] == "W9"
+
+    m = osap.match_paper("Jegadeesh", 1993, "JF", cache_dir=tmp_path / "b", session=Session([jt, other]))
+    assert m["match_status"] == "ambiguous" and m["n_candidates"] == 2
+
+    m = osap.match_paper("Someone", 2001, "WP", cache_dir=tmp_path / "c", session=Session([]))
+    assert m["match_status"] == "no_journal"
+
+
+def test_openalex_errors_never_leak_the_key(tmp_path, monkeypatch):
+    from src.signal_decay import attention
+
+    monkeypatch.setenv("OPENALEX_API_KEY", "secret-key-123")
+
+    class Bad:
+        status_code, headers = 500, {}
+
+    class Session:
+        def get(self, url, params=None, timeout=None):
+            return Bad()
+
+    with pytest.raises(RuntimeError) as exc:
+        attention._get_json("works", {"filter": "x"}, "bad", cache_dir=tmp_path, session=Session())
+    assert "secret-key-123" not in str(exc.value) and "HTTP 500" in str(exc.value)
+
+
+def test_pooled_placebo_skips_signals_short_before_publication():
+    from src.signal_decay.robustness import pooled_placebo_test
+
+    rng = np.random.default_rng(9)
+    long = _monthly(rng.normal(0.005, 0.01, 600))
+    short_pre = _monthly(rng.normal(0.005, 0.01, 600))
+    res = pooled_placebo_test({"a": long, "b": short_pre},
+                              {"a": long.index[300], "b": short_pre.index[50]}, draws=500)
+    assert res["n_signals"] == 1 and np.isfinite(res["mean_real_diff"])
+
+
+def test_openalex_retries_server_errors(tmp_path, monkeypatch):
+    from src.signal_decay import attention
+
+    monkeypatch.setenv("OPENALEX_API_KEY", "k")
+    monkeypatch.setattr(attention.time, "sleep", lambda s: None)
+
+    class R:
+        def __init__(self, code):
+            self.status_code, self.headers = code, {}
+
+        def json(self):
+            return {"ok": True}
+
+    class Session:
+        def __init__(self):
+            self.codes = [504, 502, 200]
+
+        def get(self, url, params=None, timeout=None):
+            return R(self.codes.pop(0))
+
+    assert attention._get_json("works", {}, "retry", cache_dir=tmp_path, session=Session()) == {"ok": True}
+
+
+# ---------- H7 decay predictor ----------
+
+def _model_frame(n_papers=60, seed=0, signal_in_feature=True):
+    """Synthetic signals: retained share depends on is_tstat when signal_in_feature."""
+    rng = np.random.default_rng(seed)
+    rows = []
+    for p in range(n_papers):
+        year = 1980 + p % 36
+        for k in range(2):
+            t = rng.uniform(2, 8)
+            target = (1.2 - 0.12 * t if signal_in_feature else 0.5) + rng.normal(0, 0.05)
+            rows.append({
+                "signal": f"s{p}_{k}", "authors": f"A{p}", "year": year, "journal": "JF",
+                "paper_key": f"A{p}|{year}|JF", "target": target,
+                "op_tstat": np.nan if k else t, "is_mean": 0.01, "is_tstat": t,
+                "sample_years": 20, "pub_lag": 3, "pub_year": float(year),
+                "citation_pct": rng.uniform(0, 100), "data_type": "Accounting",
+                "journal_group": "top3", "discrete": 0.0, "clear": 1.0, "equal_weighted": 1.0,
+            })
+    return pd.DataFrame(rows)
+
+
+def test_feature_matrix_uses_training_medians_and_flags():
+    from src.signal_decay.decay_model import feature_matrix
+
+    df = _model_frame(4)
+    X = feature_matrix(df, {"op_tstat": 99.0, "citation_pct": 50.0})
+    missing = df["op_tstat"].isna()
+    assert (X.loc[missing, "op_tstat"] == 99.0).all()
+    assert (X.loc[missing, "op_tstat_missing"] == 1.0).all()
+    assert X.isna().sum().sum() == 0
+
+
+def test_model_beats_baseline_when_signal_exists():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    res = fit_and_evaluate(_model_frame(signal_in_feature=True), train_last_year=2000)
+    s = res["summary"].set_index("model")
+    assert s.loc["ridge", "verdict"] == "beats baseline"
+    test_years = res["predictions"]["year"]
+    assert test_years.min() > 2000  # no test paper from the training period
+
+
+def test_model_does_not_beat_baseline_on_noise():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    res = fit_and_evaluate(_model_frame(signal_in_feature=False), train_last_year=2000)
+    s = res["summary"].set_index("model")
+    assert s.loc["ridge", "verdict"] == "does not beat baseline"
+    assert s.loc["random_forest", "verdict"] == "does not beat baseline"
+
+
+def test_paper_bootstrap_resamples_whole_papers():
+    from src.signal_decay.decay_model import paper_bootstrap_ci
+
+    err_model = np.array([0.1, 0.1, 0.5, 0.5])
+    err_base = np.array([0.3, 0.3, 0.3, 0.3])
+    lo, hi = paper_bootstrap_ci(err_model, err_base, np.array(["a", "a", "b", "b"]), draws=500)
+    assert lo == pytest.approx(-0.2) and hi == pytest.approx(0.2)

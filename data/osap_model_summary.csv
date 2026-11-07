@@ -1,0 +1,4 @@
+model,test_mae,n_train,n_test,n_test_papers,spearman_pred_vs_actual,mae_diff_vs_baseline,diff_ci_low,diff_ci_high,verdict,ridge_alpha
+baseline,0.36559718298713617,127,81,56,,0.0,,,predicts 0.37 for every signal,
+ridge,0.3681807123365387,127,81,56,-0.04764055601654237,0.0025835293494025358,-0.005383107246981448,0.009996460757346464,does not beat baseline,1000.0
+random_forest,0.3881153138854625,127,81,56,-0.06635124606617752,0.022518130898326327,-0.011728961657031516,0.05025046472067623,does not beat baseline,
