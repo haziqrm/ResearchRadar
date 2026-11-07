@@ -1,0 +1,8 @@
+signal,paper,publication_date,date_rule,ken_french_column,source_verified
+Size,"Banz (1981), The relationship between return and market value of common stocks, Journal of Financial Economics 9(1)",1981-03-01,journal issue month (day set to 01),SMB_3f,yes
+Value,"Fama and French (1993), Common risk factors in the returns on stocks and bonds, Journal of Financial Economics 33(1)",1993-02-01,journal issue month (day set to 01),HML_3f,yes
+Momentum,"Jegadeesh and Titman (1993), Returns to buying winners and selling losers, Journal of Finance 48(1)",1993-03-01,journal issue month (day set to 01),Mom,yes
+Short-term reversal,"Jegadeesh (1990), Evidence of predictable behavior of security returns, Journal of Finance 45(3)",1990-07-01,journal issue month (day set to 01),ST_Rev,yes
+Long-term reversal,"De Bondt and Thaler (1985), Does the stock market overreact?, Journal of Finance 40(3)",1985-07-01,journal issue month (day set to 01),LT_Rev,yes
+Profitability,"Novy-Marx (2013), The other side of value: the gross profitability premium, Journal of Financial Economics 108(1)",2013-04-01,journal issue month (day set to 01),RMW,yes
+Investment,"Fama and French (2015), A five-factor asset pricing model, Journal of Financial Economics 116(1)",2015-04-01,journal issue month (day set to 01),CMA,yes
