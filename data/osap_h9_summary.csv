@@ -1,0 +1,8 @@
+test,statistic,value,t_stat,p_one_sided,n_months,note
+H9a factor momentum,"winners - losers, mean monthly return",0.006424868962282396,4.0922699901463995,2.1358543792522528e-05,479,spread positive in 62% of months
+H9b volatility,"model - baseline absolute error, mean",-0.003668542303034996,4.658973273087339,1.5889522793952444e-06,624,"corr with |r|: 12-month 0.45, long-run 0.37"
+H9a descriptive,all: annualised Sharpe,1.003855784385512,,,479,mean monthly return 0.0041
+H9a descriptive,winners: annualised Sharpe,1.0618780999840847,,,479,mean monthly return 0.0064
+H9a descriptive,losers: annualised Sharpe,-0.0040027457061379565,,,479,mean monthly return -0.0000
+H9b descriptive,equal_weight: annualised Sharpe,1.0124498058675713,,,480,before trading costs
+H9b descriptive,vol_managed: annualised Sharpe,1.5454491389348344,,,480,before trading costs

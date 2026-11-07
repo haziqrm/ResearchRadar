@@ -23,6 +23,8 @@ MODULES = [
     "src.signal_decay.run_decay",
     "src.signal_decay.run_osap",
     "src.signal_decay.decay_model",
+    "src.signal_decay.decay_model_h8",
+    "src.signal_decay.forecasts",
 ]
 
 PAPER_COLS = contracts.CONTRACTS["papers"][1]
@@ -749,7 +751,7 @@ def test_feature_matrix_uses_training_medians_and_flags():
     from src.signal_decay.decay_model import feature_matrix
 
     df = _model_frame(4)
-    X = feature_matrix(df, {"op_tstat": 99.0, "citation_pct": 50.0})
+    X = feature_matrix(df, {"op_tstat": 99.0})
     missing = df["op_tstat"].isna()
     assert (X.loc[missing, "op_tstat"] == 99.0).all()
     assert (X.loc[missing, "op_tstat_missing"] == 1.0).all()
@@ -782,3 +784,232 @@ def test_paper_bootstrap_resamples_whole_papers():
     err_base = np.array([0.3, 0.3, 0.3, 0.3])
     lo, hi = paper_bootstrap_ci(err_model, err_base, np.array(["a", "a", "b", "b"]), draws=500)
     assert lo == pytest.approx(-0.2) and hi == pytest.approx(0.2)
+
+
+# ---------- H8 walk-forward predictor ----------
+
+def _h8_doc():
+    rows = [("A", 1990, "momentum"), ("B", 1995, "momentum"), ("C", 1996, "value"), ("D", 1999, "momentum")]
+    return pd.DataFrame([{
+        "Acronym": sig, "Cat.Signal": "Predictor", "Authors": f"Au{sig}", "Year": y, "Journal": "JF",
+        "SampleStartYear": 1960, "SampleEndYear": y - 2, "GScholarCites202509": 10, "Cat.Economic": cat,
+    } for sig, y, cat in rows])
+
+
+def test_h8_features_use_pre_publication_data():
+    from src.signal_decay.decay_model_h8 import compute_h8_features
+
+    dates = pd.date_range("1960-01-31", "2010-12-31", freq="ME")
+    rng = np.random.default_rng(0)
+    base = rng.normal(0.01, 0.02, len(dates))
+    series = {"A": base, "B": base * 2, "C": rng.normal(0.01, 0.02, len(dates)), "D": rng.normal(0.01, 0.02, len(dates))}
+    tidy = lambda d: pd.concat([pd.DataFrame({"date": dates, "signal": k, "return": v}) for k, v in d.items()])
+    liquid = tidy({k: v * 0.5 for k, v in series.items()})
+    f = compute_h8_features(_h8_doc(), tidy(series), liquid).set_index("signal")
+
+    assert f.loc["A", "liquid_share"] == pytest.approx(0.5)
+    assert np.isnan(f.loc["A", "prior_max_corr"])           # nothing published before A
+    assert f.loc["B", "prior_max_corr"] == pytest.approx(1.0)  # B is a scaled copy of A
+    assert f.loc["D", "category_heat"] == 1                 # B (1995) is within 5 years; A (1990) is not
+    assert f.loc["C", "category_heat"] == 0                 # different category
+
+
+def _h8_frame(signal_in_feature=True, seed=0):
+    df = _model_frame(n_papers=80, seed=seed, signal_in_feature=False)
+    rng = np.random.default_rng(seed + 1)
+    df["year"] = 1980 + (np.arange(len(df)) // 2) % 37
+    df["paper_key"] = df["authors"] + "|" + df["year"].astype(str) + "|JF"
+    df["liquid_share"] = rng.uniform(0, 1, len(df))
+    df["prior_max_corr"] = rng.uniform(0, 1, len(df))
+    df["category_heat"] = rng.integers(0, 5, len(df)).astype(float)
+    if signal_in_feature:
+        df["target"] = 1.0 - df["liquid_share"] + rng.normal(0, 0.05, len(df))
+    return df
+
+
+def test_h8_walk_forward_finds_signal_without_lookahead():
+    from src.signal_decay.decay_model_h8 import FOLDS, walk_forward
+
+    res = walk_forward(_h8_frame(True))
+    s = res["summary"].set_index(["fold", "model"])
+    assert s.loc[("pooled", "ridge_h8"), "verdict"] == "beats baseline"
+    assert s.loc[("pooled", "ridge_h7_only"), "verdict"] == "does not beat baseline"
+    p = res["predictions"]
+    for start, end in FOLDS:
+        years = p.loc[p["fold"] == f"{start}-{end}", "year"]
+        assert years.between(start, end).all()
+        assert s.loc[(f"{start}-{end}", "baseline"), "n_train"] == (_h8_frame(True)["year"] < start).sum()
+
+
+def test_h8_walk_forward_rejects_noise():
+    from src.signal_decay.decay_model_h8 import walk_forward
+
+    s = walk_forward(_h8_frame(False))["summary"].set_index(["fold", "model"])
+    assert s.loc[("pooled", "ridge_h8"), "verdict"] == "does not beat baseline"
+
+
+# ---------- checks added after the evaluation diagnosis ----------
+
+def test_no_feature_uses_post_publication_citations():
+    from src.signal_decay.decay_model import NUMERIC, feature_matrix
+    from src.signal_decay.decay_model_h8 import feature_matrix_h8
+
+    assert "citation_pct" not in NUMERIC  # counts citations in Y+1..Y+3, not known at publication
+    df = _h8_frame(True)
+    assert not any("citation" in c for c in feature_matrix(df, {}).columns)
+    assert not any("citation" in c for c in feature_matrix_h8(df, {}).columns)
+
+
+def test_features_ignore_post_publication_returns():
+    """Changing only POST-period returns changes the target but not a single feature."""
+    from src.signal_decay.decay_model import build_dataset, feature_matrix, training_medians, NUMERIC
+
+    dates = pd.date_range("1950-01-31", "2025-12-31", freq="ME")
+    rng = np.random.default_rng(3)
+    docs, rets = [], []
+    for i in range(12):
+        y = 1980 + 2 * i
+        docs.append({"Acronym": f"S{i}", "Cat.Signal": "Predictor", "Authors": f"A{i}", "Year": y, "Journal": "JF",
+                     "SampleStartYear": y - 25, "SampleEndYear": y - 3, "GScholarCites202509": 1,
+                     "Cat.Data": "Price", "Cat.Form": "continuous", "Predictability in OP": "1_clear",
+                     "Stock Weight": "EW", "T-Stat": 3.0})
+        rets.append(pd.DataFrame({"date": dates, "signal": f"S{i}", "return": rng.normal(0.01, 0.02, len(dates))}))
+    doc, ret = pd.DataFrame(docs), pd.concat(rets, ignore_index=True)
+    a = build_dataset(doc, ret, None)
+    pub = ret["signal"].map(doc.set_index("Acronym")["Year"])
+    shocked = ret.assign(**{"return": np.where(ret["date"].dt.year > pub, ret["return"] + 0.05, ret["return"])})
+    b = build_dataset(doc, shocked, None)
+    med = training_medians(a, NUMERIC)
+    pd.testing.assert_frame_equal(feature_matrix(a, med), feature_matrix(b, med))
+    assert not np.allclose(a["target"], b["target"])
+
+
+def test_baseline_uses_training_rows_only():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    df = _model_frame(signal_in_feature=False)
+    moved = df.copy()
+    moved.loc[moved["year"] > 2000, "target"] += 5.0  # wild test targets must not move the baseline
+    a = fit_and_evaluate(df, train_last_year=2000)["predictions"]["pred_baseline"]
+    b = fit_and_evaluate(moved, train_last_year=2000)["predictions"]["pred_baseline"]
+    assert np.allclose(a, b)
+    assert np.allclose(a, np.median(df.loc[df["year"] <= 2000, "target"]))
+
+
+def test_heavily_penalised_median_regression_is_the_baseline():
+    """The median regression nests the constant baseline: with no signal it falls back to it."""
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    res = fit_and_evaluate(_model_frame(signal_in_feature=False), train_last_year=2000)
+    p = res["predictions"]
+    assert np.allclose(p["pred_median_regression"], p["pred_baseline"], atol=0.02)
+    assert p["pred_median_regression"].std() < 0.01  # flat: the L1 penalty zeroed the coefficients
+
+
+def test_summary_reports_mae_mse_and_both_constants():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    s = fit_and_evaluate(_model_frame(), train_last_year=2000)["summary"].set_index("model")
+    assert {"baseline", "baseline_mean", "ridge", "median_regression", "random_forest"} <= set(s.index)
+    for col in ["test_mae", "test_mse", "mse_diff_vs_baseline", "alpha", "alpha_at_grid_edge"]:
+        assert col in s.columns
+    assert s.loc["baseline", "mse_diff_vs_baseline"] == 0.0
+
+
+def test_model_survives_infinite_and_all_missing_inputs():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    df = _model_frame()
+    df.loc[df.index[:3], "is_tstat"] = np.inf
+    df["op_tstat"] = np.nan
+    s = fit_and_evaluate(df, train_last_year=2000)["summary"]
+    assert np.isfinite(s["test_mae"]).all()
+
+
+def test_zero_variance_signal_gets_missing_tstat_not_infinity():
+    from src.signal_decay.decay_model import build_dataset
+
+    dates = pd.date_range("1960-01-31", "2010-12-31", freq="ME")
+    doc = pd.DataFrame([{"Acronym": "Z", "Cat.Signal": "Predictor", "Authors": "A", "Year": 1990, "Journal": "JF",
+                         "SampleStartYear": 1960, "SampleEndYear": 1987, "GScholarCites202509": 1,
+                         "Cat.Data": "Price", "Cat.Form": "continuous", "Predictability in OP": "1_clear",
+                         "Stock Weight": "EW", "T-Stat": 3.0}])
+    ret = pd.DataFrame({"date": dates, "signal": "Z", "return": 0.01})
+    df = build_dataset(doc, ret, None)
+    assert df["is_tstat"].isna().all()
+
+
+# ---------- H9 month-ahead forecasts ----------
+
+def _h9_returns(n_signals=30, months=400, persistent_mean=False, vol_clusters=False, seed=0):
+    rng = np.random.default_rng(seed)
+    dates = pd.date_range("1980-01-31", periods=months, freq="ME")
+    frames = []
+    for i in range(n_signals):
+        if persistent_mean:  # slow-moving true mean: past winners keep winning
+            mu = np.repeat(rng.normal(0, 0.01, months // 60 + 1), 60)[:months]
+        else:
+            mu = np.zeros(months)
+        sigma = np.repeat(rng.choice([0.01, 0.06], months // 24 + 1), 24)[:months] if vol_clusters             else np.full(months, 0.03)
+        frames.append(pd.DataFrame({"date": dates, "signal": f"S{i}", "return": mu + sigma * rng.standard_normal(months)}))
+    return pd.concat(frames, ignore_index=True)
+
+
+def test_h9_forecasts_use_only_past_months():
+    from src.signal_decay.forecasts import forecast_panel
+
+    r = _h9_returns(3, 100)
+    a = forecast_panel(r)
+    last = r["date"].max()
+    shocked = r.assign(**{"return": np.where(r["date"] == last, 9.0, r["return"])})
+    b = forecast_panel(shocked)
+    cols = ["mom_12m", "vol_forecast", "vol_baseline"]
+    pd.testing.assert_frame_equal(a[cols], b[cols])  # month t's forecast ignores month t
+    s0 = a[a["signal"] == "S0"].set_index("date")
+    raw = r[r["signal"] == "S0"].set_index("date")["return"]
+    assert s0["mom_12m"].iloc[12] == pytest.approx(raw.iloc[:12].mean())
+    assert s0["mom_12m"].iloc[:12].isna().all() and s0["vol_baseline"].iloc[:36].isna().all()
+
+
+def test_h9_post_publication_filter():
+    from src.signal_decay.forecasts import forecast_panel, post_publication
+
+    panel = post_publication(forecast_panel(_h9_returns(2, 120)), pd.Series({"S0": 1985, "S1": 1987}))
+    assert panel.loc[panel["signal"] == "S0", "date"].dt.year.min() == 1986
+    assert panel.loc[panel["signal"] == "S1", "date"].dt.year.min() == 1988
+
+
+def test_h9_momentum_detected_only_when_present():
+    from src.signal_decay.forecasts import forecast_panel, momentum_test
+
+    yes, _ = momentum_test(forecast_panel(_h9_returns(persistent_mean=True)))
+    no, _ = momentum_test(forecast_panel(_h9_returns(persistent_mean=False)))
+    assert yes["p_one_sided"] < 0.05 and yes["mean"] > 0
+    assert no["p_one_sided"] > 0.05
+
+
+def test_h9_volatility_detected_only_when_clustered():
+    from src.signal_decay.forecasts import forecast_panel, volatility_test
+
+    yes, _ = volatility_test(forecast_panel(_h9_returns(vol_clusters=True)))
+    no, _ = volatility_test(forecast_panel(_h9_returns(vol_clusters=False)))
+    assert yes["p_one_sided"] < 0.05 and yes["mean_loss_diff"] < 0
+    assert no["p_one_sided"] > 0.05
+
+
+def test_h9_vol_managed_matches_plain_volatility():
+    from src.signal_decay.forecasts import forecast_panel, vol_managed
+
+    port = vol_managed(forecast_panel(_h9_returns(vol_clusters=True)))
+    assert port["vol_managed"].std() == pytest.approx(port["equal_weight"].std())
+
+
+def test_h9_latest_forecasts_snapshot():
+    from src.signal_decay.forecasts import latest_forecasts
+
+    r = _h9_returns(2, 60)
+    snap = latest_forecasts(r, "osap", {"S0": "Zero"}).set_index("signal")
+    raw = r[r["signal"] == "S0"]["return"].iloc[-12:]
+    assert snap.loc["S0", "name"] == "Zero" and snap.loc["S1", "name"] == "S1"
+    assert snap.loc["S0", "mom_12m"] == pytest.approx(raw.mean())
+    assert snap.loc["S0", "momentum_on"] == (raw.mean() > 0)

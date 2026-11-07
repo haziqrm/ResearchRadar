@@ -4,11 +4,14 @@ Rules are fixed in HYPOTHESES.md (H7): time split (train <= 2006, test 2007+),
 features known at publication, a constant baseline, ridge and a small random
 forest, and a paper-level bootstrap on the test-set error.
 
+Post-diagnosis correction (see HYPOTHESES.md): the early-citation feature was
+dropped because it counts citations after publication; squared error, a
+training-mean constant and a median regression are reported alongside MAE.
+
 Usage:
     python -m src.signal_decay.decay_model [--charts]
 
-Needs data/osap_papers.csv (from run_osap) for the attention feature, and the
-cached OSAP downloads. Writes A-owned files only:
+Needs the cached OSAP downloads (from run_osap). Writes A-owned files only:
     data/osap_model_summary.csv      one row per model: test MAE, CI vs baseline, verdict
     data/osap_model_predictions.csv  test-set predictions per signal
     data/osap_model_importance.csv   permutation importance on the test set
@@ -23,7 +26,7 @@ import pandas as pd
 from scipy import stats
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.inspection import permutation_importance
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import QuantileRegressor, Ridge
 from sklearn.model_selection import GridSearchCV, GroupKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
@@ -44,8 +47,12 @@ OSAP_PAPERS_CSV = DATA_DIR / "osap_papers.csv"
 DATA_TYPES = ["Accounting", "Price", "Analyst", "Trading", "Other"]
 TOP3 = {"JF", "JFE", "RFS"}
 ACCOUNTING_JOURNALS = {"AR", "JAE", "JAR", "RAS", "CAR"}
-NUMERIC = ["op_tstat", "is_mean", "is_tstat", "sample_years", "pub_lag", "pub_year", "citation_pct"]
-IMPUTED = ["op_tstat", "citation_pct"]
+# citation_pct is still computed but is not a feature: it counts citations in years
+# Y+1..Y+3, which are not known at publication (post-diagnosis correction).
+NUMERIC = ["op_tstat", "is_mean", "is_tstat", "sample_years", "pub_lag", "pub_year"]
+IMPUTED = ["op_tstat"]  # these also get a missing-value flag column
+RIDGE_ALPHAS = np.logspace(-2, 3, 30)
+MEDIAN_ALPHAS = np.logspace(-4, 0, 20)
 
 
 def build_dataset(doc: pd.DataFrame, returns: pd.DataFrame, osap_papers: pd.DataFrame | None) -> pd.DataFrame:
@@ -57,7 +64,7 @@ def build_dataset(doc: pd.DataFrame, returns: pd.DataFrame, osap_papers: pd.Data
         "is_mean": g[("mean", "IS")], "is_std": g[("std", "IS")], "n_is": g[("count", "IS")],
         "post_mean": g.get(("mean", "POST")), "n_post": g.get(("count", "POST")),
     }).reset_index()
-    s["is_tstat"] = s["is_mean"] / (s["is_std"] / np.sqrt(s["n_is"]))
+    s["is_tstat"] = np.where(s["is_std"] > 0, s["is_mean"] / (s["is_std"] / np.sqrt(s["n_is"])), np.nan)
 
     d = doc[doc["Cat.Signal"] == "Predictor"].rename(columns={"Acronym": "signal"})
     df = pt.merge(s, on="signal").merge(
@@ -87,14 +94,24 @@ def build_dataset(doc: pd.DataFrame, returns: pd.DataFrame, osap_papers: pd.Data
     return df.reset_index(drop=True)
 
 
+def training_medians(train: pd.DataFrame, cols: list[str]) -> dict[str, float]:
+    """Training-set medians, ignoring infinities; 0.0 if a column is entirely missing."""
+    out = {}
+    for c in cols:
+        m = pd.to_numeric(train[c], errors="coerce").replace([np.inf, -np.inf], np.nan).median()
+        out[c] = 0.0 if pd.isna(m) else float(m)
+    return out
+
+
 def feature_matrix(df: pd.DataFrame, train_medians: dict[str, float]) -> pd.DataFrame:
-    """Model-ready features. Missing values filled with *training* medians, plus flags."""
+    """Model-ready features. Missing or infinite values get *training* medians; IMPUTED columns get flags."""
     X = pd.DataFrame(index=df.index)
     for col in NUMERIC:
-        X[col] = df[col]
+        X[col] = pd.to_numeric(df[col], errors="coerce").replace([np.inf, -np.inf], np.nan)
     for col in IMPUTED:
         X[f"{col}_missing"] = X[col].isna().astype(float)
-        X[col] = X[col].fillna(train_medians[col])
+    for col in NUMERIC:
+        X[col] = X[col].fillna(train_medians.get(col, 0.0))
     for t in DATA_TYPES:
         X[f"data_{t.lower()}"] = (df["data_type"] == t).astype(float)
     for gname in ["top3", "accounting"]:
@@ -117,45 +134,66 @@ def paper_bootstrap_ci(err_model: np.ndarray, err_base: np.ndarray, groups: np.n
     return tuple(np.percentile(diffs, [2.5, 97.5]))
 
 
+def grid_search(estimator, param: str, grid: np.ndarray, X, y, groups) -> GridSearchCV:
+    """Penalty chosen by MAE under GroupKFold by paper, on training rows only."""
+    cv = GroupKFold(n_splits=min(5, len(np.unique(groups))))
+    return GridSearchCV(estimator, {param: grid}, cv=cv, scoring="neg_mean_absolute_error").fit(X, y, groups=groups)
+
+
+def fit_models(Xtr: pd.DataFrame, ytr: np.ndarray, groups: np.ndarray, n_test: int) -> tuple[dict, dict, dict]:
+    """Fit every model on training rows. Returns (constant predictions, fitted models, chosen penalties)."""
+    constants = {"baseline": np.full(n_test, np.median(ytr)), "baseline_mean": np.full(n_test, np.mean(ytr))}
+    ridge = grid_search(make_pipeline(StandardScaler(), Ridge()), "ridge__alpha", RIDGE_ALPHAS, Xtr, ytr, groups)
+    median = grid_search(make_pipeline(StandardScaler(), QuantileRegressor(quantile=0.5, solver="highs")),
+                         "quantileregressor__alpha", MEDIAN_ALPHAS, Xtr, ytr, groups)
+    forest = RandomForestRegressor(n_estimators=500, max_depth=3, min_samples_leaf=5,
+                                   random_state=SEED).fit(Xtr, ytr)
+    models = {"ridge": ridge.best_estimator_, "median_regression": median.best_estimator_, "random_forest": forest}
+    alphas = {"ridge": (ridge.best_params_["ridge__alpha"], RIDGE_ALPHAS),
+              "median_regression": (median.best_params_["quantileregressor__alpha"], MEDIAN_ALPHAS)}
+    return constants, models, alphas
+
+
+def score_model(name: str, pred: np.ndarray, y: np.ndarray, base: np.ndarray, groups: np.ndarray) -> dict:
+    """MAE (primary) and MSE against the median baseline, with a paper-bootstrap CI on the MAE difference."""
+    err, err_base = np.abs(pred - y), np.abs(base - y)
+    row = {"model": name, "test_mae": err.mean(), "test_mse": np.mean((pred - y) ** 2),
+           "n_test": len(y), "n_test_papers": len(np.unique(groups)),
+           "spearman_pred_vs_actual": stats.spearmanr(pred, y).statistic if np.std(pred) > 0 else np.nan}
+    row["mse_diff_vs_baseline"] = row["test_mse"] - np.mean((base - y) ** 2)
+    if name == "baseline":
+        row.update(mae_diff_vs_baseline=0.0, diff_ci_low=np.nan, diff_ci_high=np.nan,
+                   verdict=f"predicts {base[0]:.2f} for every signal")
+    else:
+        lo, hi = paper_bootstrap_ci(err, err_base, groups)
+        row.update(mae_diff_vs_baseline=err.mean() - err_base.mean(), diff_ci_low=lo, diff_ci_high=hi,
+                   verdict="beats baseline" if hi < 0 else "does not beat baseline")
+    return row
+
+
+def alpha_columns(name: str, alphas: dict) -> dict:
+    """Chosen penalty, and whether it sits at the edge of the grid (a sign the model wants to be flat)."""
+    if name not in alphas:
+        return {"alpha": np.nan, "alpha_at_grid_edge": np.nan}
+    a, grid = alphas[name]
+    return {"alpha": a, "alpha_at_grid_edge": bool(np.isclose(a, grid[0]) or np.isclose(a, grid[-1]))}
+
+
 def fit_and_evaluate(df: pd.DataFrame, train_last_year: int = TRAIN_LAST_YEAR) -> dict:
     """Train on papers up to train_last_year, evaluate on later papers (H7)."""
     train, test = df[df["year"] <= train_last_year], df[df["year"] > train_last_year]
-    medians = {c: float(train[c].median()) for c in IMPUTED}
+    medians = training_medians(train, NUMERIC)
     Xtr, Xte = feature_matrix(train, medians), feature_matrix(test, medians)
     ytr, yte = train["target"].to_numpy(), test["target"].to_numpy()
     groups_tr, groups_te = train["paper_key"].to_numpy(), test["paper_key"].to_numpy()
 
-    preds = {"baseline": np.full(len(test), np.median(ytr))}
-    ridge = GridSearchCV(
-        make_pipeline(StandardScaler(), Ridge()),
-        {"ridge__alpha": np.logspace(-2, 3, 30)},
-        cv=GroupKFold(n_splits=5), scoring="neg_mean_absolute_error",
-    ).fit(Xtr, ytr, groups=groups_tr)
-    preds["ridge"] = ridge.predict(Xte)
-    forest = RandomForestRegressor(n_estimators=500, max_depth=3, min_samples_leaf=5,
-                                   random_state=SEED).fit(Xtr, ytr)
-    preds["random_forest"] = forest.predict(Xte)
-
-    err_base = np.abs(preds["baseline"] - yte)
-    rows = []
-    for name, p in preds.items():
-        err = np.abs(p - yte)
-        row = {"model": name, "test_mae": err.mean(), "n_train": len(train), "n_test": len(test),
-               "n_test_papers": len(np.unique(groups_te)),
-               "spearman_pred_vs_actual": stats.spearmanr(p, yte).statistic if np.std(p) > 0 else np.nan}
-        if name == "baseline":
-            row.update(mae_diff_vs_baseline=0.0, diff_ci_low=np.nan, diff_ci_high=np.nan,
-                       verdict=f"predicts {np.median(ytr):.2f} for every signal")
-        else:
-            lo, hi = paper_bootstrap_ci(err, err_base, groups_te)
-            row.update(mae_diff_vs_baseline=err.mean() - err_base.mean(), diff_ci_low=lo, diff_ci_high=hi,
-                       verdict="beats baseline" if hi < 0 else "does not beat baseline")
-        rows.append(row)
-    summary = pd.DataFrame(rows)
-    summary["ridge_alpha"] = [None, ridge.best_params_["ridge__alpha"], None]
+    constants, models, alphas = fit_models(Xtr, ytr, groups_tr, len(test))
+    preds = {**constants, **{name: m.predict(Xte) for name, m in models.items()}}
+    summary = pd.DataFrame([{**score_model(name, p, yte, preds["baseline"], groups_te), "n_train": len(train),
+                             **alpha_columns(name, alphas)} for name, p in preds.items()])
 
     imp = []
-    for name, model in [("ridge", ridge.best_estimator_), ("random_forest", forest)]:
+    for name, model in models.items():
         r = permutation_importance(model, Xte, yte, n_repeats=50, random_state=SEED,
                                    scoring="neg_mean_absolute_error")
         imp += [{"model": name, "feature": f, "importance_mae": m, "std": s}
@@ -201,8 +239,6 @@ def main(argv: list[str] | None = None) -> None:
     args = parser.parse_args(argv)
 
     osap_papers = pd.read_csv(OSAP_PAPERS_CSV) if OSAP_PAPERS_CSV.exists() else None
-    if osap_papers is None:
-        print("data/osap_papers.csv not found; run run_osap first. Attention feature will be missing.")
     df = build_dataset(load_signal_doc(), load_ls_returns(), osap_papers)
     res = fit_and_evaluate(df)
     res["summary"].to_csv(SUMMARY_CSV, index=False)

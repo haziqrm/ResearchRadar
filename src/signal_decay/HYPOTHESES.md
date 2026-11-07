@@ -156,3 +156,120 @@ a signal keeps afterwards, better than assuming every signal keeps the same shar
   test set, and permutation feature importance.
 - Expectation: with about 130 training signals, a clear win is unlikely. A tie with the
   baseline means "decay is not predictable from these features beyond the average".
+
+---
+
+# H8. Decay predictor, second attempt with new inputs (written before any H8 feature was computed)
+
+Known when this was written: the H7 result (no H7 model beats the constant baseline on
+2007-2016 papers), the count of predictors per publication-year range, and that OSAP
+release 2026.10 has a liquidity-screened portfolio file (`ex_nyse_p20_me`: stocks above
+the NYSE 20th size percentile) covering all 212 predictors. No H8 feature value, model
+fit or error had been computed.
+
+## Why a second attempt
+H7 used descriptive paper details. Published work (McLean and Pontiff 2016) finds decay
+is larger where arbitrage is cheap, so H8 adds inputs about trading cost, novelty and
+how crowded the idea was. This is a second attempt and is reported as one.
+
+## Data and target
+Same as H7: OSAP predictors with IS mean > 0 and POST data; target = POST mean / IS mean,
+clipped to [-1, 2]; signals from one paper always on the same side of a split.
+
+## New features (all computed only from data before publication)
+- `liquid_share`: IS-period mean of the liquidity-screened long-short return divided by
+  the IS-period mean of the original-paper long-short return, same months, clipped to
+  [-1, 2]. Missing if fewer than 60 IS months in the screened series.
+  Expectation: higher (edge survives in big stocks, cheap to trade) -> lower retained share.
+- `prior_max_corr`: largest absolute correlation between the signal's IS-period monthly
+  long-short returns and those of every predictor published in an earlier year, over
+  overlapping months (at least 60). Missing if no earlier predictor qualifies.
+  No directional expectation.
+- `category_heat`: number of OSAP predictors with the same `Cat.Economic` published in the
+  5 years before (Year - 5 to Year - 1). Expectation: higher -> lower retained share.
+- Missing values filled with the training-fold median, plus a missing flag. All H7
+  features are kept.
+
+## Evaluation: expanding-window walk-forward
+- Three test folds by publication year: 1996-2000, 2001-2006, 2007-2016. Each trains on
+  all papers published before the fold starts. Medians, scaling and the ridge penalty are
+  set on the training fold only.
+- Models: baseline (training-fold median retained share), ridge with H7 + H8 features
+  (primary), random forest with H7 + H8 features (500 trees, depth 3, min leaf 5, seed 0),
+  and ridge with H7 features only (to show what the new inputs add; descriptive).
+- Ridge penalty: grid logspace(-2, 3, 30), 5-fold GroupKFold by paper on the training fold.
+- Disclosure: the 2007-2016 fold is the H7 test set, already seen once. The primary test
+  pools all three folds so it does not rest on that fold alone.
+
+## Pass mark
+- Primary: pooled over all test folds, the 95% interval of MAE(ridge H7+H8) - MAE(baseline),
+  bootstrap over test papers (2,000 draws, seed 0), lies entirely below zero.
+- Secondary: the same for the random forest.
+- Descriptive only: per-fold MAE, Spearman of predicted vs actual, ridge coefficients of
+  the new features on the last training fold, permutation importance.
+- Expectation: a clear win is still unlikely with about 200 signals; `liquid_share` is the
+  input most likely to help.
+
+---
+
+# Correction after an evaluation audit (2026-11-07, after H7 and H8 results were known)
+
+An audit checked H7 and H8 for evaluation bugs: same target and test rows for every
+model, no test data in the baseline, time split by paper, a synthetic series with a
+known 56% retained share recovered exactly. It found no bug behind the null results,
+but led to these changes. They were made after seeing results, so they are corrections,
+not new tests, and they do not change any verdict.
+- `citation_pct` dropped as a feature: it counts citations in years Y+1 to Y+3, which
+  are not known at publication. (Model results were essentially unchanged.)
+- Squared error (MSE) reported alongside MAE. Ridge minimises squared error and so
+  shrinks toward the training *mean*, while MAE rewards the *median*: most of ridge's
+  small H7 loss on MAE comes from that mismatch.
+- Added, descriptive only: a constant at the training mean, and a median (quantile 0.5)
+  regression with an L1 penalty chosen the same way as ridge, so the estimator matches
+  the metric. Each row records the chosen penalty and whether it sits at the grid edge.
+- Guards: a zero-variance in-sample series gives a missing t-stat instead of infinity,
+  and an all-missing feature column no longer crashes the fit.
+
+---
+
+# H9. Short-horizon forecasts for published signals (written before any H9 number was computed)
+
+Known when this was written: H1-H8 results and the published literature on factor
+momentum (Ehsani and Linnainmaa 2022) and volatility-managed portfolios (Moreira and
+Muir 2017). No H9 forecast, portfolio or loss had been computed on this data.
+
+## Question
+H7 and H8 found that *how much* edge a signal keeps after publication cannot be predicted
+at publication. H9 asks two month-ahead questions a trader of published signals can act on:
+(a) does a published signal's recent return predict its next month's return, and
+(b) does its recent volatility predict next month's volatility better than its long-run level?
+
+## Data
+- OSAP original-paper long-short returns (decimals), 212 predictors.
+- Only **post-publication** months are scored (date year > publication year), so every
+  signal is public when it is traded. Trailing windows may reach back before
+  publication: those returns were already observable at the forecast date.
+- Every forecast for month t uses returns up to month t-1 only.
+
+## H9a. Factor momentum
+- Signal: trailing 12-month mean return (months t-12 to t-1; all 12 required).
+- Each month with at least 10 eligible signals and at least one in each group:
+  spread_t = mean return of signals with trailing mean > 0 minus mean of the rest.
+- Test: mean spread > 0, Newey-West t (12 lags), one-sided p < 0.05.
+- Descriptive: the share of months with a positive spread; mean returns and annualised
+  Sharpe ratios of equal-weighting all published signals vs only the past winners.
+
+## H9b. Volatility forecast
+- Forecast of month-t volatility for each signal: model = square root of the mean
+  squared return over t-12 to t-1; baseline = the same over all months before t
+  (at least 36 required).
+- Loss: |r_t| against sqrt(2/pi) x forecast (the expected |r| under a normal), absolute error.
+- Test: monthly mean of (model loss - baseline loss) across signals; its time-series mean
+  < 0, Newey-West t (12 lags), one-sided p < 0.05.
+- Descriptive: a volatility-managed equal-weight portfolio of published signals, each
+  weighted by 1 / forecast variance (scaled to the full-sample volatility of the plain
+  version, which changes no Sharpe ratio). Sharpe ratios before trading costs.
+
+## What would change the conclusions
+- H9a p >= 0.05: no evidence that recent winners among published signals keep winning.
+- H9b p >= 0.05: recent volatility is no better a guide than long-run volatility.
