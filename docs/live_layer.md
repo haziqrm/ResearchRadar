@@ -220,9 +220,14 @@ accuracy figure, and none of the 50 had a signal, so it says nothing about signa
   in `.env`. Audio is only regenerated when the text changes. With no key, or if the call
   fails, the **committed `briefing.mp3` is the pre-recorded fallback**, so the demo never
   needs a live API. Use `--no-gemini` / `--no-audio` to skip either service.
-- **Current files are provisional:** made from the keyword-tagged `crowding.csv`, with
-  no Gemini rewrite (so the briefing didn't use the key during the tagging run). Rerun
-  `python -m src.live.briefing` after the Gemini tagging and crowding rerun.
+- **Current files (2026-11-07, 23:24):** made from the Gemini-tagged `crowding.csv`,
+  reworded by `gemini-3.5-flash` (the rewrite kept every number), audio regenerated.
+  Week of 2 November: Market microstructure most crowded (+3.0, 34 papers in 4 weeks);
+  October 2026 allocation Value 52%, Momentum 48%.
+- **Known wording issues (not fixed yet):**
+  - "Busiest" means *most crowded relative to its usual share*, not *most papers*.
+    Portfolio and risk had more papers (49 in 4 weeks) but scores -1.31.
+  - Scores are rounded with Python's `round`, so 0.35 is read out as "0.3", not "0.4".
 
 ## Tag accuracy (D4)
 

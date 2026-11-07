@@ -3,29 +3,29 @@
   "busiest": [
     {
       "area": "Market microstructure",
-      "score": 2.3,
-      "papers_4w": 30
+      "score": 3.0,
+      "papers_4w": 34
     },
     {
       "area": "LLMs in finance",
-      "score": 1.1,
-      "papers_4w": 21
+      "score": 0.4,
+      "papers_4w": 19
     },
     {
-      "area": "Crypto and DeFi",
-      "score": 1.0,
-      "papers_4w": 17
+      "area": "Alternative data and text",
+      "score": 0.3,
+      "papers_4w": 6
     }
   ],
   "quietest": {
     "area": "Machine learning for returns",
-    "score": -1.8,
+    "score": -1.6,
     "papers_4w": 11
   },
   "example_paper": {
-    "arxiv_id": "2611.02616",
-    "title": "Herding or Racing? Decomposing Cross-Account Order-Flow Persistence in On-Chain Markets",
-    "published": "2026-11-02"
+    "arxiv_id": "2611.04533",
+    "title": "How market volatility responds to a preceding price trend: a lag-resolved measurement in cryptocurrencies and equities",
+    "published": "2026-11-03"
   },
   "allocation": {
     "for_month": "October 2026",
@@ -58,8 +58,7 @@
     "significant": false
   },
   "taggers": {
-    "gemini": 2024,
-    "keyword": 1663
+    "gemini": 3687
   },
-  "text_source": "template"
+  "text_source": "gemini:gemini-3.5-flash"
 }
