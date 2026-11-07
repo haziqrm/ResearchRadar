@@ -1,0 +1,65 @@
+{
+  "week": "2026-11-02",
+  "busiest": [
+    {
+      "area": "Market microstructure",
+      "score": 2.3,
+      "papers_4w": 30
+    },
+    {
+      "area": "LLMs in finance",
+      "score": 1.1,
+      "papers_4w": 21
+    },
+    {
+      "area": "Crypto and DeFi",
+      "score": 1.0,
+      "papers_4w": 17
+    }
+  ],
+  "quietest": {
+    "area": "Machine learning for returns",
+    "score": -1.8,
+    "papers_4w": 11
+  },
+  "example_paper": {
+    "arxiv_id": "2611.02616",
+    "title": "Herding or Racing? Decomposing Cross-Account Order-Flow Persistence in On-Chain Markets",
+    "published": "2026-11-02"
+  },
+  "allocation": {
+    "for_month": "October 2026",
+    "data_through": "2026-09-30",
+    "held": [
+      {
+        "signal": "Value",
+        "weight": 0.52,
+        "expected_edge_net": 0.0012
+      },
+      {
+        "signal": "Momentum",
+        "weight": 0.48,
+        "expected_edge_net": 0.0019
+      }
+    ],
+    "skipped": [
+      "Size",
+      "Short-term reversal",
+      "Long-term reversal",
+      "Profitability",
+      "Investment"
+    ],
+    "min_edge": 0.001
+  },
+  "caveat": {
+    "sharpe_minus_equal_weight": 0.11,
+    "ci_low": -0.18,
+    "ci_high": 0.4,
+    "significant": false
+  },
+  "taggers": {
+    "gemini": 2024,
+    "keyword": 1663
+  },
+  "text_source": "template"
+}

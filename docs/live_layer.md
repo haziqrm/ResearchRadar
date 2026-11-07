@@ -17,7 +17,7 @@ python -m src.live.keys              # check the Gemini and ElevenLabs keys
 | tag | `src/live/tagging.py` | `data/arxiv_tagged.csv`, `data/tag_audit.csv` | Yes |
 | crowding | `src/live/crowding.py` | `data/crowding.csv` | Yes |
 | backtest | `src/live/backtest.py` | `data/backtest_results.csv`, `data/backtest_summary.csv`, `data/backtest_weights.csv` | Yes |
-| briefing | `src/live/briefing.py` | `data/briefing.txt`, `.mp3` | Not written yet |
+| briefing | `src/live/briefing.py` | `data/briefing.txt`, `data/briefing.mp3`, `data/briefing_card.json` | Yes |
 
 ## Differences from the plan
 
@@ -143,6 +143,35 @@ How to read it:
 - `main.py` expects runner modules at `src.signal_decay.run_decay` (A),
   `src.research_map.run_map` (B) and `src.live.run_live` (D). B's name was chosen by D;
   change it in `main.py` if B prefers another.
+
+### Briefing: numbers come from code, Gemini only rewords
+- Plan: "Gemini text, ElevenLabs audio". Built: **code computes every fact**, a fixed
+  template turns them into text, and Gemini (optional) only rewords it to sound natural
+  aloud. A rewrite is **thrown away unless it has exactly the same numbers** as the
+  template, so the model can't invent or change a figure. `text_source` in the card
+  says which text was used.
+- Content (the review's "decision card", written to `data/briefing_card.json` for C):
+  the 3 busiest areas this week and the quietest one, the newest tagged paper in the
+  busiest area, **next month's allocation**, the skipped signals, and one caveat
+  (decay_tilt vs equal weight, with its interval).
+- The allocation applies the backtest's `decay_tilt` rule to **every return in
+  `factors.csv`**, so it is one month beyond the last backtest month. Ken French data
+  ends 2026-09, so the briefing gives the allocation for **October 2026**, not November.
+  It can differ from the last row of `backtest_weights.csv` (Profitability falls just
+  under the 0.1% hurdle once September is included).
+- The template is written to be **heard**, in a conversational style ("So, what
+  would we hold for October?", "One honest caveat, though."), so it sounds natural
+  even without Gemini.
+- Audio: ElevenLabs voice "Brian" (`nPczCjzI2devNBz1zQrb`), model `eleven_v4`. These were
+  picked by ear on 2026-11-07 from Daniel and Brian on `eleven_multilingual_v2`,
+  `eleven_v3` and `eleven_v4`; `eleven_v4` with the spoken-style text sounded most like
+  a real person. Change them with `ELEVENLABS_VOICE_ID` / `ELEVENLABS_MODEL`
+  in `.env`. Audio is only regenerated when the text changes. With no key, or if the call
+  fails, the **committed `briefing.mp3` is the pre-recorded fallback**, so the demo never
+  needs a live API. Use `--no-gemini` / `--no-audio` to skip either service.
+- **Current files are provisional:** made from the keyword-tagged `crowding.csv`, with
+  no Gemini rewrite (so the briefing didn't use the key during the tagging run). Rerun
+  `python -m src.live.briefing` after the Gemini tagging and crowding rerun.
 
 ## Tag accuracy (D4)
 
