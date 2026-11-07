@@ -56,3 +56,59 @@ plain before/after means for the 7 signals, and their raw early-citation counts.
 ## What would change the conclusions
 - H2 pooled p >= 0.10: the drop may just be returns falling over time.
 - H3 correlation <= 0 or p >= 0.10: no evidence that attention speeds up decay.
+
+---
+
+# OSAP extension (written before any OSAP decay result was computed)
+
+Known when this was written: the OSAP signal documentation (212 predictors from
+141 papers, published 1973-2016, every sample end year before the publication
+year) and that long-short returns run 1926-01 to 2025-12. No window means, decay
+estimates or citation counts had been computed.
+
+## Data
+- Signals: `Cat.Signal == "Predictor"` in the OSAP 2026.10 release (212 signals).
+- Returns: original-paper long-short portfolios (`op`, port `LS`), percent / 100,
+  dated to month-end. No trimming or winsorizing.
+- OSAP gives the publication **year** only, so the date rule is "end of
+  publication year": post-publication starts in January of Year + 1.
+
+## Three periods (McLean and Pontiff 2016)
+- In-sample (IS): January of SampleStartYear to December of SampleEndYear.
+- Out-of-sample, pre-publication (OOS): January of SampleEndYear + 1 to December of Year.
+- Post-publication (POST): January of Year + 1 onward.
+- Months before SampleStartYear are dropped.
+
+## H4. Returns fall after the sample ends, and fall further after publication
+- Scale each signal's monthly returns by its IS mean. Signals with IS mean <= 0
+  are excluded (count reported).
+- Pooled OLS: scaled return = const + b_oos * OOS + b_post * POST, standard errors
+  clustered by month.
+- Expectation: b_oos < 0 and b_post < b_oos (an extra drop at publication beyond
+  overfitting). McLean and Pontiff found about -0.26 and -0.58.
+- Key test: b_post - b_oos < 0, one-sided, 5% level.
+
+## H5. The drop is tied to the publication date (placebo)
+- Same pooled placebo as H2: full available LS series per signal, real split at
+  January of Year + 1, at least 120 months each side, 10,000 draws, seed 0.
+
+## H6. More early attention goes with more decay
+- Unit: the **paper** (signals from the same paper share one attention value, so
+  the decay measure is averaged over a paper's signals).
+- Decay: relative decay = 1 - POST mean / IS mean.
+- Attention (primary): early citations in years Year + 1 to Year + 3, percentile among
+  30 sampled same-journal, same-year peers (seed 0), as in H3.
+- Matching papers to OpenAlex: automatic. Same journal, OpenAlex publication year
+  in [Year - 1, Year], and every listed author surname present. Exactly one candidate
+  = matched; zero or several = excluded and counted. Checked against the 4 papers
+  already verified by hand.
+- Test: Spearman, one-sided permutation p (20,000 shuffles, seed 0).
+- Secondary attention measure: OSAP's Google Scholar citation count (Sept 2025),
+  as a percentile among OSAP papers published in the same year. This is total, not
+  early, attention, so it can partly reflect fame gained after publication.
+- Expectation: positive correlation. A null is a real possibility and will be reported.
+
+## What would change the conclusions
+- b_post - b_oos not below zero: no evidence of a publication effect beyond overfitting.
+- H5 pooled p >= 0.10: the drop may just be returns falling over time.
+- H6 correlation <= 0 or p >= 0.10: no evidence that attention speeds up decay.

@@ -39,7 +39,8 @@ OPENALEX_WORKS_URL = f"{OPENALEX_API}/works"
 PER_PAGE = 100
 PEER_SAMPLE_SIZE = 50
 PEER_SEED = 0
-_REQUEST_GAP_SECONDS = 0.12  # stay under OpenAlex's 10 requests per second
+_REQUEST_GAP_SECONDS = 0.2  # stay well under OpenAlex's per-second limit
+_MAX_TRIES = 6
 
 _ID = re.compile(r"^W\d+$")
 
@@ -72,8 +73,22 @@ def _get_json(
     full = {**params, "api_key": api_key}
     if email:
         full["mailto"] = email
-    resp = (session or requests).get(f"{OPENALEX_API}/{path}", params=full, timeout=30)
-    resp.raise_for_status()
+    for attempt in range(_MAX_TRIES):
+        resp = (session or requests).get(f"{OPENALEX_API}/{path}", params=full, timeout=30)
+        status = getattr(resp, "status_code", 200)
+        if status != 429 and status < 500:
+            break
+        headers = getattr(resp, "headers", {}) or {}
+        if status == 429 and str(headers.get("X-RateLimit-Remaining", "1")) == "0":
+            raise RuntimeError(
+                f"OpenAlex daily budget used up; it resets in {headers.get('X-RateLimit-Reset', '?')} s. "
+                "Cached responses are kept, so rerun later to continue."
+            )
+        wait = float(headers.get("Retry-After") or 2 ** attempt)
+        time.sleep(min(wait, 60))
+    if status >= 400:
+        # Never include the request URL: it carries the API key.
+        raise RuntimeError(f"OpenAlex request to /{path} failed with HTTP {status}")
     payload = resp.json()
     cache_file.write_text(json.dumps(payload), encoding="utf-8")
     if session is None:
@@ -220,19 +235,22 @@ def peer_percentile(value: float, peer_values: list[float]) -> float | None:
     return float(100 * ((peers < value).sum() + 0.5 * (peers == value).sum()) / len(peers))
 
 
-def era_adjusted_attention(openalex_id: str, publication_year: int, **kwargs) -> dict:
+def era_adjusted_attention(
+    openalex_id: str, publication_year: int, peer_n: int = PEER_SAMPLE_SIZE, **kwargs
+) -> dict:
     """Early citations of a paper and its percentile among journal-year peers.
 
-    Peers: up to PEER_SAMPLE_SIZE articles from the same journal and the same
+    Peers: up to ``peer_n`` articles from the same journal and the same
     OpenAlex publication year, with the same citation window
-    (publication_year+1 to +3, using the papers.csv year).
+    (publication_year+1 to +3, using the given publication year).
     """
     window = (publication_year + 1, publication_year + 3)
     own = citing_count(openalex_id, *window, **kwargs)
     work = fetch_work(openalex_id, **kwargs)
     if not work["source_id"]:
         return {"early_citations": own, "peer_n": 0, "peer_median": None, "percentile": None}
-    peers = sample_peers(fetch_peer_ids(work["source_id"], work["publication_year"], **kwargs), openalex_id)
+    peers = sample_peers(fetch_peer_ids(work["source_id"], work["publication_year"], **kwargs),
+                         openalex_id, n=peer_n)
     peer_counts = [citing_count(p, *window, **kwargs) for p in peers]
     return {
         "early_citations": own,

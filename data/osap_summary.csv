@@ -1,0 +1,7 @@
+test,statistic,value,ci_low,ci_high,p_value,n,note
+H4 McLean-Pontiff,b_oos (share of IS mean),-0.2623762671581944,-0.7591918191699234,0.2344392848535346,,209,136358 signal-months; 3 signals excluded (IS mean <= 0)
+H4 McLean-Pontiff,b_post (share of IS mean),-0.5633521024494813,-0.985439475566412,-0.1412647293325507,,209,SE clustered by month
+H4 McLean-Pontiff,b_post - b_oos,-0.3009758352912869,-0.6089185356416957,0.006966865059121974,0.0277043747016752,209,one-sided: extra drop at publication beyond the post-sample drop
+H5 pooled placebo,mean post-pre monthly return,-0.0027182299636291205,,,0.0,196,mean fake diff -0.00140; >=120 months each side
+H6 attention vs decay,Spearman rho (early citation peer percentile),0.11338515084714502,,,0.11775,111,"paper level; OpenAlex match status {'matched': 112, 'ambiguous': 12, 'not_found': 9, 'no_journal': 8}"
+H6 secondary,"Spearman rho (Google Scholar cites, within-year percentile)",-0.057239651422872496,,,0.7386,128,"total citations to Sept 2025, can reflect fame after publication"

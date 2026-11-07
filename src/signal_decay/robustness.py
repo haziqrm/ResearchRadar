@@ -70,9 +70,11 @@ def pooled_placebo_test(
     rng = np.random.default_rng(seed)
     reals, fakes = [], []
     for sig, series in series_by_signal.items():
+        r = series.dropna()
+        post = r.index >= pd.Timestamp(publication_dates[sig])
+        if post.sum() < min_months or (~post).sum() < min_months:
+            continue  # the real split must meet the same minimum as the fake ones
         diffs = split_differences(series, min_months).to_numpy()
-        if len(diffs) == 0:
-            continue
         reals.append(placebo_test(series, publication_dates[sig], min_months)["real_diff"])
         fakes.append(rng.choice(diffs, size=draws, replace=True))
     if not reals:

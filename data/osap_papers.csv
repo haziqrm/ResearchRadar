@@ -1,0 +1,142 @@
+authors,year,journal,signals,n_signals,gs_cites,relative_decay,openalex_id,match_status,match_title,early_citations,citation_peer_n,citation_percentile,gs_cites_percentile
+Abarbanell and Bushee,1998,AR,ChInvIA;GrSaleToGrInv;GrSaleToGrOverhead,3,1123.0,0.8422221535724698,W7133552608,matched,Abnormal returns to a fundamental analysis strategy.,21,23,93.47826086956522,0.0
+"Ali, Hwang, and Trombley",2003,JFE,IdioVolAHT,1,748.0,0.8239424703881331,W3123642520,matched,Arbitrage risk and the book-to-market anomaly,33,30,58.333333333333336,40.0
+Alwathainani,2009,BAR,EarningsConsistency,1,57.0,-0.6573486100120045,W2034864589,matched,Consistency of firms' past financial performance measures and future returns,3,12,4.166666666666667,20.0
+Amihud,2002,JFM,Illiquidity,1,14669.0,0.8823065267239765,W3121401171,matched,Illiquidity and stock returns: cross-section and time-series effects,88,29,100.0,100.0
+Amihud and Mendelson,1986,JFE,BidAskSpread,1,9029.0,0.9730011971309177,W2046519558,matched,Asset pricing and the bid-ask spread,32,30,76.66666666666667,
+"An, Ang, Bali, Cakici",2014,JF,dCPVolSpread;dVolCall;dVolPut,3,473.0,0.4018498432158024,W2628908734,matched,The Joint Cross Section of Stocks and Options,60,30,86.66666666666667,40.0
+Anderson and Garcia-Feijoo,2006,JF,grcapx;grcapx3y,2,587.0,0.7340612653984356,W2105963030,matched,"Empirical Evidence on Capital Investment, Growth Options, and Security Returns",32,30,43.333333333333336,38.46153846153846
+Ang et al.,2006,JF,IdioVol3F;RealizedVol;betaVIX,3,6340.0,0.911337369542605,W2113208252,matched,The Cross‐Section of Volatility and Expected Returns,234,30,100.0,100.0
+"Ang, Chen and Xing",2006,RFS,CoskewACX,1,1691.0,-0.043959143512535936,W4254389086,matched,Downside Risk,53,30,73.33333333333333,84.61538461538461
+Asquith Pathak and Ritter,2005,JFE,IO_ShortInterest,1,1302.0,-1.5171836776431569,,not_found,,,,,20.0
+Avramov et al,2007,JF,Mom6mJunk,1,593.0,0.7337961805342479,,ambiguous,,,,,50.0
+Baik and Ahn,2007,Other,OrderBacklogChg,1,23.0,-0.771310052922036,,no_journal,,,,,0.0
+"Balakrishnan, Bartov and Faurel",2010,JAE,roaq,1,338.0,0.14193928503889008,W3124596119,matched,Post loss/profit announcement drift,21,30,31.666666666666668,50.0
+Bali and Hovakimian,2009,MS,CPVolSpread;RIVolSpread,2,500.0,0.6860404346723127,W3124947604,matched,Volatility Spreads and Expected Stock Returns,49,30,96.66666666666667,80.0
+"Bali, Cakici, and Whitelaw",2011,JFE,MaxRet,1,2069.0,0.8779655507219414,W3122225907,matched,Maxing out: Stocks as lotteries and the cross-section of expected returns,118,30,90.0,100.0
+"Bali, Engle and Murray",2015,Book,ReturnSkew;ReturnSkew3F,2,444.0,0.339137294469984,,no_journal,,,,,
+Ball et al.,2016,JFE,CBOperProf;OperProfRD,2,533.0,-0.6378786544046149,,ambiguous,,,,,100.0
+Banz,1981,JFE,Size,1,11382.0,0.9077730753285441,W2116347131,matched,The relationship between return and market value of common stocks,68,19,100.0,
+"Barbee, Mukherji and Raines",1996,FAJ,SP,1,420.0,-0.13098679745208197,W1756905108,matched,Do Sales–Price and Debt–Equity Explain Stock Returns Better than Book–Market and Firm Size?,6,30,71.66666666666667,25.0
+Barber et al.,2001,JF,ConsRecomm;DownRecomm;UpRecomm,3,1860.0,0.7563691107691302,,ambiguous,,,,,83.33333333333333
+Barry and Brown,1984,JFE,FirmAge,1,949.0,,W1973337993,matched,Differential information and the small firm effect,15,24,64.58333333333333,50.0
+Barth and Hutton,2004,RAS,ChForecastAccrual,1,394.0,0.7304910413781005,W2996816756,matched,Analyst Earnings Forecast Revisions and the Pricing of Accruals,26,16,81.25,10.0
+Bartov and Kim,2004,RFQA,AccrualsBM,1,22.0,0.5125344211898054,W2081315524,matched,"Risk, Mispricing, and Value Investing",5,30,83.33333333333333,0.0
+Basu,1977,JF,EP,1,5357.0,0.41087558117127965,W2104964789,matched,INVESTMENT PERFORMANCE OF COMMON STOCKS IN RELATION TO THEIR PRICE‐EARNINGS RATIOS: A TEST OF THE EFFICIENT MARKET HYPOTHESIS,26,30,100.0,
+"Bazdresch, Belo and Lin",2014,JPE,hire,1,489.0,0.8317270827840807,W3122781175,matched,"Labor Hiring, Investment, and Stock Return Predictability in the Cross Section",69,30,93.33333333333333,60.0
+Belo and Lin,2012,RFS,InvGrowth,1,220.0,0.5815714006622184,W3123855484,matched,The Inventory Growth Spread,13,30,20.0,20.0
+"Belo, Lin and Vitorino",2014,RED,BrandInvest,1,283.0,2.153689702416118,,not_found,,,,,0.0
+Bhandari,1988,JF,Leverage,1,2597.0,0.23406536455463367,W1992700566,matched,Debt/Equity Ratio and Expected Common Stock Returns: Empirical Evidence,3,30,31.666666666666668,
+"Blitz, Huij and Martens",2011,JEmpFin,ResidualMomentum,1,346.0,0.6935810036947154,W4240163899,matched,Residual momentum,11,30,78.33333333333333,60.0
+Blume and Husic,1973,JF,Price,1,187.0,0.7587870268381453,W2058295213,matched,"PRICE, BETA, AND EXCHANGE LISTING",0,30,18.333333333333332,0.0
+Boudoukh et al.,2007,JF,NetPayoutYield;PayoutYield,2,777.0,0.26827290913136814,W3023246137,matched,On the Importance of Measuring Payout Yield: Implications for Empirical Asset Pricing,91,30,86.66666666666667,75.0
+"Bradshaw, Richardson, Sloan",2006,JAE,NetDebtFinance;NetEquityFinance;XFIN,3,798.0,-0.03625391465461373,W1995172097,matched,"The relation between corporate financing activities, analysts’ forecasts and stock returns",40,30,73.33333333333333,46.15384615384615
+"Brennan, Chordia, Subra",1998,JFE,DolVol,1,2219.0,0.5152066778506745,,not_found,,,,,100.0
+"Cen, Wei, and Zhang",2006,WP,FEPS,1,13.0,0.637247276841592,,no_journal,,,,,0.0
+Chan and Ko,2006,JOIM,MomRev,1,17.0,0.9778276984135726,,not_found,,,,,7.6923076923076925
+"Chan, Jegadeesh and Lakonishok",1996,JF,AnnouncementReturn;REV6,2,3322.0,0.40881627270162973,W4246390368,matched,Momentum Strategies,22,30,76.66666666666667,100.0
+"Chan, Lakonishok and Sougiannis",2001,JF,AdExp;RD,2,2982.0,0.7150499948631237,W3123059183,matched,The Stock Market Valuation of Research and Development Expenditures,66,30,86.66666666666667,100.0
+Chandrashekar and Rao,2009,WP,CashProd,1,2.0,0.7045174802046543,,no_journal,,,,,0.0
+"Chen, Hong and Stein",2002,JFE,DelBreadth,1,1672.0,0.5370090812935178,,ambiguous,,,,,25.0
+"Chordia, Subra, Anshuman",2001,JFE,VolSD;std_turn,2,1349.0,1.074454505409736,,not_found,,,,,66.66666666666667
+Cohen and Frazzini,2008,JF,CustomerMomentum,1,1793.0,0.5359008087168103,,ambiguous,,,,,83.33333333333333
+Cohen and Lou,2012,JFE,retConglomerate,1,666.0,0.6360947089333737,W4229911693,matched,Complicated firms,35,30,31.666666666666668,80.0
+"Cohen, Diether and Malloy",2013,RFS,RDAbility,1,543.0,-0.15128224334325413,W4244304946,matched,Misvaluing Innovation,41,30,83.33333333333333,40.0
+"Cooper, Gulen and Schill",2008,JF,AssetGrowth,1,2226.0,0.6779542755425889,W3124591263,matched,Asset Growth and the Cross‐Section of Stock Returns,116,30,96.66666666666667,100.0
+Cremers and Nair,2005,JF,Activism1;Activism2,2,2037.0,0.44539499610854916,W3121220918,matched,Governance Mechanisms and Equity Prices,159,30,100.0,80.0
+"Cusatis, Miles and Woolridge",1993,JFE,Spinoff,1,617.0,0.9094213349034804,W1539020160,matched,Restructuring through spinoffs,13,30,63.333333333333336,0.0
+Da and Warachka,2011,JFE,EarningsForecastDisparity,1,106.0,0.6789256040810023,W2006823570,matched,The disparity between long-term and short-term forecasted earnings growth☆,6,30,6.666666666666667,10.0
+Daniel and Titman,2006,JF,CompEquIss;IntanBM;IntanCFP;IntanEP;IntanSP;ShareIss5Y,6,1642.0,0.25338497856661774,W3122109202,matched,Market Reactions to Tangible and Intangible Information,71,30,70.0,76.92307692307692
+"Datar, Naik and Radcliffe",1998,JFM,ShareVol,1,2136.0,0.8945556532032103,W2047485150,matched,Liquidity and stock returns: An alternative test,28,12,100.0,75.0
+De Bondt and Thaler,1985,JF,LRreversal;MRreversal,2,13447.0,0.36940990254728195,W2144487825,matched,Does the Stock Market Overreact?,45,30,96.66666666666667,
+Dechow et al.,2001,JFE,ShortInterest,1,1117.0,-0.21964293165859416,W2058670446,matched,"Short-sellers, fundamental analysis, and stock returns",41,30,70.0,50.0
+"Dechow, Sloan and Soliman",2004,RAS,EquityDuration,1,494.0,1.0878046157896586,W2144965980,matched,Implied Equity Duration: A New Measure of Equity Risk,20,16,75.0,20.0
+"Desai, Rajgopal, Venkatachalam",2004,AR,cfp,1,649.0,-1.9363876201526704,W3123252495,matched,Value-Glamour and Accruals Mispricing: One Anomaly or Two?,45,30,85.0,30.0
+Dharan and Ikenberry,1995,JF,ExchSwitch,1,385.0,-0.6756395760965905,W2039733215,matched,The Long-Run Negative Drift of Post-Listing Stock Returns,15,30,61.666666666666664,0.0
+Dichev,1998,JF,OScore,1,1615.0,0.05080584458161008,W2051986033,matched,Is the Risk of Bankruptcy a Systematic Risk?,19,30,40.0,25.0
+Dichev and Piotroski,2001,JF,CredRatDG,1,948.0,0.46293923508681467,W3124280494,matched,The Long‐Run Stock Returns Following Bond Ratings Changes,28,30,60.0,33.333333333333336
+"Diether, Malloy and Scherbina",2002,JF,ForecastDispersion,1,2775.0,0.5964098257308419,W2160275010,matched,Differences of Opinion and the Cross Section of Stock Returns,84,30,80.0,50.0
+"Doyle, Lundholm and Soliman",2003,RAS,ExclExp,1,741.0,0.6809740699038207,W3121262606,matched,The Predictive Value of Expenses Excluded from Pro Forma Earnings,32,17,88.23529411764706,20.0
+"Drake, Rees and Swanson",2011,AR,Recomm_ShortInterest,1,276.0,0.5573479358355427,W3123520455,matched,Should Investors Follow the Prophets or the Bears? Evidence on the Use of Public Information by Analysts and Short Sellers,36,30,80.0,50.0
+"Easley, Hvidkjaer and O'Hara",2002,JF,ProbInformedTrading,1,2835.0,0.8942668664224955,W3124304323,matched,Is Information Risk a Determinant of Asset Returns?,130,30,93.33333333333333,75.0
+"Eberhart, Maxwell and Siddique",2004,JF,SurpriseRD,1,1408.0,1.1429634878378578,W2068518739,matched,An Examination of Long‐Term Abnormal Stock Returns and Operating Performance Following R&D Increases,44,30,70.0,80.0
+Eisfeldt and Papanikolaou,2013,JF,OrgCap,1,1211.0,0.3340165565433363,W2119742456,matched,Organization Capital and the Cross‐Section of Expected Returns,88,30,73.33333333333333,60.0
+"Elgers, Lo and Pfeiffer",2001,AR,sfe,1,293.0,0.09211975030072306,W3125504280,matched,Delayed Security Price Adjustments to Financial Analysts' Forecasts of Annual Earnings,14,29,58.62068965517241,16.666666666666668
+"Fairfield, Whisenant and Yohn",2003,AR,GrLTNOA,1,1143.0,1.196671239080595,W1994228146,matched,Accrued Earnings and Growth: Implications for Future Profitability and Market Mispricing,46,30,80.0,60.0
+Fama and French,1992,JF,AM;BMdec;BookLeverage,3,29625.0,0.5530731256922076,W2166215547,matched,The Cross-Section of Expected Stock Returns,157,30,100.0,
+Fama and French,2006,JFE,OperProf,1,1599.0,0.5305294552555329,,ambiguous,,,,,69.23076923076923
+Fama and MacBeth,1973,JPE,Beta,1,21173.0,0.5945190719577084,W2104795328,matched,"Risk, Return, and Equilibrium: Empirical Tests",37,30,100.0,100.0
+"Foster, Olsen and Shevlin",1984,AR,EarningsSurprise,1,1662.0,0.6432162861981405,W16136587,matched,"Earnings Releases, Anomalies, and the Behavior of Security Returns.",1,16,90.625,100.0
+Frankel and Lee,1998,JAE,AOP;AnalystValue;PredictedFE,3,1739.0,0.5245933611779426,W2069414789,matched,"Accounting valuation, market expectation, and cross-sectional stock returns",71,13,100.0,50.0
+Franzoni and Marin,2006,JF,FR,1,324.0,2.457952489757491,W2559297797,matched,Pension Plan Funding and Stock Market Efficiency,30,30,36.666666666666664,23.076923076923077
+Frazzini and Pedersen,2014,JFE,BetaFP,1,323.0,6.678131924485957,W3123639445,matched,Betting against beta,421,30,100.0,20.0
+George and Hwang,2004,JF,High52,1,1177.0,0.39744982083692537,W2118172567,matched,The 52‐Week High and Momentum Investing,22,30,38.333333333333336,70.0
+"Gompers, Ishii and Metrick",2003,QJE,Governance,1,12361.0,2.045357555321934,W4233420185,matched,Corporate Governance and Equity Prices,264,30,100.0,100.0
+"Gou, Lev and Shi",2006,JBFA,RDIPO,1,277.0,0.018915116768459472,,no_journal,,,,,15.384615384615385
+Grinblatt and Moskowitz,1999,JF,IndMom,1,2565.0,-0.4009082437146212,W1998677466,matched,Do Industries Explain Momentum?,61,30,85.0,100.0
+"Hafzalla, Lundholm, Van Winkle",2011,AR,PctAcc;PctTotAcc,2,211.0,0.6697008885104441,W4242286729,matched,Percent Accruals,12,30,25.0,30.0
+Hahn and Lee,2009,JF,tang,1,243.0,0.8081648939286997,W3122332765,matched,"Financial Constraints, Debt Capacity, and the Cross‐section of Stock Returns",17,30,16.666666666666668,60.0
+"Han, Zhou, Zhu",2016,JFE,TrendFactor,1,208.0,0.7583601858590494,,not_found,,,,,50.0
+Hartzmark and Salomon,2013,JFE,DivSeason,1,154.0,0.7921722428671936,,not_found,,,,,20.0
+Harvey and Siddique,2000,JF,Coskewness,1,3704.0,-0.2134261574753591,W2124601071,matched,Conditional Skewness in Asset Pricing Tests,86,30,83.33333333333333,100.0
+Haugen and Baker,1996,JFE,RoE;VarCF;VolMkt;VolumeTrend,4,1647.0,-0.007956669180746409,W2093260403,matched,Commonality in the determinants of expected stock returns,22,30,71.66666666666667,75.0
+"Hawkins, Chamberlin, Daniel",1984,FAJ,AnalystRevision,1,117.0,0.44900213103623643,W1753350838,matched,Earnings Expectations and Security Prices,2,30,88.33333333333333,0.0
+Heston and Sadka,2008,JFE,Mom12mOffSeason;MomOffSeason;MomOffSeason06YrPlus;MomOffSeason11YrPlus;MomOffSeason16YrPlus;MomSeason;MomSeason06YrPlus;MomSeason11YrPlus;MomSeason16YrPlus;MomSeasonShort,10,442.0,0.5894964835435118,W2083015905,matched,Seasonality in the cross-section of stock returns☆,23,30,30.0,16.666666666666668
+"Hirschleifer, Hsu and Li",2013,JFE,CitationsRD;PatentsRD,2,1245.0,0.2845842021720406,,not_found,,,,,80.0
+Hirshleifer et al.,2004,JAE,NOA,1,1138.0,0.972786789464209,,ambiguous,,,,,60.0
+"Hirshleifer, Hou, Teoh, Zhang",2004,JAE,dNoa,1,1136.0,0.8696758164745413,W3123284902,matched,Do investors overvalue firms with bloated balance sheets?,39,22,86.36363636363636,50.0
+Hong and Kacperczyk,2009,JFE,sinAlgo,1,3655.0,0.47708440944747377,W3123009431,matched,The price of sin: The effects of social norms on markets,124,30,96.66666666666667,100.0
+Hou,2007,RFS,EarnSupBig;IndRetBig,2,814.0,0.3275801013327322,W3125297504,matched,Industry Information Diffusion and the Lead-lag Effect in Stock Returns,32,30,60.0,100.0
+Hou and Moskowitz,2005,RFS,PriceDelayRsq;PriceDelaySlope;PriceDelayTstat,3,1376.0,1.7197560376968744,W3123842350,matched,"Market Frictions, Price Delay, and the Cross-Section of Expected Returns",47,30,66.66666666666667,40.0
+Hou and Robinson,2006,JF,Herf;HerfAsset;HerfBE,3,1316.0,2.139496794217091,,not_found,,,,,53.84615384615385
+"Ikenberry, Lakonishok, Vermaelen",1995,JFE,ShareRepurchase,1,3055.0,0.07719691662129591,W3122993843,matched,Market underreaction to open market share repurchases,34,30,90.0,100.0
+Jegadeesh,1990,JF,STreversal,1,4115.0,0.49432852574944186,W2131177033,matched,Evidence of Predictable Behavior of Security Returns,15,30,80.0,
+Jegadeesh and Livnat,2006,JAE,RevenueSurprise,1,506.0,0.49213550966343356,W2089642230,matched,Revenue surprises and stock returns,12,30,35.0,30.76923076923077
+Jegadeesh and Titman,1993,JF,Mom12m;Mom6m,2,17341.0,0.08806786013556178,W2125520394,matched,Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency,27,30,95.0,100.0
+Jegadeesh et al.,2004,JF,ChangeInRecommendation,1,1466.0,0.74906814043959,W2055958150,matched,Analyzing the Analysts: When Do Recommendations Add Value?,90,30,96.66666666666667,90.0
+Johnson and So,2012,JFE,OptionVolume1;OptionVolume2,2,460.0,1.1370630507948962,W3125879967,matched,The option to stock volume ratio and future returns,54,30,96.66666666666667,40.0
+Kelly and Jiang,2014,RFS,BetaTailRisk,1,1020.0,0.17462593735626464,W3124049593,matched,Tail Risk and Asset Prices,109,30,100.0,100.0
+La Porta,1996,JF,fgr5yrLag,1,1468.0,1.0126216692339998,W2146587342,matched,Expectations and the Cross-Section of Stock Returns,20,30,76.66666666666667,50.0
+"Lakonishok, Shleifer, Vishny",1994,JF,CF;MeanRankRevGrowth,2,7664.0,0.7616942184378643,W1967872601,matched,"Contrarian Investment, Extrapolation, and Risk",74,30,100.0,
+Landsman et al.,2011,AR,RDS,1,75.0,1.206371631615005,W3123862024,matched,Do Investors Understand Really Dirty Surplus?,10,30,21.666666666666668,0.0
+Lee and Swaminathan,2000,JF,MomVol,1,2509.0,0.20628186983952157,,ambiguous,,,,,50.0
+Lev and Nissim,2004,AR,Tax,1,871.0,0.2801440430203702,W2039479473,matched,"Taxable Income, Future Earnings, and Equity Values",26,30,53.333333333333336,40.0
+Li,2011,RFS,RDcap,1,709.0,1.4509910333479414,,ambiguous,,,,,90.0
+Litzenberger and Ramaswamy,1979,JFE,DivYieldST,1,2252.0,-0.11765010066965953,W1596347046,matched,The effect of personal taxes and dividends on capital asset prices,37,15,100.0,
+Liu,2006,JFE,zerotrade12M;zerotrade1M;zerotrade6M,3,1521.0,0.7105668057457231,W2025710885,matched,A liquidity-augmented capital asset pricing model,64,30,86.66666666666667,61.53846153846154
+Lockwood and Prombutr,2010,JFR,ChEQ,1,111.0,0.4101429518477756,W2148894694,matched,SUSTAINABLE GROWTH AND STOCK RETURNS,1,30,63.333333333333336,0.0
+Loh and Warachka,2012,MS,EarningsStreak;NumEarnIncrease,2,92.0,0.397390096618388,W2118944905,matched,Streaks in Earnings Surprises and the Cross-Section of Stock Returns,14,30,66.66666666666667,0.0
+Lou,2014,RFS,GrAdExp,1,629.0,0.9603555909445946,,ambiguous,,,,,80.0
+Loughran and Wellman,2011,JFQA,EntMult,1,224.0,0.721976125906044,W3124450427,matched,New Evidence on the Relation between the Enterprise Multiple and Average Stock Returns,13,30,51.666666666666664,40.0
+"Lyandres, Sun and Zhang",2008,RFS,CompositeDebtIssuance;InvestPPEInv,2,665.0,0.7275146751883265,W2082920079,matched,The New Issues Puzzle: Testing the Investment-Based Explanation,73,30,75.0,33.333333333333336
+Menzly and Ozbas,2010,JF,iomom_cust;iomom_supp,2,727.0,0.8130221488530751,W2063977782,matched,Market Segmentation and Cross‐predictability of Returns,58,30,60.0,75.0
+"Michaely, Thaler and Womack",1995,JF,DivInit;DivOmit,2,1752.0,-0.07146251438365603,W2890913069,matched,Price Reactions to Dividend Initiations and Omissions: Overreaction or Drift?,26,30,61.666666666666664,50.0
+Mohanram,2005,RAS,MS,1,561.0,0.48816489978934563,W3124580969,matched,Separating Winners from Losers among LowBook-to-Market Stocks using Financial Statement Analysis,22,15,66.66666666666667,0.0
+Nagel,2005,JFE,RIO_Disp;RIO_MB;RIO_Turnover;RIO_Volatility,4,1500.0,0.5577740587457508,W2067814853,matched,"Short sales, institutional investors and the cross-section of stock returns",52,30,70.0,60.0
+Nguyen and Swanson,2009,JFQA,Frontier,1,148.0,0.7900530470610476,W2045045730,matched,"Firm Characteristics, Relative Efficiency, and Equity Returns",9,30,41.666666666666664,40.0
+Novy-Marx,2011,ROF,OPLeverage,1,534.0,1.4325871932232301,,no_journal,,,,,80.0
+Novy-Marx,2012,JFE,IntMom,1,696.0,0.537898286049521,W2095729751,matched,Is momentum really momentum?,88,30,93.33333333333333,100.0
+Novy-Marx,2013,JFE,GP,1,2980.0,-1.9454524675114073,W2002882686,matched,The other side of value: The gross profitability premium,261,30,96.66666666666667,100.0
+Palazzo,2012,JFE,Cash,1,500.0,0.7785937135899353,W2056917813,matched,"Cash holdings, risk, and expected returns",35,30,50.0,60.0
+Pastor and Stambaugh,2003,JPE,BetaLiquidityPS,1,7459.0,0.9331266356727504,W3021190191,matched,Liquidity Risk and Expected Stock Returns,196,30,100.0,80.0
+"Penman, Richardson and Tuna",2007,JAR,BPEBM;EBM;NetDebtPrice,3,550.0,0.6195254294923797,W3121500857,matched,The Book‐to‐Price Effect in Stock Returns: Accounting for Leverage,34,30,80.0,25.0
+Piotroski,2000,JAR,PS,1,1956.0,0.4711956735132423,W2043464706,matched,Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers,13,24,47.916666666666664,0.0
+Pontiff and Woodgate,2008,JF,ShareIss1Y,1,874.0,-0.36839963804020104,W2142043708,matched,Share Issuance and Cross‐sectional Returns,60,30,73.33333333333333,50.0
+Prakash and Sinha,2013,CAR,DelDRC,1,77.0,0.6396881988994745,W2325155834,matched,Deferred Revenues and the Matching of Revenues and Expenses*,13,30,53.333333333333336,0.0
+"Rajgopal, Shevlin, Venkatachalam",2003,RAS,OrderBacklog,1,295.0,1.7013984504468,W3124763333,matched,Does the Stock Market Fully Appreciate the Implications of Leading Indicators for Future Earnings? Evidence from Order Backlog,19,17,67.6470588235294,0.0
+Richardson et al.,2005,JAE,DelCOA;DelCOL;DelEqu;DelFINL;DelLTI;DelNetFin;TotalAccruals,7,2296.0,0.7586280768202993,W2084956342,matched,"Accrual reliability, earnings persistence and stock prices",99,20,85.0,100.0
+Ritter,1991,JF,AgeIPO;IndIPO,2,6664.0,0.42028211723402015,W2148198877,matched,The Long-Run Performance of Initial Public Offerings,45,30,96.66666666666667,
+Scherbina,2008,ROF,ChNAnalyst,1,116.0,0.944342923471585,,no_journal,,,,,0.0
+Sloan,1996,AR,Accruals,1,56.0,0.8648398470428529,,ambiguous,,,,,0.0
+Soliman,2008,AR,ChAssetTurnover;ChNNCOA;ChNWC,3,919.0,0.8028203050586828,W3124908438,matched,The Use of DuPont Analysis by Market Participants,22,30,60.0,66.66666666666667
+Spiess and Affleck-Graves,1999,JFE,DebtIssuance,1,589.0,0.4084291573693346,W3122680622,matched,The long-run performance of stock returns following debt offerings,28,30,65.0,0.0
+Stattman,1980,Other,BM,1,1555.0,0.4180523508302375,,no_journal,,,,,
+Thomas and Zhang,2002,RAS,ChInv,1,859.0,0.7408875733331979,W1547479954,matched,Inventory Changes and Future Returns,26,16,81.25,0.0
+Thomas and Zhang,2011,JAR,ChTax,1,196.0,0.5949012135834078,W2323670465,matched,Tax Expense Momentum,13,30,36.666666666666664,20.0
+"Titman, Wei and Xie",2004,JFQA,Investment,1,2415.0,0.30732942818350095,W3021302892,matched,Capital Investments and Stock Returns,43,30,100.0,100.0
+Tuzel,2010,RFS,realestate,1,249.0,0.16089592305952338,W3125776891,matched,Corporate Real Estate Holdings and the Cross Section of Stock Returns,28,30,46.666666666666664,25.0
+Valta,2016,JFQA,ConvDebt,1,124.0,0.4263210681166367,W3123852672,matched,"Strategic Default, Debt Structure, and Stock Returns",15,30,83.33333333333333,0.0
+Xie,2001,AR,AbnormalAccruals,1,139.0,1.198252907435785,W1990806291,matched,The Mispricing of Abnormal Accruals,58,29,100.0,0.0
+"Xing, Zhang and Zhao",2010,JFQA,skew1,1,945.0,0.714081590707874,W3123326583,matched,What Does the Individual Option Volatility Smirk Tell Us About Future Equity Returns?,106,30,96.66666666666667,100.0
+Yan,2011,JFE,SmileSlope,1,417.0,0.5354179490074558,W2014389988,matched,"Jump risk, stock returns, and slope of implied volatility smile",40,30,51.666666666666664,70.0
+Zhang,2006,JF,FirmAgeMom,1,2599.0,0.6295186646741312,,ambiguous,,,,,92.3076923076923
