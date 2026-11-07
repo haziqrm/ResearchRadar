@@ -18,7 +18,7 @@ Full per-person plans: [docs/roadmap/](docs/roadmap/). Challenge briefs we're ju
 
 - One branch per person (`a/...`, `b/...`, `c/...`, `d/...`); merge to `main` small and often. **`main` must always run** (`pytest` passes).
 - Only edit files in your own folder and your own `data/` outputs.
-- Shared files: `requirements.txt` (append to your section, don't reorder), `src/common/contracts.py` and this README. Announce changes to these before pushing.
+- Shared files: `requirements.txt` (append to your section, don't reorder), `src/common/contracts.py`, `main.py` (stage list) and this README. Announce changes to these before pushing.
 - Never commit keys. Copy `.env.example` to `.env`.
 - Raw downloads and API caches go in `data/raw/` or `data/cache/` (git-ignored).
 - IDE settings (`.idea/`, `.vscode/`) are git-ignored because they hold per-machine paths.
@@ -65,9 +65,22 @@ Made-up sample files for every contract are in `data/sample/`, so the app can be
 
 ```bash
 python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
 pytest
 ```
 
-Python 3.12.
+Python 3.12. Versions in `requirements.txt` are pinned; pin anything you add.
+
+## Rebuild every output
+
+```bash
+python main.py            # runs each stage in order: A, then B, then D
+python main.py --list     # shows which stages exist yet
+python main.py --only d   # one stage
+```
+
+Each stage is a runner module: A `src.signal_decay.run_decay`, B `src.research_map.run_map`, D `src.live.run_live`. Stages that aren't written yet are skipped. Some stages call live APIs and need keys in `.env`.
+
+GitHub Actions runs `pytest` on every push and pull request (`.github/workflows/tests.yml`). Don't merge to `main` while it's red.

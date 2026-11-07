@@ -1,0 +1,19 @@
+name: tests
+
+# Keeps "main must always run" honest: pytest on every push and pull request.
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python main.py --list
+      - run: pytest -q
