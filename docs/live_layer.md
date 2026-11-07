@@ -224,10 +224,16 @@ accuracy figure, and none of the 50 had a signal, so it says nothing about signa
   reworded by `gemini-3.5-flash` (the rewrite kept every number), audio regenerated.
   Week of 2 November: Market microstructure most crowded (+3.0, 34 papers in 4 weeks);
   October 2026 allocation Value 52%, Momentum 48%.
-- **Known wording issues (not fixed yet):**
-  - "Busiest" means *most crowded relative to its usual share*, not *most papers*.
-    Portfolio and risk had more papers (49 in 4 weeks) but scores -1.31.
-  - Scores are rounded with Python's `round`, so 0.35 is read out as "0.3", not "0.4".
+- **Wording fixed (2026-11-07):**
+  - The briefing says "most crowded **compared with its usual share**", never
+    "busiest": the area with the most papers can score low (Portfolio and risk had
+    49 papers in 4 weeks but scores -1.3). When the area with the most papers isn't
+    the most crowded one, the briefing names it "for scale". The card has a new
+    `most_papers` key; `busiest` / `quietest` keep their names (ranked by score).
+  - Spoken numbers round half up (0.35 -> 0.4, 52.5% -> 53%), not with Python's
+    `round` (which gave 0.3).
+  - A Gemini rewrite containing "busiest" is rejected, like one with changed numbers.
+- The text is now about 200 words (~80 seconds), over the prompt's 60-second target.
 
 ## Tag accuracy (D4)
 

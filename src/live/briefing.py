@@ -4,8 +4,10 @@ Usage:
     python -m src.live.briefing [--no-gemini] [--no-audio]
 
 1. Facts (the "decision card") are computed in code, never by a model:
-     - the 3 busiest areas this week and the quietest one (crowding.csv)
-     - the newest tagged paper in the busiest area (arxiv_tagged.csv)
+     - the 3 most crowded areas this week and the quietest one, by crowding score
+       (share of papers vs the area's usual share), plus the area with the most
+       papers when that's a different one (crowding.csv)
+     - the newest tagged paper in the most crowded area (arxiv_tagged.csv)
      - the allocation for next month: decay_tilt weights from the backtest's own
        rule, applied to every return up to the latest month in factors.csv
      - the caveat: decay_tilt vs equal weight from backtest_summary.csv
@@ -24,6 +26,7 @@ import argparse
 import json
 import os
 import re
+from decimal import ROUND_HALF_UP, Decimal
 from pathlib import Path
 
 import pandas as pd
@@ -49,15 +52,26 @@ N_BUSY = 3
 
 # ---------- facts ----------
 
+def half_up(x: float, places: int = 0) -> float:
+    """Round the way people expect when hearing it: 0.35 -> 0.4, 52.5 -> 53.
+    Python's round() gives 0.3 and 52 (binary floats, banker's rounding)."""
+    q = Decimal(1).scaleb(-places)
+    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
+
+
 def crowding_facts(crowding: pd.DataFrame) -> dict:
+    """'busiest'/'quietest' rank by crowding score (share vs usual), not by paper count;
+    'most_papers' is the area with the most papers in the window, for contrast."""
     crowding = crowding.copy()
     week = crowding["date"].max()
     weeks = sorted(crowding["date"].unique())[-WINDOW_WEEKS:]
     window = crowding[crowding["date"].isin(weeks)].groupby("area")["paper_count"].sum()
     latest = crowding[crowding["date"] == week].sort_values("crowding_score", ascending=False)
-    rows = [{"area": r.area, "score": round(float(r.crowding_score), 1),
+    rows = [{"area": r.area, "score": half_up(float(r.crowding_score), 1),
              "papers_4w": int(window.get(r.area, 0))} for r in latest.itertuples()]
-    return {"week": week, "busiest": rows[:N_BUSY], "quietest": rows[-1]}
+    most = max(rows, key=lambda r: r["papers_4w"])
+    return {"week": week, "busiest": rows[:N_BUSY], "quietest": rows[-1],
+            "most_papers": most}
 
 
 def newest_paper(tagged: pd.DataFrame, area: str) -> dict | None:
@@ -79,7 +93,7 @@ def allocation_facts(returns: pd.DataFrame, pub: pd.Series) -> dict:
     last = returns.index.max()
     est = bt.expected_edges(returns, pub, last)
     w = bt.weights_at(est)["decay_tilt"]
-    held = [{"signal": s, "weight": round(float(w[s]), 2),
+    held = [{"signal": s, "weight": half_up(float(w[s]), 2),
              "expected_edge_net": round(float(est.at[s, "net_edge"]), 4)}
             for s in w.sort_values(ascending=False).index if w[s] > 0]
     skipped = [s for s in est.index if w.get(s, 0) == 0]
@@ -90,9 +104,9 @@ def allocation_facts(returns: pd.DataFrame, pub: pd.Series) -> dict:
 
 def caveat_facts(summary: pd.DataFrame) -> dict:
     s = summary.set_index("strategy").loc["decay_tilt"]
-    return {"sharpe_minus_equal_weight": round(float(s["sharpe_minus_equal_weight"]), 2),
-            "ci_low": round(float(s["diff_ci_low"]), 2),
-            "ci_high": round(float(s["diff_ci_high"]), 2),
+    return {"sharpe_minus_equal_weight": half_up(float(s["sharpe_minus_equal_weight"]), 2),
+            "ci_low": half_up(float(s["diff_ci_low"]), 2),
+            "ci_high": half_up(float(s["diff_ci_high"]), 2),
             "significant": bool(s["diff_ci_low"] > 0 or s["diff_ci_high"] < 0)}
 
 
@@ -131,23 +145,32 @@ def template_text(card: dict) -> str:
     top, rest = card["busiest"][0], card["busiest"][1:]
     q = card["quietest"]
     lines = [f"Here's your research radar for the week of {week.day} {week:%B %Y}."]
-    lines.append(f"The busiest corner of quant finance right now is {top['area']}: "
-                 f"{top['papers_4w']} papers in the last {WINDOW_WEEKS} weeks, a crowding "
-                 f"score of {_signed(top['score'])}.")
+    # Scores compare an area with its own usual share of papers, so say "crowded
+    # compared with usual", not "busiest": the area with the most papers can score low.
+    lines.append(f"Compared with its usual share of papers, the most crowded area right "
+                 f"now is {top['area']}: {top['papers_4w']} papers in the last "
+                 f"{WINDOW_WEEKS} weeks, a crowding score of {_signed(top['score'])}.")
     if card.get("example_paper"):
         lines.append(f"One of the newest is called \"{card['example_paper']['title']}\".")
+    most = card.get("most_papers")
+    if most and most["area"] != top["area"]:
+        where = "below" if most["score"] < 0 else "closer to"
+        lines.append(f"For scale, {most['area']} still has the most papers, "
+                     f"{most['papers_4w']}, but that's {where} its usual share.")
     if rest:
         names = _join([r["area"] for r in rest])
         scores = _join([_signed(r["score"]) for r in rest])
         if all(r["score"] > 0 for r in rest):
             verb = "is" if len(rest) == 1 else "are"
-            lines.append(f"{names} {verb} busy too, at {scores}.")
+            share = "its" if len(rest) == 1 else "their"
+            lines.append(f"{names} {verb} also above {share} usual share, at {scores}.")
         else:
             lines.append(f"Next come {names}, at {scores}.")
-    lines.append(f"And the quietest? {q['area']}, at {_signed(q['score'])}.")
+    lines.append(f"And the quietest compared with usual? {q['area']}, at "
+                 f"{_signed(q['score'])}.")
     a = card["allocation"]
     if a["held"]:
-        held = _join([f"{h['signal'].lower()} at {round(h['weight'] * 100)} percent"
+        held = _join([f"{h['signal'].lower()} at {half_up(h['weight'] * 100):.0f} percent"
                       for h in a["held"]])
         lines.append(f"So, what would we hold for {a['for_month']}? {_cap(held)}.")
     else:
@@ -177,8 +200,10 @@ NUMBER = re.compile(r"\d+(?:\.\d+)?")
 
 GEMINI_PROMPT = """Rewrite this research briefing so it sounds like a person talking, in
 60 seconds or less. Keep every number, area name, signal name and paper title exactly
-as written, and keep the caveat. Do not add any facts, numbers or advice. Plain text
-only, no markdown, no bullet points.
+as written, and keep the caveat. Do not add any facts, numbers or advice. Crowding
+compares an area with its own usual share of papers, so never call an area "busiest"
+or say it has the most papers unless the briefing says so. Plain text only, no
+markdown, no bullet points.
 
 Briefing:
 {text}"""
@@ -196,7 +221,8 @@ def gemini_rewrite(text: str, key: str, model: str) -> str | None:
         model=model, contents=GEMINI_PROMPT.format(text=text),
         config=types.GenerateContentConfig(temperature=0.3))
     out = " ".join((resp.text or "").split())
-    return out if out and same_numbers(text, out) else None
+    ok = out and same_numbers(text, out) and "busiest" not in out.lower()
+    return out if ok else None
 
 
 # ---------- audio ----------

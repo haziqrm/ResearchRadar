@@ -37,7 +37,8 @@ def test_template_has_facts_and_caveat():
     assert "week of 2 November 2026" in text
     assert "right now is Market microstructure: 30 papers" in text
     assert text.index("TensorLOB") < text.index("quietest")   # example is the busiest area's
-    assert "LLMs in finance is busy too, at plus 1.1." in text
+    assert "most crowded area right now" in text and "busiest" not in text
+    assert "LLMs in finance is also above its usual share, at plus 1.1." in text
     assert "Value at 52 percent and momentum at 48 percent." in text
     assert "skipping size, because after costs it is not expected" in text
     assert "isn't proven" in text and "minus 0.18" in text and "beat equal" in text
@@ -56,6 +57,32 @@ def test_template_negative_and_quiet_wording():
     text = br.template_text(c)
     assert "Next come LLMs in finance, at minus 0.2." in text
     assert "trailed equal weighting by 0.05" in text
+
+
+def test_most_papers_named_when_not_the_most_crowded():
+    c = card()
+    c["most_papers"] = {"area": "Portfolio and risk", "score": -1.3, "papers_4w": 49}
+    text = br.template_text(c)
+    assert "Portfolio and risk still has the most papers, 49, but that's below" in text
+
+    c["most_papers"] = c["busiest"][0]                      # same area: no extra line
+    assert "still has the most papers" not in br.template_text(c)
+
+
+def test_crowding_facts_most_papers():
+    weeks = pd.date_range("2026-10-05", periods=4, freq="7D").strftime("%Y-%m-%d")
+    rows = [{"date": w, "area": a, "paper_count": n, "crowding_score": s}
+            for w in weeks for a, n, s in [("A", 2, 2.0), ("B", 9, -1.0)]]
+    f = br.crowding_facts(pd.DataFrame(rows))
+    assert f["busiest"][0]["area"] == "A"
+    assert f["most_papers"] == {"area": "B", "score": -1.0, "papers_4w": 36}
+
+
+def test_half_up_rounds_like_people_expect():
+    assert br.half_up(0.35, 1) == 0.4
+    assert br.half_up(-0.35, 1) == -0.4
+    assert br.half_up(52.5) == 53
+    assert br.half_up(0.125, 2) == 0.13
 
 
 def test_same_numbers_guards_the_rewrite():
