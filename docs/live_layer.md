@@ -243,5 +243,18 @@ Fill `correct_area` / `correct_signal` in `data/tag_audit.csv` with `y` or `n`, 
 python -m src.live.tagging --score-audit
 ```
 
-Result: _not measured yet_. The sheet now holds 50 random Gemini-tagged papers
-(regenerated 2026-11-07 after the full Gemini run) and is waiting for the by-eye check.
+Result (checked 2026-11-07, 50 random Gemini-tagged papers):
+
+```
+area: 46 of 50 correct (92%)
+signal: 50 of 50 correct (100%)
+```
+
+- **Area: 92%.** This is the figure to quote. The four misses (2607.02695, 2511.05030,
+  2508.03790, 2602.00383) are theory or topology papers that don't fit any of the eight
+  areas well, so Gemini forced one in. 2601.11348 (carbon abatement) has no area, which
+  counts as correct.
+- **Signal: don't quote the 100% on its own.** All 50 sampled papers had no signal, because
+  only 68 of 3,687 papers have one. So the figure only shows that Gemini doesn't add a
+  factor signal where there isn't one. Whether those 68 signal tags are right hasn't been
+  checked.
