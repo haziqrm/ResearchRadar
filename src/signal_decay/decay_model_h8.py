@@ -6,6 +6,10 @@ Rules are fixed in HYPOTHESES.md (H8). Adds three features to the H7 set:
     category_heat   same-category predictors published in the 5 years before
 and scores models with an expanding-window walk-forward over three test folds.
 
+Post-diagnosis correction (see HYPOTHESES.md): the early-citation feature is no
+longer used (inherited from H7), and squared error, a training-mean constant and
+a median regression are reported alongside MAE.
+
 Usage:
     python -m src.signal_decay.decay_model_h8 [--charts]
 
@@ -23,17 +27,12 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy import stats
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.inspection import permutation_importance
-from sklearn.linear_model import Ridge
-from sklearn.model_selection import GridSearchCV, GroupKFold
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
 
 from src.signal_decay import CHARTS_DIR, DATA_DIR
 from src.signal_decay.decay_model import (
-    IMPUTED, OSAP_PAPERS_CSV, SEED, TARGET_CLIP, build_dataset, feature_matrix, paper_bootstrap_ci,
+    NUMERIC, OSAP_PAPERS_CSV, SEED, TARGET_CLIP, alpha_columns, build_dataset, feature_matrix, fit_models,
+    score_model, training_medians,
 )
 from src.signal_decay.osap import OSAP_CACHE_DIR, _client, load_ls_returns, load_signal_doc, predictor_table
 
@@ -111,55 +110,35 @@ def feature_matrix_h8(df: pd.DataFrame, medians: dict[str, float], include_h8: b
     X = feature_matrix(df, medians)
     if include_h8:
         for col in H8_FEATURES:
-            X[col] = df[col].astype(float)
+            X[col] = pd.to_numeric(df[col], errors="coerce").replace([np.inf, -np.inf], np.nan)
         for col in H8_IMPUTED:
             X[f"{col}_missing"] = X[col].isna().astype(float)
-            X[col] = X[col].fillna(medians[col])
+        for col in H8_FEATURES:
+            X[col] = X[col].fillna(medians.get(col, 0.0))
     return X
 
 
 # ---------- walk-forward ----------
 
-def _ridge(Xtr, ytr, groups):
-    n_splits = min(5, len(np.unique(groups)))
-    return GridSearchCV(make_pipeline(StandardScaler(), Ridge()), {"ridge__alpha": np.logspace(-2, 3, 30)},
-                        cv=GroupKFold(n_splits=n_splits), scoring="neg_mean_absolute_error",
-                        ).fit(Xtr, ytr, groups=groups)
+MODEL_NAMES = {"ridge": "ridge_h8", "median_regression": "median_regression_h8",
+               "random_forest": "random_forest_h8"}
 
 
 def fit_fold(train: pd.DataFrame, test: pd.DataFrame) -> tuple[dict[str, np.ndarray], dict]:
     """Fit every model on one training fold and predict its test fold."""
-    medians = {c: float(train[c].median()) for c in IMPUTED + H8_IMPUTED}
+    medians = training_medians(train, NUMERIC + H8_FEATURES)
     ytr, groups = train["target"].to_numpy(), train["paper_key"].to_numpy()
     Xtr, Xte = feature_matrix_h8(train, medians), feature_matrix_h8(test, medians)
     Xtr7, Xte7 = feature_matrix_h8(train, medians, False), feature_matrix_h8(test, medians, False)
 
-    ridge = _ridge(Xtr, ytr, groups)
-    ridge7 = _ridge(Xtr7, ytr, groups)
-    forest = RandomForestRegressor(n_estimators=500, max_depth=3, min_samples_leaf=5,
-                                   random_state=SEED).fit(Xtr, ytr)
-    preds = {
-        "baseline": np.full(len(test), np.median(ytr)),
-        "ridge_h8": ridge.predict(Xte),
-        "random_forest_h8": forest.predict(Xte),
-        "ridge_h7_only": ridge7.predict(Xte7),
-    }
-    fitted = {"ridge": ridge, "forest": forest, "Xte": Xte, "yte": test["target"].to_numpy(),
-              "alpha_h8": ridge.best_params_["ridge__alpha"], "alpha_h7": ridge7.best_params_["ridge__alpha"]}
+    constants, models, alphas = fit_models(Xtr, ytr, groups, len(test))
+    _, models7, alphas7 = fit_models(Xtr7, ytr, groups, len(test))
+    preds = {**constants, **{MODEL_NAMES[k]: m.predict(Xte) for k, m in models.items()},
+             "ridge_h7_only": models7["ridge"].predict(Xte7)}
+    alphas = {MODEL_NAMES[k]: v for k, v in alphas.items()} | {"ridge_h7_only": alphas7["ridge"]}
+    fitted = {"models": {MODEL_NAMES[k]: m for k, m in models.items()}, "Xte": Xte,
+              "yte": test["target"].to_numpy(), "alphas": alphas}
     return preds, fitted
-
-
-def _score(name: str, pred: np.ndarray, y: np.ndarray, base: np.ndarray, groups: np.ndarray) -> dict:
-    err, err_base = np.abs(pred - y), np.abs(base - y)
-    row = {"model": name, "test_mae": err.mean(), "n_test": len(y), "n_test_papers": len(np.unique(groups)),
-           "spearman_pred_vs_actual": stats.spearmanr(pred, y).statistic if np.std(pred) > 0 else np.nan}
-    if name == "baseline":
-        row.update(mae_diff_vs_baseline=0.0, diff_ci_low=np.nan, diff_ci_high=np.nan, verdict="")
-    else:
-        lo, hi = paper_bootstrap_ci(err, err_base, groups)
-        row.update(mae_diff_vs_baseline=err.mean() - err_base.mean(), diff_ci_low=lo, diff_ci_high=hi,
-                   verdict="beats baseline" if hi < 0 else "does not beat baseline")
-    return row
 
 
 def walk_forward(df: pd.DataFrame, folds: list[tuple[int, int]] = FOLDS) -> dict:
@@ -175,31 +154,30 @@ def walk_forward(df: pd.DataFrame, folds: list[tuple[int, int]] = FOLDS) -> dict
         for name, p in preds.items():
             frame[f"pred_{name}"] = p
         pred_frames.append(frame)
-        for name, p in preds.items():
-            row = _score(name, p, frame["target"].to_numpy(), preds["baseline"], frame["paper_key"].to_numpy())
-            rows.append({"fold": label, "n_train": len(train), **row})
-        rows[-4]["verdict"] = f"predicts {preds['baseline'][0]:.2f} for every signal"
+        y, groups = frame["target"].to_numpy(), frame["paper_key"].to_numpy()
+        rows += [{"fold": label, "n_train": len(train), **score_model(name, p, y, preds["baseline"], groups),
+                  **alpha_columns(name, fitted["alphas"])} for name, p in preds.items()]
 
     allp = pd.concat(pred_frames, ignore_index=True)
     y, groups = allp["target"].to_numpy(), allp["paper_key"].to_numpy()
-    for name in ["baseline", "ridge_h8", "random_forest_h8", "ridge_h7_only"]:
-        rows.append({"fold": "pooled", "n_train": np.nan,
-                     **_score(name, allp[f"pred_{name}"].to_numpy(), y, allp["pred_baseline"].to_numpy(), groups)})
+    for name in preds:
+        row = score_model(name, allp[f"pred_{name}"].to_numpy(), y, allp["pred_baseline"].to_numpy(), groups)
+        if name == "baseline":
+            row["verdict"] = "training-fold median in each fold"
+        rows.append({"fold": "pooled", "n_train": np.nan, **row})
     summary = pd.DataFrame(rows)
 
     coef_rows = []
-    pipe = fitted["ridge"].best_estimator_
+    pipe = fitted["models"]["ridge_h8"]
     for f, c in zip(fitted["Xte"].columns, pipe.named_steps["ridge"].coef_):
         coef_rows.append({"model": "ridge_h8", "feature": f, "kind": "std_coefficient_last_fold", "value": c})
-    for name, model in [("ridge_h8", pipe), ("random_forest_h8", fitted["forest"])]:
+    for name, model in fitted["models"].items():
         imp = permutation_importance(model, fitted["Xte"], fitted["yte"], n_repeats=50, random_state=SEED,
                                      scoring="neg_mean_absolute_error")
         coef_rows += [{"model": name, "feature": f, "kind": "permutation_importance_last_fold", "value": m}
                       for f, m in zip(fitted["Xte"].columns, imp.importances_mean)]
-    coefs = pd.DataFrame(coef_rows)
-    coefs.attrs["alphas"] = (fitted["alpha_h8"], fitted["alpha_h7"])
     return {"summary": summary, "predictions": allp.rename(columns={"target": "actual_retained"}),
-            "coefficients": coefs}
+            "coefficients": pd.DataFrame(coef_rows)}
 
 
 def plot_walk_forward(summary: pd.DataFrame, path) -> None:
@@ -208,13 +186,13 @@ def plot_walk_forward(summary: pd.DataFrame, path) -> None:
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    models = ["baseline", "ridge_h7_only", "ridge_h8", "random_forest_h8"]
+    models = ["baseline", "ridge_h7_only", "ridge_h8", "median_regression_h8", "random_forest_h8"]
     folds = list(dict.fromkeys(summary["fold"]))
     fig, ax = plt.subplots(figsize=(9, 4.5))
-    w = 0.2
+    w = 0.16
     for i, m in enumerate(models):
         s = summary[summary["model"] == m].set_index("fold").reindex(folds)
-        ax.bar(np.arange(len(folds)) + (i - 1.5) * w, s["test_mae"], w, label=m)
+        ax.bar(np.arange(len(folds)) + (i - 2) * w, s["test_mae"], w, label=m)
     ax.set_xticks(np.arange(len(folds)), folds)
     ax.set_ylabel("Mean absolute error (lower is better)")
     pooled = summary[(summary["fold"] == "pooled") & (summary["model"] == "ridge_h8")].iloc[0]
