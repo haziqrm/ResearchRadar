@@ -117,17 +117,68 @@ How to read it:
   `BASELINE_WEEKS = 52`, `MIN_BASELINE_WEEKS = 26`.
 - The sample `data/sample/crowding.csv` has been updated to z-score values to match.
 
-### Tags are keyword-based until the Gemini key is in
-- Current `arxiv_tagged.csv` and `crowding.csv` come from the **keyword tagger**
-  (`tagger` column = `keyword`). They will be regenerated with Gemini.
+### Tags come from Gemini (all 3,687 papers)
+- `arxiv_tagged.csv` and `crowding.csv` now come from **Gemini** for every paper
+  (`tagger` = `gemini`; finished 2026-11-07). Mean confidence 0.91.
 - The keyword tagger stays as a fallback for any paper Gemini hasn't tagged (quota,
-  errors) and as a baseline to compare Gemini against. Each row says which tagger made it.
-- `area` and `signal` are **empty strings** when nothing fits (631 of 3,687 papers have
-  no area; most papers have no signal). These rows are left out of crowding.
+  errors) and as a baseline. It agrees with Gemini on the area for only **2,301 of
+  3,687 papers (62%)**, so keyword-tagged rows should be treated as rough.
+- `area` and `signal` are **empty strings** when nothing fits: **302 papers have no
+  area**, and **3,619 have no signal**. These rows are left out of crowding.
+- Areas: Portfolio and risk 1,101; Derivatives and volatility 653; Market microstructure
+  400; Crypto and DeFi 346; Machine learning for returns 341; LLMs in finance 317;
+  Factor and anomaly research 124; Alternative data and text 103.
+- Signals: Momentum 45; Size 9; Short-term reversal 8; Value 4; Profitability 1;
+  Investment 1; Long-term reversal 0. **Signal counts are far too small for crowding by
+  signal** (the "Improvements" idea): only momentum has more than a handful.
+- Crowding from the Gemini tags: scores run from -2.53 to +3.54, and 7.4% of area-weeks
+  are beyond ±2. Week of 2026-11-02: Market microstructure +3.03 (highest), Machine
+  learning for returns -1.57 (lowest).
 - "Matching signal" uses only the 7 signals in `papers.csv` (Size, Value, Momentum,
   Short-term reversal, Long-term reversal, Profitability, Investment). If A adds
   signals, rerun tagging.
-- Gemini model defaults to `gemini-flash-latest`; set `GEMINI_MODEL` in `.env` to change it.
+- Gemini model is **`gemini-3.5-flash`**. Set `GEMINI_MODEL` in `.env` to change it.
+  A wrong model name or bad key stops the run instead of silently falling back to keywords.
+  A **403 "permission denied"** is retried instead: it appeared once mid-run on a
+  working key and cleared on its own.
+- Each cached answer records its model, and only the current model's answers are reused,
+  so all Gemini tags come from one model (no mix).
+
+### Why gemini-3.5-flash (model comparison, 2026-11-07)
+`gemini-2.5-flash` is closed to new accounts and the `gemini-flash-latest` alias isn't
+offered. `gemini-3.8-flash` (the newest) was overloaded: most requests returned
+"503 high demand", which would have made the run take about 4.5 hours.
+
+The same 50 papers (oldest month) went through each model; D judged each paper by eye:
+
+| Model | Clear errors in 50 | Time per 25 papers |
+|---|---|---|
+| gemini-3.5-flash | 0 | ~21 s |
+| gemini-3.8-flash | 2 | 156 s (overloaded) |
+| gemini-3.5-flash-lite | 3 | ~3 s |
+| gemini-3.1-flash-lite | 4 | ~3 s |
+| keyword rules | ~16 | instant |
+
+The four Gemini models gave the same area on 42 of 50. The lite models forced off-topic
+papers (for example a smart-meter energy market) into an area instead of leaving them
+empty, which would inflate crowding. This is a quick check on 50 papers, not the D4
+accuracy figure, and none of the 50 had a signal, so it says nothing about signal tags.
+
+### Free-tier limit and batch size
+- The Gemini free tier allows only **20 requests a day per model** for this model (the
+  plan assumed limits were not a problem). The run stops cleanly with "gemini quota
+  reached"; tags so far stay cached, and untagged papers get keyword tags until a rerun.
+  The team switched free keys when a key ran out.
+- To need fewer requests, the batch went from 25 to **50 abstracts per request**
+  (`--batch-size`, default 50). Tested against papers already tagged in batches of 25:
+
+  | Batch size | Same area as batch of 25 | Same signal | Clearly worse tags |
+  |---|---|---|---|
+  | 50 | 46/50 (92%) | 50/50 | 1 (an off-topic paper put into an area) |
+  | 75 (run twice) | 66/75 and 67/75 | 74-75/75 | 4 (more off-topic papers put into areas) |
+
+  Rerunning the same batch also changes a few borderline tags, so some of this is noise.
+- The first 474 papers were tagged in batches of 25, the rest in batches of 50.
 
 ### Two new D files that aren't in the contracts yet
 | File | Columns | Use |
@@ -181,4 +232,5 @@ Fill `correct_area` / `correct_signal` in `data/tag_audit.csv` with `y` or `n`, 
 python -m src.live.tagging --score-audit
 ```
 
-Result: _not measured yet_ (redo the sheet after the Gemini run).
+Result: _not measured yet_. The sheet now holds 50 random Gemini-tagged papers
+(regenerated 2026-11-07 after the full Gemini run) and is waiting for the by-eye check.

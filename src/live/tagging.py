@@ -6,7 +6,7 @@ Usage:
     python -m src.live.tagging --score-audit    # agreement rate once it's filled in
 
 Two taggers:
-- gemini:  BATCH_SIZE abstracts per request, answers forced into the fixed lists,
+- gemini:  BATCH_SIZE (50) abstracts per request, answers forced into the fixed lists,
            cached by arXiv ID in data/cache/arxiv/tags_gemini.jsonl, so a crash or a
            quota stop never means re-tagging. Rerun to continue.
 - keyword: transparent rules, no key needed. Used as the fallback for any paper
@@ -38,9 +38,31 @@ AUDIT_CSV = DATA_DIR / "tag_audit.csv"
 GEMINI_CACHE = CACHE_DIR / "tags_gemini.jsonl"
 TAG_COLUMNS = ["arxiv_id", "published", "title", "area", "signal", "confidence", "tagger"]
 
-BATCH_SIZE = 25
+# 50 abstracts per request: matched 25-paper batches on 46/50 areas and 50/50 signals,
+# while 75 drifted (66-67/75, more off-topic papers forced into an area). See docs.
+BATCH_SIZE = 50
 GEMINI_GAP_SECONDS = 6.0      # ~10 requests a minute, inside free-tier limits
-DEFAULT_MODEL = "gemini-flash-latest"   # override with GEMINI_MODEL in .env
+# Chosen on 2026-11-07 after a 50-paper comparison (docs/live_layer.md): most accurate
+# of the flash models, and 3.8-flash was overloaded. Override with GEMINI_MODEL in .env.
+DEFAULT_MODEL = "gemini-3.5-flash"
+# Errors that retrying can't fix (wrong model name, bad key): stop the run.
+# Matched on the status code, never on digits in the message (a quota message's
+# "retry in 10h23m40.440284047s" contains "404").
+# 403 PERMISSION_DENIED is not fatal: it appeared once mid-run on a working key and
+# cleared on its own, so it is retried like a 503.
+FATAL_CODES = {400, 401, 404}
+FATAL_STATUSES = ("NOT_FOUND", "API_KEY_INVALID", "UNAUTHENTICATED")
+
+
+def error_kind(exc: Exception) -> str:
+    """'fatal', 'quota' or 'retry' for an exception from the Gemini SDK."""
+    code = getattr(exc, "code", None)
+    text = str(exc)
+    if code == 429 or "RESOURCE_EXHAUSTED" in text:
+        return "quota"
+    if code in FATAL_CODES or any(s in text for s in FATAL_STATUSES):
+        return "fatal"
+    return "retry"
 MAX_RETRIES = 4
 
 # --- keyword tagger --------------------------------------------------------
@@ -182,27 +204,30 @@ def call_gemini(client, model: str, prompt: str) -> str:
     return resp.text
 
 
-def load_gemini_cache(path: Path = GEMINI_CACHE) -> dict[str, dict]:
+def load_gemini_cache(path: Path = GEMINI_CACHE, model: str | None = None) -> dict[str, dict]:
+    """Cached answers by arXiv ID. With `model`, only that model's answers count, so
+    switching model re-tags everything with one model instead of mixing them."""
     if not path.exists():
         return {}
     out = {}
     for line in path.read_text(encoding="utf-8").splitlines():
         if line.strip():
             row = json.loads(line)
-            out[row["arxiv_id"]] = row
+            if model is None or row.get("model") == model:
+                out[row["arxiv_id"]] = row
     return out
 
 
 def gemini_tag(papers: pd.DataFrame, signals: list[str], client, model: str,
                cache_path: Path = GEMINI_CACHE, gap: float = GEMINI_GAP_SECONDS,
-               call=call_gemini) -> dict[str, dict]:
+               call=call_gemini, batch_size: int = BATCH_SIZE) -> dict[str, dict]:
     """Tag every uncached paper; returns the full cache. Stops cleanly on quota."""
-    cache = load_gemini_cache(cache_path)
+    cache = load_gemini_cache(cache_path, model)
     todo = papers[~papers["arxiv_id"].isin(cache)]
     print(f"gemini: {len(cache)} cached, {len(todo)} to tag with {model}")
     cache_path.parent.mkdir(parents=True, exist_ok=True)
-    for start in range(0, len(todo), BATCH_SIZE):
-        batch = todo.iloc[start:start + BATCH_SIZE]
+    for start in range(0, len(todo), batch_size):
+        batch = todo.iloc[start:start + batch_size]
         ids = batch["arxiv_id"].tolist()
         for attempt in range(MAX_RETRIES):
             try:
@@ -210,7 +235,12 @@ def gemini_tag(papers: pd.DataFrame, signals: list[str], client, model: str,
                                         ids, signals)
                 break
             except Exception as exc:
-                quota = "429" in str(exc) or "RESOURCE_EXHAUSTED" in str(exc)
+                kind = error_kind(exc)
+                if kind == "fatal":
+                    raise
+                if kind == "quota" and "per day" in str(exc).lower():
+                    raise QuotaExhausted(str(exc)[:200]) from exc   # waiting won't help
+                quota = kind == "quota"
                 if attempt == MAX_RETRIES - 1:
                     if quota:
                         raise QuotaExhausted(str(exc)[:200]) from exc
@@ -221,6 +251,7 @@ def gemini_tag(papers: pd.DataFrame, signals: list[str], client, model: str,
                 time.sleep(gap * 2 ** (attempt + 1))
         with cache_path.open("a", encoding="utf-8") as f:
             for a in answers:
+                a["model"] = model
                 f.write(json.dumps(a) + "\n")
                 cache[a["arxiv_id"]] = a
         print(f"  tagged {start + len(batch)}/{len(todo)} ({len(answers)} answers)")
@@ -269,6 +300,8 @@ def main(argv: list[str] | None = None) -> Path:
     parser = argparse.ArgumentParser(description="Tag arXiv papers with area and signal.")
     parser.add_argument("--tagger", choices=["auto", "gemini", "keyword"], default="auto")
     parser.add_argument("--limit", type=int, help="only tag the newest N papers (testing)")
+    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE,
+                        help=f"abstracts per Gemini request (default {BATCH_SIZE})")
     parser.add_argument("--audit", type=int, metavar="N", help="write N papers to check by eye")
     parser.add_argument("--score-audit", action="store_true")
     args = parser.parse_args(argv)
@@ -287,16 +320,17 @@ def main(argv: list[str] | None = None) -> Path:
     if args.tagger == "gemini" and not key:
         raise SystemExit("GEMINI_API_KEY missing in .env")
 
-    cache = load_gemini_cache()
+    model = os.getenv("GEMINI_MODEL", "").strip() or DEFAULT_MODEL
+    cache = load_gemini_cache(model=model)
     if use_gemini:
         from google import genai
-        model = os.getenv("GEMINI_MODEL", "").strip() or DEFAULT_MODEL
         try:
-            cache = gemini_tag(papers, signals, genai.Client(api_key=key), model)
+            cache = gemini_tag(papers, signals, genai.Client(api_key=key), model,
+                               batch_size=args.batch_size)
         except QuotaExhausted as exc:
             print(f"gemini quota reached ({exc}); rerun later to continue. "
                   "Untagged papers use keywords for now.")
-            cache = load_gemini_cache()
+            cache = load_gemini_cache(model=model)
     elif args.tagger == "keyword":
         cache = {}
 

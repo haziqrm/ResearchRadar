@@ -17,8 +17,9 @@ from src.common.contracts import ROOT
 
 def check_gemini(key: str) -> str:
     from google import genai
-    models = list(genai.Client(api_key=key).models.list())
-    return f"ok ({len(models)} models visible)"
+    client = genai.Client(api_key=key)   # keep a reference: the SDK closes it when dropped
+    flash = [m.name for m in client.models.list() if "flash" in (m.name or "")]
+    return f"ok ({len(flash)} flash models visible, e.g. {', '.join(flash[:4])})"
 
 
 def check_elevenlabs(key: str) -> str:
