@@ -22,6 +22,7 @@ MODULES = [
     "src.signal_decay.robustness",
     "src.signal_decay.run_decay",
     "src.signal_decay.run_osap",
+    "src.signal_decay.decay_model",
 ]
 
 PAPER_COLS = contracts.CONTRACTS["papers"][1]
@@ -720,3 +721,64 @@ def test_openalex_retries_server_errors(tmp_path, monkeypatch):
             return R(self.codes.pop(0))
 
     assert attention._get_json("works", {}, "retry", cache_dir=tmp_path, session=Session()) == {"ok": True}
+
+
+# ---------- H7 decay predictor ----------
+
+def _model_frame(n_papers=60, seed=0, signal_in_feature=True):
+    """Synthetic signals: retained share depends on is_tstat when signal_in_feature."""
+    rng = np.random.default_rng(seed)
+    rows = []
+    for p in range(n_papers):
+        year = 1980 + p % 36
+        for k in range(2):
+            t = rng.uniform(2, 8)
+            target = (1.2 - 0.12 * t if signal_in_feature else 0.5) + rng.normal(0, 0.05)
+            rows.append({
+                "signal": f"s{p}_{k}", "authors": f"A{p}", "year": year, "journal": "JF",
+                "paper_key": f"A{p}|{year}|JF", "target": target,
+                "op_tstat": np.nan if k else t, "is_mean": 0.01, "is_tstat": t,
+                "sample_years": 20, "pub_lag": 3, "pub_year": float(year),
+                "citation_pct": rng.uniform(0, 100), "data_type": "Accounting",
+                "journal_group": "top3", "discrete": 0.0, "clear": 1.0, "equal_weighted": 1.0,
+            })
+    return pd.DataFrame(rows)
+
+
+def test_feature_matrix_uses_training_medians_and_flags():
+    from src.signal_decay.decay_model import feature_matrix
+
+    df = _model_frame(4)
+    X = feature_matrix(df, {"op_tstat": 99.0, "citation_pct": 50.0})
+    missing = df["op_tstat"].isna()
+    assert (X.loc[missing, "op_tstat"] == 99.0).all()
+    assert (X.loc[missing, "op_tstat_missing"] == 1.0).all()
+    assert X.isna().sum().sum() == 0
+
+
+def test_model_beats_baseline_when_signal_exists():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    res = fit_and_evaluate(_model_frame(signal_in_feature=True), train_last_year=2000)
+    s = res["summary"].set_index("model")
+    assert s.loc["ridge", "verdict"] == "beats baseline"
+    test_years = res["predictions"]["year"]
+    assert test_years.min() > 2000  # no test paper from the training period
+
+
+def test_model_does_not_beat_baseline_on_noise():
+    from src.signal_decay.decay_model import fit_and_evaluate
+
+    res = fit_and_evaluate(_model_frame(signal_in_feature=False), train_last_year=2000)
+    s = res["summary"].set_index("model")
+    assert s.loc["ridge", "verdict"] == "does not beat baseline"
+    assert s.loc["random_forest", "verdict"] == "does not beat baseline"
+
+
+def test_paper_bootstrap_resamples_whole_papers():
+    from src.signal_decay.decay_model import paper_bootstrap_ci
+
+    err_model = np.array([0.1, 0.1, 0.5, 0.5])
+    err_base = np.array([0.3, 0.3, 0.3, 0.3])
+    lo, hi = paper_bootstrap_ci(err_model, err_base, np.array(["a", "a", "b", "b"]), draws=500)
+    assert lo == pytest.approx(-0.2) and hi == pytest.approx(0.2)

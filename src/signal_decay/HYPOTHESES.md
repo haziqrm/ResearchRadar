@@ -112,3 +112,47 @@ estimates or citation counts had been computed.
 - b_post - b_oos not below zero: no evidence of a publication effect beyond overfitting.
 - H5 pooled p >= 0.10: the drop may just be returns falling over time.
 - H6 correlation <= 0 or p >= 0.10: no evidence that attention speeds up decay.
+
+---
+
+# H7. Decay predictor (written before any model was trained)
+
+Known when this was written: H4-H6 results, and how many signals fall in each
+publication-year range. No model had been fit and no test-set error computed.
+
+## Question
+Can information available at publication predict how much of its in-sample edge
+a signal keeps afterwards, better than assuming every signal keeps the same share?
+
+## Data
+- OSAP predictors with IS mean > 0 and POST data.
+- Target: retained share = POST mean / IS mean, clipped to [-1, 2] (tiny IS means
+  otherwise produce ratios in the hundreds).
+- Split by publication year: train <= 2006, test 2007-2016. Signals from one paper
+  always fall on the same side. The test set is never used for any choice.
+
+## Features (all known at publication)
+- Data type (OSAP Cat.Data; Options, 13F, Event and Other merged into Other).
+- Discrete vs continuous signal; "clear" vs "likely" predictability in the paper;
+  equal- vs value-weighted portfolio.
+- Original paper's t-stat (missing filled with the training median, plus a flag).
+- In-sample mean and t-stat of the long-short returns; sample length in years;
+  years from sample end to publication; publication year.
+- Journal group: top-3 finance (JF, JFE, RFS), accounting (AR, JAE, JAR, RAS, CAR), other.
+- Early-citation peer percentile (missing filled with the training median, plus a flag).
+
+## Models
+- Baseline: the training-set median retained share, the same for every signal.
+- Ridge regression on standardised features, penalty chosen by 5-fold cross-validation
+  grouped by paper, on the training set only.
+- Random forest: 500 trees, max depth 3, at least 5 signals per leaf, seed 0.
+
+## Pass mark
+- Metric: mean absolute error (MAE) on the test set.
+- A model "beats the baseline" only if the 95% interval of MAE(model) - MAE(baseline),
+  from a bootstrap that resamples test **papers** (2,000 draws, seed 0), lies entirely
+  below zero.
+- Also reported, descriptive only: Spearman correlation of predicted vs actual on the
+  test set, and permutation feature importance.
+- Expectation: with about 130 training signals, a clear win is unlikely. A tie with the
+  baseline means "decay is not predictable from these features beyond the average".
