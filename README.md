@@ -42,7 +42,7 @@ B and D must use these exact strings. They live in code as `src.common.contracts
 |---|---|---|
 | `data/factors.csv` | A | date, signal, return |
 | `data/papers.csv` | A | signal, paper, publication_date, date_rule, ken_french_column, source_verified |
-| `data/decay_results.csv` | A | signal, paper, publication_date, pre_mean, post_mean, half_life_months, ci_low, ci_high, early_citations |
+| `data/decay_results.csv` | A | signal, paper, publication_date, source, pre_mean, post_mean, share_kept, half_life_months, ci_low, ci_high, early_citations (key: source + signal) |
 | `data/network_nodes.csv` | B | paper_id, title, year, area, citations, lifecycle_stage |
 | `data/network_edges.csv` | B | source_id, target_id |
 | `data/area_forecasts.csv` | B | area, year, growth_score, boom_probability, predicted_boom, actual_boom |
@@ -81,6 +81,6 @@ python main.py --list     # shows which stages exist yet
 python main.py --only d   # one stage
 ```
 
-Each stage is a runner module: A `src.signal_decay.run_decay`, B `src.research_map.run_map`, D `src.live.run_live`. Stages that aren't written yet are skipped. Some stages call live APIs and need keys in `.env`.
+Each stage is a runner module: A `src.signal_decay.run_decay` then `src.signal_decay.combined`, B `src.research_map.run_map`, D `src.live.run_live`. Stages that aren't written yet are skipped. Some stages call live APIs and need keys in `.env`.
 
 GitHub Actions runs `pytest` on every push and pull request (`.github/workflows/tests.yml`). Don't merge to `main` while it's red.

@@ -31,8 +31,10 @@ CONTRACTS: dict[str, tuple[str, list[str]]] = {
     "factors": ("A", ["date", "signal", "return"]),
     "papers": ("A", ["signal", "paper", "publication_date", "date_rule",
                      "ken_french_column", "source_verified"]),
-    "decay_results": ("A", ["signal", "paper", "publication_date", "pre_mean",
-                            "post_mean", "half_life_months", "ci_low", "ci_high",
+    # Key is (source, signal): source is "ken_french" or "osap", and two names (Size,
+    # Investment) appear in both. share_kept = post_mean / pre_mean (blank if pre_mean <= 0).
+    "decay_results": ("A", ["signal", "paper", "publication_date", "source", "pre_mean",
+                            "post_mean", "share_kept", "half_life_months", "ci_low", "ci_high",
                             "early_citations"]),
     "network_nodes": ("B", ["paper_id", "title", "year", "area", "citations",
                             "lifecycle_stage"]),
