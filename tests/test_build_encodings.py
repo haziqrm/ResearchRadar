@@ -80,7 +80,7 @@ def test_cli_fake_run_writes_to_scratch_dir_not_data(tmp_path, monkeypatch, caps
     scratch = tmp_path / "cache" / "fake_run"
     assert (scratch / "paper_encodings.csv").exists()
     assert not (tmp_path / "paper_encodings.csv").exists()
-    assert "topic" in capsys.readouterr().out
+    assert "group" in capsys.readouterr().out
 
 
 def test_cli_combines_repeated_queries_and_dedupes(tmp_path, monkeypatch):

@@ -1,9 +1,9 @@
 paper_id,title,year,area,citations,lifecycle_stage
-W001,Returns to buying winners and selling losers,1993,Factor and anomaly research,12000,saturated
-W002,Empirical asset pricing via machine learning,2020,Machine learning for returns,2500,peaking
-W003,High frequency trading and price discovery,2014,Market microstructure,1400,saturated
-W004,Textual analysis of earnings calls,2018,Alternative data and text,600,peaking
-W005,Decentralized exchange liquidity,2022,Crypto and DeFi,180,emerging
-W006,Large language models for stock prediction,2024,LLMs in finance,220,emerging
-W007,Deep hedging,2019,Derivatives and volatility,900,peaking
-W008,Shrinkage covariance for portfolio choice,2004,Portfolio and risk,3100,saturated
+W001,Returns to buying winners and selling losers,1993,Cross-section of returns,12000,saturated
+W002,Empirical asset pricing via machine learning,2020,ML return prediction,2500,peaking
+W003,High frequency trading and price discovery,2014,Trading and liquidity,1400,saturated
+W004,Textual analysis of earnings calls,2018,News and social media sentiment,600,peaking
+W005,Decentralized exchange liquidity,2022,Crypto and blockchain,180,emerging
+W006,Large language models for stock prediction,2024,LLM applications,220,emerging
+W007,Deep hedging,2019,Options and volatility,900,peaking
+W008,Shrinkage covariance for portfolio choice,2004,Portfolio and risk management,3100,saturated

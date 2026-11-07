@@ -2,6 +2,11 @@
 
 Changing anything here changes the agreement between A, B, C and D:
 tell the team before you edit it.
+
+Areas are the research groups B discovers from the papers, not a hand-written
+list.  Their names live in ``data/groups.csv`` (``data/sample/groups.csv`` until
+B has real output).  Use :func:`area_names` to read them; every ``area`` column
+must use these exact strings.
 """
 
 from pathlib import Path
@@ -11,18 +16,6 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 SAMPLE_DIR = DATA_DIR / "sample"
-
-# B and D must use these exact strings.
-AREAS: list[str] = [
-    "Factor and anomaly research",
-    "Machine learning for returns",
-    "Market microstructure",
-    "Portfolio and risk",
-    "Derivatives and volatility",
-    "Alternative data and text",
-    "Crypto and DeFi",
-    "LLMs in finance",
-]
 
 LIFECYCLE_STAGES: list[str] = ["emerging", "peaking", "saturated"]
 
@@ -34,6 +27,9 @@ CONTRACTS: dict[str, tuple[str, list[str]]] = {
     "decay_results": ("A", ["signal", "paper", "publication_date", "pre_mean",
                             "post_mean", "half_life_months", "ci_low", "ci_high",
                             "early_citations"]),
+    # The shared area list: one row per discovered research group. `name` is the
+    # string used in every `area` column; `keywords` are the automatic top terms.
+    "groups": ("B", ["group_id", "name", "keywords"]),
     "network_nodes": ("B", ["paper_id", "title", "year", "area", "citations",
                             "lifecycle_stage"]),
     "network_edges": ("B", ["source_id", "target_id"]),
@@ -55,13 +51,36 @@ def path_for(name: str, sample: bool = False) -> Path:
     return (SAMPLE_DIR if sample else DATA_DIR) / f"{name}.csv"
 
 
-def validate(name: str, df: pd.DataFrame) -> None:
-    """Raise ValueError if df does not match the agreed contract."""
+def area_names(sample: bool = False) -> list[str]:
+    """The shared area list: group names from data/groups.csv (or the sample)."""
+    real = path_for("groups")
+    path = real if real.exists() and not sample else path_for("groups", sample=True)
+    return [str(name) for name in pd.read_csv(path)["name"]]
+
+
+def __getattr__(name: str):
+    # `from src.common.contracts import AREAS` keeps working and is always current.
+    if name == "AREAS":
+        return area_names()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def validate(name: str, df: pd.DataFrame, sample: bool = False) -> None:
+    """Raise ValueError if df does not match the agreed contract.
+
+    ``sample=True`` checks areas against the sample group list, for sample files.
+    """
     expected = CONTRACTS[name][1]
     if list(df.columns) != expected:
         raise ValueError(f"{name}.csv columns {list(df.columns)} != contract {expected}")
+    if name == "groups":
+        names = df["name"]
+        if names.isna().any() or (names.astype(str).str.strip() == "").any():
+            raise ValueError("groups.csv has an empty group name")
+        if df["group_id"].duplicated().any() or names.str.casefold().duplicated().any():
+            raise ValueError("groups.csv group ids and names must be unique")
     if "area" in df.columns:
-        bad = set(df["area"].dropna()) - set(AREAS)
+        bad = set(df["area"].dropna()) - set(area_names(sample))
         if bad:
             raise ValueError(f"{name}.csv has areas not in the shared list: {sorted(bad)}")
     if "lifecycle_stage" in df.columns:
@@ -73,9 +92,9 @@ def validate(name: str, df: pd.DataFrame) -> None:
 def load(name: str, prefer_real: bool = True) -> pd.DataFrame:
     """Load data/<name>.csv if it exists, otherwise data/sample/<name>.csv."""
     real = path_for(name)
-    path = real if prefer_real and real.exists() else path_for(name, sample=True)
-    df = pd.read_csv(path)
-    validate(name, df)
+    use_real = prefer_real and real.exists()
+    df = pd.read_csv(real if use_real else path_for(name, sample=True))
+    validate(name, df, sample=not use_real)
     return df
 
 

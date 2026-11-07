@@ -23,18 +23,29 @@ Full per-person plans: [docs/roadmap/](docs/roadmap/).
 - Raw downloads and API caches go in `data/raw/` or `data/cache/` (git-ignored).
 - IDE settings (`.idea/`, `.vscode/`) are git-ignored because they hold per-machine paths.
 
-## The area list (fixed)
+## The area list (discovered research groups)
 
-B and D must use these exact strings. They live in code as `src.common.contracts.AREAS`.
+Areas are not a hand-written list. B discovers research groups from the papers'
+SPECTER2 embeddings, freezes them, and names them by hand. Every `area` column
+(B's network and forecast files, D's crowding) must use the `name` values in
+`data/groups.csv` (`data/sample/groups.csv` until real output exists).
 
-1. Factor and anomaly research
-2. Machine learning for returns
-3. Market microstructure
-4. Portfolio and risk
-5. Derivatives and volatility
-6. Alternative data and text
-7. Crypto and DeFi
-8. LLMs in finance
+```python
+from src.common.contracts import area_names
+area_names()          # current group names; AREAS still works and returns the same list
+```
+
+To place new papers (for example D's arXiv papers) into the groups:
+
+```python
+from src.research_map.encoding.groups import assign_groups
+assign_groups(titles, abstracts)   # columns: area, area_score, group_ids, group_scores
+```
+
+This needs the B packages (`torch`, `transformers`, `adapters`) and downloads
+SPECTER2 on first use. The frozen model is `data/group_model.npz`. B only refits
+the groups (`--refit-groups`) when the corpus changes a lot; that renumbers and
+renames them, so B announces it first.
 
 ## File contracts (fixed)
 
@@ -43,9 +54,11 @@ B and D must use these exact strings. They live in code as `src.common.contracts
 | `data/factors.csv` | A | date, signal, return |
 | `data/papers.csv` | A | signal, paper, publication_date, date_rule, ken_french_column, source_verified |
 | `data/decay_results.csv` | A | signal, paper, publication_date, pre_mean, post_mean, half_life_months, ci_low, ci_high, early_citations |
+| `data/groups.csv` | B | group_id, name, keywords |
 | `data/network_nodes.csv` | B | paper_id, title, year, area, citations, lifecycle_stage |
 | `data/network_edges.csv` | B | source_id, target_id |
 | `data/area_forecasts.csv` | B | area, year, growth_score, boom_probability, predicted_boom, actual_boom |
+| `data/paper_encodings.csv` | B | paper_id, top_topic, topic_ids, topic_scores, topic_labels, model, text_quality |
 | `data/crowding.csv` | D | date, area, paper_count, crowding_score |
 | `data/backtest_results.csv` | D | date, strategy, monthly_return, cumulative_return |
 | `data/briefing.txt`, `data/briefing.mp3` | D | text and audio |
@@ -56,7 +69,7 @@ The code version is `src/common/contracts.py`:
 from src.common.contracts import load, save
 
 df = load("decay_results")   # real data/decay_results.csv if present, else data/sample/
-save("crowding", my_df)      # validates columns and area names, then writes data/crowding.csv
+save("crowding", my_df)      # validates columns and area names (from groups.csv), then writes data/crowding.csv
 ```
 
 Made-up sample files for every contract are in `data/sample/`, so the app can be built before real data lands.

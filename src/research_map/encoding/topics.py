@@ -27,6 +27,23 @@ DEFAULT_TEMPERATURE = 5.0
 MAX_PCA_COMPONENTS = 50
 
 
+def component_log_likelihoods(
+    reduced: np.ndarray,
+    weights: np.ndarray,
+    means: np.ndarray,
+    variances: np.ndarray,
+) -> np.ndarray:
+    """log(weight_k * N(x | mean_k, var_k * I)) for each paper and topic."""
+    dim = reduced.shape[1]
+    sq_dist = ((reduced[:, None, :] - means[None, :, :]) ** 2).sum(axis=2)
+    variance = np.asarray(variances)[None, :]
+    return (
+        np.log(weights)[None, :]
+        - 0.5 * dim * np.log(2 * np.pi * variance)
+        - sq_dist / (2 * variance)
+    )
+
+
 @dataclass
 class TopicModel:
     """A fitted PCA + Gaussian mixture, usable on new vectors."""
@@ -49,16 +66,8 @@ class TopicModel:
         return softmax(self._log_likelihoods(reduced) / self.temperature, axis=1)
 
     def _log_likelihoods(self, reduced: np.ndarray) -> np.ndarray:
-        """log(weight_k * N(x | mean_k, var_k * I)) for each paper and topic."""
         gmm = self.gmm
-        dim = reduced.shape[1]
-        sq_dist = ((reduced[:, None, :] - gmm.means_[None, :, :]) ** 2).sum(axis=2)
-        variance = gmm.covariances_[None, :]
-        return (
-            np.log(gmm.weights_)[None, :]
-            - 0.5 * dim * np.log(2 * np.pi * variance)
-            - sq_dist / (2 * variance)
-        )
+        return component_log_likelihoods(reduced, gmm.weights_, gmm.means_, gmm.covariances_)
 
     def assign(self, memberships: np.ndarray) -> list[list[tuple[int, float]]]:
         return assign_topics(memberships, self.threshold, self.max_topics)
