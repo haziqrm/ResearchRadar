@@ -218,6 +218,18 @@ def load_gemini_cache(path: Path = GEMINI_CACHE, model: str | None = None) -> di
     return out
 
 
+def committed_gemini_tags(path: Path = TAGGED_CSV) -> dict[str, dict]:
+    """Gemini tags already in the committed arxiv_tagged.csv. The API cache is git-ignored,
+    so without this a teammate with no key would overwrite them with keyword tags."""
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path, dtype=str, keep_default_na=False)
+    df = df[df["tagger"] == "gemini"]
+    return {r.arxiv_id: {"area": r.area, "signal": r.signal,
+                         "confidence": float(r.confidence or 0), "tagger": "gemini"}
+            for r in df.itertuples()}
+
+
 def gemini_tag(papers: pd.DataFrame, signals: list[str], client, model: str,
                cache_path: Path = GEMINI_CACHE, gap: float = GEMINI_GAP_SECONDS,
                call=call_gemini, batch_size: int = BATCH_SIZE) -> dict[str, dict]:
@@ -333,6 +345,8 @@ def main(argv: list[str] | None = None) -> Path:
             cache = load_gemini_cache(model=model)
     elif args.tagger == "keyword":
         cache = {}
+    else:  # auto with no key: keep committed Gemini tags, keywords only for new papers
+        cache = {**committed_gemini_tags(), **cache}
 
     tagged = tag_papers(papers, signals, cache)
     tagged.to_csv(TAGGED_CSV, index=False)

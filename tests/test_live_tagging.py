@@ -166,6 +166,24 @@ def test_tag_papers_falls_back_to_keywords():
     assert out["area"].tolist() == [AREAS[2], "Crypto and DeFi"]
 
 
+def test_committed_gemini_tags_survive_a_keyless_run(tmp_path):
+    path = tmp_path / "arxiv_tagged.csv"
+    pd.DataFrame([
+        {"arxiv_id": "a", "published": "2025-01-06", "title": "x", "area": AREAS[2],
+         "signal": "Momentum", "confidence": "0.8", "tagger": "gemini"},
+        {"arxiv_id": "b", "published": "2025-01-06", "title": "y", "area": "",
+         "signal": "", "confidence": "", "tagger": "gemini"},
+        {"arxiv_id": "c", "published": "2025-01-06", "title": "z", "area": AREAS[0],
+         "signal": "", "confidence": "0.3", "tagger": "keyword"},
+    ]).to_csv(path, index=False)
+    tags = tg.committed_gemini_tags(path)
+    assert set(tags) == {"a", "b"}  # keyword rows are recomputed, not reused
+    assert tags["a"] == {"area": AREAS[2], "signal": "Momentum", "confidence": 0.8,
+                         "tagger": "gemini"}
+    assert tags["b"]["area"] == "" and tags["b"]["confidence"] == 0.0
+    assert tg.committed_gemini_tags(tmp_path / "missing.csv") == {}
+
+
 # --- crowding --------------------------------------------------------------
 def tagged_frame(weeks, per_week, surge_area=None, surge=0, start="2025-01-06"):
     """Same mix of areas every week; optionally extra papers in the last week."""
