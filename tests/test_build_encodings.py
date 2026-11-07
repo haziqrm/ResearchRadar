@@ -99,6 +99,42 @@ def test_cli_combines_repeated_queries_and_dedupes(tmp_path, monkeypatch):
     assert len(written) == 36 and written["paper_id"].is_unique
 
 
+def test_cli_per_year_mode_uses_the_yearly_sample(tmp_path, monkeypatch):
+    from src.research_map.encoding.fetch import YearlySample
+
+    monkeypatch.setattr(contracts, "DATA_DIR", tmp_path)
+    seen = {}
+
+    def fake_sample(filters, years, per_year, **kwargs):
+        seen.update(filters=filters, years=list(years), per_year=per_year, seed=kwargs["seed"])
+        return YearlySample(make_papers(), {}, {})
+
+    monkeypatch.setattr(build_encodings, "fetch_yearly_sample", fake_sample)
+    assert main(["--per-year", "50", "--years", "2010-2012", "--seed", "3", "--fake"]) == 0
+    assert seen["years"] == [2010, 2011, 2012] and seen["per_year"] == 50 and seen["seed"] == 3
+    assert seen["filters"].startswith("primary_topic.id:")
+
+
+def test_cli_requires_exactly_one_source(capsys):
+    with pytest.raises(SystemExit):
+        main(["--fake"])
+    with pytest.raises(SystemExit):
+        main(["--query", "a", "--per-year", "5", "--fake"])
+
+
+@pytest.mark.parametrize("value,expected", [("2000-2026", (2000, 2026)), ("2015", (2015, 2015))])
+def test_parse_years(value, expected):
+    assert build_encodings.parse_years(value) == expected
+
+
+@pytest.mark.parametrize("value", ["2026-2000", "abc", "1-2-3"])
+def test_parse_years_rejects_bad_ranges(value):
+    import argparse
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        build_encodings.parse_years(value)
+
+
 def test_cli_with_no_results_exits_nonzero(tmp_path, monkeypatch):
     monkeypatch.setattr(contracts, "DATA_DIR", tmp_path)
     monkeypatch.setattr(build_encodings, "fetch_papers",

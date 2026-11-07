@@ -206,6 +206,66 @@ class OpenAlexClient:
             meta = page.get("meta", {})
             cursor = meta.get("next_cursor") if isinstance(meta, dict) else None
 
+    def sample_works(
+        self,
+        filters: str,
+        n: int,
+        *,
+        seed: int = 0,
+        select: Sequence[str] | None = None,
+        per_page: int = 100,
+    ) -> Iterator[dict[str, Any]]:
+        """Yield a seeded random sample of up to ``n`` works matching ``filters``.
+
+        The same filter and seed give the same sample while the OpenAlex index
+        is unchanged.  OpenAlex caps a sample at 10,000 works.
+        """
+        if not filters.strip():
+            raise ValueError("filters cannot be empty")
+        if not 1 <= n <= 10_000:
+            raise ValueError("n must be between 1 and 10,000")
+        if not 1 <= per_page <= 100:
+            raise ValueError("per_page must be between 1 and 100")
+
+        params: dict[str, Any] = {
+            "filter": filters.strip(), "sample": n, "seed": seed, "per_page": per_page,
+        }
+        if select:
+            params["select"] = ",".join(select)
+        yielded = 0
+        page = 1
+        while yielded < n:
+            payload = self._get("works", {**params, "page": page})
+            results = payload.get("results", [])
+            if not isinstance(results, list):
+                raise OpenAlexError("OpenAlex response has no results list")
+            if not results:
+                return
+            for work in results:
+                if not isinstance(work, dict):
+                    raise OpenAlexError("OpenAlex returned an invalid work record")
+                yield work
+                yielded += 1
+                if yielded >= n:
+                    return
+            page += 1
+
+    def count_works_by(self, filters: str, group_by: str) -> dict[str, int]:
+        """Count works matching ``filters`` per value of ``group_by`` (e.g. year)."""
+        if not group_by.strip():
+            raise ValueError("group_by cannot be empty")
+        params: dict[str, Any] = {"group_by": group_by.strip()}
+        if filters.strip():
+            params["filter"] = filters.strip()
+        groups = self._get("works", params).get("group_by")
+        if not isinstance(groups, list):
+            raise OpenAlexError("OpenAlex response has no group_by list")
+        return {
+            str(group["key"]): int(group["count"])
+            for group in groups
+            if isinstance(group, dict) and "key" in group and "count" in group
+        }
+
     def get_works(self, work_ids: Sequence[str]) -> list[dict[str, Any]]:
         """Fetch up to 100 works in one request using OpenAlex's OR filter."""
         ids = [work_id.strip() for work_id in work_ids if work_id.strip()]

@@ -1,6 +1,10 @@
 """Build paper encodings end to end.
 
+    python -m src.research_map.build_encodings --per-year 380 --years 2000-2026
     python -m src.research_map.build_encodings --query "momentum anomaly" --max 3000
+
+``--per-year`` draws a random sample from every year of the quant-finance
+corpus (see ``fetch.QUANT_TOPICS``); use it for anything that measures growth.
 
 Steps: fetch (OpenAlex, cached) -> embed (incremental) -> place papers in the
 frozen research groups (discovered on the first run, or with ``--refit-groups``)
@@ -26,7 +30,7 @@ import pandas as pd
 
 from src.common import contracts
 from src.research_map.encoding.embed import Embedder, FakeEmbedder, Specter2Embedder
-from src.research_map.encoding.fetch import fetch_papers
+from src.research_map.encoding.fetch import corpus_filter, fetch_papers, fetch_yearly_sample
 from src.research_map.encoding.groups import (
     GroupModel,
     build_groups_frame,
@@ -87,7 +91,8 @@ def run_pipeline(
     papers = papers.drop_duplicates("paper_id").reset_index(drop=True)
 
     progress(f"Embedding {len(papers)} papers with {embedder.name} (cached ones are reused)")
-    ids, vectors, n_new = embed_missing(papers, embedder, base / "cache" / EMBED_CACHE_NAME)
+    ids, vectors, n_new = embed_missing(papers, embedder, base / "cache" / EMBED_CACHE_NAME,
+                                        progress=progress)
     progress(f"  {n_new} new embeddings, {len(ids) - n_new} from cache")
 
     model_file = group_model_path(base)
@@ -159,13 +164,33 @@ def _summarize(
                                        "also_in_other_groups", "examples"])
 
 
+def parse_years(value: str) -> tuple[int, int]:
+    """``"2000-2026"`` -> ``(2000, 2026)``; a single year is also accepted."""
+    parts = value.strip().split("-")
+    try:
+        first, last = (int(parts[0]), int(parts[-1])) if len(parts) <= 2 else (0, -1)
+    except ValueError:
+        first, last = 0, -1
+    if first > last or first < 1900:
+        raise argparse.ArgumentTypeError(f"invalid year range {value!r}; use e.g. 2000-2026")
+    return first, last
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Build paper encodings from OpenAlex.")
-    parser.add_argument("--query", required=True, action="append",
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--query", action="append",
                         help="OpenAlex search query; repeat to combine several queries")
+    source.add_argument("--per-year", type=int,
+                        help="random sample this many quant-finance papers from every year "
+                             "(use this for growth measurement)")
+    parser.add_argument("--years", default="2000-2026",
+                        help="year range for --per-year, e.g. 2000-2026")
+    parser.add_argument("--seed", type=int, default=0, help="sampling seed for --per-year")
     parser.add_argument("--max", type=int, default=1000, dest="max_results",
                         help="maximum number of papers to fetch per query (default 1000)")
-    parser.add_argument("--filters", default=None, help='OpenAlex filter, e.g. "from_publication_date:2015-01-01"')
+    parser.add_argument("--filters", default=None,
+                        help='extra OpenAlex filter, e.g. "from_publication_date:2015-01-01"')
     parser.add_argument("--refit-groups", action="store_true",
                         help="rediscover the groups; resets group ids and names in groups.csv")
     parser.add_argument("--k-min", type=int, default=2, help="(refit only)")
@@ -192,11 +217,20 @@ def main(argv: Sequence[str] | None = None) -> int:
         FakeEmbedder() if args.fake else Specter2Embedder(batch_size=args.batch_size)
     )
 
-    frames = []
-    for query in args.query:
-        print(f"Fetching up to {args.max_results} papers for {query!r}")
-        frames.append(fetch_papers(query, args.max_results, filters=args.filters))
-    papers = pd.concat(frames, ignore_index=True).drop_duplicates("paper_id")
+    if args.per_year is not None:
+        first, last = parse_years(args.years)
+        print(f"Sampling {args.per_year} papers per year, {first}-{last}")
+        sample = fetch_yearly_sample(
+            corpus_filter(extra=args.filters), range(first, last + 1), args.per_year,
+            seed=args.seed, progress=print,
+        )
+        papers = sample.papers
+    else:
+        frames = []
+        for query in args.query:
+            print(f"Fetching up to {args.max_results} papers for {query!r}")
+            frames.append(fetch_papers(query, args.max_results, filters=args.filters))
+        papers = pd.concat(frames, ignore_index=True).drop_duplicates("paper_id")
     if papers.empty:
         print("No papers found; nothing written.")
         return 1

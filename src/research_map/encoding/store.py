@@ -7,6 +7,7 @@ corpus only embeds the new papers.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
@@ -73,6 +74,7 @@ def embed_missing(
     path: Path | str = VECTORS_PATH,
     *,
     batch_size: int = 256,
+    progress: Callable[[str], None] | None = None,
 ) -> tuple[list[str], np.ndarray, int]:
     """Embed only papers not yet stored, persist, and return vectors for ``papers``.
 
@@ -92,10 +94,11 @@ def embed_missing(
     missing = papers[~papers["paper_id"].isin(lookup)]
     new_vectors = np.zeros((0, embedder.dim), dtype=np.float32)
     if len(missing):
-        parts = [
-            embedder.embed(missing["text"].iloc[i:i + batch_size].tolist())
-            for i in range(0, len(missing), batch_size)
-        ]
+        parts = []
+        for i in range(0, len(missing), batch_size):
+            parts.append(embedder.embed(missing["text"].iloc[i:i + batch_size].tolist()))
+            if progress is not None:
+                progress(f"  embedded {min(i + batch_size, len(missing))}/{len(missing)}")
         new_vectors = np.concatenate(parts, axis=0)
 
     all_ids = stored_ids + missing["paper_id"].tolist()
