@@ -65,6 +65,30 @@ def plot_before_after(
     return fig
 
 
+def plot_attention_vs_decay(details: pd.DataFrame, save_path=None) -> Path | None:
+    """Scatter of era-adjusted attention (citation percentile) against relative decay.
+
+    Returns save_path (or None if not saving). Labelled as suggestive: see HYPOTHESES.md (H3).
+    """
+    d = details.dropna(subset=["citation_percentile", "relative_decay"])
+    fig, ax = plt.subplots(figsize=(7, 5))
+    ax.scatter(d["citation_percentile"], 100 * d["relative_decay"], s=50)
+    for _, r in d.iterrows():
+        ax.annotate(r["signal"], (r["citation_percentile"], 100 * r["relative_decay"]),
+                    xytext=(5, 4), textcoords="offset points", fontsize=9)
+    ax.axhline(0, color="black", lw=0.8)
+    ax.set_xlim(0, 105)
+    ax.set_xlabel("Early citations, percentile among same journal and year (%)")
+    ax.set_ylabel("Share of the edge lost after publication (%)")
+    ax.set_title(f"Attention vs decay ({len(d)} signals, suggestive only)")
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    if save_path is not None:
+        fig.savefig(save_path, dpi=150)
+    plt.close(fig)
+    return save_path
+
+
 def save_all_charts(
     papers: pd.DataFrame, factors: pd.DataFrame | None = None, out_dir: Path = CHARTS_DIR
 ) -> list[Path]:

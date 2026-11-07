@@ -19,6 +19,7 @@ MODULES = [
     "src.signal_decay.decay",
     "src.signal_decay.attention",
     "src.signal_decay.plots",
+    "src.signal_decay.robustness",
     "src.signal_decay.run_decay",
 ]
 
@@ -377,7 +378,7 @@ def test_build_results_matches_contract_and_flags_rows():
         ["value", "C", "1992-06-01", "journal_issue", "HML", "no"],
     ]))
     inc, exc = select_for_results(papers)
-    results, details = build_results(factors, inc, exc, citations=False)
+    results, details = build_results(factors, inc, exc, citations=False, bootstrap_draws=50)
 
     contracts.validate("decay_results", results)
     assert list(results["signal"]) == ["momentum", "late"]
@@ -387,3 +388,151 @@ def test_build_results_matches_contract_and_flags_rows():
     assert status["momentum"] == "ok"
     assert status["late"] == "insufficient_post:60"
     assert status["value"] == "excluded_unverified"
+
+
+# ---------- era-adjusted attention (H3 input) ----------
+
+class _RoutingSession:
+    """Fake OpenAlex: answers work lookups, peer listings and citing counts offline."""
+
+    def __init__(self, counts):
+        self.counts, self.calls = counts, 0
+
+    def get(self, url, params=None, timeout=None):
+        self.calls += 1
+        f = params.get("filter", "")
+        if url.endswith("/works/W1"):
+            payload = {"id": "https://openalex.org/W1", "publication_year": 1993,
+                       "primary_location": {"source": {"id": "https://openalex.org/S9"}}}
+        elif f.startswith("primary_location.source.id"):
+            payload = {"results": [{"id": f"https://openalex.org/{w}"} for w in self.counts],
+                       "meta": {"next_cursor": None}}
+        else:
+            wid = f.split(",")[0].split(":")[1]
+            payload = {"meta": {"count": self.counts[wid]}}
+        return _FakeResponse(payload)
+
+
+def test_era_adjusted_attention_ranks_against_peers(tmp_path, monkeypatch):
+    from src.signal_decay import attention
+
+    monkeypatch.setenv("OPENALEX_API_KEY", "test-key")
+    counts = {"W1": 30, "W2": 5, "W3": 10, "W4": 30, "W5": 50}
+    session = _RoutingSession(counts)
+    att = attention.era_adjusted_attention("W1", 1993, cache_dir=tmp_path, session=session)
+
+    assert att["early_citations"] == 30
+    assert att["peer_n"] == 4  # the paper itself is not its own peer
+    assert att["peer_median"] == 20
+    assert att["percentile"] == pytest.approx(100 * (2 + 0.5) / 4)
+
+    calls = session.calls
+    attention.era_adjusted_attention("W1", 1993, cache_dir=tmp_path, session=session)
+    assert session.calls == calls  # everything served from cache
+
+
+def test_peer_sample_is_deterministic_and_capped():
+    from src.signal_decay.attention import sample_peers
+
+    pool = [f"W{i}" for i in range(200)]
+    a, b = sample_peers(pool, "W0", n=50), sample_peers(list(reversed(pool)), "W0", n=50)
+    assert a == b and len(a) == 50 and "W0" not in a
+
+
+# ---------- H3 test ----------
+
+def test_attention_decay_test_exact_permutation():
+    from src.signal_decay.attention import attention_decay_test
+
+    a = pd.Series([10, 20, 30, 40, 50, 60, 70])
+    res = attention_decay_test(a, a * 0.01)  # perfectly increasing
+    assert res["spearman"] == pytest.approx(1.0)
+    assert res["p_one_sided"] == pytest.approx(1 / 5040)
+
+    res = attention_decay_test(a, -a)  # perfectly decreasing: no support for H3
+    assert res["p_one_sided"] == pytest.approx(1.0)
+
+
+def test_attention_decay_test_needs_three_points():
+    from src.signal_decay.attention import attention_decay_test
+
+    res = attention_decay_test(pd.Series([1.0, np.nan]), pd.Series([0.5, 0.2]))
+    assert res["n"] == 1 and np.isnan(res["p_one_sided"])
+
+
+# ---------- H2 placebo ----------
+
+def test_split_differences_match_direct_means():
+    from src.signal_decay.robustness import split_differences
+
+    s = _monthly(np.random.default_rng(3).normal(0, 0.01, 300))
+    diffs = split_differences(s, min_months=120)
+    assert len(diffs) == 300 - 2 * 120 + 1
+    k = 150
+    direct = s.iloc[k:].mean() - s.iloc[:k].mean()
+    assert diffs.loc[s.index[k]] == pytest.approx(direct)
+
+
+def test_placebo_flags_real_break_and_not_noise():
+    from src.signal_decay.robustness import placebo_test
+
+    rng = np.random.default_rng(4)
+    broken = _monthly(np.r_[np.full(300, 0.01), np.full(300, 0.0)] + rng.normal(0, 0.003, 600))
+    assert placebo_test(broken, broken.index[300])["placebo_p"] < 0.05
+
+    noise = _monthly(rng.normal(0.005, 0.02, 600))
+    assert placebo_test(noise, noise.index[300])["placebo_p"] > 0.05
+
+
+def test_pooled_placebo_detects_common_break():
+    from src.signal_decay.robustness import pooled_placebo_test
+
+    rng = np.random.default_rng(5)
+    series, dates = {}, {}
+    for i, brk in enumerate([200, 300, 400]):
+        v = np.r_[np.full(brk, 0.01), np.full(600 - brk, 0.0)] + rng.normal(0, 0.003, 600)
+        series[f"s{i}"] = _monthly(v)
+        dates[f"s{i}"] = series[f"s{i}"].index[brk]
+    res = pooled_placebo_test(series, dates, draws=2000)
+    assert res["n_signals"] == 3 and res["p_one_sided"] < 0.05
+
+
+# ---------- half-life and retained-share intervals ----------
+
+def test_bootstrap_interval_covers_known_half_life():
+    from src.signal_decay.robustness import bootstrap_decay
+
+    rng = np.random.default_rng(6)
+    t = np.arange(400)
+    post = 0.01 * np.exp(-np.log(2) / 60 * t) + rng.normal(0, 0.001, 400)
+    s = _monthly(np.r_[np.full(240, 0.01) + rng.normal(0, 0.001, 240), post])
+    res = bootstrap_decay(s, s.index[240], draws=200)
+    assert res["half_life_fit_rate"] > 0.8
+    assert res["half_life_ci_low"] < 60 < res["half_life_ci_high"]
+    assert res["half_life_reportable"]
+    assert res["retained_ci_low"] < res["retained_share"] < res["retained_ci_high"]
+
+
+def test_noisy_series_half_life_not_reportable():
+    from src.signal_decay.robustness import bootstrap_decay
+
+    s = _monthly(np.random.default_rng(7).normal(0.005, 0.04, 600))
+    res = bootstrap_decay(s, s.index[300], draws=200)
+    assert not res["half_life_reportable"]
+
+
+def test_build_summary_rows():
+    from src.signal_decay.papers import select_for_results, validate_papers
+    from src.signal_decay.run_decay import SUMMARY_COLUMNS, build_results, build_summary
+
+    rng = np.random.default_rng(8)
+    s = _monthly(np.r_[np.full(300, 0.01), np.full(300, 0.002)] + rng.normal(0, 0.003, 600), "1940-01-31")
+    factors = pd.DataFrame({"date": s.index, "signal": "Mom", "return": s.values})
+    papers = validate_papers(_papers([["momentum", "A", s.index[300].strftime("%Y-%m-%d"),
+                                       "journal_issue", "Mom", "yes"]]))
+    inc, exc = select_for_results(papers)
+    _, details = build_results(factors, inc, exc, citations=False, bootstrap_draws=20)
+    summary = build_summary(factors, inc, details)
+    assert list(summary.columns) == SUMMARY_COLUMNS
+    assert summary.set_index("test").loc["H2 pooled placebo", "p_value"] < 0.05
+    assert summary.set_index("test").loc["H3 attention vs decay", "n"] == 0  # no citations

@@ -101,6 +101,38 @@ def _exp_decay(t, a, k):
     return a * np.exp(-k * t)
 
 
+def fit_decay_curve(post: np.ndarray, window: int = 36) -> tuple[float, float] | None:
+    """Fit m(t) = a * exp(-k t) to the rolling ``window``-month mean of post returns.
+
+    t counts rolling windows from the first full one. Returns (a, k), or None if
+    the series is too short, the starting mean is not positive, or the fit fails.
+    """
+    if len(post) < window + 2:
+        return None
+    m = pd.Series(post).rolling(window).mean().dropna().to_numpy()
+    if m[0] <= 0:
+        return None
+    t = np.arange(len(m), dtype=float)
+    try:
+        (a, k), _ = curve_fit(_exp_decay, t, m, p0=(m[0], 0.01), bounds=([0, -1], [np.inf, 1]))
+    except (RuntimeError, ValueError):
+        return None
+    return float(a), float(k)
+
+
+def expected_path(a: float, k: float, n: int, window: int = 36) -> np.ndarray:
+    """Monthly expected return mu(s) = c * exp(-k s), s = 0..n-1, implied by a rolling-mean fit.
+
+    The rolling mean of c * exp(-k s) starting at month j equals
+    c * exp(-k j) * (1 - exp(-k w)) / (w * (1 - exp(-k))), so c follows from a.
+    """
+    if abs(k) < 1e-12:
+        c = a
+    else:
+        c = a * window * (1 - np.exp(-k)) / (1 - np.exp(-k * window))
+    return c * np.exp(-k * np.arange(n))
+
+
 def fit_half_life(
     returns: pd.Series,
     publication_date,
@@ -122,14 +154,10 @@ def fit_half_life(
     post = r[r.index >= pd.Timestamp(publication_date)]
     if len(post) < max(min_post_months, window + 2):
         return None
-    m = post.rolling(window).mean().dropna().to_numpy()
-    if m[0] <= 0:
+    fit = fit_decay_curve(post.to_numpy(), window)
+    if fit is None:
         return None
-    t = np.arange(len(m), dtype=float)
-    try:
-        (a, k), _ = curve_fit(_exp_decay, t, m, p0=(m[0], 0.01), bounds=([0, -1], [np.inf, 1]))
-    except (RuntimeError, ValueError):
-        return None
+    _, k = fit
     if k <= 0:
         return None
     half_life = float(np.log(2) / k)
