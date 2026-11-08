@@ -1559,10 +1559,13 @@ arxiv_id,published,title,area,confidence
 2511.21287,2025-11-26,Dynamic characterization of barycentric optimal transport problems and their martingale relaxation,,0.99
 2511.22782,2025-11-27,"Factors Influencing Cryptocurrency Prices: Evidence from Bitcoin, Ethereum, Dash, Litecoin, and Monero","Crypto, COVID and spillovers",0.95
 2511.22101,2025-11-27,Adaptive Dueling Double Deep Q-networks in Uniswap V3 Replication and Extension with Mamba,Trading and order flow,0.85
+2511.22272,2025-11-27,Statistics of Extremes for the Insurance Industry,,0.95
 2511.22766,2025-11-27,Beta-Dependent Gamma Feedback and Endogenous Volatility Amplification in Option Markets,Trading and order flow,0.85
 2512.00142,2025-11-28,DeFi TrustBoost: Blockchain and AI for Trustworthy Decentralized Financial Decisions,"Crypto, COVID and spillovers",0.75
 2511.23295,2025-11-28,Signature approach for pricing and hedging path-dependent options with frictions,,0.9
 2512.04108,2025-11-28,Responsible LLM Deployment for High-Stake Decisions by Decentralized Technologies and Human-AI Interactions,,0.95
+2512.00299,2025-11-29,Stochastic Dominance Constrained Optimization with S-shaped Utilities: Poor-Performance-Region Algorithm and Neural Network,,0.95
+2512.00280,2025-11-29,Retail Investor Horizon and Earnings Announcements,Information and stock reactions,0.9
 2512.00448,2025-11-29,Efficient Simulation and Calibration of the Rough Bergomi Model via Wasserstein Distance,,0.95
 2512.00630,2025-11-29,Financial Text Classification Based On rLoRA Finetuning On Qwen3-8B model,Deep learning and LLM forecasting,0.85
 2512.00346,2025-11-29,Convergence Rates of Turnpike Theorems for Portfolio Choice in Stochastic Factor Models,,0.95
@@ -1577,6 +1580,7 @@ arxiv_id,published,title,area,confidence
 2512.01408,2025-12-01,Bayesian Distributionally Robust Merton Problem with Nonlinear Wasserstein Projections,,0.95
 2512.01354,2025-12-01,The Necessity of Imperfection:Reversing Model Collapse via Simulating Cognitive Boundedness,Deep learning and LLM forecasting,0.85
 2512.01623,2025-12-01,Monopoly Pricing of Weather Index Insurance,,0.95
+2512.01967,2025-12-01,Arbitrage-Free Option Price Surfaces via Chebyshev Tensor Bases and a Hamiltonian Fog Post-Fit,,0.95
 2512.02166,2025-12-01,The Three-Dimensional Decomposition of Volatility Memory,Volatility forecasting (GARCH),0.9
 2512.03123,2025-12-02,A Stochastic Thermodynamics Approach to Price Impact and Round-Trip Arbitrage: Theory and Empirical Implications,Trading and order flow,0.9
 2512.15720,2025-12-02,Hidden Order in Trades Predicts the Size of Price Moves,Trading and order flow,0.9
@@ -1603,6 +1607,7 @@ arxiv_id,published,title,area,confidence
 2512.15728,2025-12-05,FedSight AI: Multi-Agent System Architecture for Federal Funds Target Rate Prediction,Deep learning and LLM forecasting,0.9
 2512.15732,2025-12-05,The Red Queen's Trap: Limits of Deep Evolution in High-Frequency Trading,Deep learning and LLM forecasting,0.85
 2512.05559,2025-12-05,A Unified AI System For Data Quality Control and DataOps Management in Regulated Environments,,0.95
+2512.06144,2025-12-05,Market Reactions to Material Cybersecurity Incident Disclosures,Information and stock reactions,0.95
 2512.15738,2025-12-06,Hybrid Quantum-Classical Ensemble Learning for S\&P 500 Directional Prediction,Deep learning and LLM forecasting,0.95
 2512.15739,2025-12-06,Bayesian Modeling for Uncertainty Management in Financial Risk Forecasting and Compliance,Volatility forecasting (GARCH),0.85
 2512.06550,2025-12-06,Market Reactions and Information Spillovers in Bank Mergers: A Multi-Method Analysis of the Japanese Banking Sector,Information and stock reactions,0.9
@@ -1633,6 +1638,7 @@ arxiv_id,published,title,area,confidence
 2512.10584,2025-12-11,Volatility time series modeling by single-qubit quantum circuit learning,Volatility forecasting (GARCH),0.95
 2512.10606,2025-12-11,Local and Global Balance in Financial Correlation Networks: an Application to Investment Decisions,,0.85
 2512.10823,2025-12-11,Option-Implied Zero-Coupon Yields: Unifying Bond and Equity Markets,,0.9
+2512.10913,2025-12-11,"Reinforcement Learning in Financial Decision Making: A Systematic Review of Performance, Challenges, and Implementation Strategies",,0.9
 2512.14735,2025-12-11,PyFi: Toward Pyramid-like Financial Image Understanding for VLMs via Adversarial Agents,,0.95
 2512.11731,2025-12-12,Transfer Learning (Il)liquidity,,0.9
 2512.11666,2025-12-12,Risk Limited Asset Allocation with a Budget Threshold Utility Function and Leptokurtotic Distributions of Returns,,0.9
@@ -1643,10 +1649,12 @@ arxiv_id,published,title,area,confidence
 2512.11765,2025-12-12,High-Frequency Analysis of a Trading Game with Transient Price Impact,Trading and order flow,0.95
 2512.12054,2025-12-12,Universal Dynamics of Financial Bubbles in Isolated Markets: Evidence from the Iranian Stock Market,Behavioral finance,0.9
 2512.11976,2025-12-12,Institutionalizing risk curation in decentralized credit,"Crypto, COVID and spillovers",0.9
+2512.11933,2025-12-12,The Agentic Regulator: Risks for AI in Finance and a Proposed Agent-based Framework for Governance,,0.95
 2512.12334,2025-12-13,Extending the application of dynamic Bayesian networks in calculating market risk: Standard and stressed expected shortfall,Volatility forecasting (GARCH),0.95
 2512.12420,2025-12-13,Deep Hedging with Reinforcement Learning: A Practical Framework for Option Risk Management,,0.9
 2512.12499,2025-12-13,Explainable Prediction of Economic Time Series Using IMFs and Neural Networks,,0.85
 2512.12250,2025-12-13,Stochastic Volatility Modelling with LSTM Networks: A Hybrid Approach for S&P 500 Index Volatility Forecasting,Volatility forecasting (GARCH),0.9
+2512.12526,2025-12-14,Empirical Mode Decomposition and Graph Transformation of the MSCI World Index: A Multiscale Topological Analysis for Graph Neural Network Modeling,,0.9
 2512.12727,2025-12-14,EXFormer: A Multi-Scale Trend-Aware Transformer with Dynamic Variable Selection for Foreign Exchange Returns Prediction,Deep learning and LLM forecasting,0.95
 2512.17945,2025-12-14,What's the Price of Monotonicity? A Multi-Dataset Benchmark of Monotone-Constrained Gradient Boosting for Credit PD,,0.95
 2512.12871,2025-12-14,CapOptix: An Options-Framework for Capacity Market Pricing,,0.95
@@ -1666,9 +1674,11 @@ arxiv_id,published,title,area,confidence
 2512.14992,2025-12-17,"Multi-Objective Bayesian Optimization of Deep Reinforcement Learning for Environmental, Social, and Governance (ESG) Financial Portfolio Management",,0.9
 2512.15071,2025-12-17,Arbitrage-Free Pricing with Diffusion-Dependent Jumps,,0.95
 2512.16080,2025-12-18,Design of a Decentralized Fixed-Income Lending Automated Market Maker Protocol Supporting Arbitrary Maturities,,0.85
+2512.16251,2025-12-18,Interpretable Deep Learning for Stock Returns: A Consensus-Bottleneck Asset Pricing Model,Deep learning and LLM forecasting,0.75
 2512.16411,2025-12-18,Asymptotic and finite-sample distributions of one- and two-sample empirical relative entropy,,0.95
 2512.16396,2025-12-18,Global universal approximation with Brownian signatures,,0.95
 2512.16115,2025-12-18,An Efficient Machine Learning Framework for Option Pricing via Fourier Transform,,0.9
+2512.17702,2025-12-19,Relative arbitrage problem under eigenvalue lower bounds,,0.95
 2512.17791,2025-12-19,Near-Maturity Asymptotics of Critical Prices of American Put Options under Exponential Lévy Models,,0.95
 2512.17895,2025-12-19,Visualization of The Content of Surah al Fiil using Marker-Based Augmented Reality,,1.0
 2512.17225,2025-12-19,Modeling financial time series with $φ^{4}$ quantum field theory,Classical stock price prediction,0.8
@@ -1686,9 +1696,11 @@ arxiv_id,published,title,area,confidence
 2512.19251,2025-12-22,Institutional Backing and Crypto Volatility: A Hybrid Framework for DeFi Stabilization,"Crypto, COVID and spillovers",0.95
 2512.19821,2025-12-22,How to choose my stochastic volatility parameters? A review,,0.9
 2512.19611,2025-12-22,Heston vol-of-vol and the VVIX,,0.9
+2512.19621,2025-12-22,Counterexamples for FX Options Interpolations -- Part I,,0.95
 2512.20460,2025-12-23,The Aligned Economic Index & The State Switching Model,Asset pricing and risk premia,0.95
 2512.20477,2025-12-23,Switching between states and the COVID-19 turbulence,Asset pricing and risk premia,0.9
 2512.20515,2025-12-23,Modeling Bank Systemic Risk of Emerging Markets under Geopolitical Shocks: Empirical Evidence from BRICS Countries,,0.95
+2512.19986,2025-12-23,Covariance-Aware Simplex Projection for Cardinality-Constrained Portfolio Optimization,,0.95
 2512.20027,2025-12-23,GIFfluence: A Visual Approach to Investor Sentiment and the Stock Market,Behavioral finance,0.95
 2512.20190,2025-12-23,Pricing of wrapped Bitcoin and Ethereum on-chain options,"Crypto, COVID and spillovers",0.9
 2512.20216,2025-12-23,"Quantitative Financial Modeling for Sri Lankan Markets: Approach Combining NLP, Clustering and Time-Series Forecasting",Deep learning and LLM forecasting,0.9
@@ -1699,6 +1711,7 @@ arxiv_id,published,title,area,confidence
 2512.21791,2025-12-25,Synthetic Financial Data Generation for Enhanced Financial Modelling,,0.95
 2512.21798,2025-12-25,Deep Generative Models for Synthetic Financial Data: Applications to Portfolio and Risk Modeling,Deep learning and LLM forecasting,0.85
 2512.21621,2025-12-25,Mean-Field Price Formation on Trees with a Network of Relative Performance Concerns,,0.85
+2512.21539,2025-12-25,"Chaos, Ito-Stratonovich dilemma, and topological supersymmetry",,0.99
 2512.22001,2025-12-26,Variational Quantum Eigensolver for Real-World Finance: Scalable Solutions for Dynamic Portfolio Optimization Problems,,0.95
 2512.22109,2025-12-26,Low-Turnover Rebalancing for Sparse Index Tracking,,0.9
 2512.21823,2025-12-26,Investigating Conditional Restricted Boltzmann Machines in Regime Detection,,0.8
@@ -1715,15 +1728,20 @@ arxiv_id,published,title,area,confidence
 2512.23139,2025-12-29,Lambda Expected Shortfall,,0.95
 2512.23596,2025-12-29,The Nonstationarity-Complexity Tradeoff in Return Prediction,Classical stock price prediction,0.9
 2512.23847,2025-12-29,Detecting Lookahead Bias in LLM Forecasts,Deep learning and LLM forecasting,0.9
+2512.23515,2025-12-29,Alpha-R1: Alpha Screening with LLM Reasoning via Reinforcement Learning,Deep learning and LLM forecasting,0.9
 2512.24491,2025-12-30,Minimal Solutions to the Skorokhod Reflection Problem Driven by Jump Processes and an Application to Reinsurance,,0.95
 2512.24371,2025-12-30,Utility Maximisation with Model-independent Constraints,,0.95
 2512.24747,2025-12-31,Fairness-Aware Insurance Pricing: A Multi-Objective Optimization Approach,,0.95
 2512.24906,2025-12-31,Stochastic factors can matter: improving robust growth under ergodicity,,0.95
 2512.25017,2025-12-31,Convergence of the generalization error for deep gradient flow methods for PDEs,,0.95
 2512.24621,2025-12-31,Forward-Oriented Causal Observables for Non-Stationary Financial Markets,Classical stock price prediction,0.85
+2512.24580,2025-12-31,Robust Bayesian Dynamic Programming for On-policy Risk-sensitive Reinforcement Learning,,0.95
 2512.24526,2025-12-31,Generative AI-enhanced Sector-based Investment Portfolio Construction,Deep learning and LLM forecasting,0.85
 2601.06084,2025-12-31,Who sets the range? Funding mechanics and 4h context in crypto markets,"Crypto, COVID and spillovers",0.9
+2601.06088,2025-12-31,PriceSeer: Evaluating Large Language Models in Real-Time Stock Prediction,Deep learning and LLM forecasting,0.95
 2601.06090,2025-12-31,Correlation Structures and Regime Shifts in Nordic Stock Markets,,0.8
+2512.24714,2025-12-31,Boundary error control for numerical solution of BSDEs by the convolution-FFT method,,0.95
+2601.08853,2026-01-01,Kladia Liquidity Deflator (KLD): A Debt-Indexed Deflationary Token on XRPL,"Crypto, COVID and spillovers",0.75
 2601.00281,2026-01-01,A Global Optimal Theory of Portfolio beyond R-$σ$ Model,,0.9
 2601.00478,2026-01-01,Multimodal Insights into Credit Risk Modelling: Integrating Climate and Text Data for Default Prediction,,0.85
 2601.00395,2026-01-01,Core-Periphery Dynamics in Market-Conditioned Financial Networks: A Conditional P-Threshold Mutual Information Approach,"Crypto, COVID and spillovers",0.9
@@ -1734,6 +1752,7 @@ arxiv_id,published,title,area,confidence
 2601.00738,2026-01-02,Second Thoughts: How 1-second subslots transform CEX-DEX Arbitrage on Ethereum,"Crypto, COVID and spillovers",0.85
 2601.01189,2026-01-03,Central limit theorem for a partially observed interacting system of Hawkes processes I: subcritical case,,0.95
 2601.01216,2026-01-03,Order-Constrained Spectral Causality for Multivariate Time Series,,0.85
+2601.01250,2026-01-03,European Options in Market Models with Multiple Defaults: the BSDE approach,,0.95
 2601.01269,2026-01-03,Critical volatility threshold for log-normal to power-law transition,,0.75
 2601.01505,2026-01-04,Chaos and Synchronization in Financial Leverages Dynamics: Modeling Systemic Risk with Coupled Unimodal Maps,,0.95
 2601.01642,2026-01-04,Wasserstein Distributionally Robust Rare-Event Simulation,,0.95
@@ -1751,12 +1770,15 @@ arxiv_id,published,title,area,confidence
 2601.03927,2026-01-07,A comprehensive review and analysis of different modeling approaches for financial index tracking problem,,0.9
 2601.04096,2026-01-07,Sharp Transitions and Systemic Risk in Sparse Financial Networks,,0.9
 2601.04067,2026-01-07,Diversification Preferences and Risk Attitudes,,0.95
+2601.04062,2026-01-07,Smart Predict--then--Optimize Paradigm for Portfolio Optimization in Real Markets,,0.9
 2601.04049,2026-01-07,Quantum computing for multidimensional option pricing: End-to-end pipeline,,0.95
 2601.03974,2026-01-07,Class of topological portfolios: Are they better than classical portfolios?,,0.85
 2601.03948,2026-01-07,Trade-R1: Bridging Verifiable Rewards to Stochastic Environments via Process-Level Reasoning Verification,Deep learning and LLM forecasting,0.9
 2601.03799,2026-01-07,Optimal execution on Uniswap v2/v3 under transient price impact,Trading and order flow,0.95
+2601.03794,2026-01-07,An Algorithmic Framework for Systematic Literature Reviews: A Case Study for Financial Narratives,,0.95
 2601.04160,2026-01-07,All That Glisters Is Not Gold: A Benchmark for Reference-Free Counterfactual Financial Misinformation Detection,,0.85
 2601.11601,2026-01-08,Latent Variable Phillips Curve,,0.95
+2601.11602,2026-01-08,"The Physics of Price Discovery: Deconvolving Information, Volatility, and the Critical Breakdown of Signal during Retail Herding",Trading and order flow,0.9
 2601.04900,2026-01-08,Visible absorbing decompositions and uniqueness of invariant probabilities,,0.99
 2601.04602,2026-01-08,Forecasting Equity Correlations with Hybrid Transformer Graph Neural Network,Deep learning and LLM forecasting,0.9
 2601.05085,2026-01-08,Trading Electrons: Predicting DART Spread Spikes in ISO Electricity Markets,,0.9
@@ -1768,15 +1790,18 @@ arxiv_id,published,title,area,confidence
 2601.14272,2026-01-09,The Limits of Lognormal: Assessing Cryptocurrency Volatility and VaR using Geometric Brownian Motion,"Crypto, COVID and spillovers",0.9
 2601.22162,2026-01-09,"UniFinEval: Towards Unified Evaluation of Financial Multimodal Models across Text, Images and Videos",Deep learning and LLM forecasting,0.85
 2601.07852,2026-01-09,Utility-Weighted Forecasting and Calibration for Risk-Adjusted Decisions under Trading Frictions,,0.8
+2601.05924,2026-01-09,Geopolitical and Institutional Constraints on Adaptive Market Efficiency -- A Feasibility Diagnostic for Robust Portfolio Construction,,0.9
 2601.05716,2026-01-09,When the Rules Change: Adaptive Signal Extraction via Kalman Filtering and Markov-Switching Regimes,Trading and order flow,0.95
 2601.06271,2026-01-09,A Three--Dimensional Efficient Surface for Portfolio Optimization,,0.8
 2601.15304,2026-01-10,An Explainable Market Integrity Monitoring System with Multi-Source Attention Signals and Transparent Scoring,,0.8
 2601.06499,2026-01-10,Cross-Market Alpha: Testing Short-Term Trading Factors in the U.S. Market via Double-Selection LASSO,Asset pricing and risk premia,0.95
 2601.06507,2026-01-10,Emissions-Robust Portfolios,,0.9
 2601.07637,2026-01-12,Reinforcement Learning for Micro-Level Claims Reserving,,0.95
+2601.07626,2026-01-12,Universal basic income in a financial equilibrium,,0.95
 2601.07942,2026-01-12,Enhancing Portfolio Optimization with Deep Learning Insights,Deep learning and LLM forecasting,0.8
 2601.07131,2026-01-12,The Limits of Complexity: Why Feature Engineering Beats Deep Learning in Investor Flow Prediction,Trading and order flow,0.8
 2601.07588,2026-01-12,Temporal-Aligned Meta-Learning for Risk Management: A Stacking Approach for Multi-Source Credit Scoring,,0.95
+2601.07792,2026-01-12,Non-Convex Portfolio Optimization via Energy-Based Models: A Comparative Analysis Using the Thermodynamic HypergRaphical Model Library (THRML) for Index Tracking,,0.9
 2601.07687,2026-01-12,Physics-Informed Singular-Value Learning for Cross-Covariances Forecasting in Financial Markets,Volatility forecasting (GARCH),0.85
 2601.07675,2026-01-12,Tab-TRM: Tiny Recursive Model for Insurance Pricing on Tabular Data,,0.95
 2601.07664,2026-01-12,Crypto Pricing with Hidden Factors,"Crypto, COVID and spillovers",0.95
@@ -1784,6 +1809,7 @@ arxiv_id,published,title,area,confidence
 2601.08263,2026-01-13,A Blessing in Disguise? DeFi Exploits and Short-Horizon Responses in U.S. Commercial Paper Spreads,"Crypto, COVID and spillovers",0.9
 2601.08540,2026-01-13,Systemic Risk in DeFi: A Network-Based Fragility Analysis of TVL Dynamics,"Crypto, COVID and spillovers",0.85
 2601.08571,2026-01-13,Regime Discovery and Intra-Regime Return Dynamics in Global Equity Markets,,0.7
+2601.08641,2026-01-13,Resisting Manipulative Bots in Meme Coin Copy Trading: A Multi-Agent Approach with Chain-of-Thought Reasoning,"Crypto, COVID and spillovers",0.75
 2601.08721,2026-01-13,Feasibility-First Satellite Integration in Robust Portfolio Architectures,,0.9
 2601.08896,2026-01-13,XGBoost Forecasting of NEPSE Index Log Returns with Walk Forward Validation,Classical stock price prediction,0.95
 2601.08598,2026-01-13,Systemic Risk Surveillance,,0.9
@@ -1796,14 +1822,17 @@ arxiv_id,published,title,area,confidence
 2601.09872,2026-01-14,A continuous-time Kyle model with price-responsive traders,Trading and order flow,0.95
 2601.09927,2026-01-14,Efficiency versus Robustness under Tail Misspecification: Importance Sampling and Moment-Based VaR Bracketing,,0.9
 2601.10375,2026-01-15,Dynamic reinsurance via martingale transport,,0.95
+2601.18804,2026-01-15,Deep g-Pricing for CSI 300 Index Options with Volatility Trajectories and Market Sentiment,,0.9
 2601.22166,2026-01-15,A Real-Options-Aware Multi-Criteria Framework for Ex-Ante Real Estate Redevelopment Use Selection,,0.95
 2601.10517,2026-01-15,From rough to multifractal multidimensional volatility: A multidimensional Log S-fBM model,Volatility forecasting (GARCH),0.9
 2601.10043,2026-01-15,Instruction Finetuning LLaMA-3-8B Model Using LoRA for Financial Named Entity Recognition,,0.9
+2601.10591,2026-01-15,ProbFM: Probabilistic Time Series Foundation Model with Uncertainty Decomposition,Deep learning and LLM forecasting,0.85
 2601.10812,2026-01-15,Optimal Liquidation of Perpetual Contracts,Trading and order flow,0.9
 2601.10143,2026-01-15,History Is Not Enough: An Adaptive Dataflow System for Financial Time-Series Synthesis,,0.8
 2601.10851,2026-01-15,Event-Driven Market Co-Movement Dynamics in Critical Mineral Equities: An Empirical Framework Using Change Point Detection and Cross-Sectional Analysis,"Crypto, COVID and spillovers",0.85
 2601.22167,2026-01-16,The Evolution of Technology Portfolios and Firm Profitability in the European Power Sector,,0.9
 2601.11375,2026-01-16,"Automated Liquidity: Market Impact, Cycles, and De-pegging Risk","Crypto, COVID and spillovers",0.8
+2601.11209,2026-01-16,SANOS Smooth strictly Arbitrage-free Non-parametric Option Surfaces,,0.95
 2601.11134,2026-01-16,FSL-BDP: Federated Survival Learning with Bayesian Differential Privacy for Credit Risk Modeling,,0.95
 2601.11097,2026-01-16,KANHedge: Efficient Hedging of High-Dimensional Options Using Kolmogorov-Arnold Network-Based BSDE Solver,,0.85
 2601.11348,2026-01-16,Optimal Abatement Schedules for Excess Carbon Emissions Towards a Net-Zero Target,,0.95
@@ -1824,8 +1853,10 @@ arxiv_id,published,title,area,confidence
 2601.12655,2026-01-19,Optimal Underreporting and Competitive Equilibrium,,0.95
 2602.00037,2026-01-19,Bitcoin Price Prediction using Machine Learning and Combinatorial Fusion Analysis,"Crypto, COVID and spillovers",0.9
 2601.18811,2026-01-20,Variational Quantum Circuit-Based Reinforcement Learning for Dynamic Portfolio Optimization,,0.85
+2602.00073,2026-01-20,Test-Time Adaptation for Non-stationary Time Series: From Synthetic Regime Shifts to Financial Markets,Deep learning and LLM forecasting,0.8
 2601.14062,2026-01-20,Demystifying the trend of the healthcare index: Is historical price a key driver?,Classical stock price prediction,0.9
 2601.13493,2026-01-20,Infinite-Dimensional LQ Mean Field Games with Common Noise: Small and Arbitrary Finite Time Horizons,,0.95
+2601.13770,2026-01-20,Look-Ahead-Bench: a Standardized Benchmark of Look-ahead Bias in Point-in-Time LLMs for Finance,Deep learning and LLM forecasting,0.9
 2601.14139,2026-01-20,Log-optimality with small liability stream,,0.95
 2601.14005,2026-01-20,Leveraged positions on decentralized lending platforms,"Crypto, COVID and spillovers",0.95
 2601.14852,2026-01-21,Recovering Risk-Neutral Moments from Options,,0.85
@@ -1847,6 +1878,7 @@ arxiv_id,published,title,area,confidence
 2601.18686,2026-01-26,Optimal strategy and deep hedging for share repurchase programs,Trading and order flow,0.85
 2601.18634,2026-01-26,The Compound BSDE Method: A Fully Forward Method for Option Pricing and Optimal Stopping Problems in Finance,,0.9
 2601.18124,2026-01-26,The Sherman-Morrison-Markowitz Portfolio,,0.9
+2602.00121,2026-01-27,A Prior-Predictive Monte Carlo Framework for Pricing Complex Data Products in Data-Poor Markets,,0.95
 2601.19511,2026-01-27,P-Sensitive Functions and Localizations,,0.95
 2601.19504,2026-01-27,"Generating Alpha: A Hybrid AI-Driven Trading System Integrating Technical Analysis, Machine Learning and Financial Sentiment for Regime-Adaptive Equity Strategies",Classical stock price prediction,0.9
 2601.19369,2026-01-27,Directional Liquidity and Geometric Shear in Pregeometric Order Books,Trading and order flow,0.95
@@ -1868,6 +1900,7 @@ arxiv_id,published,title,area,confidence
 2601.23172,2026-01-30,"A unified theory of order flow, market impact, and volatility",Trading and order flow,0.95
 2602.00858,2026-01-31,Short-Rate-Dependent Volatility Models,,0.95
 2602.00776,2026-01-31,Explainable Patterns in Cryptocurrency Microstructure,Trading and order flow,0.9
+2602.00548,2026-01-31,The Impact of Trump-Era Tariffs on Financial Market Efficiency,"Crypto, COVID and spillovers",0.7
 2602.00784,2026-01-31,Coherent risk from finite models,,0.95
 2603.06587,2026-02-01,Autonomous AI Agents for Option Hedging: Enhancing Financial Stability through Shortfall Aware Reinforcement Learning,,0.85
 2602.01122,2026-02-01,Was Benoit Mandelbrot a hedgehog or a fox?,,0.95
@@ -1877,6 +1910,7 @@ arxiv_id,published,title,area,confidence
 2602.03874,2026-02-01,ASRI: An Aggregated Systemic Risk Index for Cryptocurrency Markets,"Crypto, COVID and spillovers",0.95
 2602.01912,2026-02-02,Reliable Real-Time Value at Risk Estimation via Quantile Regression Forest with Conformal Calibration,,0.85
 2602.02607,2026-02-02,"The Innovation Tax: Generative AI Adoption, Productivity Paradox, and Systemic Risk in the U.S. Banking Sector",,0.9
+2602.02816,2026-02-02,"Habit Formation, Labor Supply, and the Dynamics of Retirement and Annuitization",,0.95
 2602.07020,2026-02-02,Financial Bond Similarity Search Using Representation Learning,,0.9
 2602.07023,2026-02-02,Behavioral Consistency Validation for LLM Agents: An Analysis of Trading-Style Switching through Stock-Market Simulation,Behavioral finance,0.95
 2602.02996,2026-02-03,Dual Attainment in Multi-Period Multi-Asset Martingale Optimal Transport and Its Computation,,0.95
@@ -1919,6 +1953,7 @@ arxiv_id,published,title,area,confidence
 2602.11020,2026-02-11,When Fusion Helps and When It Breaks: View-Aligned Robustness in Same-Source Financial Imaging,Deep learning and LLM forecasting,0.9
 2602.10960,2026-02-11,Integrating granular data into a multilayer network: an interbank model of the euro area for systemic risk assessment,,0.9
 2602.10798,2026-02-11,Trading in CEXs and DEXs with Priority Fees and Stochastic Delays,Trading and order flow,0.85
+2602.10785,2026-02-11,A novel approach to trading strategy parameter optimization using double out-of-sample data and walk-forward techniques,,0.85
 2602.12030,2026-02-12,Time-Inhomogeneous Volatility Aversion for Financial Applications of Reinforcement Learning,,0.9
 2602.12104,2026-02-12,Liquidation Dynamics in DeFi and the Role of Transaction Fees,"Crypto, COVID and spillovers",0.85
 2602.11687,2026-02-12,Exact Value Solution to the Equity Premium Puzzle,Asset pricing and risk premia,0.95
@@ -1929,7 +1964,9 @@ arxiv_id,published,title,area,confidence
 2602.14223,2026-02-15,Pareto and Bowley Reinsurance Games in Peer-to-Peer Insurance,,0.95
 2602.14233,2026-02-15,Evaluating LLMs in Finance Requires Explicit Bias Consideration,Deep learning and LLM forecasting,0.6
 2602.14350,2026-02-15,Hidden Risks and Optionalities in American Options,,0.95
+2602.15248,2026-02-16,"Predicting Invoice Dilution in Supply Chain Finance with Leakage Free Two Stage XGBoost, KAN (Kolmogorov Arnold Networks), and Ensemble Models",,0.95
 2602.15182,2026-02-16,Autodeleveraging as Online Learning,Trading and order flow,0.7
+2602.14860,2026-02-16,Predicting the success of new crypto-tokens: the Pump.fun case,"Crypto, COVID and spillovers",0.9
 2602.15177,2026-02-16,Optimal investment under capital gains taxes,,0.95
 2602.14754,2026-02-16,Market Efficiency and the Heterogeneous Impact of Financial Liberalization: Evidence from the Shanghai-Hong Kong Stock Connect,Asset pricing and risk premia,0.75
 2602.14827,2026-02-16,Constrained Portfolio Optimization via Quantum Approximate Optimization Algorithm (QAOA) with XY-Mixers and Trotterized Initialization: A Hybrid Approach for Direct Indexing,,0.9
@@ -1938,10 +1975,12 @@ arxiv_id,published,title,area,confidence
 2602.14670,2026-02-16,FactorMiner: A Self-Evolving Agent with Skills and Experience Memory for Financial Alpha Discovery,Asset pricing and risk premia,0.7
 2602.14575,2026-02-16,Information-Theoretic Approach to Financial Market Modelling,,0.9
 2602.14439,2026-02-16,Sustainable Investment: ESG Impacts on Large Portfolio,,0.85
+2602.15385,2026-02-17,From Chain-Ladder to Individual Claims Reserving,,0.95
 2602.15474,2026-02-17,Quantum Reservoir Computing for Statistical Classification in a Superconducting Quantum Circuit,,0.9
 2602.16862,2026-02-18,Action-Space Entropy Regularization in Bayesian Markowitz,,0.95
 2602.16539,2026-02-18,"Caratheodory, Finite Resources and the Geometry of Arbitrage",,0.95
 2602.16401,2026-02-18,Stackelberg Equilibria in Monopoly Insurance Markets with Probability Weighting,,0.95
+2602.16387,2026-02-18,Computing Tarski Fixed Points in Financial Networks,,0.9
 2602.16232,2026-02-18,A Wiener Chaos Approach to Martingale Modelling and Implied Volatility Calibration,,0.95
 2602.16212,2026-02-18,Money-Back Tontines for Retirement Decumulation: Neural-Network Optimization under Systematic Longevity Risk,,0.9
 2602.17098,2026-02-19,Deep Reinforcement Learning for Optimal Portfolio Allocation: A Comparative Study with Mean-Variance Optimization,,0.85
@@ -1956,6 +1995,7 @@ arxiv_id,published,title,area,confidence
 2602.18157,2026-02-20,Time consistent portfolio strategies for a general utility function,,0.9
 2602.18062,2026-02-20,A Monotone Limit Approach to Entropy-Regularized American Options,,0.95
 2602.18358,2026-02-20,Forecasting the Evolving Composition of Inbound Tourism Demand: A Bayesian Compositional Time Series Approach Using Platform Booking Data,,0.95
+2602.18895,2026-02-21,Could Large Language Models work as Post-hoc Explainability Tools in Credit Risk Models?,,0.9
 2602.18912,2026-02-21,Overreaction as an indicator for momentum in algorithmic trading: A Case of AAPL stocks,Behavioral finance,0.85
 2603.04441,2026-02-21,Explainable Regime Aware Investing,,0.85
 2602.19092,2026-02-22,Finite Element Solution of the Two-Dimensional Bates Model for Option Pricing Under Stochastic Volatility and Jumps,,0.95
@@ -1966,21 +2006,27 @@ arxiv_id,published,title,area,confidence
 2602.19663,2026-02-23,The impact of class imbalance in logistic regression models for low-default portfolios in credit risk,,0.95
 2602.19590,2026-02-23,Metaorder modelling and identification from public data,Trading and order flow,0.95
 2602.19419,2026-02-23,RAmmStein: Regime Adaptation in Mean-reverting Markets with Stein Thresholds -- Optimal Impulse Control in Concentrated AMMs,Trading and order flow,0.9
+2602.19892,2026-02-23,Long-Run Sovereign Debt Composition: An Analytic Ergodic Framework with Explicit Maturity Structure,,0.95
 2602.21173,2026-02-24,Bayesian Parametric Portfolio Policies,Asset pricing and risk premia,0.9
 2603.13252,2026-02-24,When Alpha Breaks: Two-Level Uncertainty for Safe Deployment of Cross-Sectional Stock Rankers,Classical stock price prediction,0.9
 2602.20856,2026-02-24,Stochastic Discount Factors with Cross-Asset Spillovers,Asset pricing and risk premia,0.9
 2602.21125,2026-02-24,An Infinite-Dimensional Insider Trading Game,Trading and order flow,0.95
+2602.20771,2026-02-24,Market Inefficiency in Cryptoasset Markets,"Crypto, COVID and spillovers",0.95
 2602.20552,2026-02-24,Stochastic Control Problems with Infinite Horizon and Regime Switching Arising in Optimal Liquidation with Semimartingale Strategies,Trading and order flow,0.85
 2602.21869,2026-02-25,A Bayesian approach to out-of-sample network reconstruction,,0.9
 2602.22069,2026-02-25,Pools as Portfolios: Observed arbitrage efficiency & LVR analysis of dynamic weight AMMs,Trading and order flow,0.85
+2602.23330,2026-02-26,Toward Expert Investment Teams:A Multi-Agent LLM System with Fine-Grained Trading Tasks,Deep learning and LLM forecasting,0.9
 2602.23762,2026-02-27,One Rising Ship Sinks Other Ships: Cross-Chain Negative Spillovers in Crypto Markets,"Crypto, COVID and spillovers",0.95
+2602.23784,2026-02-27,TradeFM: A Generative Foundation Model for Trade-flow and Market Microstructure,Trading and order flow,0.9
 2602.24194,2026-02-27,Betting under Common Beliefs: The Effect of Probability Weighting,Behavioral finance,0.95
+2603.00361,2026-02-27,Market Dynamics of Information Avalanches,,0.85
 2603.16886,2026-02-27,A Controlled Comparison of Deep Learning Architectures for Multi-Horizon Financial Forecasting: Evidence from 918 Experiments,Deep learning and LLM forecasting,0.95
 2603.00422,2026-02-28,Coupled Supply and Demand Forecasting in Platform Accommodation Markets,,0.95
 2603.00738,2026-02-28,Exploratory Randomization for Discrete-Time Risk-Sensitive Benchmarked Investment Management with Reinforcement Learning,,0.85
 2603.01232,2026-03-01,Submodular risk measures,,0.95
 2603.01298,2026-03-01,Single-Asset Adaptive Leveraged Volatility Control,,0.85
 2603.01157,2026-03-01,Adaptive Window Selection for Financial Risk Forecasting,,0.85
+2603.01109,2026-03-01,A stochastic correlation extension of the Vasicek credit risk model,,0.95
 2603.01434,2026-03-02,A Laplace-based perspective on conditional mean risk sharing,,0.95
 2603.01820,2026-03-02,How do standard time series forecasting benchmarks translate to finance? A broad study of risk adjusted performance,Deep learning and LLM forecasting,0.95
 2603.01821,2026-03-02,Asymptotics of Ruin Probabilities in a Subordinated Cramér-Lundberg Model,,0.95
@@ -1991,14 +2037,18 @@ arxiv_id,published,title,area,confidence
 2603.03213,2026-03-03,Dynamic Tracking Error and the Total Portfolio Approach,,0.9
 2603.02620,2026-03-03,"Same Error, Different Function: The Optimizer as an Implicit Prior in Financial Time Series",Volatility forecasting (GARCH),0.85
 2603.02898,2026-03-03,Range-Based Volatility Estimators for Monitoring Market Stress: Evidence from Local Food Price Data,Volatility forecasting (GARCH),0.8
+2603.02820,2026-03-03,Optimal Consumption and Portfolio Choice with No-Borrowing Constraint in the Kim-Omberg Model: The Complete Market Case,,0.95
+2603.02844,2026-03-03,Optimal Routing across Constant Function Market Makers with Gas Fees,Trading and order flow,0.85
 2603.02946,2026-03-03,Fast simulation of Volterra processes using random Fourier features with application to the log-stationary fractional Brownian motion,,0.95
 2603.03671,2026-03-04,Is an investor stolen their profits by mimic investors? Investigated by an agent-based model,Behavioral finance,0.85
+2603.04275,2026-03-04,Statistical Inference for Score Decompositions,,0.85
 2603.16904,2026-03-04,Quantum-Assisted Optimal Rebalancing with Uncorrelated Asset Selection for Algorithmic Trading Walk-Forward QUBO Scheduling via QAOA,,0.9
 2603.18021,2026-03-05,Anomaly prediction in XRP price with topological features,"Crypto, COVID and spillovers",0.95
 2603.05624,2026-03-05,Mean-field games with unbounded controls: a weak formulation approach to global solutions,,0.95
 2603.05283,2026-03-05,Wealth Taxation as a Drift Modification: A Fokker-Planck Approach to Tax Neutrality,,0.95
 2603.05277,2026-03-05,Extensions to the Wealth Tax Neutrality Framework,,0.95
 2603.05264,2026-03-05,"Asset Returns, Portfolio Choice, and Proportional Wealth Taxation",,0.85
+2603.05260,2026-03-05,"Extreme Value Analysis for Finite, Multivariate and Correlated Systems with Finance as an Example",,0.9
 2603.05119,2026-03-05,Asymptotic Separability of Diffusion and Jump Components in High-Frequency CIR and CKLS Models,,0.9
 2603.04880,2026-03-05,A class of stochastic control problems with state constraints,,0.95
 2603.05326,2026-03-05,Riemannian Geometry of Optimal Rebalancing in Dynamic Weight Automated Market Makers,Trading and order flow,0.85
@@ -2010,6 +2060,7 @@ arxiv_id,published,title,area,confidence
 2603.06238,2026-03-06,General bounds on functionals of the lifetime under life table constraints in a joint actuarial-financial framework,,0.95
 2603.06733,2026-03-06,Calibrated Credit Intelligence: Shift-Robust and Fair Risk Scoring with Bayesian Uncertainty and Gradient Boosting,,0.95
 2603.07213,2026-03-07,From debt crises to financial crashes (and back): a stock-flow consistent model for stock price bubbles,,0.9
+2603.07692,2026-03-08,Understanding the Long-Only Minimum Variance Portfolio,Asset pricing and risk premia,0.9
 2603.19286,2026-03-08,Generalized Stock Price Prediction for Multiple Stocks Combined with News Fusion,Deep learning and LLM forecasting,0.95
 2603.07752,2026-03-08,Dynamic slippage control and rejection feedback in spot FX market making,Trading and order flow,0.95
 2603.07616,2026-03-08,SABR Type Libor (Forward) Market Model (SABR/LMM) with time-dependent skew and smile,,0.95
@@ -2022,10 +2073,12 @@ arxiv_id,published,title,area,confidence
 2603.08553,2026-03-09,Generative Adversarial Regression (GAR): Learning Conditional Risk Scenarios,,0.85
 2603.09006,2026-03-09,Spectral Portfolio Theory: From SGD Weight Matrices to Wealth Dynamics,,0.85
 2603.09773,2026-03-10,Global universality via discrete-time signatures,,0.95
+2603.20247,2026-03-10,AlphaLogics: A Market Logic-Driven Multi-Agent System for Scalable and Interpretable Alpha Factor Generation,Deep learning and LLM forecasting,0.9
 2603.20243,2026-03-10,Two-Factor Hull-White Model Revisited: Correlation Structure for Two-Factor Interest Rate Model in CVA Calculation,,0.95
 2603.09164,2026-03-10,Slippage-at-Risk (SaR): A Forward-Looking Liquidity Risk Framework for Perpetual Futures Exchanges,Trading and order flow,0.9
 2603.09669,2026-03-10,Competition between DEXs through Dynamic Fees,"Crypto, COVID and spillovers",0.85
 2603.09219,2026-03-10,AlgoXpert Alpha Research Framework. A Rigorous IS WFA OOS Protocol for Mitigating Overfitting in Quantitative Strategies,,0.85
+2603.09303,2026-03-10,Investor risk profiles of large language models,Behavioral finance,0.85
 2603.10272,2026-03-10,An operator-level ARCH Model,Volatility forecasting (GARCH),0.95
 2603.10202,2026-03-10,Variance-Corrected Multi-Asset Equity Simulation with Hybrid Hidden Markov Marginals,,0.9
 2603.09966,2026-03-10,Caratheodory II: The Geometry of Financial Irreversibility,,0.95
@@ -2039,6 +2092,7 @@ arxiv_id,published,title,area,confidence
 2603.10690,2026-03-11,When David becomes Goliath: Repo dealer-driven bond mispricing,Trading and order flow,0.85
 2603.10559,2026-03-11,A Bipartite Graph Approach to U.S.-China Cross-Market Return Forecasting,Classical stock price prediction,0.9
 2603.10327,2026-03-11,"Weighted Generalized Risk Measure and Risk Quadrangle: Characterization, Optimization and Application",,0.9
+2603.10569,2026-03-11,Win-score promotion gates in aggregator-routed RFQ markets: A two-tier stochastic control model,Trading and order flow,0.95
 2603.12140,2026-03-12,Forecasting and Manipulating the Forecasts of Others,,0.85
 2603.12375,2026-03-12,Feynman-Kac Derivatives Pricing on the Full Forward Curve,,0.9
 2603.12422,2026-03-12,Mortgage Burnout and Selection Effects in Heterogeneous Cox Hazard Models,,0.95
@@ -2049,6 +2103,7 @@ arxiv_id,published,title,area,confidence
 2603.12040,2026-03-12,Entropic signatures of market response under concentrated policy communication,Information and stock reactions,0.85
 2603.12602,2026-03-13,Pricing Derivatives under Self-Exciting Dynamics: A Finite-Difference and Transform Approach,,0.95
 2603.12767,2026-03-13,A property of log-concave and weakly-symmetric distributions for two step approximations of random variables,,0.95
+2603.13170,2026-03-13,Microstructural Foundation of Rough Log-Normal Volatility Models,Volatility forecasting (GARCH),0.85
 2603.13581,2026-03-13,Single-Event Multinomial Full Kelly via Implicit State Positions,,0.95
 2603.13632,2026-03-13,Betting Around the Clock: Time Change and Long Term Model Risk,,0.9
 2603.13638,2026-03-13,Performance-Driven Causal Signal Engineering for Financial Markets under Non-Stationarity,Trading and order flow,0.75
@@ -2062,19 +2117,23 @@ arxiv_id,published,title,area,confidence
 2603.14288,2026-03-15,Beyond Prompting: An Autonomous Framework for Systematic Factor Investing via Agentic AI,Deep learning and LLM forecasting,0.9
 2603.14557,2026-03-15,Tractable bank capital structure: optimal control under Basel III constraints,,0.95
 2603.14546,2026-03-15,Robust Optimal Strategies for Early Liquidation in Financial Systems,,0.95
+2603.14491,2026-03-15,"Private Credit Markets Theory, Evidence, and Emerging Frontiers",,0.95
 2603.16006,2026-03-16,Heterogeneous Returns and Wealth Tax Neutrality: A Fokker-Planck Framework,,0.95
 2603.15511,2026-03-16,Some general results on risk budgeting portfolios,,0.95
 2603.15974,2026-03-16,"Flow Taxes, Stock Taxes, and Portfolio Choice: A Generalised Neutrality Result",,0.95
 2603.15839,2026-03-16,A Portfolio-Anchored Frequency-Severity Risk Index for Trip and Driver Assessment Using Telematics Signals,,0.95
 2603.15369,2026-03-16,A stochastic SIR model for cyber contagion: application to granular growth of firms and to insurance portfolio,,0.95
+2603.14760,2026-03-16,At-the-money short-time call-price asymptotics for new classes of exponential Lévy models,,0.95
 2603.15947,2026-03-16,Hyper-Adaptive Momentum Dynamics for Native Cubic Portfolio Optimization: Avoiding Quadratization Distortion in Higher-Order Cardinality-Constrained Search,,0.9
 2603.15963,2026-03-16,Risk-Based Auto-Deleveraging,"Crypto, COVID and spillovers",0.8
 2603.17151,2026-03-17,Shallow Representation of Option Implied Information,,0.8
+2603.16720,2026-03-17,Discrimination-insensitive pricing,,0.95
 2603.16434,2026-03-17,From Natural Language to Executable Option Strategies via Large Language Models,,0.85
 2603.16333,2026-03-17,Open vs. Sealed: Auction Format Choice for Maximal Extractable Value,"Crypto, COVID and spillovers",0.9
 2603.16108,2026-03-17,Short-horizon Duesenberry Equilibrium,Asset pricing and risk premia,0.85
 2603.17723,2026-03-18,LR-Robot: A Unified Supervised Intelligent Framework for Real-Time Systematic Literature Reviews with Large Language Models,,0.95
 2603.17463,2026-03-18,Multivariate GARCH and portfolio variance prediction: A forecast reconciliation perspective,Volatility forecasting (GARCH),0.95
+2603.17954,2026-03-18,Robust quasi-convex risk measures and applications,,0.95
 2603.18107,2026-03-18,ARTEMIS: A Neuro Symbolic Framework for Economically Constrained Market Dynamics,Deep learning and LLM forecasting,0.9
 2603.17692,2026-03-18,Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization,Deep learning and LLM forecasting,0.95
 2603.17792,2026-03-18,Multivariate Residual Estimation Risk,,0.95
@@ -2094,6 +2153,7 @@ arxiv_id,published,title,area,confidence
 2603.20580,2026-03-21,Outperforming a Benchmark with $α$-Bregman Wasserstein divergence,,0.95
 2603.20582,2026-03-21,Generative Diffusion Model for Risk-Neutral Derivative Pricing,,0.85
 2603.20965,2026-03-21,Learning to Aggregate Zero-Shot LLM Agents for Corporate Disclosure Classification,Deep learning and LLM forecasting,0.85
+2603.21089,2026-03-22,Approximate Dynamic Programming for Degradation-aware Market Participation of Battery Energy Storage Systems: Bridging Market and Degradation Timescales,,0.95
 2603.21330,2026-03-22,FinRL-X: An AI-Native Modular Infrastructure for Quantitative Trading,,0.9
 2604.03272,2026-03-23,"Artificial Intelligence and Systemic Risk: A Unified Model of Performative Prediction, Algorithmic Herding, and Cognitive Dependency in Financial Markets",,0.85
 2605.23905,2026-03-23,"AI-Driven Alpha Decay: Algorithmic Homogenization, Reflexive Signal Erosion, and the Paradox of Intelligent Markets",,0.85
@@ -2101,12 +2161,15 @@ arxiv_id,published,title,area,confidence
 2603.22569,2026-03-23,Proxy-Reliance Control in Conformal Recalibration of One-Sided Value-at-Risk,,0.9
 2603.21842,2026-03-23,Flexible Information Acquisition in the Kyle Model,Trading and order flow,0.95
 2603.22022,2026-03-23,"Here, there and everywhere: state-dependent time-inconsistent stochastic control",,0.95
+2603.21892,2026-03-23,Discovering parametrizations of implied volatility with symbolic regression,Volatility forecasting (GARCH),0.75
 2603.21797,2026-03-23,Connecting Distributed Ledgers: Surveying Novel Interoperability Solutions in On-chain Finance,"Crypto, COVID and spillovers",0.95
 2603.21672,2026-03-23,Mislearning of Factor Risk Premia under Structural Breaks: A Misspecified Bayesian Learning Framework,Asset pricing and risk premia,0.9
 2603.22058,2026-03-23,Mean Field Equilibrium Asset Pricing Models With Exponential Utility,Asset pricing and risk premia,0.95
+2605.12508,2026-03-23,Interoperability Effects: Extending DeFi Lending Risk Models to Multi-Chain Environments,"Crypto, COVID and spillovers",0.9
 2603.22831,2026-03-24,Option pricing model under the G-expectation framework,,0.95
 2603.22880,2026-03-24,Portfolio Optimization under Recursive Utility via Reinforcement Learning,,0.9
 2603.22886,2026-03-24,Conditionally Identifiable Latent Representation for Multivariate Time Series with Structural Dynamics,,0.95
+2603.23300,2026-03-24,Designing Agentic AI-Based Screening for Portfolio Investment,Deep learning and LLM forecasting,0.9
 2603.23584,2026-03-24,LineMVGNN: Anti-Money Laundering with Line-Graph-Assisted Multi-View Graph Neural Networks,,0.95
 2603.24640,2026-03-25,Ordering results for extreme claim amounts based on random number of claims,,0.95
 2603.24215,2026-03-25,Adapting Altman's bankruptcy prediction model to the compositional data methodology,,0.9
@@ -2119,7 +2182,9 @@ arxiv_id,published,title,area,confidence
 2603.25217,2026-03-26,Modeling and Forecasting Tail Risk Spillovers: A Component-Based CAViaR Approach,Volatility forecasting (GARCH),0.9
 2603.25285,2026-03-26,Shifting Correlations: How Trade Policy Uncertainty Alters stock-T bill Relationships,Volatility forecasting (GARCH),0.9
 2603.25320,2026-03-26,Semi-Static Variance-Optimal Hedging of Covariance Risk in Multi-Asset Derivatives,,0.95
+2603.25350,2026-03-26,"Optimal Dividend, Reinsurance, and Capital Injection for Collaborating Business Lines under Model Uncertainty",,0.95
 2603.25338,2026-03-26,Optimal threshold resetting in collective diffusive search,,0.95
+2603.26290,2026-03-27,PEB Separation and State Migration: Unmasking the New Frontiers of DeFi AML Evasion,"Crypto, COVID and spillovers",0.9
 2603.26901,2026-03-27,Biased Mean Quadrangle and Applications,,0.9
 2603.26514,2026-03-27,Rough volatility dynamics in commodity markets,,0.85
 2603.26491,2026-03-27,Capital-Allocation-Induced Risk Sharing,,0.95
@@ -2147,10 +2212,12 @@ arxiv_id,published,title,area,confidence
 2604.00064,2026-03-31,Forecast collapse of transformer-based models under squared loss in financial time series,Deep learning and LLM forecasting,0.95
 2604.00389,2026-04-01,Pricing Lookback Options on a Quantum Computer,,0.95
 2605.06670,2026-04-01,Stochastic Policy Gradient Methods in the Uncertain Volatility Model,,0.9
+2604.02378,2026-04-01,YC Bench: a Live Benchmark for Forecasting Startup Outperformance in Y Combinator Batches,,0.95
 2604.00346,2026-04-01,Forecasting duration in high-frequency financial data using a self-exciting flexible residual point process,Trading and order flow,0.85
 2604.01300,2026-04-01,On explicit solutions to a class of quadratic BSDEJs driven by affine Volterra processes with jumps and applications,,0.95
 2604.01431,2026-04-01,Do Prediction Markets Forecast Cryptocurrency Volatility? Evidence from Kalshi Macro Contracts,"Crypto, COVID and spillovers",0.9
 2604.01299,2026-04-01,Bridging classical and martingale Schrödinger bridges,,0.95
+2604.00556,2026-04-01,HabitatAgent: An End-to-End Multi-Agent System for Housing Consultation,,0.95
 2604.00472,2026-04-01,Valuation of variable annuities under the Volterra mortality and rough Heston models,,0.95
 2604.00415,2026-04-01,Dynamic Weight Optimization for Double Linear Policy: A Stochastic Model Predictive Control Approach,,0.9
 2604.02279,2026-04-02,The Self Driving Portfolio: Agentic Architecture for Institutional Asset Management,Deep learning and LLM forecasting,0.85
@@ -2162,6 +2229,8 @@ arxiv_id,published,title,area,confidence
 2604.02921,2026-04-03,Debiasing LLMs by Fine-tuning,Deep learning and LLM forecasting,0.9
 2604.02743,2026-04-03,On options-driven realized volatility forecasting: Information gains via rough volatility model,Volatility forecasting (GARCH),0.95
 2604.02832,2026-04-03,Transfer Learning for Loan Recovery Prediction under Distribution Shifts with Heterogeneous Feature Spaces,,0.95
+2604.02862,2026-04-03,When cooperation is beneficial to all agents,,0.9
+2604.02909,2026-04-03,Concave Continuation: Linking Routing to Arbitrage,"Crypto, COVID and spillovers",0.85
 2604.03499,2026-04-03,Marking-Aware Sequential VaR Recalibration for Standardized Option Books,,0.85
 2605.20192,2026-04-04,Leveraging Large Language Models for Sentiment Analysis: Multi-Modal Analysis of Decentraland's MANA Token,"Crypto, COVID and spillovers",0.85
 2604.14206,2026-04-04,Portfolio Optimization Proxies under Label Scarcity and Regime Shifts via Bayesian and Deterministic Students under Semi-Supervised Sandwich Training,,0.9
@@ -2176,6 +2245,7 @@ arxiv_id,published,title,area,confidence
 2604.04662,2026-04-06,Anticipatory Reinforcement Learning: From Generative Path-Laws to Distributional Value Functions,,0.95
 2604.04430,2026-04-06,The Co-Pricing Factor Zoo,Asset pricing and risk premia,0.95
 2604.04641,2026-04-06,Dividend ratcheting and capital injection under the Cramér-Lundberg model: Strong solution and optimal strategy,,0.95
+2604.05985,2026-04-07,Tail copula representation of path-based maximal tail dependence,,0.95
 2604.06116,2026-04-07,Sequential Audit Sampling for Finite Populations with Exact and Simulation-based Guarantee,,0.95
 2604.06068,2026-04-07,"Beyond Black-Scholes: A Computational Framework for Option Pricing Using Heston, GARCH, and Jump Diffusion Models",,0.85
 2604.05699,2026-04-07,Priced risk in corporate bonds,Asset pricing and risk premia,0.95
@@ -2191,18 +2261,24 @@ arxiv_id,published,title,area,confidence
 2604.08649,2026-04-09,PRAGMA: Revolut Foundation Model,,0.9
 2604.07870,2026-04-09,Skewness Dispersion and Stock Market Returns,Asset pricing and risk premia,0.95
 2604.08356,2026-04-09,Measuring Strategy-Decay Risk: Minimum Regime Performance and the Durability of Systematic Investing,Asset pricing and risk premia,0.85
+2604.09821,2026-04-10,"Global Persistence, Local Residual Structure: Forecasting Heterogeneous Investment Panels",,0.85
 2604.09342,2026-04-10,Optimal Annuitization Time under a Mortality Shock,,0.95
+2604.09187,2026-04-10,The Geoeconomics of Venture Capital An Economic Complexity Approach to Emerging Technological Sovereignty,,0.95
 2604.18605,2026-04-10,Exploring Drivers of Extreme Housing Prices in Australia,,0.95
 2604.19796,2026-04-10,Systemic Risk and Default Cascades in Global Equity Markets: A Network and Tail-Risk Approach Based on the Gai Kapadia Framework,,0.9
 2605.05211,2026-04-10,A Review of Large Language Models for Stock Price Forecasting from a Hedge-Fund Perspective,Deep learning and LLM forecasting,0.98
+2604.20877,2026-04-11,When AAA Satisfies Nothing: Impossibility Theorems for Structured Credit Ratings,,0.9
 2604.10194,2026-04-11,Mandatory Disclosure in Oligopolistic Market Making,Trading and order flow,0.95
 2604.10375,2026-04-11,On the Structure of Risk Contribution: A Leave-One-Out Decomposition into Inherent and Correlation Risk,,0.95
 2604.10005,2026-04-11,"What Happens When Institutional Liquidity Enters Prediction Markets: Identification, Measurement, and a Synthetic Proof of Concept",Trading and order flow,0.85
+2604.09986,2026-04-11,The Long-Only Minimum Variance Portfolio in a One-Factor Market: Theory and Asymptotics,Asset pricing and risk premia,0.9
 2604.10758,2026-04-12,Investing Is Compression,,0.9
 2604.10529,2026-04-12,"AI Patents in the United States and China: Measurement, Organization, and Knowledge Flows",,0.95
 2604.10492,2026-04-12,Aharanov-Bohm Type Arbitrage and Homological Obstructions in Financial Markets,,0.95
 2604.10402,2026-04-12,Risk-Sensitive Specialist Routing for Volatility Forecasting,Volatility forecasting (GARCH),0.85
 2604.10657,2026-04-12,Lambda R{é}nyi entropic value-at-risk,,0.95
+2604.22801,2026-04-13,Beyond Sequential Prediction: Learning Financial Market Dynamics in Volatile and Non-Stationary Environments through Sentiment-Conditioned Generative Modelling,Deep learning and LLM forecasting,0.95
+2604.11143,2026-04-13,Temperature Anomalies and Climate Physical Risk in Portfolio Construction,,0.85
 2604.12114,2026-04-13,A Decomposition Method for LQ Conditional McKean-Vlasov Control Problems with Random Coefficients,,0.95
 2604.12082,2026-04-13,When Forecast Accuracy Fails: Rank Correlation and Decision Quality in Multi-Market Battery Storage Optimization,,0.95
 2604.11577,2026-04-13,Risk-Constrained Kelly for Mutually Exclusive Outcomes: CRRA Support Invariance and Logarithmic One-Dimensional Calibration,,0.9
@@ -2212,6 +2288,7 @@ arxiv_id,published,title,area,confidence
 2604.11100,2026-04-13,Mechanism Design for Investment Regulation under Herding,Behavioral finance,0.9
 2604.22818,2026-04-14,Representation Homogeneity and Systemic Instability in AI-Dominated Financial Markets: A Structural Approach,Trading and order flow,0.85
 2604.12197,2026-04-14,Emergence of Statistical Financial Factors by a Diffusion Process,Asset pricing and risk premia,0.9
+2604.12927,2026-04-14,Forecasting Oil Prices Across the Distribution: A Quantile VAR Approach,,0.8
 2604.13311,2026-04-14,Topological Complexity and Phase Space Stability: A Persistent Homology Approach to Cryptocurrency Risk,"Crypto, COVID and spillovers",0.85
 2604.13334,2026-04-14,Computable Countermarkets and the Limits of Universal Trading,,0.9
 2604.13260,2026-04-14,Which Voices Move Markets? Speaker Identity and the Cross-Section of Post-Earnings Returns,Information and stock reactions,0.95
@@ -2221,6 +2298,7 @@ arxiv_id,published,title,area,confidence
 2604.15531,2026-04-16,Spurious Predictability in Financial Machine Learning,Classical stock price prediction,0.8
 2604.15519,2026-04-16,"Broken Symmetry, Conservation Law, and Scaling in Accumulated Stock Returns -- a Modified Jones-Faddy Skew t-Distribution Perspective",,0.9
 2604.15463,2026-04-16,Risk-Sensitive Investment Management via Free Energy-Entropy Duality,,0.9
+2604.14793,2026-04-16,LR-Robot: An Human-in-the-Loop LLM Framework for Systematic Literature Reviews with Applications in Financial Research,,0.95
 2604.14619,2026-04-16,The Acoustic Camouflage Phenomenon: Re-evaluating Speech Features for Financial Risk Prediction,Information and stock reactions,0.9
 2604.16716,2026-04-17,Climate Risk Stress Testing in California: A Geospatial Framework for Banking and Climate-Exposed Sectors,,0.95
 2604.15881,2026-04-17,Optimal Insurance Menu Design under the Expected-Value Premium Principle,,0.95
@@ -2234,6 +2312,7 @@ arxiv_id,published,title,area,confidence
 2604.17579,2026-04-19,Vault as a credit instrument,"Crypto, COVID and spillovers",0.85
 2604.17593,2026-04-19,Post-Screening Portfolio Selection,Asset pricing and risk premia,0.65
 2604.18373,2026-04-20,Dissecting AI Trading: Behavioral Finance and Market Bubbles,Behavioral finance,0.9
+2604.18500,2026-04-20,QRAFTI: An Agentic Framework for Empirical Research in Quantitative Finance,,0.75
 2605.23924,2026-04-20,Improving the Completeness and Comparability of Segment Disclosures: A Large Language Model Approach,Information and stock reactions,0.75
 2604.18821,2026-04-20,"Evaluating Structured Strategy Backtests: Peer Benchmarks, Regime Timing, and Live Performance",,0.8
 2604.18118,2026-04-20,Identifiability of Contagion Components amid Environmental Fluctuations in Aggregated Default Counts,,0.9
@@ -2244,6 +2323,7 @@ arxiv_id,published,title,area,confidence
 2604.19604,2026-04-21,The Cost of a Free Lunch: Evidence from U.S. Derivatives Markets,,0.8
 2604.19580,2026-04-21,"Probabilistic Forecasting for Day-ahead Electricity Prices, Battery Trading Strategies and the Economic Evaluation of Predictive Accuracy",,0.9
 2605.00854,2026-04-21,Dynamics of Periodic Bubbles and Crashes: Modeling Market Overheating and Panic Selling via Cubic Momentum,Behavioral finance,0.9
+2605.00862,2026-04-21,Replication-Consistent Liquidity Forecasting for Derivatives -- Forward Funding Sensitivities and a Liquidity Valuation Adjustment for Settlement Lags,,0.9
 2604.19476,2026-04-21,Cross-Stock Predictability via LLM-Augmented Semantic Networks,Deep learning and LLM forecasting,0.9
 2604.19290,2026-04-21,"Orthogonal reparametrization of the Nelson-Siegel-Svensson interest rate curve model: conditioning, diagnostics, and identifiability",,0.95
 2604.20406,2026-04-22,Bond Market Making with a Hit-Ratio Target,Trading and order flow,0.95
@@ -2254,10 +2334,13 @@ arxiv_id,published,title,area,confidence
 2605.06678,2026-04-22,A Wasserstein GAN-based climate scenario generator for risk management and insurance: the case of soil subsidence,,0.95
 2604.21581,2026-04-23,Pricing and Hedging Financial Derivatives in Merger\&Acquisition Deals with Price Impact,Trading and order flow,0.85
 2604.21893,2026-04-23,Revealing Geography-Driven Signals in Zone-Level Claim Frequency Models: An Empirical Study using Environmental and Visual Predictors,,0.95
+2604.21734,2026-04-23,Modeling dependency between operational risk losses and macroeconomic variables using Hidden Markov Models,,0.9
 2604.21672,2026-04-23,Agentic Artificial Intelligence in Finance: A Comprehensive Survey,Deep learning and LLM forecasting,0.85
 2604.21569,2026-04-23,Research Streams in Biodiversity Finance: A Bibliometric Analysis and Research Agenda,,0.95
+2604.21433,2026-04-23,ChatGPT as a Time Capsule: The Limits of Price Discovery,Deep learning and LLM forecasting,0.95
 2604.21297,2026-04-23,Identifying dynamical network markers of financial market instability,Trading and order flow,0.85
 2604.22069,2026-04-23,Liquidity provision in CLMMs: evidence from transactions data,Trading and order flow,0.9
+2604.22188,2026-04-24,Optimal Investment and Entropy-Regularized Learning Under Stochastic Volatility Models with Portfolio Constraints,,0.8
 2604.22995,2026-04-24,"Equations of Motion for an Economy: Capital Deepening, Technology, and Firm Survival",,0.9
 2604.22463,2026-04-24,Quantum analog-encoding for correlated Gaussian vectors and their exponentiation with application to rough volatility,,0.9
 2604.22528,2026-04-24,Malliavin calculus for signatures with applications to finance,,0.95
@@ -2293,10 +2376,12 @@ arxiv_id,published,title,area,confidence
 2604.27210,2026-04-29,"Fast-Vollib: A Fast Implied Volatility Library for Python with PyTorch, JAX, and CUDA Fused-Kernel Backends",,0.95
 2604.27694,2026-04-30,The Satoshi Overhang: Why the Bear Case is Bounded,"Crypto, COVID and spillovers",0.95
 2604.27837,2026-04-30,Distributionally Robust Insurance under Bregman-Wasserstein Divergence,,0.95
+2604.27287,2026-04-30,A Levered ETF Anomaly Explained,,0.9
 2604.27447,2026-04-30,Sampler-Robust Optimization under Generative Models,,0.95
 2604.27700,2026-04-30,Data-Driven Stochastic Optimal Control for Intraday Electricity Trading by Renewable Producers,,0.9
 2605.00196,2026-04-30,Modeling Stock Returns and Volatility Using Bivariate Gamma Generalized Laplace Law,,0.9
 2604.28124,2026-04-30,"Measuring the risk or reducing it, that is the question: is risk measurement necessary for risk reduction?",,0.95
+2604.27732,2026-04-30,A Note on the Generalized Cape Cod Reserving Method,,0.95
 2605.06688,2026-05-01,American Options Pricing under Heston Model via Curriculum Learning in Coupled PINNs,,0.9
 2605.12532,2026-05-01,AgenticAITA: A Proof-Of-Concept About Deliberative Multi-Agent Reasoning for Autonomous Trading Systems,Deep learning and LLM forecasting,0.85
 2608.26106,2026-05-01,A Statistical-Finance Benchmark for Same-Day Directional Stock Prediction: Walk-Forward Evidence from SPY,Classical stock price prediction,0.95
@@ -2313,14 +2398,18 @@ arxiv_id,published,title,area,confidence
 2605.02085,2026-05-03,Fast Monte-Carlo,,0.95
 2605.02040,2026-05-03,Analytic approximation for Bachelier option prices and applications,,0.95
 2605.02974,2026-05-03,PHBench: A Benchmark for Predicting Startup Series A Funding from Product Hunt Launch Signals,,0.9
+2605.02286,2026-05-04,Empirical Evaluation of Deadline-Resolved Information Leakage on Documented Polymarket Insider Cases,,0.8
 2605.02287,2026-05-04,Per-Market Information Leakage and Order-Flow Skill: Two Methodological Lenses on Informed Trading in Decentralized Prediction Markets,Trading and order flow,0.85
 2605.02248,2026-05-04,Statistics of a multi-factor function from its Fourier transform,,0.95
 2605.02326,2026-05-04,Large-Scale Asset Selection via Metric Dependence with Enriched High Frequency Information,,0.8
 2605.02436,2026-05-04,Deepening the Secondary Market: Integrating Trade Credit into Market Clearing with the Cycles Protocol,Trading and order flow,0.8
 2605.02666,2026-05-04,Pareto frontier of portfolio investment under volatility uncertainty and short-sale constraints market,,0.9
+2605.03082,2026-05-04,Market-implied time to transition to a low-carbon economy: a stochastic modelling and inference framework,,0.85
 2605.03184,2026-05-04,Single-Period Portfolio Selection via Information Projection,,0.95
 2605.03703,2026-05-05,Scaling Limits of Bivariate Nearly-Unstable Hawkes Processes and Applications to Rough Volatility,,0.9
+2605.16324,2026-05-05,Bi-Level Chaotic Fusion Based Graph Convolutional Network for Stock Market Prediction Interval,Deep learning and LLM forecasting,0.95
 2605.04004,2026-05-05,Structural Limits of OHLCV-Based Intraday Momentum Signals in MNQ Futures: A Systematic Falsification Study,,0.85
+2605.03310,2026-05-05,Coordination as an Architectural Layer for LLM-Based Multi-Agent Systems,,0.75
 2605.05140,2026-05-06,A Practical Guide to Strip Caplet Volatilities,,0.95
 2605.05376,2026-05-06,Frustrated Dynamics of Distance Matrices,,0.95
 2605.18784,2026-05-06,"The Insurability Frontier of AI Risk: Mapping Threats to Affirmative Coverage, Silent Exposures, and Exclusions",,0.9
@@ -2338,6 +2427,7 @@ arxiv_id,published,title,area,confidence
 2605.06818,2026-05-07,Modeling Dynamic Correlation Matrices with Shrinkage Priors,,0.85
 2605.07352,2026-05-08,Corporate transparency and the disposition effect,Behavioral finance,0.95
 2605.07558,2026-05-08,Stochastic Calculus and the Black-Scholes-Merton Model: A Simplified Approach,,0.95
+2605.21504,2026-05-08,Multivariate Financial Forecasting using the Chronos Time Series Foundation Models,Deep learning and LLM forecasting,0.95
 2605.12547,2026-05-09,The Payment Heterogeneity Index: An Integrated Unsupervised Framework for High-Volume Procurement Oversight and Decision Support,,0.95
 2605.09061,2026-05-09,A Market-Rule-Informed Neural Network for Efficient Imbalance Electricity Price Forecasting,Deep learning and LLM forecasting,0.8
 2611.06919,2026-05-09,Return Decomposition of Hybrid Strategies in the Brazilian Market: Evidence of Genuine Alpha and Factor Exposure,Asset pricing and risk premia,0.95
@@ -2345,18 +2435,22 @@ arxiv_id,published,title,area,confidence
 2605.09123,2026-05-09,The Engineering of Skew: A Path-Dependent Framework for Asymmetric Volatility Management,,0.9
 2605.09310,2026-05-10,Beyond ESG Scores: Learning Dynamic Constraints for Sequential Portfolio Optimization,,0.95
 2605.09712,2026-05-10,Quantifying the Risk-Return Tradeoff in Forecasting,,0.85
+2605.11180,2026-05-11,The Value of Information: A Puzzle,Trading and order flow,0.95
 2605.23955,2026-05-11,From Accuracy to Auditability: A Survey of Determinism in Financial AI Systems,,0.9
 2605.23953,2026-05-11,Game-Theoretic Modeling of Heterogeneous Investor Interactions for Stock Price Forecasting,Deep learning and LLM forecasting,0.9
 2605.11263,2026-05-11,Optimal Control of the Ethena Yield-Bearing Stablecoin,"Crypto, COVID and spillovers",0.9
+2605.11200,2026-05-11,The Epistemic Risk of Risk: A Modal Framework for Quantitative Risk Management,,0.9
 2605.10486,2026-05-11,"Manipulation, Informed Trading, and Regulation in Leveraged Event-Linked Markets",Trading and order flow,0.8
 2605.10447,2026-05-11,Statistical Model Checking of the Keynes+Schumpeter Model: A Transient Sensitivity Analysis of a Macroeconomic ABM,,0.95
 2605.10428,2026-05-11,"A Taxonomy of Event-Linked Perpetual Futures: Design Axes, Failure Modes, and Empirical Evaluability",,0.85
 2605.10400,2026-05-11,Resolution-Aware Perpetual Futures on Binary Prediction Markets: Failure Modes and Mechanical Stress Tests Using Polymarket Data,"Crypto, COVID and spillovers",0.75
 2605.10066,2026-05-11,On the modeling assumptions of Historical Simulation for Value-at-Risk,,0.9
 2605.23962,2026-05-12,From Index to Equity: Pre-Training Transformers for Stock Return Prediction,Deep learning and LLM forecasting,0.95
+2605.23959,2026-05-12,When Alpha Disappears: A One-Switch Benchmark for Decision-Time Leakage in Financial Backtests,Classical stock price prediction,0.75
 2605.12764,2026-05-12,Yield Curves Dynamics Using Variational Autoencoders Under No-arbitrage,,0.85
 2605.12099,2026-05-12,Bayesian Dynamic Modeling of Realized Volatility in Financial Asset Price Forecasting,Volatility forecasting (GARCH),0.9
 2605.12250,2026-05-12,The P behind Q: Empirical Evidence from Physical Drift in Put-Call Parity,,0.85
+2605.12189,2026-05-12,A deep learning approach for pricing convertible bonds with path-dependent reset and call provisions,,0.85
 2605.11423,2026-05-12,A Validated Volatility-Volume-Gap Classifier for Regime Identification in MNQ Intraday Data,Classical stock price prediction,0.85
 2605.11640,2026-05-12,Fill-Side Behavioral Concentration on Polymarket: Identification Limits under Record-Level Attribution,"Crypto, COVID and spillovers",0.85
 2605.12151,2026-05-12,RED-2400: A Public Benchmark of Algorithmically-Rejected Trading Events with Outcome Labels,"Crypto, COVID and spillovers",0.95
@@ -2367,6 +2461,7 @@ arxiv_id,published,title,area,confidence
 2605.23979,2026-05-13,Faster Forward Sensitivities: Reduced stochastic hedge ratios from pathwise algorithmic differentiation,,0.95
 2605.13998,2026-05-13,Synthetic American Option Pricing via Jump-HMM-Driven Heston Implied Volatility,,0.95
 2605.12977,2026-05-13,Enhancing a Risk Model by Adding Transient Statistical Factors,Asset pricing and risk premia,0.85
+2605.13320,2026-05-13,The fine structure of electricity price volatility,Volatility forecasting (GARCH),0.85
 2605.13407,2026-05-13,Vector-Quantized Discrete Latent Factors Meet Financial Priors: Dynamic Cross-Sectional Stock Ranking Prediction for Portfolio Construction,Deep learning and LLM forecasting,0.85
 2605.23978,2026-05-13,Algometrics: Forecasting Under Algorithmic Feedback,,0.85
 2605.14976,2026-05-14,Multi-regime Markov-switching models with time-varying transition probabilities: An application to U.S. Treasury yields,,0.85
@@ -2383,7 +2478,9 @@ arxiv_id,published,title,area,confidence
 2605.17299,2026-05-17,Geometric Brownian motion with intermittent entries and exits,,0.95
 2605.17307,2026-05-17,Deep Reinforcement Learning Framework for Diversified Portfolio Management Across Global Equity Markets,Deep learning and LLM forecasting,0.85
 2605.17628,2026-05-17,A Penalty-Free Pipeline for Direct Quantum-Annealer Portfolio Optimization,,0.9
+2605.17425,2026-05-17,The Viability of Blockchain Markets under Discrete Clearing and Paid Priority,"Crypto, COVID and spillovers",0.85
 2605.17446,2026-05-17,Robust Volatility Index Calculation with OTM Option-implied Probability,,0.95
+2605.17623,2026-05-17,Where the Quantum Lives in D-Wave Hybrid Portfolio Optimization: An Operational Decomposition Audit,,0.9
 2605.30363,2026-05-17,Enhancing Regime Shift Detection Using Unstructured Data: A Study on the Treasury Market,Deep learning and LLM forecasting,0.8
 2605.17275,2026-05-17,A Hybrid Gaussian Process Regression Framework for Stable Volatility-Covariance Estimation: Evidence from Global Equity Indices,Volatility forecasting (GARCH),0.85
 2605.17724,2026-05-18,Sequential Structure in Intraday Futures Data: LSTM vs Gradient Boosting on MNQ,Deep learning and LLM forecasting,0.85
@@ -2406,6 +2503,7 @@ arxiv_id,published,title,area,confidence
 2605.21696,2026-05-20,"What Does Deep Hedging Actually Learn? Delta Corrections, Regime Fragility, and Symbolic Distillation",,0.85
 2605.21409,2026-05-20,Portfolio Preference Elicitation in Institutional Crossing Markets,Trading and order flow,0.95
 2605.21192,2026-05-20,The Statistical Significance of the Inclusion of Graph Neural Networks in the Financial Time Series Forecasting Problem,Deep learning and LLM forecasting,0.9
+2605.21009,2026-05-20,"Wartime Controls, Political Connections, and the Pricing of Zaibatsu Rents in Japan, 1930-1943",Asset pricing and risk premia,0.95
 2605.24031,2026-05-20,Volatility Surface Reconstruction using Deep Learning under No-Arbitrage Constraints,,0.9
 2605.20636,2026-05-20,"Continuous Timing Signals for Growth-Defensive Style Allocation: Factor Attribution, Risk Matching, and Out-of-Sample Evidence",Asset pricing and risk premia,0.85
 2605.22994,2026-05-21,Grow and Pollute but Invest and Clean: Dynamic Associations between Parent Firm Characteristics and Facility Toxic Releases,,0.95
@@ -2414,12 +2512,15 @@ arxiv_id,published,title,area,confidence
 2605.22792,2026-05-21,From Arbitrage Removal to Density Extraction: A Model-Free Framework for Short-Dated Options,,0.9
 2605.22667,2026-05-21,Imperfect Commitment in Maximal Extractable Value Auctions,"Crypto, COVID and spillovers",0.95
 2605.22427,2026-05-21,Faster Monotone Implied Volatility Solver,,0.95
+2605.22215,2026-05-21,A Generative Adversarial Graph Neural Network for Synthetic Time Series Data,,0.85
+2605.24285,2026-05-22,"Memory, Roughness, and Information Persistence in Financial Markets: A Structural Approach to Volatility Forecasting",Volatility forecasting (GARCH),0.95
 2605.24242,2026-05-22,Explicit Signal-Adaptive Sequential Optimal Execution Quotes,Trading and order flow,0.95
 2605.24514,2026-05-23,"Incremental SVD for Large-Scale Dynamic Matrices: Accuracy, Subspace Stability, Refresh Strategies, and Financial Factor-Based Risk Models",,0.9
 2605.24730,2026-05-23,Private Languages,,0.85
 2605.24490,2026-05-23,Market Regime Council for Dynamic Credit Assignment in Multi-Agent LLM Decision Systems,Deep learning and LLM forecasting,0.9
 2605.24878,2026-05-24,Entropy-Regularized Certainty-Equivalent Bellman Policies for Risk-Sensitive Market Making,Trading and order flow,0.98
 2605.24833,2026-05-24,Controlled McKean--Vlasov Contagion with State-Dependent Killing,,0.9
+2605.25894,2026-05-25,Predicting Stock Price Direction on Earnings Announcement Days using Multi-modal Deep Learning,Deep learning and LLM forecasting,0.95
 2605.26074,2026-05-25,StakeBench: Evaluating Language Understanding Grounded in Market Commitment,"Crypto, COVID and spillovers",0.85
 2605.26363,2026-05-25,Multiperiod Groundwater Markets,,0.95
 2605.25632,2026-05-25,Insuring Every Action: An Authority Frontier Framework for Runtime Actuarial Control of Autonomous AI Agents,,0.99
@@ -2430,6 +2531,7 @@ arxiv_id,published,title,area,confidence
 2605.25766,2026-05-25,Measuring multivariate maximal tail dependence,,0.95
 2605.25824,2026-05-25,Mean-field game of mean-variance portfolio optimization with peer-based risk aversion,,0.9
 2606.07575,2026-05-26,Forward-Looking Stress Testing Under Macro Scenarios: Stable SVaR Estimation Using a Hybrid GPR-HS Framework with SACS,,0.9
+2605.26508,2026-05-26,Foundations of a Time-Consistent Counterfactual Actuarial Runtime for Autonomous AI Agents,,0.95
 2605.26610,2026-05-26,End-to-End PDE-Based Quantum Algorithms for Multi-Asset Option Pricing under Local and Stochastic Volatility,,0.95
 2605.26740,2026-05-26,"A Unified Theory of Ownership Concentration, Overlap, and Dependence",Asset pricing and risk premia,0.75
 2605.27658,2026-05-26,Historical Developments in Probability Measures for Asset Pricing: From State Prices to Modern Pricing Kernels,Asset pricing and risk premia,0.95
@@ -2445,28 +2547,36 @@ arxiv_id,published,title,area,confidence
 2605.28647,2026-05-27,The Ethics of LLM Sandbox and Persona Dynamics,,0.9
 2605.29102,2026-05-27,Implying Volatility: How Fast Can We Go?,,0.95
 2605.29413,2026-05-28,From Classical Optimization to Bayesian Integration: A Comprehensive Analysis of Systematic Portfolio Management,,0.9
+2605.30643,2026-05-28,Quality-Adjusted Hit-Ratio Targeting in Corporate Bond Market Making,Trading and order flow,0.95
 2605.29541,2026-05-28,Change-point estimation for Weibull time series with copula-based Markov models,,0.85
+2605.30562,2026-05-28,Option Pricing under Stochastic Volatility and Jumps:A PIDE Framework with Empirical Evidence,,0.95
 2605.29689,2026-05-28,Beyond TVL: An Explainable Risk Scoring Framework for Tokenized Real-World Assets,"Crypto, COVID and spillovers",0.9
 2605.30068,2026-05-28,Functional integration by parts formulae for stochastic Volterra processes,,0.95
 2605.29309,2026-05-28,Implied ETF Carry Rates and the Limits of Arbitrage in Segmented Bitcoin Markets,"Crypto, COVID and spillovers",0.95
 2605.29376,2026-05-28,Three-Currency HJM for Brazilian Credit Markets,,0.95
+2605.30567,2026-05-28,"Valuation of GLWB-LTC Annuities with Lévy Equity Dynamics, Stochastic Interest Rates and Health-State Transitions",,0.95
 2605.30464,2026-05-28,"Distributional Portfolio Optimization (DPO): A Unified Framework for Distributions over Weights, Returns, and Parameters",,0.85
 2605.30442,2026-05-28,When market boundaries weaken: Network reconfiguration and regime-dependent cross-asset spillovers,"Crypto, COVID and spillovers",0.95
 2606.00143,2026-05-29,Regime-Adaptive Continual Learning for Portfolio Management,Deep learning and LLM forecasting,0.85
 2605.30943,2026-05-29,Inspectable Neural Markov Models for Non-Stationary Time Series,,0.85
 2605.30672,2026-05-29,Residual Supply and the Price of Risk Absorption,Asset pricing and risk premia,0.9
+2606.11238,2026-05-29,"Artificial Intelligence in Ship Finance: Applications, Opportunities, and a Case Study in AI-Augmented Loan Origination",,0.95
 2606.11237,2026-05-29,A Hybrid LSMC-PDE Method for Bermudan Option Pricing under the Gatheral Double Mean-Reverting Model,,0.95
 2606.00624,2026-05-30,Macro-aware time series forecasting via hierarchical mixed-frequency attention models,Deep learning and LLM forecasting,0.95
 2606.12450,2026-05-30,Forward-Time Black-Scholes Reconstruction via Regularized Legendre Reduction,,0.95
+2606.12446,2026-05-30,Temporal Coarse-Graining of Latent Default-Probability Paths Generates Effective Default Correlation,,0.9
 2606.00800,2026-05-30,Multiplicative Langevin Process for Volatilities Produces Observed Q-Variance Regularities,Volatility forecasting (GARCH),0.9
 2606.13697,2026-05-31,On Reference-Regulated Multiperiod Mean-Variance Portfolio Optimization in High Dimensions,,0.9
 2606.01131,2026-05-31,Tokenized but Illiquid? Evidence from Real-World Asset Markets,"Crypto, COVID and spillovers",0.85
 2606.01122,2026-05-31,A Per-Component Diagnostic Protocol for Neural HJB-PIDE Solvers under Control-Dependent Lévy Jumps,,0.9
+2606.01274,2026-05-31,Strategic Users in a Priority Queue with Bulk Service on Blockchains,"Crypto, COVID and spillovers",0.95
 2606.01356,2026-05-31,A Formally Verified Library of Mathematical Finance in Lean 4,,0.99
+2606.01477,2026-05-31,Avellaneda-Stoikov and Cartea-Jaimungal as One Framework: A Forced Uniqueness Theorem for Inventory Market Making,Trading and order flow,0.95
 2606.02528,2026-06-01,Auditing Asset-Specific Preferences in Financial Large Language Models: Evidence from Bitcoin Representations and Portfolio Allocation,"Crypto, COVID and spillovers",0.75
 2606.01575,2026-06-01,"Boom, Bubble, or Buildout? A Multi-Method Evaluation of Whether Artificial Intelligence Is in an Ongoing Financial Bubble",Asset pricing and risk premia,0.8
 2606.01650,2026-06-01,Post Selection Estimation of Sharpe Ratios,,0.9
 2606.01979,2026-06-01,A Simple Hierarchical Causality Primer,,0.95
+2606.02336,2026-06-01,VIX options in Bergomi models,,0.9
 2606.02657,2026-06-01,Regime-Arrival Uncertainty in Generalization Bounds under Distribution Shift,,0.85
 2606.02945,2026-06-01,Infinite Horizon Optimal Consumption: Intertemporal Hedging under Epstein-Zin Preferences,,0.9
 2606.04217,2026-06-02,Polymarket-v1 Database,Trading and order flow,0.9
@@ -2474,8 +2584,11 @@ arxiv_id,published,title,area,confidence
 2606.03158,2026-06-02,Portfolio Choice with Competing Precautionary and Accumulation Goals,,0.9
 2606.03184,2026-06-02,FinStressTS: A Parametric Synthetic Benchmark for Time-Series Forecasting in Finance,Deep learning and LLM forecasting,0.8
 2606.03457,2026-06-02,Hybrid News Sentiment Engine: Real-Time Market Analysis via Adaptive Ensemble Learning on News-Price Pairs,Information and stock reactions,0.95
+2606.04153,2026-06-02,A new decomposition approach to modeling financial returns: Conditioning sign on magnitude,Classical stock price prediction,0.9
+2606.03767,2026-06-02,Trading Frictions in Dynamic Cap-and-Trade Markets,Trading and order flow,0.85
 2610.06856,2026-06-02,The Agentic ETF: How Agentic Trading Becomes an Asset Class,Deep learning and LLM forecasting,0.85
 2606.03777,2026-06-02,From Control Boundary to Insurance Claim: Reconstructing AI-Mediated Losses Through the CER Framework,,0.95
+2606.03548,2026-06-02,Cost of Manipulation in AMM-Based Oracles,"Crypto, COVID and spillovers",0.9
 2606.04235,2026-06-02,A Certified Higher Order Quantum Framework for CSA and Margin-Aware Collateral Optimization,,0.95
 2606.04258,2026-06-02,Anticipatory Portfolio Optimization,,0.85
 2606.04576,2026-06-03,ReSGA: A Large Tail Risk Model for Learning Value-at-Risk and Expected Shortfall,Deep learning and LLM forecasting,0.85
@@ -2491,13 +2604,18 @@ arxiv_id,published,title,area,confidence
 2606.05733,2026-06-04,Zero-Copy Semantic Contagion: An In-Memory Streaming Architecture for Evolving Attention Graphs,Information and stock reactions,0.85
 2606.06737,2026-06-04,Fast-excursion limit of the Heston model,,0.9
 2606.06413,2026-06-04,Competition in Dealer Markets with Internalisation and Externalisation,Trading and order flow,0.95
+2606.06190,2026-06-04,Multi-Scale Markov Switching GARCH,Volatility forecasting (GARCH),0.95
 2606.06089,2026-06-04,Leveraging LLMs for Unstructured Claims Data Analysis,,0.95
+2606.05991,2026-06-04,Forecasting of volatility and risk premia in electricity markets,Volatility forecasting (GARCH),0.9
+2606.05900,2026-06-04,"Derivative-Informed Operator Learning for Finance: On-the-Fly Greeks, Surfaces, Hedging, and Control",,0.85
 2606.05882,2026-06-04,Market Informedness and Market-Maker Profitability: The Trade-Off Between Adverse Selection and Price Discovery,Trading and order flow,0.9
 2606.07450,2026-06-05,Information Networks of Stock Prices,,0.85
+2606.06823,2026-06-05,PandaAI: A Practical Agent CQ2 for Neuro-symbolic Data Analysis And Integrated Decision-Making in Quantitative Finance,Deep learning and LLM forecasting,0.95
 2606.07445,2026-06-05,Bubbles vs. Baselines: Token Valuation and Institutional Capital in PoS Networks under EIP-1559,"Crypto, COVID and spillovers",0.95
 2608.26114,2026-06-05,CIFQA: A Deterministic Tool-Grounded Multi-Agent LLM Framework for Financial Query Answering,,0.9
 2606.07276,2026-06-05,"The Balance Property: The Constrained Case, with a View on Risk Sharing",,0.95
 2606.07059,2026-06-05,Diffusive in plain sight: An inconspicuous law of market impact,Trading and order flow,0.95
+2606.07727,2026-06-05,Benchmarking Quantum Algorithmic Resilience for CVaR Portfolio Optimization: The Expressibility-Coherence Trade-off,,0.9
 2606.07290,2026-06-05,Boundary behaviour of the Volterra square-root process,,0.9
 2606.08285,2026-06-06,Execution Realism and Reproducibility in LLM-Based Trading Systems: A Systematic Scoping Review and Evidence Audit,Deep learning and LLM forecasting,0.9
 2606.08283,2026-06-06,Macro Economists in the Machine: A Multi-Agent LLM Framework for Commodity-Related ETF Portfolio Construction,Deep learning and LLM forecasting,0.9
@@ -2510,6 +2628,7 @@ arxiv_id,published,title,area,confidence
 2606.08586,2026-06-07,"Cross-sectional topological anomaly scores and intraday return predictability in the S&P 500: A BallMapper, decoder-conditional VAE, and Function-on-Function regression approach",Deep learning and LLM forecasting,0.85
 2606.08791,2026-06-07,Evaluating AI Investment Strategies,,0.85
 2606.10245,2026-06-08,A Fast Implied Volatility Method with Expansions,,0.95
+2606.10191,2026-06-08,On regularity of finite-maturity American put options in the Heston model,,0.95
 2606.09820,2026-06-08,Weighted universal approximation of differentiable maps on infinite-dimensional manifolds,,0.95
 2606.09274,2026-06-08,Reverse Stress Testing for Multivariate Scenarios: A Conditional Framework for Stressed Time Series,,0.95
 2606.09104,2026-06-08,Addressing Market Regime Changes and Heavy-Tailed Returns in Portfolio Optimization via Bayesian VAR and Elliptical Black-Litterman,,0.85
@@ -2520,7 +2639,9 @@ arxiv_id,published,title,area,confidence
 2606.09003,2026-06-08,Proof of Stake economy under centralized exchanges--a mean field model,"Crypto, COVID and spillovers",0.95
 2606.09454,2026-06-08,Axiomatic Market Making,Trading and order flow,0.95
 2606.10805,2026-06-09,Asymmetric Nonlinear Return Extrapolation and Optimal Portfolio Choice under Stochastic Volatility,Behavioral finance,0.95
+2606.10337,2026-06-09,Optimal exit strategies of CPT gamblers in unfair gambles,Behavioral finance,0.9
 2606.11318,2026-06-09,Mean-Variance Optimization in Ambiguous Financial Markets with Learning,,0.95
+2606.10658,2026-06-09,Post-Quantum Secure Federated DeFi for Inclusive Banking,,0.8
 2608.18099,2026-06-09,FinSkillBench: Evaluating AI Agents and Domain Skills for Investment Management,,0.85
 2606.12717,2026-06-10,"Mixture-Preserving, Arbitrage-Free Interpolation for Volatility-Surface Models",,0.95
 2606.12612,2026-06-10,The Mathematics of Heuristic Portfolio Optimization (HPO),,0.9
@@ -2536,15 +2657,18 @@ arxiv_id,published,title,area,confidence
 2606.13431,2026-06-11,Adaptive rerouting reshapes impacts of maritime chokepoint disruptions,,0.9
 2606.13618,2026-06-11,A Declining CVaR Glidepath Framework for Target-Date Fund Design with an Application to the Chilean Pension System,,0.85
 2606.13812,2026-06-11,CFOs Meet LLMs,Deep learning and LLM forecasting,0.85
+2606.13880,2026-06-11,A Longitudinal Attribute-Conditioned Neural Network for Modeling Health-State Transition Probabilities in Temporally Irregular Data: The LANTERN Framework,,0.95
 2606.14386,2026-06-12,Discovery under Hypothesis Redundancy: A Geometric Theory of Discovery Bottlenecks,Deep learning and LLM forecasting,0.85
 2606.13981,2026-06-12,An Actuarial Cost and Revenue Model for Helicopter Emergency Medical Services: Estimating Population-Based Coverage and Sustainability Thresholds,,0.99
 2606.14182,2026-06-12,Correlation emergence and the Epps effect in two coupled limit order books,Trading and order flow,0.95
 2606.14830,2026-06-12,Pricing Excess-of-Loss Reinsurance and CAT Bonds under Climate Uncertainty: A Cox Process Framework with Temperature-Dependent Stochastic Intensity,,0.95
 2606.14484,2026-06-12,Quantum Horizon: An evaluation of quantum computing as a threat to Bitcoin and Ethereum,"Crypto, COVID and spillovers",0.95
+2606.14050,2026-06-12,Battery Bidding under Price Uncertainty in Wholesale Electricity Markets,,0.9
 2606.13992,2026-06-12,Group Quantization and Mellin Representations of the Heston Model,,0.95
 2606.15089,2026-06-13,A Machine-Checked Itô Calculus for Brownian Motion,,0.98
 2606.15452,2026-06-13,PHINN: Persistent Homology Inspired Neural Network for Rare-Event Time Series Generation,,0.85
 2606.15473,2026-06-13,Belief at Risk: Quantifying Agentic AI Model Risk with LLM-Inferred Bayesian State Filters,,0.85
+2606.15502,2026-06-13,"Fast, Reliable, and Error-Bounded Option Pricing with Pretrained Neural Networks: A GJR--GARCH Study",,0.85
 2606.15755,2026-06-14,A Multiplex Network Hawkes Model for Systemic Risk Measurement,"Crypto, COVID and spillovers",0.75
 2606.15701,2026-06-14,Robust Transformer-Based One-Step Stock Index Forecasting via Shifted Data Augmentation,Deep learning and LLM forecasting,0.95
 2606.15715,2026-06-14,Trading in the Sunshine or in the Shade: Market Impact and Adverse Selection on Hyperliquid,Trading and order flow,0.95
@@ -2552,6 +2676,7 @@ arxiv_id,published,title,area,confidence
 2606.17032,2026-06-15,Sharpe Ratio and Return-VaR Ratio Maximization for Option Portfolios with Skew-Elliptical $t$ Underlying Returns,,0.9
 2606.16961,2026-06-15,Beyond the Smile: A Hybrid Convolutional VAE for Crypto Volatility Surfaces,Deep learning and LLM forecasting,0.85
 2606.16619,2026-06-15,Expanding the rough Heston model in $H$,,0.85
+2606.16493,2026-06-15,Forward Hedging Reshapes Incentive Provision,,0.9
 2606.16326,2026-06-15,Gaming-Resistant Insurance Contracts for Autonomous AI Agents: Strategy-Proof Toll Mechanism Design,,0.95
 2606.16269,2026-06-15,Revisiting Trade-sign Long-memory and Square-root Law price impact,Trading and order flow,0.95
 2606.17545,2026-06-16,Continuous-time Optimal Stopping through Deep Reinforcement Learning,,0.9
@@ -2560,6 +2685,7 @@ arxiv_id,published,title,area,confidence
 2606.17383,2026-06-16,"Model Validation of Agentic AI Systems: A POMDP-Based Framework for Belief-State, Forecast, and Policy Validation",,0.85
 2606.17423,2026-06-16,Martingale Doppelgänger-Eval: An Identification Framework for Auditing Candlestick Understanding in Vision-Language Models,Deep learning and LLM forecasting,0.85
 2606.19038,2026-06-17,Collective completeness and pricing-hedging duality II,,0.95
+2606.19550,2026-06-17,Which Portfolios? The Construction Dependence of Factor Model Performance,Asset pricing and risk premia,0.95
 2606.19517,2026-06-17,Do Prediction Markets Match Option Prices? Bitcoin Threshold Evidence from Binance and Polymarket,"Crypto, COVID and spillovers",0.9
 2606.19501,2026-06-17,DeXposure-Claw: An Agentic System for DeFi Risk Supervision,,0.85
 2606.19318,2026-06-17,Fitting Accumulated Stock Returns with Tempered Skew t-Distribution,Volatility forecasting (GARCH),0.75
@@ -2571,15 +2697,19 @@ arxiv_id,published,title,area,confidence
 2606.20977,2026-06-18,The Mathematics of Modeling the Future,,0.9
 2606.20903,2026-06-18,Reinforcement Learning for Risk-Sensitive Investment Management: a Free Energy--Entropy Duality Approach,,0.95
 2606.20485,2026-06-18,Optimal Order of Multi-Agent and General Many-Body Systems,,0.95
+2606.20420,2026-06-18,Advanced Calibration Analysis and Tools: Identifying Influential Observations in Stochastic Interest Rate Model Calibration,,0.95
 2606.21784,2026-06-19,"KineticSim: A Lightweight, High-Performance Execution Engine for Real-Time Market Simulators",Trading and order flow,0.85
+2606.21800,2026-06-19,Semi-Analytical Pricing for General Default Intensity Models,,0.95
 2606.21539,2026-06-19,Attributing Forecast Gaps to Component Models in Complex Model Suites,,0.98
 2606.21515,2026-06-19,A Censored Transformed Model for Proportional Outcomes with Boundary Mass and an Application to Loss Given Default Modeling,,0.95
 2606.21042,2026-06-19,Absolute Continuity of Monotone Aggregations under Positive Regression Dependence,,0.95
+2606.21769,2026-06-19,Optimal Dynamic Fees for Automated Market Makers: A Stochastic Control Approach to Loss-Versus-Rebalancing,Trading and order flow,0.9
 2606.22118,2026-06-20,A Unified General Formula for Arbitrary Liquidity Operations in Weighted AMMs: Potential Applications to Intelligent Transportation Systems,Trading and order flow,0.8
 2606.22162,2026-06-20,Temporal Coarse-Graining of Multi-Sector Default Count Data Generates Posterior-Implied Copulas,,0.9
 2606.22206,2026-06-20,Transaction Costs and Speed in the Ethereum Ecosystem: Scalability of the Mainnet and Layer 2s,"Crypto, COVID and spillovers",0.95
 2608.26122,2026-06-20,From electricity prices to profits: multidimensional probabilistic forecasting for BESS trading,,0.9
 2606.21871,2026-06-20,On Prudence of Risk Measures,,0.99
+2607.09702,2026-06-21,Fundamental market design as a layer of AI-agent alignment,Trading and order flow,0.9
 2606.22719,2026-06-21,Leakage-Aware Benchmarking of LLM Forecasting: Real-Time Nowcasts as the Decision-Time Input for Macro Factor Ranking,Deep learning and LLM forecasting,0.95
 2606.22615,2026-06-21,Stochastic Volatility in Mean Models with Heavy Tails: A Fast Approximate Bayesian Inference Using Hidden Markov Models,Volatility forecasting (GARCH),0.8
 2606.22293,2026-06-21,Innovative Extensions to Option Pricing: Asymmetric Brownian Motion and Random Walk Approaches,,0.95
@@ -2594,6 +2724,7 @@ arxiv_id,published,title,area,confidence
 2606.23099,2026-06-22,Path-dependent Affine Processes,,0.95
 2606.23337,2026-06-22,When Staking Rewards Compound: Measuring the Impact of Ethereum's Pectra Upgrade,"Crypto, COVID and spillovers",0.9
 2606.23367,2026-06-22,Asymmetry PRISM: A CPU/GPU Portfolio Optimization Engine for Deadline-Bounded Institutional Rebalancing,,0.95
+2606.23492,2026-06-22,Continuous Hidden Markov Models for Equity Returns: Heavy-Tail Emission Families and Regime-Conditional Value-at-Risk,,0.8
 2606.23510,2026-06-22,Analytic Pricing of Bermudan Swaptions with Few Exercise Dates,,0.95
 2606.24019,2026-06-22,Empirical Confirmation of the Square-Root Law of Market Impact in a U.S. Large-Cap Equity,Trading and order flow,0.98
 2606.23980,2026-06-22,Diagonal Frog: High-order positivity-preserving FD schemes for anisotropic Fokker-Planck equations,,0.99
@@ -2633,16 +2764,19 @@ arxiv_id,published,title,area,confidence
 2606.28706,2026-06-27,Balancing Shareholder Value and Financial Stability under a Reduced-Form Liquidation Model,,0.95
 2606.29018,2026-06-27,Liquidity-Based Audit of Algorithmic Trading Strategies,Trading and order flow,0.95
 2606.28891,2026-06-27,Hedging Maturity-Specific Risk in Forward Curve Derivatives under Stochastic Volatility,,0.95
+2606.28990,2026-06-27,"The Fundamental Theorem of Asset Pricing, Formalized in Lean 4",,0.95
 2606.29290,2026-06-28,Supply Chain Propagation of Textual Signals: LLM Embeddings and Cross-Sectional Return Predictability,Information and stock reactions,0.85
 2606.29572,2026-06-28,Valuation Reveals Uncertainty,,0.95
 2608.18113,2026-06-28,Optimal Loss Allocation and Reflected Free Boundaries in Systemic Risk,,0.95
 2606.29143,2026-06-28,Comonotonic and moment matching approximations for sums of lognormal random variables,,0.99
 2606.29251,2026-06-28,When Summaries Distort Decisions: Information Fidelity in LLM-Compressed Financial Analysis,,0.85
+2606.29591,2026-06-28,"The Bounce Has No Direction: Sign, Magnitude, and the Microstructure of Equity Return Predictability",Trading and order flow,0.95
 2606.29406,2026-06-28,Adaptive AI Delegation under Uncertainty: A Bayesian Governance Policy for Sequential Decision Authority,,0.95
 2606.29771,2026-06-29,"CLQT: A Closed-Loop, Cost-Aware, Strategy-Consistent Benchmark for Diagnostic Evaluation of LLM Portfolio-Management Agents",Deep learning and LLM forecasting,0.8
 2606.30779,2026-06-29,"Pareto Efficient Insurance with Multiple Policyholders, Multiple Insurers, and Multiple Indemnity Environments",,0.98
 2606.29793,2026-06-29,Fund2Persona: A Framework for Building and Refining Financial Advisor Personas from Fund Disclosure Data,,0.9
 2606.30070,2026-06-29,Financial Resilience Evaluation: From Conditional Expectations to Dynamic Convex Risk Measures,,0.95
+2606.30363,2026-06-29,Strategic Risk Reduction: Self-Protection and Self-Insurance,,0.95
 2606.30583,2026-06-29,The Cross-Section of Stock Returns and AI Exposure,Asset pricing and risk premia,0.95
 2606.30037,2026-06-29,"Heads, Not Backbones: Output Heads Dominate Architectures on Fat-Tailed Returns",Deep learning and LLM forecasting,0.95
 2606.30193,2026-06-29,Hidden Dependence and Aggregate Tail Risk,,0.95
@@ -2656,9 +2790,11 @@ arxiv_id,published,title,area,confidence
 2607.00475,2026-07-01,End-to-End Parametric Portfolio Policies for Cross-Asset Futures Timing: When Do AI Models Beat Simple Rules?,Deep learning and LLM forecasting,0.9
 2607.01377,2026-07-01,Liquidity Premium and Investment Horizons,Asset pricing and risk premia,0.9
 2607.01198,2026-07-01,When large trades are not (automatically) news: liquidity tail risk and price discovery,Trading and order flow,0.95
+2607.00883,2026-07-01,Tail Risk Management with Puts and Trend Following: A CVaR Framework for Crashes and Drawdowns,,0.9
 2607.00856,2026-07-01,Shapley in Context: Explaining Financial Language with Domain Expertise,,0.9
 2607.02830,2026-07-02,"Outcome-Classified Precision Auditing of Filter Rules in Algorithmic DEX Trading: Evidence from 2,400 Rejection Events",,0.85
 2607.02823,2026-07-02,Auditing Collector-Generated Graduation Labels on Pump.fun: Measurement Error and Temporal Non-Generalization,"Crypto, COVID and spillovers",0.9
+2607.02795,2026-07-02,"Coordinated Sniper Cohorts on Pump.fun: Detection of 1,012 Persistent Wallet Rings and a Contamination-Adjusted Estimate of Coordination-Specific First-Hour Buyer-Flow Lift","Crypto, COVID and spillovers",0.95
 2607.02695,2026-07-02,Financial Epiplexity: A Theory of Learnable Market Structure under Bounded Computation,,0.9
 2607.01765,2026-07-02,A Cap-Axis Integral Diagnostic of Factor Models,Asset pricing and risk premia,0.95
 2607.01705,2026-07-02,Portfolio Optimization under Fast and Slow Latent Mean-Reverting and Momentum Drift,,0.9
@@ -2670,6 +2806,7 @@ arxiv_id,published,title,area,confidence
 2607.03858,2026-07-04,A Spectral Generalisation of the Variance Ratio: Eigenstructure of Long-Horizon Portfolio Covariance and a Multi-Memory Factor Model of U.S. Equity Returns,Asset pricing and risk premia,0.9
 2607.03669,2026-07-04,Split-Session Cluster GARCH for Overnight and Intraday Returns: The Role of Tail Heterogeneity,Volatility forecasting (GARCH),0.98
 2607.03868,2026-07-04,Tax Migration as Social Contagion: A Tipping-Point Model with Application to the Scandinavian Wealth Tax Debate,,0.9
+2607.03888,2026-07-04,"Local Gaussian Correlation in the Tails: A Scarcity Diagnostic, an Optimal Local Bandwidth, and the Limits of Adaptivity",,0.95
 2607.04103,2026-07-05,Governing Generative AI Across Financial Institutions: A Framework for Generative AI Risk Control,,0.95
 2607.04130,2026-07-05,A Gabor--Epps uncertainty principle for traders,Trading and order flow,0.9
 2607.04221,2026-07-05,A Limit Order Market with Uncertain Informed Trading Participation,Trading and order flow,0.98
@@ -2680,11 +2817,14 @@ arxiv_id,published,title,area,confidence
 2607.04346,2026-07-05,Preference-fitting Framework: Elicited Utility Function and PHARA Approximation,,0.9
 2607.05141,2026-07-06,Square-Root Price Impact Is Necessary for Endogenous Manipulation Cycles in Learning-Agent Markets,Trading and order flow,0.9
 2607.05697,2026-07-06,Stability and Dual Valuation of Contingent Claims under Rockafellian Perturbations,,0.95
+2607.05484,2026-07-06,SHARC: SHAP-Based Interpretability in Machine Learning Risk Models for Regulatory Capital under ICAAP and CCAR,,0.9
 2607.04781,2026-07-06,Renewing Reliability: Valuation and Credit Risk Adjustments for Renewable Power Purchase Agreements,,0.9
 2607.04958,2026-07-06,Look-Ahead-Freedom as Temporal Non-Interference: A Verifiable Correctness Property for Backtesting and Agentic Trading Pipelines,,0.85
 2607.05011,2026-07-06,Reaction-boundary variance and adjoint-consistent local-volatility projection,Trading and order flow,0.75
+2610.08797,2026-07-06,Optimal Transport for Actuarial Science,,0.95
 2607.05091,2026-07-06,Overshooting the Coordinate: Where Factor Corrections Land on Characteristic Axes,Asset pricing and risk premia,0.95
 2607.05320,2026-07-06,Screening-Off Information and Conditional Risk in Portfolio Choice,,0.8
+2607.05291,2026-07-06,Forecasting Realized Volatility with Time Series Foundation Models: A Comparison with Econometric Benchmarks,Volatility forecasting (GARCH),0.85
 2608.26158,2026-07-07,A Frequency-Controlled Comparison of Tick- and Minute-Based Information Bars for Cryptocurrency Markets,"Crypto, COVID and spillovers",0.8
 2607.06117,2026-07-07,"Relief-Gated Relative Rotation for QQQ-DIA Allocation: Globally Screened Relative States, Fixed Position Mapping, Incremental Interaction Admission, and Walk-Forward Validation",,0.9
 2607.06502,2026-07-07,What Useful Alphas?,Asset pricing and risk premia,0.95
@@ -2692,6 +2832,7 @@ arxiv_id,published,title,area,confidence
 2607.06153,2026-07-07,From Gravity to Confinement: Wealth Redistribution as Optimal Drift Design in the Fokker-Planck Framework,,0.99
 2607.06204,2026-07-07,Arbitrage-Free Multi-Maturity Risk-Neutral Marginals,,0.9
 2607.06220,2026-07-07,Stable Sentiment and Persistent Dynamics in U.S. Economic News over 45 Years,Behavioral finance,0.75
+2607.06340,2026-07-07,Signature-based identification of volatility models from path geometry,,0.85
 2607.06702,2026-07-07,Dynamic Causal Portfolio Choice: Hedging the Rotation of the Common-Driver Manifold,Asset pricing and risk premia,0.8
 2607.06355,2026-07-07,Entropic Dynamics of Jump-Diffusion Option Pricing,,0.95
 2607.06373,2026-07-07,Error Propagation in Spectral Functionals of Shrinkage Covariance Estimators: Perturbation Bounds and Calibrated Inference,,0.9
@@ -2704,8 +2845,11 @@ arxiv_id,published,title,area,confidence
 2607.08907,2026-07-09,Herding and Liquidity in Order-Book Markets. I. A Robust Liquidity-Stress Crossover and its Reflexive Mechanism,Trading and order flow,0.95
 2607.08531,2026-07-09,Optimal Prediction of Resistance and Support Levels under Constant Elasticity of Variance Processes,,0.95
 2607.16281,2026-07-09,A Novel Hybrid Quantum Reservoir Computing (nHQRC) for Phase Transition Detection in Non-Equilibrium Dynamical Systems,,0.95
+2607.08199,2026-07-09,Volatility in Prediction Markets: A Structural Approach,Volatility forecasting (GARCH),0.9
+2607.08291,2026-07-09,Robustness in Sequential Decision Making under Evolving Uncertainty: Evidence from High-Frequency Market Making,Trading and order flow,0.95
 2607.08346,2026-07-09,Grounded Event Extraction from SEC 8-K Filings with a Fine-Grained Taxonomy,Information and stock reactions,0.95
 2607.08500,2026-07-09,Estimating the Stochastic Discount Factor from Option Prices and Predicting the Equity Premium,Asset pricing and risk premia,0.95
+2610.00005,2026-07-09,A Multi-Venue Solana/DeFi Microstructure Data Corpus: The RED-2400 Family v2,"Crypto, COVID and spillovers",0.95
 2607.08525,2026-07-09,Causal Effects of Protocol-Fee Changes on Liquidity Provision in Automated Market Makers,Trading and order flow,0.9
 2609.17415,2026-07-09,"Financial Contagion Networks as Annealing-Ready Ising Systems Cascades, Bailout Optimization, and Susceptibility",,0.85
 2607.08524,2026-07-09,Stablecoin Integration and Stress Transmission Through Crypto-Asset Service Providers: Evidence from Austria,"Crypto, COVID and spillovers",0.95
@@ -2747,7 +2891,10 @@ arxiv_id,published,title,area,confidence
 2607.14373,2026-07-15,A Noise-Robust Elicit-to-Optimize Framework for Distortion Riskmetrics via Inverse Reinforcement Learning,,0.95
 2610.08799,2026-07-15,Explicit Finite-Sum Tail Risk Measures for Hierarchical Market--Credit Copula Aggregation,,0.95
 2607.14518,2026-07-16,Structure-Aware Variational State Preparation for Quantum Basket Option Pricing,,0.95
+2609.18975,2026-07-16,Do Two On-Chain Observation Pipelines See the Same Tokens? Cross-Pipeline Coverage on the Solana pump.fun Launchpad,"Crypto, COVID and spillovers",0.95
 2607.15057,2026-07-16,Existence and convergence of discrete-time Kyle models with multiple insiders,Trading and order flow,0.95
+2607.15119,2026-07-16,Thermodynamic theory of voting and EU elections,,0.95
+2607.15195,2026-07-16,SciPhy Reinforcement Learning for Portfolio Optimization,,0.85
 2607.15317,2026-07-16,Asymptotic fractional-order stochastic dominance with bounded relative risk aversion,Asset pricing and risk premia,0.75
 2607.15414,2026-07-16,AI Trading: Evaluating Large Language Models for Technical Market Analysis,Deep learning and LLM forecasting,0.95
 2607.15872,2026-07-17,Existence of $q$-Bass martingales in the semidiscrete setting,,0.98
@@ -2767,11 +2914,13 @@ arxiv_id,published,title,area,confidence
 2607.17212,2026-07-19,A General Model for Continuous Time Principal-Agent Problem Under Hidden Action,,0.95
 2607.17502,2026-07-20,Mean-field equilibrium price formation under single-default risk,Asset pricing and risk premia,0.85
 2607.17991,2026-07-20,Optimal Market Making in Prediction Markets,Trading and order flow,0.9
+2607.18001,2026-07-20,AlphaZeroBeta: Deep Reinforcement Learning for Market-Neutral Portfolios,,0.85
 2607.18813,2026-07-21,Mixing-Law Uncertainty in Multivariate Normal Mean-Variance Mixtures: Semi-parametric Estimation and Robust Cumulative-Prospect Decisions,,0.85
 2607.18616,2026-07-21,Prediction of bank transaction fraud using TabNet an adaptive deep learning architecture,,0.85
 2607.18623,2026-07-21,Dead Reckoning: Counting Your Customers Who Never Say Goodbye,,0.95
 2607.18705,2026-07-21,Pathwise Portfolio Theory and Market Viability,,0.9
 2607.19005,2026-07-21,Observable Matrix Dynamics of Stocks,Asset pricing and risk premia,0.75
+2607.18815,2026-07-21,Cloud failure and cyber insurance: calibration of stress scenarios and diversification,,0.95
 2607.19218,2026-07-21,"Denoising Subordinated Probabilistic Models: Diffusion with a Tempered-Stable Volatility Clock, and What the Noise Mechanism Actually Controls",Volatility forecasting (GARCH),0.7
 2607.19030,2026-07-21,Pricing options on illiquid assets using liquid market benchmarks: an application to energy markets,,0.9
 2607.19279,2026-07-21,Gaussian Boson Sampling for Asset Clustering in Statistical Arbitrage Portfolios,,0.9
@@ -2783,6 +2932,7 @@ arxiv_id,published,title,area,confidence
 2607.20093,2026-07-22,Retail Trader's Ruin: An Anatomy of Popular Signal Failure,,0.85
 2607.20415,2026-07-22,Flux-Corrected Diagonal Frog: second order and positivity at all time steps,,0.95
 2608.19221,2026-07-23,Filtering Credit Risk with Stochastic Discontinuities,,0.85
+2607.21826,2026-07-23,Are cryptocurrencies real financial bubbles? Evidence from quantitative analyses,"Crypto, COVID and spillovers",0.95
 2607.21687,2026-07-23,Optimal Surplus Management for Insurers under Stochastic Interest Rates and Jump-Driven Liabilities,,0.98
 2607.21170,2026-07-23,Portfolio Optimization under Dynamic Rebalancing via Topological Data Analysis and News Sentiments,,0.85
 2607.22459,2026-07-24,"Settlement Infrastructure, Inside Money Elasticity, and the Network Economics of Distributed Ledger Technology",,0.85
@@ -2805,6 +2955,7 @@ arxiv_id,published,title,area,confidence
 2607.26245,2026-07-28,OpenMarket: A Synchronized Polymarket-Binance Dataset for High-Frequency Prediction-Market Research,"Crypto, COVID and spillovers",0.85
 2607.25599,2026-07-28,An Analytic COS Method for Compound Option Valuation,,0.98
 2607.25459,2026-07-28,Emergent Latent-State Computation under Stochastic Volatility,Deep learning and LLM forecasting,0.8
+2607.25353,2026-07-28,The Risk-Neutral Crash Frontier: Sharp Joint Bounds on Crash Probability and Conditional Depth from Option Bid-Ask Quotes,,0.9
 2607.25258,2026-07-28,Robust Hedging Valuation Adjustment for Deep Hedging Policies under Market Frictions,,0.85
 2607.25199,2026-07-28,RIDGE: An Autonomous Framework for Validation and Method Discovery in LLM-Generated Option Pricing,,0.85
 2607.25189,2026-07-28,Long-memory GARCH via a two-dimensional Markov chain,Volatility forecasting (GARCH),0.98
@@ -2821,6 +2972,7 @@ arxiv_id,published,title,area,confidence
 2607.26792,2026-07-29,Crossing-Free Probabilistic K-Line Forecasts Without Retraining,,0.8
 2607.26405,2026-07-29,Multi-Currency AMMs for Decentralized FOREX Markets: Feasibility & Optimal Design,Trading and order flow,0.85
 2608.19227,2026-07-29,M3: A State-Event Generative Foundation Model for Market Microstructure Dynamics,Trading and order flow,0.9
+2607.27063,2026-07-29,"Herding, Momentum, and Reversal in China's A-Share Market: An Agent-Based Network Model with Information Diffusion",Behavioral finance,0.95
 2607.27853,2026-07-30,FinanceHarness: Autonomous Financial Deep Research Framework,Deep learning and LLM forecasting,0.85
 2607.27544,2026-07-30,"Lucky or Good? Outcome Noise, Effective Sample Size, and the Attribution of Skill",,0.8
 2607.27569,2026-07-30,Consuming Values,,0.85
@@ -2834,18 +2986,24 @@ arxiv_id,published,title,area,confidence
 2607.28230,2026-07-30,Boundary-Induced Apparent Risk Aversion in Nonergodic Multiplicative Growth,,0.85
 2607.28294,2026-07-30,Bootstrapping autoregressive duration models,Trading and order flow,0.85
 2607.28323,2026-07-30,Optimal Execution with Passive Market Impact,Trading and order flow,0.95
+2607.28410,2026-07-30,Can Large Language Models Execute Parent Orders?,Trading and order flow,0.9
 2607.28577,2026-07-30,"Train Often, Deploy Selectively: Forward-Gated Model Replacement in Crypto Markets",,0.85
 2607.28847,2026-07-30,Effort-Centric Fairness in Lending Decisions,,0.95
+2607.29220,2026-07-31,Decoupled Probabilistic Forecasting and Arbitrage-Aware Refinement of Implied Volatility Surfaces,Volatility forecasting (GARCH),0.85
 2608.00127,2026-07-31,"Drawdown Risk Beyond Brownian Motion: A Monte-Carlo Framework, Non-Gaussian Extensions, and Long Memory",,0.85
 2607.29583,2026-07-31,Fund Competition under Conflicting ESG Rating Methodologies,,0.9
 2608.02651,2026-07-31,"Delegated Monitoring in Public-Private Sector Credit Programs: Underinvestment, Overinvestment, and the Design of Subsidized Lending",,0.98
+2607.29024,2026-07-31,A Policy Iteration Scheme for Semilinear Stochastic Hamilton-Jacobi-Bellman Equations with Exponential Convergence,,0.95
+2609.20293,2026-07-31,Beyond Rough Volatility: Decoupling Memory and Scaling via a Generalized Langevin Equation,,0.85
 2608.00616,2026-08-01,Latent Flow Matching for Arbitrage-Aware Implied Volatility Surface Generation,,0.85
 2608.00631,2026-08-01,Axient: Debt-Free Finality for Leveraged Binary Event Markets,"Crypto, COVID and spillovers",0.85
 2608.00647,2026-08-01,"Axient: On-Chain Credit and Loss Allocation for Leveraged Event Markets: A Venue-Agnostic Protocol for Traders, Credit Providers, Market Makers, and Liquidation Backstops","Crypto, COVID and spillovers",0.9
 2608.00761,2026-08-01,AI and Exchange Rate Predictability,Deep learning and LLM forecasting,0.95
+2608.00885,2026-08-01,Optimal Trading of Microstructure Mean Reversion,Trading and order flow,0.95
 2608.00858,2026-08-01,Data-Driven Measures of High-Frequency Trading,Trading and order flow,0.95
 2608.01479,2026-08-02,The VIX-Derived Volatility Model: A VIX-first Joint SPX-VIX Framework,,0.95
 2608.01208,2026-08-02,"Climate-Dyna Deep Hedging for XVAs: Model-Based Reinforcement Learning, Residual Climate HVA, and Hedge-Instrument Discovery",,0.85
+2608.01494,2026-08-02,Conformal Kelly: When Marginal Coverage Transfers and the Economics Do Not,,0.85
 2608.01217,2026-08-02,Amortizing the Calibration Triple: A Projection-Consistent Neural Operator for Local-Stochastic Volatility,,0.9
 2608.00917,2026-08-02,Pro-rata mechanisms in groundwater markets,,0.95
 2608.00911,2026-08-02,Battery Storage Co-Optimization in Day-Ahead and Real-Time Markets with Bayesian Optimization,,0.95
@@ -2854,16 +3012,20 @@ arxiv_id,published,title,area,confidence
 2608.02828,2026-08-03,"Proper-score observation-driven filters: local geometry, estimation, and continuous-time limits",Volatility forecasting (GARCH),0.85
 2608.02778,2026-08-03,Neural Networks with Local Converging Inputs for Efficient Options Pricing Models,,0.98
 2608.02475,2026-08-03,Methodology for Modelling Token Economies and Performing Event Impact Analysis with DeTEcT,"Crypto, COVID and spillovers",0.85
+2608.02355,2026-08-03,"Path Portfolio Optimization: Defect, Lift, and the Price of Path Complexity",,0.9
 2608.02311,2026-08-03,AI Governance for Institutional Readiness in Finance,,0.9
 2608.02917,2026-08-03,Mandate without Managers: Automated Market Makers as Verifiable Portfolio Products,"Crypto, COVID and spillovers",0.85
+2608.01607,2026-08-03,"AI Financial Advice: Supply, Demand, and Life Cycle Implications",Behavioral finance,0.85
 2608.01554,2026-08-03,"P-Bubbles, Q-Bubbles, and Risk Premia",Asset pricing and risk premia,0.85
 2608.02854,2026-08-03,Preference robust distortion risk measures,,0.8
 2608.02002,2026-08-03,Hawkes-Driven OTC Market Making: Volterra-Riccati Approximation,Trading and order flow,0.95
 2608.11250,2026-08-04,AgonAlpha: Autonomous Alpha Discovery via Prompt Economy and Scalable Agentic Search,Deep learning and LLM forecasting,0.85
+2608.03088,2026-08-04,A New Approach to Goodness of Fit for Ergodic Markov Processes,,0.95
 2608.03466,2026-08-04,A unifying perspective on the collapse to the mean for law-invariant functionals,,0.95
 2608.03616,2026-08-04,Measuring the engine of a liquidation cascade: subcritical branching inside a first-order transition,"Crypto, COVID and spillovers",0.9
 2608.03925,2026-08-04,Option Pricing with Time-Changed Fractional Brownian Motion: A Fractional Variance Gamma Model,,0.9
 2608.04200,2026-08-04,From Financial Sentiment Classification to Return Predictability: A QLoRA Benchmark of Large Language Models,Deep learning and LLM forecasting,0.85
+2608.05198,2026-08-04,The Mathematics of Volatility Surfaces,,0.9
 2608.04832,2026-08-05,Robust Control under Stationary Ambiguity,,0.95
 2608.04305,2026-08-05,Adaptive Finite-Budget Training for CVaR Risk-Aware Q-Learning,Deep learning and LLM forecasting,0.8
 2608.04373,2026-08-05,Public Trader Identity: Adverse Selection and Return Predictability,Trading and order flow,0.95
@@ -2875,6 +3037,7 @@ arxiv_id,published,title,area,confidence
 2608.05357,2026-08-05,High-Frequency Exponential-Utility Maximization under Fractional Brownian Motion,Trading and order flow,0.8
 2608.05367,2026-08-05,Counterfactual Analysis via Large Language Models,Deep learning and LLM forecasting,0.75
 2608.05373,2026-08-05,"Velocity- and Regime-Aware Detection of Intraday Options Market Manipulation, with Explainable Attribution",Trading and order flow,0.9
+2608.05623,2026-08-06,Non-concave Corporate Management with Option Incentives under Value-at-Risk Constraint,,0.95
 2608.05755,2026-08-06,Cross-Sectional Heterogeneity in LSTM Networks for Financial Time Series,Deep learning and LLM forecasting,0.95
 2608.05901,2026-08-06,From Value Bounds to Policy-Distance and Active-Face Certificates: Same-Grid Duality for Constrained Dynamic Portfolios,,0.95
 2608.05991,2026-08-06,Knowledge-Optimising Investment Decisions with Informative Datasets,,0.9
@@ -2890,6 +3053,7 @@ arxiv_id,published,title,area,confidence
 2608.08197,2026-08-08,Self-Explaining Segment Trees: A KPI-Conditioned Segmentation Framework for Business Analytics with Node-Level Explanation via Recursive Subspace Partitioning,,0.99
 2608.08299,2026-08-08,Non-linear optimal stopping with Bermudan strategies: the infinite horizon case,,0.95
 2608.08405,2026-08-09,Robustness or Crowding: Experimental Design for Trading Strategy Capacity,Trading and order flow,0.85
+2608.08625,2026-08-09,Retained hidden excess generates memory in price-limited markets,Trading and order flow,0.85
 2608.08634,2026-08-09,Can Open-Weight Models Compete on Financial Text Comprehension?,,0.9
 2608.08825,2026-08-09,Hybrid Neural-Classical Correction for Frozen Time Series Foundation Models: A Comprehensive Ablation Study on High-Frequency Stock Prediction,Deep learning and LLM forecasting,0.95
 2608.08900,2026-08-09,High-Order Expansions of the Optimizer Map via Bell Polynomials,,0.9
@@ -2910,10 +3074,13 @@ arxiv_id,published,title,area,confidence
 2608.10693,2026-08-11,When the Fed Speaks: Dynamics and Forecasts of the Volatility Surface,Deep learning and LLM forecasting,0.85
 2608.10711,2026-08-11,Optimal Pricing and Hedging of SOFR Derivatives,,0.9
 2608.10852,2026-08-11,Universality and Heterogeneity of Stylized Facts in Cryptocurrency and Equity Markets,"Crypto, COVID and spillovers",0.95
+2608.11327,2026-08-11,Long-Horizon Forecasting of Complete Financial Statements with Forma,,0.9
 2608.11344,2026-08-11,Governing Agentic AI in FinTech,,0.95
 2608.11505,2026-08-11,"Does a Structural Model Add Anything to the Closing Price? Calibrated forecasting, incremental information, and match leverage in the Italian Serie A",,0.95
 2608.12016,2026-08-12,Term structure shapes in the Hull-White model with Svensson-parameterized initial yield curves,,0.95
+2608.12424,2026-08-12,AI-Driven Multiscenario Interest Rate Forecasting: A Proof of Concept for Banking Asset Management,,0.9
 2608.12023,2026-08-12,Sectoral inter-dependencies drive the loss of structural balance in signed financial networks,,0.8
+2608.12251,2026-08-12,Regime-Gated Residual Mixture-of-Experts for Cross-Sectional Volatility Forecasting,Volatility forecasting (GARCH),0.9
 2608.12493,2026-08-12,Beyond the Skew-Stickiness Ratio: Transport Geometry of Spot-Driven Variance Surface Dynamics,,0.85
 2608.12283,2026-08-12,"Large Language Model-Driven Small-Capitalization Trading: Integrating Financial News Sentiment, Macroeconomic Indicators, and Technical Signals",Deep learning and LLM forecasting,0.9
 2608.12587,2026-08-12,DYSANOS Generative Dynamic Smooth Arbitrage-free Non-parametric Option Surfaces,,0.9
@@ -2936,8 +3103,11 @@ arxiv_id,published,title,area,confidence
 2608.14323,2026-08-14,Dependence-Informed Sparse Neural Architecture for Stock Return Prediction,Deep learning and LLM forecasting,0.9
 2608.14859,2026-08-14,Disclosed Human-Capital Disruption and Firm-Specific Risk,Information and stock reactions,0.9
 2608.15447,2026-08-15,Detecting Money Laundering in Rwandan Mobile Money: A Machine Learning Framework,,0.9
+2608.15097,2026-08-15,Pricing Temperature-Index Insurance under Long Memory and Stochastic Time Change,,0.95
 2608.15212,2026-08-15,Is the medium the message? Social disclosure channels and firm risk,Information and stock reactions,0.9
+2608.15667,2026-08-16,Scalable Pontryagin-Guided Adjoint-to-Control Recovery for Constrained Dynamic Portfolio Choice,,0.9
 2608.15597,2026-08-16,Toward Decentralized Carbon Trading in Indonesia: A Public-Blockchain Architecture for Tokenized Real-World Assets,,0.95
+2608.15640,2026-08-16,A contribution to the critique of blockchain censorship,"Crypto, COVID and spillovers",0.9
 2608.15743,2026-08-16,Behavioral Participating Insurance: Optimal Investment under Probability Distortion and Aspiration Constraints,Behavioral finance,0.85
 2608.15841,2026-08-16,Self-Supervised Auxiliary Task Discovery for Stable Reinforcement Learning in Stock Trading,Deep learning and LLM forecasting,0.85
 2608.16749,2026-08-17,Rough Volatility Across Assets,Volatility forecasting (GARCH),0.9
@@ -2954,6 +3124,7 @@ arxiv_id,published,title,area,confidence
 2608.18022,2026-08-18,Entropic Value-at-Risk portfolio optimization for tempered stable Lévy processes,,0.9
 2608.18195,2026-08-18,Multi-Level Market Making with Reinforcement Learning,Trading and order flow,0.95
 2608.18299,2026-08-18,"The Market's Conditioning Representation: Equilibrium, Crowding, and Convention Multiplicity",Asset pricing and risk premia,0.85
+2608.19394,2026-08-19,Deep-MKV-TS: Path-Dependent McKean--Vlasov Control for Financial Time Series Generation,,0.85
 2608.18783,2026-08-19,When to Sell an Asset? - A Distribution Builder Approach,,0.9
 2608.19389,2026-08-19,Concentrated Liquidity Provision: a Reinforcement Learning Perspective,Trading and order flow,0.8
 2608.20179,2026-08-20,Dynamic Portfolio Optimization under CVaR Constraints,,0.95
@@ -2963,6 +3134,8 @@ arxiv_id,published,title,area,confidence
 2608.20842,2026-08-21,"Rethinking Synthetic Scenario Realism: Compatibility, Not Fidelity, Drives Hedging Performance",,0.9
 2608.21498,2026-08-21,Beyond Lognormal Sums: A Four-Moment Probability Framework for Basket and Spread Option Pricing,,0.95
 2608.20727,2026-08-21,A Multiscale Ball Test for Conditional Mean Independence,,0.95
+2609.20224,2026-08-21,The Year-End Toll: Frictions Embedded in Option-Implied Rates,,0.85
+2608.21506,2026-08-21,What Quantitative Risk Modellers Can Learn from Durkheim's Study of Suicide,,0.98
 2608.21873,2026-08-22,Discrete asset pricing under transaction costs and model uncertainty with and without short-sale constraints,,0.9
 2608.21888,2026-08-22,Short-horizon mean reversion in cryptocurrency markets: a matched cross-market measurement,Trading and order flow,0.85
 2608.22478,2026-08-23,Arbitrage-Aware Probabilistic Multi-Step Forecasting of Implied Volatility Surfaces: Joint Generation of Surface-Return Trajectories Using Latent Diffusion,Deep learning and LLM forecasting,0.95
@@ -2972,12 +3145,15 @@ arxiv_id,published,title,area,confidence
 2610.08806,2026-08-23,"Agentic AI Systems and Financial Stability, From Model Risk to Systemic Risk",,0.95
 2608.23274,2026-08-24,The Physical Crash Frontier: What Finite Option Quotes Can and Cannot Reveal,,0.85
 2608.23808,2026-08-24,Equity Strategy Backtesting: Luck or Edge? The MinervaScore as a Statistical Robustness Grade,,0.9
+2608.23416,2026-08-24,"The Axiomatic Trader: Latent Regularity, Information Budgets, and the Canonical Form of a Quantitative Investment System",,0.9
 2608.23393,2026-08-24,KellyBoost: Growth-Optimal Portfolio Construction with Gradient-Boosted Trees,,0.85
 2608.23915,2026-08-24,Equilibrium in closed constant-function market maker economies,Trading and order flow,0.85
 2608.23053,2026-08-24,tse_tick: A Python Library for Parsing and Querying Nikkei NEEDS Tick Data from the Tokyo Stock Exchange,,0.85
 2608.22768,2026-08-24,The Loop-Gain Matrix: Coupled Rebalancing Feedback and the Blind Spots of Scalar Stability Monitoring,Trading and order flow,0.75
 2608.22852,2026-08-24,"Your AI, On a Dial: Controlling Investment Bias in LLMs with a Single Neuron",Deep learning and LLM forecasting,0.85
+2608.22703,2026-08-24,Diagonal Frog meets ADI: trading matrix exponentials for rational maps in the Fokker--Planck equation,,0.99
 2608.22864,2026-08-24,From Exponential to Polynomial: An Exact Filter for High-Dimensional MSM Models,Volatility forecasting (GARCH),0.9
+2608.24703,2026-08-25,Lead-Lag Relationships in Financial Markets: A Comparison of Multiple Clustering Algorithms,Classical stock price prediction,0.85
 2608.24449,2026-08-25,Generalizing Markowitz Portfolio Optimization by a Quadratic Risk Measure,,0.95
 2608.24786,2026-08-25,Harvesting the Volatility Risk Premium: A Learning-to-Rank Approach,Asset pricing and risk premia,0.8
 2608.24582,2026-08-25,$\texttt{findr}$: Transparent and Fair Credit Risk Decisions through Semi-Structured Regressions,,0.95
@@ -2997,6 +3173,7 @@ arxiv_id,published,title,area,confidence
 2608.27374,2026-08-27,Distribution-constrained optimal multiple stopping: the Root-type solution,,0.95
 2608.26473,2026-08-27,DTD-VAE: Disentangled Temporal Dependencies VAE for Credit Risk Prediction,,0.95
 2608.28399,2026-08-28,RetailAgent: Structured Adverse Timing in Self-Conditioned Multimodal LLM Trading Agents,Deep learning and LLM forecasting,0.85
+2608.28397,2026-08-28,Market-Informed Valuation of GMMB Riders with Surrender Options under a Heston Stochastic-Local Volatility Model,,0.95
 2608.29423,2026-08-29,Improving Swaption Calibration in Factor HJM Stochastic Volatility Models: A First-Order Correction to Frozen Swap-Rate Loadings,,0.95
 2608.29468,2026-08-29,The Convergence Rate of Stochastic Tracking with Application to Optimal Execution,Trading and order flow,0.95
 2608.29025,2026-08-29,Deep Hedging Under Realistic Market Frictions: A Regime-Conditional Empirical Study of Dynamic Option Hedging on Bitcoin Options,"Crypto, COVID and spillovers",0.9
@@ -3005,25 +3182,33 @@ arxiv_id,published,title,area,confidence
 2608.29692,2026-08-30,Portfolio Risk Bounds without Cross-Asset Return Covariances: Distributional Fields from Language-Model Representations,,0.8
 2608.29786,2026-08-30,Recovering Posterior Beliefs in Credit Risk: A Latent-State EM Extension of the Information-Geometric Framework,,0.9
 2609.29700,2026-08-31,Storage Options and Endogenous Commodity Prices in Continuous Time,,0.9
+2608.30321,2026-08-31,Optimal Block Time for AMM Liquidity Providers under Jump-Diffusion Prices,Trading and order flow,0.85
+2609.00332,2026-08-31,Latent-Space No-Arbitrage Geometry of Generative Models for Implied Volatility Surfaces,,0.9
+2608.30446,2026-08-31,End-to-End Neural Shrinkage of Indefinite Pairwise Correlation Matrices for Small-Cap-Inclusive Portfolios,,0.85
 2608.30490,2026-08-31,Two Kinds of Nothing: What Insignificant Results in Finance Actually Show,,0.95
 2608.30519,2026-08-31,"Authority-Inference Separation in Agentic Finance: First-Line Control, Blockchain Enforcement, and Replayable Assurance",,0.95
 2608.30558,2026-08-31,A note on markets with semi-static trading strategies,,0.95
 2608.30749,2026-08-31,Importance Sampling Enhanced with the COS Method for the Portfolio Risk Allocation,,0.95
 2608.30867,2026-08-31,Neural Calibration of a Complete Market Model,,0.9
+2608.30999,2026-08-31,Metaorder modelling and identification from public data,Trading and order flow,0.95
 2608.31041,2026-08-31,"Agentic Quantitative Trading: A Survey of Workflows, Systems, and Evaluation",Deep learning and LLM forecasting,0.95
 2609.00438,2026-08-31,Single- and Multilevel Quadrature with Error Control for Fourier Pricing under the Rough Heston Model,,0.95
 2609.00943,2026-09-01,Illiquidity at Risk,Trading and order flow,0.95
 2609.01133,2026-09-01,"Scalable Inversion of Contests with Correlated Performances, Including Softmax and Multinomial Probit",,0.95
 2609.01183,2026-09-01,Harvesting the Variance Risk Premium in Nuclear and Energy Equities: A Short-Put Portfolio Derisking Strategy,Asset pricing and risk premia,0.8
+2609.01323,2026-09-01,Adaptive singular-point method for pricing and hedging surrenderable equity-linked contracts,,0.95
+2609.00911,2026-09-01,Pricing the DeFi Tail: Do Protocols or Depositors Price Operational Risk?,"Crypto, COVID and spillovers",0.9
 2609.00731,2026-09-01,Agentic Empirical Asset Pricing: Methodological Foundations,Asset pricing and risk premia,0.8
 2609.22202,2026-09-01,An Operator-Based Visual Analytics Pipeline for Synthetic Systemic Risk Dynamics,,0.95
 2609.02381,2026-09-02,Viscosity Supersolution Barriers to a Non-local Free Boundary Problem,,0.95
 2609.02525,2026-09-02,"Switching Frictions, Heterogeneous Trading Horizons, and Long-Memory Order Flow",Trading and order flow,0.95
+2609.02014,2026-09-02,Insights on Time-consistent Deep Hedging under Elicitable Dynamic Risk Measures,,0.9
 2609.02535,2026-09-02,Uniform Inference and Certified Capacity at a Reflexive Stability Boundary,,0.95
 2609.02447,2026-09-02,Price manipulation in nonlinear transient impact models: rigidity before memory and complete positivity after memory,Trading and order flow,0.95
 2609.30316,2026-09-02,PALM: Point-in-Time Adaptation for Financial Language Models,Deep learning and LLM forecasting,0.9
 2609.29530,2026-09-02,"The Impossible Trinity of Time-Series Validation: A Conservation Law among Training Sufficiency, Test Coverage, and Temporal Causality",,0.9
 2609.02660,2026-09-02,Modeling Trade Durations under Temporal Granularity Effects in Forex Markets,Trading and order flow,0.9
+2609.02677,2026-09-02,Eliciting ESG Preferences for Reinforcement Learning-Based Portfolio Optimization,,0.85
 2609.02992,2026-09-02,Tempting the Agent: The Economics of Reputation without Persistent Identity in AI Agent Markets,,0.9
 2609.03106,2026-09-02,"Scaling Laws, Tabular Data and Actuarial Ratemaking Models",,0.95
 2609.03115,2026-09-02,Mean-field equilibrium of heterogeneous agents under market impact,Trading and order flow,0.9
@@ -3031,12 +3216,15 @@ arxiv_id,published,title,area,confidence
 2610.00051,2026-09-03,Climate aware lending allocation under NGFS scenarios - A Monte Carlo approach,,0.95
 2609.03552,2026-09-03,An Entropic Factor Model for Robust Portfolio Replication,,0.9
 2609.03654,2026-09-03,Enhancing Financial Question Answering: A Novel Benchmark Dataset of Banks' financial statements,,0.9
+2609.03741,2026-09-03,Bayesian Confidence Recalibration and Research-Equilibrium Criticality: Temporal Support in Robust Portfolios,,0.9
+2609.04087,2026-09-03,Global Multi-Maturity SPX-VIX Calibration Beyond Markovian Stitching,,0.95
 2609.04420,2026-09-03,Optimal Stratified Allocation for Rare-Event Onset Forecasting in Dependent Sequences,,0.8
 2609.04496,2026-09-03,Portfolio Diversification and Concentration under Dependence Uncertainty: A Majorization Approach,,0.95
 2609.04569,2026-09-03,Quantum Circuit Learning for Volatility Modeling: Multifractal Analysis of Realized Volatility Time Series,Volatility forecasting (GARCH),0.7
 2609.05047,2026-09-04,Gatheral's Conjecture Revisited,,0.95
 2609.04712,2026-09-04,Convex Modeling of Price Cross-Impact over Time,Trading and order flow,0.95
 2609.04917,2026-09-04,"Artificial Intelligence in Equity and Crypto Markets: Progress, Profitability Evidence, and the Limits of Automated Investing",Deep learning and LLM forecasting,0.85
+2609.05162,2026-09-04,"Quantity, Risk, and Return",Asset pricing and risk premia,0.95
 2609.06267,2026-09-05,From Discrete Trailing Returns to a Continuous Graphical Profile: Return-to-Present Curves,,0.9
 2609.06118,2026-09-05,A Perron-Frobenius comonotonic approximation for sums of lognormals,,0.95
 2609.06137,2026-09-05,Unbiased Monte Carlo Greeks for Discontinuous Payoffs,,0.95
@@ -3047,6 +3235,7 @@ arxiv_id,published,title,area,confidence
 2609.07486,2026-09-07,Simplifying Cyber Cat(astrophe)s with Cyber Kittens: Power Law Plausibility for Cyber Insurance Risks,,0.95
 2609.07946,2026-09-07,Simple Dynamic Stock/Bond/Gold Portfolios,,0.9
 2609.07989,2026-09-07,Regimes in the Order Flow,Trading and order flow,0.95
+2609.07898,2026-09-07,Disclosure under Noisy Information Processing,Information and stock reactions,0.9
 2610.35887,2026-09-07,Evaluating the Predictive Validity of ICT's Accumulation-Manipulation-Distribution (AMD) Model on CME E-Mini NASDAQ-100 Futures,Classical stock price prediction,0.9
 2609.07169,2026-09-07,Pricing and Hedging of Discretely Monitored Asian Options in the Volterra-Heston Model,,0.95
 2609.07351,2026-09-07,"Fixed Points for the $q$-Bass Martingale: Existence, Stability, and Convergence",,0.95
@@ -3070,6 +3259,7 @@ arxiv_id,published,title,area,confidence
 2609.11575,2026-09-10,Market-Informed Networks for Modeling and Forecast Evaluation of Financial Extremes,,0.85
 2609.11586,2026-09-10,Short-maturity skew stickiness ratio under local volatility,,0.95
 2609.11614,2026-09-10,Deep Learning of Robust Market Making under Regime-Switching Order Flow,Trading and order flow,0.9
+2609.11905,2026-09-10,Entropic Value-at-Risk parity for tempered stable returns,,0.9
 2609.12227,2026-09-10,Seasonal Trading in Commodity Futures: Evidence from Regression and Singular Spectrum Signals,Classical stock price prediction,0.85
 2610.00147,2026-09-10,"Admissible Portfolio Optimization: Information Constraints, Conditional Efficient Frontiers and the Price of Causal Identification",,0.9
 2610.00158,2026-09-11,Causal Price-of-Risk Mandates under Overlapping Information,,0.9
@@ -3087,11 +3277,14 @@ arxiv_id,published,title,area,confidence
 2609.14267,2026-09-13,Public Opinion as an Option: Leveraging Prediction Markets to Hedge Exposure to Spot Crypto Volatility,"Crypto, COVID and spillovers",0.9
 2609.14733,2026-09-13,WaVeFuse: Regime-Adaptive Equity Index Forecasting via Channel-Wise Wavelet Denoising and Vertical Attention Fusion,Deep learning and LLM forecasting,0.95
 2609.14323,2026-09-13,AI Assisted Workflow Optimization and Automation,,0.95
+2609.14576,2026-09-13,Towards foundation models for insurance risk modelling,,0.9
 2609.14205,2026-09-13,CAST: A Cross-Asset State-Space Trading System for Drawdown Control in Stock Markets,Classical stock price prediction,0.8
 2609.15741,2026-09-14,Quantifying the 2027 Solvency II Risk Margin Reform,,0.95
 2609.14859,2026-09-14,"Gate Design and Stage-Dependent Incentives in Retail Proprietary-Trading Evaluations: Why Passing Is Not Standalone Evidence of Skill, and Why the Product Fails to Pay Under Measured Trading Constraints",Behavioral finance,0.75
 2609.15319,2026-09-14,"Clean Scores, Buried Evidence, and Confident Wrong: A Receipt-Based Audit of Frontier Agentic QA",,0.9
+2609.15306,2026-09-14,The skew Brownian motion should not be used as a risk-neutral returns process: a well-posed skew-normal alternative,,0.95
 2609.15744,2026-09-14,Design of a Deep Learning Credit Risk Early Warning System Integrating Multi-source Heterogeneous Data,,0.9
+2609.15901,2026-09-14,"Strategic Index Reconstitution: Differential Games, Closed-Loop Equilibria and Mean-Field Dynamics",Trading and order flow,0.95
 2609.17609,2026-09-14,"Separated Signal Libraries: Packing, Saturation, and Joint Spectral Limits",Asset pricing and risk premia,0.9
 2609.17610,2026-09-14,"On-Demand Combinatorial Event Markets on Kalshi: Instantiation, Concentration, and Effective Market Breadth",,0.85
 2609.15368,2026-09-14,"Resolution Is Not Settlement, Part I: Oracle Adjudication and Semantic Governance on Polymarket","Crypto, COVID and spillovers",0.9
@@ -3107,8 +3300,11 @@ arxiv_id,published,title,area,confidence
 2609.19102,2026-09-16,Optimal entry and exit for variance swaps: closed-form rules for the perpetual contract,,0.85
 2609.19866,2026-09-17,Reproducibility is not construct validity: LLM measurement of institutionally situated communication,,0.95
 2609.20550,2026-09-17,Principal component error in high-dimensional factor models,Asset pricing and risk premia,0.85
+2610.00183,2026-09-17,"Two Models of Event Finality: Functional Alignment, Contestability, and Empirical Comparability on Polymarket and Kalshi",,0.8
 2609.22639,2026-09-18,Adapting Pairs Trading to Gambling Markets A Case Study of the U.S. Presidential Election,,0.85
 2609.22612,2026-09-18,Asymptotic Invariance of Kelly Allocation Under Power-Law Asset Dynamics: Evidence from Bitcoin,"Crypto, COVID and spillovers",0.85
+2609.22052,2026-09-18,Design and pricing of a transparent parametric-modeled loss CAT bond: application to German windstorm,,0.95
+2609.21688,2026-09-18,Quadratic and $p$-th variation of random signed Takagi--Landsberg bridges,,0.95
 2609.21301,2026-09-18,Simulation of stochastic volatility models via operator splitting schemes,,0.95
 2609.21684,2026-09-18,Equilibrium prices under hidden Markov fundamentals,Asset pricing and risk premia,0.85
 2609.21271,2026-09-18,"Nested Clustered Optimization Is One End of a Schur Bridge, and the Interior Is Sometimes Provably Better",,0.9
@@ -3131,6 +3327,7 @@ arxiv_id,published,title,area,confidence
 2609.25452,2026-09-21,Risk diversification for infinitely divisible distributions,,0.95
 2609.25617,2026-09-22,Hierarchical Multi-Task Learning with Liquidity-Aware Signals for Stock Forecasting,Deep learning and LLM forecasting,0.95
 2609.25965,2026-09-22,Modeling interest rate swap volatility with GARCH processes,Volatility forecasting (GARCH),0.95
+2609.26303,2026-09-22,"Target alignment, dilution and forecast selection when cross-sectional forecasts share a common target",,0.8
 2609.26349,2026-09-22,Optimal Investment and Consumption in Financial Markets with Integrated Variance Clocks,,0.95
 2609.27138,2026-09-22,Surface-Driven Stochastic Volatility for Commodity Options: Identification of Stochastic Vol-of-Vol and Leverage from Smile Dynamics,,0.85
 2609.26445,2026-09-22,A Practical Guide on Graphical Model Validation,,0.95
@@ -3139,7 +3336,10 @@ arxiv_id,published,title,area,confidence
 2609.27051,2026-09-22,"Propose, Don't Judge: An Anytime-Valid Referee for LLM Agents That Mine Investment Factors",,0.8
 2609.27107,2026-09-22,Local Weak Limits for Equilibrium and Risk in Economic Networks,,0.95
 2611.03660,2026-09-22,Behavioral Prior Elicitation via LLM for Heterogeneous-Agent Bitcoin Flash-Crash Simulation,"Crypto, COVID and spillovers",0.85
+2609.27113,2026-09-22,Active Portfolio Management in Concentrated Equity Markets,,0.9
 2609.26398,2026-09-22,Weighted universal Value-at-Risk Superadditivity for discrete distributions,,0.95
+2609.28463,2026-09-23,Market Completeness and Optional Projections under Restricted Information,,0.95
+2609.27614,2026-09-23,Model-agnostic noise reduction for high-dimensional time series data,Classical stock price prediction,0.8
 2609.27654,2026-09-23,FedIncome: Federated Learning for Income Estimation in Digital Lending Under Data Sovereignty Constraints,,0.95
 2609.27636,2026-09-23,Multi-Agent AI Architecture for Regulated Insurers: A generic AI framework under Solvency II and the AI Act in Austria and Germany,,0.95
 2609.27632,2026-09-23,Compliant AI Infrastructure for Regulated Finance: A tiered multi-agent framework with DLT audit trails for financial operations in DACH,,0.95
@@ -3162,6 +3362,7 @@ arxiv_id,published,title,area,confidence
 2609.32686,2026-09-26,Optimal Reinsurance-Dividend Strategy with Fixed Transaction Costs in a Regime-Switching Brownian Risk Model: A Viscosity Solution to the Impulse Control Problem,,0.95
 2609.32238,2026-09-26,Exact Trade-Level Attribution of FRTB-IMA Capital,,0.9
 2609.32746,2026-09-26,Self-Evolving Multi-Agent Symbolic Discovery for Financial Fundamental Analysis,,0.8
+2609.32773,2026-09-26,Forecasting Intraday USD/CAD Exchange Rate with News-Derived Monetary-Policy Signals,Deep learning and LLM forecasting,0.9
 2609.32848,2026-09-26,"Packets, Transactions and Queues: Design Principles for HFT Systems from a Measurement Study of CME Market Data",Trading and order flow,0.95
 2609.33913,2026-09-27,"Magic strikes for variance and gamma contracts, and other attainable claims",,0.9
 2609.33058,2026-09-27,Evolution of Market Microstructure in the Age of AI,Trading and order flow,0.95
@@ -3173,6 +3374,7 @@ arxiv_id,published,title,area,confidence
 2609.36177,2026-09-28,A tale of two allocations: Risk capital contributions versus risk contributions in the tail,,0.95
 2609.38230,2026-09-28,Basket implied volatility skew and stickiness,,0.9
 2609.34169,2026-09-28,From Word Counts to Context: Topic Models for Asset Pricing,Asset pricing and risk premia,0.85
+2609.34474,2026-09-28,Deep kernel hedging,,0.9
 2609.35086,2026-09-28,Retrieval-Augmented Diffusion Modeling for Stochastic Discount Factor Portfolios,Asset pricing and risk premia,0.9
 2609.35359,2026-09-28,From Cointegration to Out-of-Sample Failure: A Pairs-Trading Case Study on PEP-KO,,0.8
 2609.35744,2026-09-28,FinAutoRubric: Expert-Guided Automatic Rubric Generation for Evaluating Financial Research Agents,,0.8
@@ -3184,8 +3386,10 @@ arxiv_id,published,title,area,confidence
 2610.23901,2026-09-29,Disentangling Liquidity-Constrained from Strategic Default: A Deep Learning Approach,,0.85
 2609.37903,2026-09-29,From Intraday Orderbook to Imbalance Price: Understanding Cross-Market Interaction,Trading and order flow,0.85
 2609.38545,2026-09-29,"Say, Echo, Do: Strategic Narratives and Revealed Positioning in Financial Markets",Information and stock reactions,0.85
+2609.37963,2026-09-29,Not All LPs Are Equal: The Active-Passive Gap in Automated Market Maker Liquidity Provision,Trading and order flow,0.9
 2609.37881,2026-09-29,Sublinear Markov Semigroups Beyond Uniqueness,,0.95
 2609.37872,2026-09-29,A Generalized Langevin Model of Latent Liquidity and Concave Price Impact,Trading and order flow,0.95
+2609.37820,2026-09-29,Information Games: Strategic Crowding and Firm Repositioning in Language-Model Space,Information and stock reactions,0.8
 2609.37741,2026-09-29,"Dyson-Schwinger Effective-Action Methods for Rough Volatility: A Correlation-Response Architecture for Calibration, Exotics and Risk",,0.9
 2609.37108,2026-09-29,The Efficient Frontier from a LASSO Solver,,0.9
 2609.36631,2026-09-29,"A Spread-Gated Hawkes-Flocking Model for Best Bid and Ask Dynamics, with an Application to Limit Order Placement",Trading and order flow,0.95
@@ -3194,11 +3398,14 @@ arxiv_id,published,title,area,confidence
 2609.39261,2026-09-30,Jacobian Rank Collapse in Decision-Focused Learning,,0.9
 2609.39569,2026-09-30,Spouse-Protected Tontines: Household Decumulation via Neural-Network Optimization,,0.95
 2610.03793,2026-09-30,Optimal Catastrophe Bond Design and its Applications to Climate Change Risk,,0.9
+2609.38765,2026-09-30,Multiperiod bond portfolio optimization with transaction costs using a Markov Decision process,,0.9
 2609.39256,2026-09-30,Stochastic Knothe-Rosenblatt: Light-speed Calibration of Stochastic Local Volatility Models,,0.95
+2609.39264,2026-09-30,Exchange Rate Determination for Cryptocurrency Mergers: A Formal Framework,"Crypto, COVID and spillovers",0.95
 2610.00619,2026-09-30,Beyond Supra-Competitive Outcomes: Collusive Behaviour in Deep Reinforcement Learning for Optimal Execution Games,Trading and order flow,0.95
 2610.00951,2026-10-01,Negative Oil & Nickel Squeeze: A Feedback Model for Extreme Commodity Futures Prices,"Crypto, COVID and spillovers",0.7
 2610.00998,2026-10-01,Portfolio Choice under General Utility with Transaction Costs and Search Frictions,Trading and order flow,0.65
 2610.01115,2026-10-01,Certified Alpha Capacity: Statistical Arbitrage When Learning Takes Time,Asset pricing and risk premia,0.6
+2610.01187,2026-10-01,On the Pricing of American Options under Stochastic Local Volatility and Stochastic Correlation via the RBSDE Framework,,0.95
 2610.01325,2026-10-01,PPO-HRAP: Proximal Policy Optimization with a Hybrid Regime-Aware Policy for Risk-Controlled Trading,Deep learning and LLM forecasting,0.85
 2610.01348,2026-10-01,"Verify Claims, Not Scores: Evidence-Based Verification of Modular Agents",,0.9
 2610.02290,2026-10-01,Expected Utility Regret Rule: Minimax and Bayes Optimal Portfolio Choice,,0.85
@@ -3208,6 +3415,7 @@ arxiv_id,published,title,area,confidence
 2610.01897,2026-10-01,"Shared Models, Selective Trading, and Order Flow",Trading and order flow,0.85
 2610.02838,2026-10-02,"Axient: Manifest-Bound Evidence for On-Chain Financial Protocols: Seven-Layer Derivation, Correlation, Tamper Rejection, and Reproducible Claim Promotion",,0.95
 2610.02834,2026-10-02,"Axient: Canonical Protocol-Graph Composition for Leveraged Event Markets: Single State Authority, Atomic Composition, Durable Sagas, and Exactly-Once Recovery",,0.95
+2610.03598,2026-10-02,When a Correct Reward Is Not Enough: Diagnosing and Guiding PPO in an Analytically Solved Broker-Trader Game,Trading and order flow,0.9
 2610.03174,2026-10-02,FinNextAssist: Towards Professional Financial Deep Research Assistant,,0.8
 2610.02863,2026-10-02,"Multi-Agent AI as a Nested Principal-Agent Problem in Private Wealth Management: Mandate Representation and Evidence Control in Switzerland, Germany and Austria",,0.9
 2610.02917,2026-10-02,Event History Over Scale: Compact Transformers for Low-Latency Limit Order Book Forecasting,Deep learning and LLM forecasting,0.9
@@ -3220,19 +3428,25 @@ arxiv_id,published,title,area,confidence
 2610.03161,2026-10-02,Landscape-Dependent Performance of Photonic Quantum Solvers in QUBO Feature Selection for Financial Risk Detection,,0.9
 2610.03080,2026-10-02,MintEval: Do LLMs Implement the Trading Strategy You Asked For? A Behavioural-Equivalence Benchmark for Natural-Language-to-Strategy Code,,0.8
 2610.06947,2026-10-03,FactorBench: A Portfolio-Aware Benchmark for Automated Factor Mining,Asset pricing and risk premia,0.9
+2610.04348,2026-10-03,A Price-Based Framework for Stochastic Portfolio Theory,,0.95
+2610.04209,2026-10-03,The Right Wing of the SABR Smile with an Absorbing Boundary: Resolution of Conjectures of Henry-Labordère,,0.95
 2610.04221,2026-10-03,Robust enhanced index tracking portfolio selection under distributional uncertainty,,0.85
+2610.05196,2026-10-04,Measuring Learned Monotone Temporal Aggregation at Matched Admissibility,,0.9
 2610.04990,2026-10-04,Buying at Support: The Entry Problem under Multi-Skew Brownian Motion,,0.95
 2610.07006,2026-10-04,STOCK-JEPA: Prior-Anchored Latent Revision Representation Learning in Equity Markets,Deep learning and LLM forecasting,0.95
 2610.04959,2026-10-04,AlphaPADI: Formulaic Alpha Discovery via Pool-Aware Hierarchical Discrete Diffusion,Deep learning and LLM forecasting,0.95
+2610.06495,2026-10-05,A posteriori error bounds for the Uncertain Volatility Model,,0.95
 2610.05926,2026-10-05,Comparing two approaches for modelling the loss given default of credit cards: Run-off triangles vs regression,,0.95
 2610.05873,2026-10-05,When Token Transfers Do Not Mean Liquidity in Tokenized Real-World Assets,"Crypto, COVID and spillovers",0.9
 2610.05741,2026-10-05,A Dirichlet Mixed-Membership Model for Exact Multivariate Distributional Credibility,,0.95
 2610.07404,2026-10-05,"Convex Order Beyond Dimension One: Projection Tests, Counterexamples and Gaussian Mixtures",,0.95
 2610.07162,2026-10-05,Adversarial Training for Deep Hedging in Nonstationary Markets,,0.85
 2610.06504,2026-10-05,Retirement Planning with Minimum Guarantees for Both Beneficiaries and Fund Managers,,0.9
+2610.05675,2026-10-05,A Superprocess-based Approach to Rough CIR Processes and Feller Random Measures,,0.95
 2610.06412,2026-10-05,Measuring Trade Direction in a Prediction Market: Settlement Ground Truth and Trading-Cost Measurement on Polymarket,Trading and order flow,0.95
 2610.06168,2026-10-05,Model Risk Analysis for Entropic Hedging Strategies,,0.9
 2610.05740,2026-10-05,Latent Continuum of Regimes in Limit Order Book Dynamics,Trading and order flow,0.95
+2610.08882,2026-10-06,FinVector-Market-4B: A Controlled Study of LoRA Adaptation for Structured Financial Tasks,,0.85
 2610.08169,2026-10-06,Modelling Regime Shifts in Continuous Intraday Electricity Markets with State-dependent Hawkes Processes,Trading and order flow,0.95
 2610.07985,2026-10-06,A Finite Bid--Ask Spread from Replenishment Displaced from the Quote,Trading and order flow,0.95
 2610.07888,2026-10-06,A Functional Representation of Credit Behavior for Probability of Default Modeling,,0.9
@@ -3245,6 +3459,7 @@ arxiv_id,published,title,area,confidence
 2610.10256,2026-10-07,"OOM-RL II: Reality Is an Oracle, Not a Debugger Provenance-Constrained Diagnosis in Continually Evolving Agent-Engineered Systems",,0.9
 2610.10046,2026-10-07,Optimal Investment to Reach a Financial Goal: A Stochastic Control Framework,,0.9
 2610.09654,2026-10-07,DSTNet: Dynamic Spectral Trajectory Network for Causal Multi-Horizon Financial Forecasting,Deep learning and LLM forecasting,0.95
+2610.09622,2026-10-07,Robust distortion riskmetrics under Wasserstein ambiguity,,0.95
 2610.09613,2026-10-07,Residual Learning in Empirical Asset Pricing,Deep learning and LLM forecasting,0.9
 2610.09246,2026-10-07,Conditional value-at-risk under reward-penalty mechanism with applications to robust portfolio management,,0.9
 2610.10407,2026-10-07,SOTA: Stock Options Trading Agents Guided by Option-Implied Return Distributions,Deep learning and LLM forecasting,0.85
@@ -3256,17 +3471,21 @@ arxiv_id,published,title,area,confidence
 2610.12718,2026-10-08,A Distributional Framework for Behavioral Characterization and Risk Management of Large Language Models,,0.85
 2610.13606,2026-10-09,CorrFlow: Exact and Permutation-Equivariant Flow Matching on the Correlation Elliptope,Deep learning and LLM forecasting,0.85
 2610.13574,2026-10-09,$L_0$ Feature Selection via Monte Carlo Tree Search in High-Dimensional Financial Regression,Classical stock price prediction,0.85
+2610.14120,2026-10-09,"Early Detection of Pension-Sponsor Distress from Public Filings: A Sponsor Vulnerability Index, Stress-Augmented VaR, and Dynamic Self-Investment Caps",,0.9
 2610.13446,2026-10-09,Realized Tail-Risk Conditional Autoregressive Expectile Models: Accurate and Stable Forecasting Performance,Volatility forecasting (GARCH),0.9
+2610.13199,2026-10-09,Enhancing credit risk scorecards with transactional-based behavioural features,,0.9
 2610.13162,2026-10-09,Entropy Regularization under No-Shorting: Structure Preservation and Convexity in Dynamic Mean-Variance Portfolio Selection,,0.9
 2610.13543,2026-10-09,Three options are roughly enough - Variance-optimal semi-static hedging in the rough Heston model,,0.9
 2610.13126,2026-10-09,MLP-Initialized Reinforcement Learning for Exit Timing in SPX Short-Straddle Portfolios,Deep learning and LLM forecasting,0.9
 2610.12875,2026-10-09,The Financing of Debt Relief: Intermediary Liquidity and the Value of Borrower Information,,0.95
 2610.13044,2026-10-09,FOMO: FLEX Options and Market Outcomes,Trading and order flow,0.75
+2610.15144,2026-10-10,From Economic Explanation to Performance Improvement in Machine-Learning Portfolios,,0.9
 2610.14948,2026-10-10,Exact Phase-Type Point Processes for Certified Measurement and Prediction of Event Streams,Trading and order flow,0.8
 2610.14821,2026-10-10,Ex Ante and Scenario-Conditional Value of Information in Dynamic Portfolio Choice,Asset pricing and risk premia,0.55
 2610.14584,2026-10-10,Tail Instability and Scale Control in Conditional Normalizing Flows for Treasury Yield-Curve Scenarios,Deep learning and LLM forecasting,0.8
 2610.14524,2026-10-10,Consumption adjustment with mean-reverting risk premia: A singular stochastic control approach,,0.85
 2610.14959,2026-10-10,AlphaRLM: Aligning Language Models for Literature-Grounded Symbolic Factor Discovery,Deep learning and LLM forecasting,0.95
+2610.15256,2026-10-11,Do Rollups Self-Organize? Multi-Agent Reinforcement Learning in the EIP-4844 Blob Fee Market,"Crypto, COVID and spillovers",0.9
 2610.15973,2026-10-11,"Requested, Executed and Recoverable Credit: Shared Action Ordering among LLM Borrowers in a Simulated Lending Market",,0.8
 2610.17304,2026-10-12,Dirichlet sub-mixtures: A new reading of multiplicative background risk models with Pareto margins,,0.95
 2610.17481,2026-10-12,"Designing Independent Variation: A Guided Iteration Methodology for Price Experiments in Short, Correlated Panels",,0.9
@@ -3299,6 +3518,7 @@ arxiv_id,published,title,area,confidence
 2610.22144,2026-10-15,Extending the Oracle Approximating Shrinkage to General Distributions,,0.9
 2610.22043,2026-10-15,"Momentum, Commentary Tone, and Earnings Surprise in LLM Financial Forecasts",Deep learning and LLM forecasting,0.9
 2610.21846,2026-10-15,Where Backtests and Live Trading Part Ways: Six Defects from One Intraday System,,0.8
+2610.22745,2026-10-15,Reading the News Without Hindsight: NoLBERT Topics and the Cross-Section of Stock Returns,Deep learning and LLM forecasting,0.95
 2610.21659,2026-10-15,"When Does ""Post-Call"" Begin? An Availability Contract for Earnings-Call NLP Benchmarks",Information and stock reactions,0.95
 2610.21081,2026-10-15,StochLOB: Heavy-Tailed Score Matching for Robust Limit Order Book Trend Prediction,Trading and order flow,0.9
 2610.21057,2026-10-15,Loss-versus-rebalancing with external proportional transaction costs,Trading and order flow,0.95
@@ -3308,6 +3528,7 @@ arxiv_id,published,title,area,confidence
 2610.21447,2026-10-15,Long-Horizon Investment with Delayed Information in a Mean-Reverting Market,,0.95
 2610.21540,2026-10-15,"Pricing the Unprovable: Ambiguity, Turnstile Runs, and the Verifiability Discount in Crypto Protocols","Crypto, COVID and spillovers",0.95
 2610.21510,2026-10-15,"How Much Screening Buys a Second? Speed, Selection, and the Maker's Spread",Trading and order flow,0.9
+2610.21442,2026-10-15,Fundamental Theorem of Discrete Asset Pricing,,0.95
 2610.21491,2026-10-15,NEST: Stale-Robust Tokenized-Stock Measurement for a Crypto-Treasury LETF Stack,"Crypto, COVID and spillovers",0.9
 2610.23749,2026-10-16,"From Alpha to Execution: Trading Horizons, Regimes, and Schedules under Concave Impact and Hurst Scaling",Trading and order flow,0.95
 2610.24169,2026-10-16,A Pricing and Hedging Framework for Infinite-Dimensional Financial Markets,,0.95
@@ -3318,15 +3539,18 @@ arxiv_id,published,title,area,confidence
 2610.23619,2026-10-16,Cross-product Modelling in Continuous Intraday Electricity Markets via Hawkes Processes,Trading and order flow,0.95
 2610.26919,2026-10-17,Dynamic portfolio selection under range value-at-risk with logarithmic returns,,0.9
 2610.24558,2026-10-17,Optimal Trading Filters and the Value of Predictive Signals,Trading and order flow,0.9
+2610.24586,2026-10-17,"Conditional Weight of Evidence for Gradient-Boosted Credit Models: Estimation, Additivity and Its Relation to Adverse Action Reasons",,0.95
 2610.24544,2026-10-17,Rachev-Ratio Portfolio Optimization with TimeGAN Scenarios: Replacement versus Supplementation,,0.85
 2610.24439,2026-10-17,Dynamic Programming for Value-at-Risk Markov Decision Processes in Continuous Spaces,Trading and order flow,0.85
 2610.25468,2026-10-18,"More Mentions, Less Information? Diagnosing Identity and Alignment in Reddit Embeddings for Volatility Forecasting",Volatility forecasting (GARCH),0.85
 2610.25445,2026-10-18,Bias correcting transaction cost models for characteristic function based estimators,Trading and order flow,0.95
 2610.25495,2026-10-18,Probabilistic Limit Order Book Forecasting with Conditional Diffusion Models,Trading and order flow,0.95
 2610.27214,2026-10-19,Deep catastrophic-risk-aware reinforcement learning,,0.9
+2610.27100,2026-10-19,LOB-Impact Benchmark: Emergent Market Impact in Generative Limit Order Book Models,Trading and order flow,0.95
 2610.26789,2026-10-19,Cooperative Multi-Agent Reinforcement Learning for Market Making on Prediction-Market Order Books,Trading and order flow,0.9
 2610.26797,2026-10-19,"Teacher Supervision, Fixed Representations and Calibration: Exact Risk Calculations for Candidate-Scoring Decision Models",,0.9
 2610.26746,2026-10-19,Probability-Weighting Functions for Normal Tempered-Stable Laws: Orthogonal Channels and Information-Theoretic Indices,Behavioral finance,0.8
+2610.26358,2026-10-19,SHADE: Shrinkage via Halted Alpha-stable Denoising for Heavy-Tailed Probabilistic Time Series Forecasting,Deep learning and LLM forecasting,0.75
 2610.26324,2026-10-19,The Control Layer Behind Rule-Following Agents Trading Across Market Conditions,Trading and order flow,0.8
 2610.26031,2026-10-19,AuDQ: Auditable Data Quality through Agentic Rule Discovery,,0.95
 2610.25822,2026-10-19,Conflicting History in Foundation Model Return Forecasts,Deep learning and LLM forecasting,0.95
@@ -3334,9 +3558,11 @@ arxiv_id,published,title,area,confidence
 2610.25671,2026-10-19,Arbitrage-Free Implied Volatility Surface Reconstruction via Additive Martingales,,0.85
 2610.25756,2026-10-19,Topological Compression of Prediction Market Belief States for Event Forecasting,,0.8
 2610.26456,2026-10-19,Regime-Aware Interpretable Ranking for Sector Rotation,Deep learning and LLM forecasting,0.9
+2610.27751,2026-10-20,Market Regime-Based Multi-Asset Portfolio Optimization Using Nested Clustered Optimization for Tactical Asset Allocation,,0.9
 2610.28071,2026-10-20,"Arithmetic Models for Commodity Futures, Vanilla, and Calendar Spread Options",,0.9
 2610.28075,2026-10-20,Speculative Imbalance Positions by Non-Physical Traders: Impacts on Electricity System Balancing in Great Britain,Trading and order flow,0.65
 2610.28753,2026-10-20,Understanding the Inner Workings of a State-Space Foundation Model for Limit Order Books,Trading and order flow,0.85
+2610.28847,2026-10-20,DSINC beyond Heston: the 3/2 and other non-affine stochastic-volatility models,,0.95
 2610.28863,2026-10-20,A game-theoretic analysis of the market microstructure in decentralized exchanges with concentrated liquidity,Trading and order flow,0.8
 2610.30539,2026-10-21,Dynamics of the Liquidity Profile in Concentrated Liquidity Provision: An SPIDE Approach,Trading and order flow,0.85
 2610.29652,2026-10-21,Distributions or Quantiles? A Convex Variational Theory of Worst-Case Risk,,0.9
@@ -3351,6 +3577,7 @@ arxiv_id,published,title,area,confidence
 2610.31141,2026-10-22,Intraday Forecasting Ability and Liquidity Provision of Institutional Traders,Trading and order flow,0.95
 2610.31825,2026-10-22,Mimicking Volatilities under Marginal Constraints via $q_x$-Bass Martingales: A Parallel Computing Approach,,0.95
 2610.31903,2026-10-22,Optimal Size in Market Making under State-Dependent Hawkes Process,Trading and order flow,0.95
+2610.33109,2026-10-22,Uncertainty Quantification for Financial Foundation Models: A Survey,,0.8
 2610.33132,2026-10-23,A Stationary Mean-Field Model for Carbon Market Stability Reserve,,0.95
 2610.33122,2026-10-23,The Digital-Energy Recomposition of the Kitchin Cycle: Exploratory Evidence from U.S. IT and Irish Data-Centre Series (1995-2025),,0.95
 2610.32970,2026-10-23,On the continuity of conditional distributions and stratification for derivative pricing,,0.9

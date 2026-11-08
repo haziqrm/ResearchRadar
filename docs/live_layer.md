@@ -270,9 +270,8 @@ accuracy figure, and none of the 50 had a signal, so it says nothing about signa
   limit is per project. A key from another project then took it to **3,460 of 3,687**
   (3.5: 2,182, 3.7: 649, 3.8: 629). The workers ran on ninths (`--shard K/9`) to even out
   the load. `--reverse` lets a second worker share a ninth from the other end, because
-  the cache is re-read before every batch. 227 papers are left, almost all in ninth 6.
-  After the reset, run `--shard 6/9` (plus `4/9` and `7/9`, one paper each), then
-  `--merge-only`.
+  the cache is re-read before every batch. A third key finished the last 227, so
+  **all 3,687 papers are tagged** and `data/arxiv_map_tags.csv` is complete.
 - When that file exists, `real_data.get_topic_network()` returns the **weekly map**
   (`"mode": "weekly"`): 8 nodes sized by this week's and last week's paper counts. The
   Earlier/Recent toggle becomes the two week labels. Tooltips show last week -> this
