@@ -1,0 +1,251 @@
+paper_id,title,year,group,subtopic,score,rank
+W4414956913,An Agent-Based Computational Finance Simulation Model to Study Market Efficiency,2025,Agent-based market models,"agent-based, market, stock, simulation",0.5744,1
+W7161833412,Agent-based modeling in economics,2025,Agent-based market models,"agent-based, market, stock, simulation",-0.0393,2
+W4390521505,Business cycle and herding behavior in stock returns: theory and evidence,2024,Agent-based market models,"market, heterogeneous, markets, asset",-0.2075,3
+W4402069217,Interpreting the modern history of finance theory from Henri Poincaré’s perspective,2024,Agent-based market models,"quantum, financial markets, market, stock",-0.4006,4
+W4390974240,Quantum Leap: A Price Leap Mechanism in Financial Markets,2024,Agent-based market models,"quantum, financial markets, market, stock",-0.5993,5
+W4416008178,Emergent inflation-deflation cycles from minimalistic wage dynamics,2025,Agent-based market models,"economic, economics, efficient, law",-0.6374,6
+W4396706387,Exact Solution to a Generalised Lillo–Mike–Farmer Model with Heterogeneous Order-Splitting Strategies,2024,Agent-based market models,"quantum, financial markets, market, stock",-1.033,7
+W4417521607,A Hamiltonian Higher-Order Elasticity Framework for Dynamic Diagnostics(2HOED),2025,Agent-based market models,"economic, economics, efficient, law",-1.0614,8
+W4381301872,LQG Graphon Mean Field Games: Analysis via Graphon-Invariant Subspaces,2023,Agent-based market models,"dynamics, distribution, wealth, distributions",-1.2286,9
+W4403574952,Markov-Nash equilibria in mean-field games under model uncertainty,2024,Agent-based market models,"dynamics, distribution, wealth, distributions",-1.2553,10
+W4413001482,Risk-adjusted Momentum Strategy Construction and Industry Heterogeneity Analysis Based on STARR Indicator,2025,Asset pricing and risk premia,"portfolios, portfolio, hedge, factor",1.6485,1
+W4385157256,Five-Factor Asset Pricing Model Fama and French dalam Memahami Excess Return Saham Syariah sebelum dan sesudah Diumumkan Covid-19 di Indonesia,2023,Asset pricing and risk premia,"factors, french, pricing, fama",1.3213,2
+W4404644960,Volatility Implications for Asset Returns Correlation,2024,Asset pricing and risk premia,"risk, liquidity, stock, market",1.1637,3
+W4402876583,Risk–Return Anomalies: Evidence Based on the Co-Moment Augmented Fama–French Three-Factor Model in the Nigerian Stock Market,2024,Asset pricing and risk premia,"factors, french, pricing, fama",1.0086,4
+W4415620147,Modeling Financial Asset Returns and Initial Risk Exploration under the Gaussian Assumption,2025,Asset pricing and risk premia,"risk, liquidity, stock, market",0.9636,5
+W4401000931,CAPM: A Time-Tested Investment Model for Modern Portfolios,2024,Asset pricing and risk premia,"capm, capital asset, asset pricing, stock",0.8978,6
+W4396932849,Comprehensive Asset Pricing Tests in the Korean Stock Market,2024,Asset pricing and risk premia,"factors, french, pricing, fama",0.8515,7
+W4391148231,Explaining the time series of stock returns,2023,Asset pricing and risk premia,"factors, french, pricing, fama",0.8383,8
+W4396736255,Capital Asset Pricing Model for the Stock Market in Pakistan,2024,Asset pricing and risk premia,"capm, capital asset, asset pricing, stock",0.7809,9
+W4405523713,Generative AI for European asset pricing: alleviating the momentum anomaly,2024,Asset pricing and risk premia,"portfolios, portfolio, hedge, factor",0.6621,10
+W4415992527,A Review of Behavioral Biases and Their Impact on Portfolio Performance: An Insight from A Retail Investor in India’s Nifty 50 Segment,2025,Behavioral finance,"investors, investment, stock, biases",1.6954,1
+W4412388917,RESEARCH ON INVESTORS' INVESTMENT INDUSTRY SELECTION TRENDS IN THE VIETNAMESE STOCK MARKET BASED ON BEHAVIORAL FINANCE THEORY,2025,Behavioral finance,"investors, investment, stock, biases",1.5899,2
+W7220070421,Behavioral Finance,2024,Behavioral finance,"behavioral finance, investment, review, behavioural",1.5157,3
+W7217762601,Behavioral Finance: Understanding Investor Psychology in Modern Financial Markets,2024,Behavioral finance,"behavioral finance, investment, review, behavioural",1.46,4
+W4412505818,An Empirical Study on Investors Perception Towards Investment in Stock Market,2025,Behavioral finance,"stock, information, investment, trading",1.3977,5
+W4411297271,Behavioral Finance and Investment Decisions,2025,Behavioral finance,"behavioral finance, investment, review, behavioural",1.3582,6
+W4405103213,"The Investment Puzzle: Unveiling Behavioral Finance, Risk Perception, and Financial Literacy",2024,Behavioral finance,"investors, investment, stock, biases",1.3579,7
+W7127985710,Behavioral Biases in Financial Markets: A Review with Future Research Directions,2024,Behavioral finance,"investors, investment, stock, biases",1.2457,8
+W4407592064,BEHAVIOURAL FINANCE AND ITS BIASES: A STUDY ON INVESTORS INVESTING THROUGH STOCK TRADING PLATFORMS,2025,Behavioral finance,"investors, investment, stock, biases",1.2206,9
+W4327518726,An empirical investigation on investor psychological biases,2023,Behavioral finance,"investors, investment, stock, biases",1.1111,10
+W4352990887,Stock Price Prediction Using Machine Learning Strategies,2023,Classical stock price prediction,"stock price, neural network, price prediction, stock market",3.6467,1
+W4407667788,A portfolio optimization model for return trend rate and risk trend rate based on machine learning,2025,Classical stock price prediction,"stock price, neural network, price prediction, stock market",2.9763,2
+W4391142714,The comprehensive analysis of Google’s stock using ARIMA model,2024,Classical stock price prediction,"stock market, stock price, technical, trading",2.7503,3
+W4411548977,Application of special data analysis methods for effective investment decisions,2025,Classical stock price prediction,"stock market, machine learning, prediction, decision",2.6374,4
+W4403441812,Forecasting PT Bank Central Asia Tbk Stock Price Using ARIMA Model,2023,Classical stock price prediction,"stock market, stock price, technical, trading",2.3297,5
+W4390195877,Research on momentum strategy and contrarian strategy in AI stock prediction,2023,Classical stock price prediction,"stock market, stock price, technical, trading",2.214,6
+W4403616927,Evaluation of the Multiple Regression Analysis Algorithm on Stock Market Prediction,2024,Classical stock price prediction,"stock price, neural network, price prediction, stock market",2.2029,7
+W4392588818,"Machine Learning Techniques For Stock Price Prediction - A Comparative Analysis Of Linear Regression, Random Forest, And Support Vector Regression",2024,Classical stock price prediction,"stock market, machine learning, prediction, decision",2.1085,8
+W4396566629,Financial Modeling and Forecasting in Corporate Finance Management,2024,Classical stock price prediction,"stock market, machine learning, prediction, decision",2.0384,9
+W4399438263,Analysis of Stock Market Prices Based on ARIMA Model: Evidence from NASDAQ 100 Index,2024,Classical stock price prediction,"price, forecasting, series, arima",2.0334,10
+W4406600320,A semi-parametric dynamic conditional correlation framework for risk forecasting,2025,Copulas and dependence,"copula, dependence, copulas, risk",0.5394,1
+W4409573498,New Three Different Generators for Constructing New Three Different Bivariate Copulas,2025,Copulas and dependence,"copula, dependence, copulas, risk",-0.1046,2
+W4393027618,Multivariate temporal dependence via mixtures of rotated copulas,2024,Copulas and dependence,"copula, copulas, dependence, estimation",-0.4064,3
+W7117117463,MODELING PORTFOLIO LOSS DEPENDENCE USING FRÉCHET DISTRIBUTION AND NESTED CLAYTON COPULAS,2025,Copulas and dependence,"copula, dependence, copulas, risk",-0.5071,4
+W4388092730,Estimating Systemic Risk within Financial Networks: A Two-Step Nonparametric Method,2023,Copulas and dependence,"estimation, financial risk, risk management, techniques",-0.5263,5
+W4390867683,"Proposal of a Modified Clayton Copula: Theory, Properties and Examples",2024,Copulas and dependence,"copula, copulas, dependence, estimation",-0.6098,6
+W4320735353,A method for the elicitation of copulas,2023,Copulas and dependence,"copula, copulas, dependence, estimation",-0.7439,7
+W4386215462,A Tale of Two Tails: A New Unique Information Share Measure Based on Copulas,2023,Copulas and dependence,"multivariate, testing, yield curve, correlation",-0.9096,8
+W4394062798,Fast procedure to compute empirical and Bernstein Copulas,2023,Copulas and dependence,"copula, copulas, dependence, estimation",-0.984,9
+W3215856219,Two-Sample Testing for Tail Copulas with an Application to Equity Indices,2023,Copulas and dependence,"copula, dependence, copulas, risk",-1.1665,10
+W4400467021,Investigating profitability of Technical Trading Rules around COVID pandemic: Evidence from PSX,2024,"Crypto, COVID and spillovers","saham, exchange, indonesia, stock",4.0018,1
+W4413288855,Revisiting Cont's stylized facts for modern stock markets,2025,"Crypto, COVID and spillovers","saham, exchange, indonesia, stock",2.7129,2
+W4387021551,Geopolitical Risk (GPR) and its Predictability: A Systematic Literature Review,2023,"Crypto, COVID and spillovers","saham, exchange, indonesia, stock",2.5482,3
+W4392890773,Energy-related uncertainty and international stock market volatility,2024,"Crypto, COVID and spillovers","market, stock, precious, metals",2.4505,4
+W4405652071,Alternative solution to achieve abnormal returns on the Indonesian Stock Exchange,2024,"Crypto, COVID and spillovers","saham, exchange, indonesia, stock",2.4294,5
+W4410129680,Unveiling the interconnectedness and volatility transmission between real assets and global stock market indices,2025,"Crypto, COVID and spillovers","connectedness, financial, network, stock",2.2715,6
+W4405056034,Risk contagion of COVID-19 to oil prices: A Markov switching GARCH and PCA approach,2024,"Crypto, COVID and spillovers","market, stock, impact, uncertainty",2.2263,7
+W7127998422,CATEGORIZING THE SHOCK: A COMPARATIVE ANALYSIS OF GLOBAL EVENT TYPES ON THE NIGERIAN STOCK MARKET,2025,"Crypto, COVID and spillovers","market, stock, impact, uncertainty",2.0406,8
+W7221084982,The Indonesian stock market responded negatively to Trump: Impact of import tariff policies,2025,"Crypto, COVID and spillovers","market, stock, impact, uncertainty",1.9395,9
+W7221088956,Cross-Market Volatility in Response to Trump’s Trade Policy,2025,"Crypto, COVID and spillovers","market, stock, impact, uncertainty",1.8757,10
+W4410825119,Optimized Modular Deep Neural Network for Forex Stock Price Forecasting,2025,Deep learning and LLM forecasting,"prediction, stock, forecasting, network",3.0751,1
+W4411035370,Literature Reviews on Enhancing Market Predictions: The Role of Artificial Intelligence in Refining Technical Analysis for Stock Price Movements,2025,Deep learning and LLM forecasting,"stock, news, financial, sentiment",2.7589,2
+W4406848326,Predicting Stock Price Movements Using Deep Learning: An Analysis of Machine Learning Models for Portfolio Optimization,2024,Deep learning and LLM forecasting,"lstm, stock, prediction, price",2.4132,3
+W4410373477,Stock Market Price Predictions Using Machine Learning,2025,Deep learning and LLM forecasting,"machine learning, stock, returns, market",2.3495,4
+W7117760110,Optimized LSTM with TSCV for Forecasting Indonesian Bank Stocks,2025,Deep learning and LLM forecasting,"lstm, stock, prediction, price",2.1498,5
+W4410229923,Dynamical analysis of financial stocks network: Improving forecasting using network properties,2025,Deep learning and LLM forecasting,"machine learning, stock, returns, market",1.9892,6
+W4399664403,Cryptocurrency price forecasting: a comparative analysis of autoregressive and recurrent neural network models,2024,Deep learning and LLM forecasting,"bitcoin, cryptocurrency, price, learning",1.954,7
+W4390271666,Comparison of XGBoost and LSTM Models for Stock Price Prediction,2023,Deep learning and LLM forecasting,"lstm, stock, prediction, price",1.873,8
+W4402095393,Portfolio Prediction using Deep Learning,2024,Deep learning and LLM forecasting,"lstm, stock, prediction, price",1.8256,9
+W4400687163,Analyzing Financial Market Trends in Cryptocurrency and Stock Prices Using CNN-LSTM Models,2024,Deep learning and LLM forecasting,"bitcoin, cryptocurrency, price, learning",1.7825,10
+W4401607593,A rigorous and versatile statistical test for correlations between stationary time series,2024,Fractals and complex time series,"network, complex, series, causality",-0.5493,1
+W4390937077,Fractal analysis of the medical insurance market: Theoretical and practical aspects,2023,Fractals and complex time series,"fractal, financial, series, markets",-0.6145,2
+W4394708716,Beta Distribution of Long Memory Sequences,2024,Fractals and complex time series,"long, processes, dependence, estimation",-0.6189,3
+W4405433841,Enhanced scaling crossover detection in long-range correlated time series,2024,Fractals and complex time series,"entropy, time series, noise, complex",-0.8926,4
+W4407519901,Identifying key drivers in a stochastic dynamical system through estimation of transfer entropy between univariate and multivariate time series,2025,Fractals and complex time series,"network, complex, series, causality",-0.9011,5
+W4404435529,Time persistence of climate and carbon flux networks,2024,Fractals and complex time series,"network, complex, series, causality",-0.9677,6
+W7117489138,"Polymodeling of time series structures, neighborhood of residuals distribution, wavelet transformation for meso-dynamics assessment",2025,Fractals and complex time series,"dynamics, nonlinear, time series, econophysics",-1.0681,7
+W4323075481,Analysis of Financial Crisis Causes and Complex Systems Scientific Methods,2023,Fractals and complex time series,"dynamics, nonlinear, time series, econophysics",-1.0693,8
+W4406764893,"The shifted wavelet $ (q, q') $-entropy and the classification of stationary fractal signals",2025,Fractals and complex time series,"entropy, time series, noise, complex",-1.0803,9
+W4377103831,VisualDom: An R package for estimating dominant variables in dynamical systems,2023,Fractals and complex time series,"network, complex, series, causality",-1.0866,10
+W4412592262,Determinants of IPO Pricing: A Case of Pakistan Stock Market,2025,IPOs,"ipos, ipo underpricing, initial, pricing",0.6233,1
+W4391551953,Underpricing of IPOs (Initial Public Offering) in Borsa Istanbul: The effect of Covid-19 Pandemic Period,2023,IPOs,"ipos, ipo underpricing, initial, pricing",-0.1182,2
+W4323659969,IPO underpricing from the institutional investor perspective: evidence from emerging markets,2023,IPOs,"ipos, ipo underpricing, initial, pricing",-0.2025,3
+W4413929651,Development of a Classification Model for Underpriced Issuers Using Machine Learning Algorithms,2025,IPOs,"ipos, ipo underpricing, initial, pricing",-0.3996,4
+W4388535564,Research on IPO Underpricing Decomposition: Evidence from China's Science and Technology Innovation Board,2023,IPOs,"ipos, ipo underpricing, initial, pricing",-0.4018,5
+W7164933313,Unveiling the Role of Market Sentiment in Explaining Malaysian IPO Aftermarket Share Performance,2025,IPOs,"performance, market, initial, ipo",-0.406,6
+W4409878218,Drought in Equity Initial Public Offers in Kenya: A Demand Perspective,2025,IPOs,"ipos, ipo underpricing, initial, pricing",-0.4233,7
+W4414639965,Digital Adoption and Price Discovery in Shadows: Evidence from Indian IPO Grey Markets between 2016-2025,2025,IPOs,"ipos, ipo underpricing, initial, pricing",-0.559,8
+W4390588072,Market sentiment and SPACs,2024,IPOs,"performance, market, initial, ipo",-0.6191,9
+W4380876734,The IPO Underpricing and Market Liquidity after Reform on Chi-Next Board,2023,IPOs,"performance, market, initial, ipo",-0.6966,10
+W4390588494,The Driving Factors of Stock Price Crash Risk,2024,Information and stock reactions,"stock, price, market, announcements",1.7069,1
+W4404972164,Traces of Herd Behaviour Over a Decade in Indian Stock Markets,2024,Information and stock reactions,"herding, herd, market, behaviour",1.3048,2
+W4391535815,Trading behavior by foreign and domestic investors,2024,Information and stock reactions,"momentum, stock, market, recommendations",1.0157,3
+W4413084743,Reaksi Pasar Saham terhadap Peristiwa Politik “Peringatan Darurat”,2025,Information and stock reactions,"stock, price, market, announcements",0.9645,4
+W4399870463,The Limitations of the Efficient Market Hypothesis,2023,Information and stock reactions,"investors, market, stock, ownership",0.8787,5
+W7220560143,A Guide to Event Study Methodology: Perspectives and Applications in Business Market Research,2024,Information and stock reactions,"market, stock, companies, internet",0.83,6
+W4393867998,Sectoral Herding During Global Rare Events: Evidence from the Indonesian Capital Market,2024,Information and stock reactions,"herding, herd, market, behaviour",0.6296,7
+W4417115681,The Rise of Retail Investors: Impacts on Market Volatility and Trading Patterns,2025,Information and stock reactions,"market, stock, companies, internet",0.5101,8
+W4396833312,The role of centralization index in identifying momentum stage of stocks: empirical evidence from investor networks,2024,Information and stock reactions,"momentum, stock, market, recommendations",0.4741,9
+W4380985568,The Global Stock Market Reactions to the 2016 U.S. Presidential Election,2023,Information and stock reactions,"stock, price, market, announcements",0.1958,10
+W4388184326,Robust Estimation of Realized Correlation: New Insights about Intraday Fluctuations in Market Betas,2023,Interest rates and term structure,"market, returns, volatility, stock",0.8817,1
+W4394719724,Uncertainty Measures and Business Cycles: Evidence From the US,2024,Interest rates and term structure,"stock, returns, asset, financial",-0.0047,2
+W4394678781,On fitting and forecasting the log-returns of Bitcoin and Ethereum exchange rates via a new sine-based logistic model and robust regression methods,2024,Interest rates and term structure,"tests, garch, arch, conditional",-0.1576,3
+W7154846158,Asymmetric Modeling of NairaYuan Exchange Rate with Structural Breaks,2025,Interest rates and term structure,"exchange rate, foreign exchange, exchange rates, volatility",-0.5825,4
+W4319054554,Time-Varying Correlation between Business Cycle and Financial Cycle in India,2023,Interest rates and term structure,"stock, returns, asset, financial",-0.7132,5
+W4391402945,QMLE for periodic absolute value GARCH models,2024,Interest rates and term structure,"tests, garch, arch, conditional",-0.8469,6
+W3195199496,The incremental information in the yield curve about future interest rate risk,2023,Interest rates and term structure,"term structure, affine term, yield curve, bond",-0.8532,7
+W7221490207,Set-Valued Vector Autoregressive Models and Inference,2024,Interest rates and term structure,"cointegration, factor, causality, fractional",-0.8542,8
+W4313594003,"Monetary policy uncertainty, monetary policy surprises and stock returns",2023,Interest rates and term structure,"stock, returns, asset, financial",-0.957,9
+W4405105980,Unspanned stochastic volatility in the linear-rational square-root model: Evidence from the Treasury market,2024,Interest rates and term structure,"term structure, affine term, yield curve, bond",-1.0491,10
+W4406483930,Empirical Study on the Factors Influencing Stock Market Volatility in China,2025,International market co-movement,"stock, oil, markets, gold",3.1177,1
+W4404244217,Examining the Impact of GDP on the Nepalese Stock Market: Insights from Co-integration and Granger Causality Tests,2023,International market co-movement,"stock, markets, integration, market",2.7338,2
+W4392001032,Volatility spillover among the sectors of emerging and developed markets: a hedging perspective,2024,International market co-movement,"stock, oil, markets, gold",2.4434,3
+W4395046849,"ANALYSIS OF REGIONAL STOCK MARKETS FOR INVESTMENT & DIVERSIFICATION PERSPECTIVE: EVIDENCE FROM PAKISTAN, CHINA & INDIAN STOCK MARKETS",2024,International market co-movement,"stock, markets, integration, market",2.2468,4
+W4409634792,Heterogeneous Spillover Networks and Spatial–Temporal Dynamics of Systemic Risk Transmission: Evidence from G20 Financial Risk Stress Index,2025,International market co-movement,"contagion, financial, stock, markets",2.0449,5
+W4415780597,"From Manila to Beijing: Geopolitical Risk, Macroeconomics, and the Indian Stock Market in a Volatile Region",2025,International market co-movement,"stock, oil, markets, gold",1.7463,6
+W4411043094,Correlations and volatility spillovers between clean and dirty cryptocurrencies and regional stock markets: new evidence from COVID-19 and Russia–Ukraine conflict,2025,International market co-movement,"stock, oil, markets, gold",1.6992,7
+W4319868328,Asymmetric impacts of geopolitical risk on stock markets: A comparative analysis of the E7 and G7 equities during the Russian-Ukrainian conflict,2023,International market co-movement,"contagion, financial, stock, markets",1.6686,8
+W4321599310,Risk Dependence and Risk Spillovers Effect from Crude Oil on the Chinese Stock Market and Gold Market: Implications on Portfolio Management,2023,International market co-movement,"stock, oil, markets, gold",1.6386,9
+W4401362672,The role of financial globalization in the long-run volatility between forex and stock markets during COVID-19: Evidence from Africa,2024,International market co-movement,"contagion, financial, stock, markets",1.3975,10
+W4404541055,Volatility in the Indian Stock Market: An Empirical Analysis,2024,Macro drivers of stock returns,"indian stock, stock market, india, volatility",7.0746,1
+W4406881828,Assessing the Dynamic Impact of Foreign Institutional Investment on the Indian Stock Market: A Decade-long Analysis (2013-2023),2025,Macro drivers of stock returns,"indian stock, stock market, india, volatility",4.3552,2
+W4406171550,Significance of Market and Economic Factors in Stock Investors Decision Making – A Study on Indian Stock Market,2024,Macro drivers of stock returns,"stock exchange, stock market, return, tehran",3.2838,3
+W4403375089,Stock Returns and Volatility: Comparative Investigation from SAARC Countries,2024,Macro drivers of stock returns,"stock, market, volatility, oil",2.9734,4
+W4407230543,Investigation of Political Chaos and Performance of Pakistan Stock Exchange: A Case of KSE 100-Index,2024,Macro drivers of stock returns,"stock, market, volatility, oil",2.6222,5
+W4414621716,ANALYSIS OF DIFFERENCES IN ABNORMAL RETURN AND TRADING VOLUME ACTIVITY OF COMPANY STOCKS BEFORE AND AFTER THE 2024 PRESIDENTIAL ELECTION,2025,Macro drivers of stock returns,"dan, indonesia, saham, terhadap",2.3133,6
+W7112318853,Dynamic response of emerging market stock returns to exchange rate and oil price: a case of Nigeria,2023,Macro drivers of stock returns,"stock, market, volatility, oil",1.9705,7
+W4399860137,AN ANALYSIS OF IMPACT OF SOME MACROECONOMIC FACTORS ON STOCK MARKET INDEX – EVIDENCE FROM AN ASIAN COUNTRY,2024,Macro drivers of stock returns,"macroeconomic variables, index, stock market, prices",1.9606,8
+W4415311980,The Effect of Dividend Announcements on Stock Return Volatility,2025,Macro drivers of stock returns,"dan, indonesia, saham, terhadap",1.6722,9
+W4401123510,The Impact of Firm-level Characteristics on Stock Abnormal Returns amid Crises in Egypt versus the United States,2024,Macro drivers of stock returns,"stock, market, volatility, oil",1.5999,10
+W4387079195,"The forecast ability of a belief-based momentum indicator in full-day, daytime, and nighttime volatilities of Chinese oil futures",2023,Market design and futures,"price, stock, market, index",1.9547,1
+W4319081835,A Comparative Analysis of Hedging Determination for Three Alternative International Equity Index Futures,2023,Market design and futures,"index futures, stock index, futures market, spot",1.1537,2
+W4387302715,An innovative high-frequency statistical arbitrage in Chinese futures market,2023,Market design and futures,"index futures, stock index, futures market, spot",0.73,3
+W4318830256,Will a boom be followed by crash? A new systemic risk measure based on right-tail risk,2023,Market design and futures,"market, stock, financial, securities",0.3808,4
+W4386639334,Study on the Relationship between Hang Seng Index and FTSE CHI Index in Hong Kong: Evidence from VAR Model,2023,Market design and futures,"stock, shanghai, returns, china",0.2725,5
+W4386365235,The roles of liquidity and delay in financial markets based on an optimal forecasting model,2023,Market design and futures,"price, stock, market, index",0.2038,6
+W4406591917,A Quantitative Strategy for value investing in Small Cap Stocks Based on Positive Feedback Asymmetry,2024,Market design and futures,"stock market, china stock, investment, liquidity",-0.2077,7
+W4408103335,Does Market Timing Work Well in China’s Mature and Emerging Stock Markets,2025,Market design and futures,"stock market, china stock, investment, liquidity",-0.3678,8
+W4399769986,Research On the Impact of Aluminum Metal Futures Prices on The Stock Prices of Aluminum Enterprises- Based on The Perspective of Upstream and Downstream,2024,Market design and futures,"price, gold futures, prices, china",-0.508,9
+W4409150255,Market Crash Risk and the Cross‐Section of Stock Returns: Evidence in China,2025,Market design and futures,"stock, shanghai, returns, china",-0.6379,10
+W4404833728,Navigating market volatility: risk and return insights from Indian mutual funds,2024,Mutual fund performance,"mutual fund, performance, mutual funds, style",1.373,1
+W7155224492,"A Comparative Risk–Return Analysis of Mutual Funds, Equity Shares, and ULIPs",2025,Mutual fund performance,"hedge funds, hedge fund, risk, performance",0.6183,2
+W4415482766,SIP vs Lump Sum Investment,2025,Mutual fund performance,"mutual funds, india, performance, mutual fund",0.5073,3
+W4411505287,A comparative Analysis of Mutual fund vs Direct Equity Investment in India,2025,Mutual fund performance,"mutual funds, india, performance, mutual fund",0.2921,4
+W4402604455,The market timing ability of bond mutual funds,2024,Mutual fund performance,"market timing, timing ability, funds, selectivity",0.1349,5
+W4398254099,Analyzing the Performance and Diversification Benefits of Healthcare Exchange-Traded Funds,2024,Mutual fund performance,"hedge funds, hedge fund, risk, performance",0.0545,6
+W7117896347,Equity Mutual Fund Selection in India- A Decision Tree Approach,2025,Mutual fund performance,"mutual funds, india, performance, mutual fund",0.0331,7
+W4407008493,Performance Evaluation of Equity Funds: A Case Study of Aditya Birla Sun Life Frontline Equity,2025,Mutual fund performance,"mutual fund, performance, mutual funds, investment",0.0281,8
+W4412539679,Growth or Preservation of Wealth? An Examination of IndianMutual Funds and Gold Investments Based on Factors,2025,Mutual fund performance,"mutual funds, india, performance, mutual fund",-0.0044,9
+W4396546441,Analysis On Sbi Mutual Funds,2024,Mutual fund performance,"mutual funds, india, performance, mutual fund",-0.0168,10
+W4365519181,Analysis of the Impact of Fund Behavior on WTI Crude Futures Market,2023,Oil and energy prices,"futures, market, crude oil, commodity",1.8743,1
+W4390614600,Crude Oil Price Fluctuations and Sectorial Returns in Nigeria,2024,Oil and energy prices,"oil price, shocks, oil prices, impact",1.6888,2
+W4396771760,The Wax and Wane of CPO Prices in India: A DCC Approach to Understanding Market Sentiment,2024,Oil and energy prices,"futures, market, crude oil, commodity",1.5514,3
+W4388671606,Oil Price Spillover Effects to the Stock Market Sentiment: The Case of Higher vs. Lower Oil Import EU Countries,2023,Oil and energy prices,"oil price, shocks, oil prices, impact",1.5175,4
+W4387124596,The International Oil Price in the Context of the COVID-19 Pandemic Outbreak: Evidence from BRICS and US,2023,Oil and energy prices,"policy uncertainty, global, economic policy, energy",1.4676,5
+W4387637553,"Symmetry and Asymmetry Multivariate Garch Modeling of Consumer Prices Index, Crude Oil Price, Inflation Rate and Exchange Rate",2023,Oil and energy prices,"futures, market, crude oil, commodity",1.2574,6
+W4383497569,Volatility spillovers and frequency dependence between oil price shocks and green stock markets,2023,Oil and energy prices,"carbon, energy, market, volatility",1.1705,7
+W7112263721,The Effect of Climate Policy Shocks and Global Financial Shocks on Oil Price Shocks: Evidence from South Africa,2023,Oil and energy prices,"policy uncertainty, global, economic policy, energy",1.0667,8
+W4386776743,Economic Indicators,2023,Oil and energy prices,"policy uncertainty, global, economic policy, energy",1.0027,9
+W4411961083,Oil Price Fluctuations and Facilities Investment in South Africa,2025,Oil and energy prices,"oil price, shocks, oil prices, impact",0.9617,10
+W4404404710,Optimal Execution under Incomplete Information,2024,Optimal investment and consumption,"optimal, trading, price, impact",-0.0112,1
+W4392508541,The Role of Longevity-Indexed Bond in Risk Management of Aggregated Defined Benefit Pension Scheme,2024,Optimal investment and consumption,"pension, management, optimal, benefit",-0.2146,2
+W4417413562,Multi-period Asset-liability Management with Reinforcement Learning in a Regime-Switching Market,2025,Optimal investment and consumption,"consumption, portfolio, optimal, utility",-0.4591,3
+W4402801497,"Optimal investment of defined contribution pension plan with environmental, social, and governance (ESG) factors in regime-switching jump diffusion models",2024,Optimal investment and consumption,"pension, management, optimal, benefit",-0.461,4
+W3036627552,A dynamic analytic method for risk-aware controlled martingale problems,2023,Optimal investment and consumption,"optimal, control, stochastic, problem",-0.4672,5
+W4387405613,OPTIMAL INVESTMENT UNDER PARTIAL INFORMATION AND ROBUST VAR-TYPE CONSTRAINT,2023,Optimal investment and consumption,"risk, arbitrage, market, measures",-0.6325,6
+W4385348528,An Equilibrium Strategy for Target Benefit Pension Plans with a Longevity Trend and Partial Information,2023,Optimal investment and consumption,"pension, management, optimal, benefit",-0.7176,7
+W4417403212,Adaptive-Robust Portfolio Optimisation,2025,Optimal investment and consumption,"risk, arbitrage, market, measures",-0.7189,8
+W4390340727,Optimal investment and benefit payment adjustment strategies for the target benefit plan under partial information,2023,Optimal investment and consumption,"pension, management, optimal, benefit",-0.7731,9
+W4390542915,Optimal investment–consumption–insurance strategy with inflation risk and stochastic income in an Itô–Lévy setting,2024,Optimal investment and consumption,"optimal, control, stochastic, problem",-0.7814,10
+W4384301279,Harvesting the volatility smile in a large emerging market: A Dynamic Nelson–Siegel approach,2023,Option pricing,"implied volatility, options, option, index",0.9683,1
+W4323341233,Pricing research on CSI 300 stock index options based on B-S model and GARCH model,2023,Option pricing,"option pricing, process, fractional, options",0.6894,2
+W7108458957,Solutions of Black-Scholes Equation by Some Numerical Approaches,2025,Option pricing,"option pricing, process, fractional, options",0.1774,3
+W4317884505,Impact of India Volatility Index (VIX) in Derivative Options Trading with Reference to Nifty Index Options,2023,Option pricing,"options, option, exercise, stock",0.1672,4
+W4394854637,VIX option pricing through nonaffine GARCH dynamics and semianalytical formula,2024,Option pricing,"options, option pricing, hedging, european",0.1037,5
+W4412056689,"Variance Reduction in Monte Carlo Option Pricing: A Comparative Analysis of Control Variates, Multiple Control Variates and Antithetic Variates",2025,Option pricing,"monte carlo, carlo simulation, pricing, options",0.059,6
+W4381884283,PRICING AND HEDGING OF VIX DERIVATIVES IN MODIFIED STOCHASTIC MODELS,2023,Option pricing,"pricing, risk, convertible, derivatives",0.0524,7
+W4413192490,Why does options market information predict stock returns?,2025,Option pricing,"implied volatility, options, option, index",-0.0074,8
+W4387873089,Option pricing: Examples and open problems,2023,Option pricing,"options, option pricing, hedging, european",-0.0455,9
+W4400892135,Recovering risk aversion from Bitcoin option prices and realized returns,2024,Option pricing,"implied volatility, options, option, index",-0.2007,10
+W7215670799,Building The Optimal Financial Portfolio Within The Framework Of Financial Indicators,2023,Portfolio optimization,"portfolio, optimal, investment, markowitz",2.7602,1
+W4394881621,Markowitz Model and Python Applied in Financial Risk Management,2024,Portfolio optimization,"portfolio, optimal, investment, markowitz",2.6146,2
+W4328095018,A Comprehensive Analysis of The Modern Portfolio Theory,2023,Portfolio optimization,"portfolio, optimal, investment, markowitz",2.5079,3
+W4386686237,Research on the Allocation of Investment Funds -- Empirical Analysis of Five Listed Companies,2023,Portfolio optimization,"portfolio, optimal, investment, markowitz",2.1175,4
+W4409465192,OPTIMAL INVESTITSION PORTFELNI SHAKLLANTIRISH MODELLARI,2025,Portfolio optimization,"portfolio, optimal, investment, markowitz",1.9022,5
+W4411475364,Optimizing Investment Portfolios Using Quadratic Programming: An Approach from the Markowitz Model,2025,Portfolio optimization,"portfolio, optimal, investment, markowitz",0.9697,6
+W4415440611,Research on Portfolio Optimization under Markowitz Model (MM) and the Index Model (IM): A Comparative Analysis Across Phases from 2004 to 2024,2025,Portfolio optimization,"portfolio, optimal, investment, markowitz",0.963,7
+W4380882264,Factor-Targeted Asset Allocation: A Reverse Optimization Approach,2023,Portfolio optimization,"asset allocation, portfolios, optimization, portfolio",0.8432,8
+W4404599884,Strategic Change in Resolving the Efficiency‐Equity Dilemma: A Novel Approach to Portfolio Selection,2024,Portfolio optimization,"asset, portfolio selection, learning, investment",0.7195,9
+W4403021736,Analysis of Implicit Strategy Optimization and Economic Returns of Machine Learning Techniques in Financial Asset Management,2024,Portfolio optimization,"portfolio, optimal, investment, markowitz",0.7017,10
+W7220281463,Mastering Wealth: Unveiling The Art of Investment Strategies in Dynamic Financial Markets,2025,Real estate investment,"investments, investment, equity, practical",1.4668,1
+W4396596185,Understanding Active vs. Passive Investing: Choosing the Right Approach for Your Goals and Risk Tolerance,2024,Real estate investment,"pension, asset allocation, plans, manager",0.7194,2
+W7220258882,Comparative Performance of REITS and Commercial Bank Shares in Nigeria Stock Exchange,2025,Real estate investment,"real estate, reits, property, risk",0.2383,3
+W4414072613,Tail risk diversification strategy with flight-from-loss approach: Evidence from U.S. REITs,2025,Real estate investment,"real estate, reits, property, risk",-0.197,4
+W4387168267,Investable Real Estate Allocations in a Mixed Asset Portfolio; Both Long Term and During Different Cycles,2023,Real estate investment,"real estate, reits, property, risk",-0.2167,5
+W4408940269,Cointegration and Regression Analyses as Alternative Methods to Verify the Protective Properties of Inflation Hedge Investments,2024,Real estate investment,"real estate, reits, property, risk",-0.3598,6
+W4391259757,Analysis of bond immunization strategies based on duration model,2024,Real estate investment,"investments, investment, equity, practical",-0.3717,7
+W4401174852,Practical Applications of Enhancing GARP Investing: Creating a New and Improved PEG Ratio,2024,Real estate investment,"investments, investment, equity, practical",-0.5276,8
+W4412968958,Market Macrostructure: Institutions and Asset Prices,2025,Real estate investment,"portfolio, diversification, risk, equity",-0.5348,9
+W4401234498,Analysis of Momentum Effects in the Seoul Apartment Market,2024,Real estate investment,"real estate, reits, property, risk",-0.5823,10
+W4416763394,Nonlinear weak error expansion of McKean-Vlasov stochastic differential equations,2025,Stochastic differential equations,"approximation, convergence, scheme, diffusion",-0.0559,1
+W4390171832,Averaging Principle for BSDEs driven by fractional Brownian motion with non Lipschitz coefficients,2023,Stochastic differential equations,"bsdes, lipschitz, driven, quadratic",-0.172,2
+W4407238165,"Wellposedness, exponential ergodicity and numerical approximation of fully super-linear McKean–Vlasov SDEs and associated particle systems",2025,Stochastic differential equations,"stochastic differential, differential equations, solutions, equation",-0.5047,3
+W4405254986,A linear-quadratic partially observed Stackelberg stochastic differential game with multiple followers and its application to multi-agent formation control,2024,Stochastic differential equations,"optimal control, stochastic, games, linear-quadratic",-0.5087,4
+W4392825711,Regularity and Optimality Necessary Conditions for System of G-Stochastic Differential Equations,2023,Stochastic differential equations,"processes, brownian, motion, time",-0.5539,5
+W4399657294,McKean-Vlasov forward-backward doubly stochastic differential equations and applications to stochastic control,2025,Stochastic differential equations,"stochastic differential, backward stochastic, differential equations, doubly",-0.6102,6
+W4412633176,Reflected backward stochastic partial differential equations driven by Teugels martingales,2025,Stochastic differential equations,"stochastic differential, backward stochastic, differential equations, doubly",-0.6487,7
+W4391375220,Volterra equations with affine drift: looking for stationarity,2024,Stochastic differential equations,"stochastic differential, differential equations, solutions, equation",-0.6654,8
+W4405149293,L p -solutions of backward doubly stochastic differential equations with time delayed generators,2024,Stochastic differential equations,"stochastic differential, backward stochastic, differential equations, doubly",-0.6744,9
+W4414027377,Gradient estimates for semigroups associated with stochastic differential equations driven by cylindrical Lévy processes,2025,Stochastic differential equations,"approximation, convergence, scheme, diffusion",-0.6749,10
+W3129374975,A Converging Benders’ Decomposition Algorithm for Two-Stage Mixed-Integer Recourse Models,2023,Stochastic programming,"stochastic, programming, problems, two-stage",-0.2786,1
+W4409566021,Multi-Period Portfolio Optimization Model with Cone Constraints and Discrete Decisions,2025,Stochastic programming,"programming, portfolio, management, risk",-0.3045,2
+W4386482229,Robust Optimization with Continuous Decision-Dependent Uncertainty with applications to demand response management,2023,Stochastic programming,"stochastic, programming, problems, two-stage",-0.6239,3
+W4411096165,"Systematically Formulating Investments for Carbon Offset by Multiple-Objective Portfolio Selection: Classifying, Evolving, and Optimizing",2025,Stochastic programming,"programming, portfolio, management, risk",-0.6298,4
+W4415062586,Robust Mean Estimation for Optimization: The Impact of Heavy Tails,2025,Stochastic programming,"robust optimization, distributionally robust, risk, uncertainty",-0.6993,5
+W7106306713,Scalable Distributionally Robust Optimization for High-Dimensional Uncertainty,2025,Stochastic programming,"robust optimization, distributionally robust, risk, uncertainty",-0.7438,6
+W4403337289,Distributionally Robust Portfolio Optimization under Marginal and Copula Ambiguity,2024,Stochastic programming,"robust optimization, distributionally robust, risk, uncertainty",-0.7812,7
+W4391801098,End-to-End Learning for Fair Multiobjective Optimization Under Uncertainty,2024,Stochastic programming,"robust optimization, distributionally robust, risk, uncertainty",-0.7812,8
+W4376167462,Two-stage and Lagrangian Dual Decision Rules for Multistage Adaptive Robust Optimization,2023,Stochastic programming,"stochastic, programming, problems, two-stage",-0.8884,9
+W4414692329,The Scaling Behaviors in Achieving High Reliability via Chance-Constrained Optimization,2025,Stochastic programming,"robust optimization, distributionally robust, risk, uncertainty",-0.9704,10
+W3153679976,A q -binomial extension of the CRR asset pricing model,2023,Stochastic volatility processes,"pricing, financial, asset, order",0.9267,1
+W4406588182,Quantitative Fundamental Theorem of Asset Pricing,2025,Stochastic volatility processes,"pricing, financial, asset, order",-0.0479,2
+W7220340265,Stochastic Processes in Financial Mathematics,2024,Stochastic volatility processes,"pricing, financial, asset, order",-0.0893,3
+W4389089832,ROUGH-HESTON LOCAL-VOLATILITY MODEL,2023,Stochastic volatility processes,"stochastic volatility, pricing, calibration, forward",-0.1935,4
+W4396792707,Parisian times for linear diffusions,2024,Stochastic volatility processes,"processes, diffusions, simulation, carlo",-0.3524,5
+W4400792284,Introducing a new approach for modeling stock market prices using the combination of jump-drift processes,2024,Stochastic volatility processes,"stochastic, volatility, application, modeling",-0.5166,6
+W4409649600,A limit order book model for high frequency trading with rough volatility,2025,Stochastic volatility processes,"pricing, financial, asset, order",-0.5581,7
+W4407074573,Pricing weather derivatives and managing weather risks under regime switching,2025,Stochastic volatility processes,"markov, switching, regime-switching, regime",-0.6275,8
+W7119177040,Optimal Candlestick-Based Spot Volatility Estimation: New Tricks and Feasible Inference Procedures,2025,Stochastic volatility processes,"volatility, estimation, nonparametric, stochastic",-0.6838,9
+W4401774473,Deep learning the Hurst parameter of linear fractional processes and assessing its reliability,2024,Stochastic volatility processes,"processes, fractional, brownian, ornstein-uhlenbeck",-0.7166,10
+W4394997985,Examining the Moderating Role of the Automated Trading System on the Financial Performance of the Ghana Stock Exchange,2024,Trading and order flow,"trading, intelligence, technical, edge",1.5609,1
+W4324351341,Practical Applications of Where’s the Beef?,2023,Trading and order flow,"trading, intelligence, technical, edge",1.437,2
+W4396543240,CRYPTOCURRENCY “THE PERFECT ALTERNATIVE SOLUTION TO HIGH-RISK/HIGH-RETURN INVESTMENTS”,2024,Trading and order flow,"financial markets, market, high-frequency trading, electronic",1.0688,3
+W4387711457,Analysis of Insurance investors’ High Frequency Trading,2023,Trading and order flow,"liquidity, options, market, bond",1.0581,4
+W4362571427,Brunt of technology in stock trading - empirical evaluation of movement in trading modes,2023,Trading and order flow,"trading, intelligence, technical, edge",1.013,5
+W4409812375,"FinTech, Fractional Trading, and Order Book Dynamics: A Study of US Equities Markets",2025,Trading and order flow,"financial markets, market, high-frequency trading, electronic",0.3767,6
+W4407752740,A Kelly Quantitative Trading Investment Strategy Improved by Overfitting Rate,2025,Trading and order flow,"trading, intelligence, technical, edge",0.3164,7
+W4383609978,Forex Trading Online Trend,2023,Trading and order flow,"financial markets, market, high-frequency trading, electronic",0.1595,8
+W4376124567,A Centralized Platform: For Expert-Generated Trading Signals in Real-Time,2023,Trading and order flow,"trading, intelligence, technical, edge",0.1379,9
+W4413958229,Algorithmic and high-frequency trading problems for Semi-Markov and Hawkes jump-diffusion models,2025,Trading and order flow,"order, optimal, market, limit",0.049,10
+W4404866684,Application of GARCH Model in the Field of Finance,2024,Volatility forecasting (GARCH),"volatility, garch, forecasting, exchange",2.7377,1
+W7217481778,МОДЕЛИ ОЦЕНКИ РЫНОЧНЫХ РИСКОВ,2023,Volatility forecasting (GARCH),"var, risk, value, value-at-risk",2.339,2
+W4390528244,ESG VOLATILITY PREDICTION USING GARCH AND LSTM MODELS,2024,Volatility forecasting (GARCH),"volatility, garch, forecasting, exchange",1.6907,3
+W4362636306,IMPLEMENTATION OF STOCHASTIC MODEL FOR RISK ASSESSMENT ON INDONESIAN STOCK EXCHANGE,2023,Volatility forecasting (GARCH),"var, risk, value, value-at-risk",1.4859,4
+W4386641334,Pattern Recognition of Stock Returns in the Very Short Run Leveraging High-Frequency Financial Data,2023,Volatility forecasting (GARCH),"volatility, financial, frequency, high",1.4672,5
+W4387184136,Test of Volatile Behaviors with the Asymmetric Stochastic Volatility Model: an Implementation on nasdaq-100,2023,Volatility forecasting (GARCH),"volatility, market, stock, markets",1.1681,6
+W7215327810,Modeling Volatility Spillover and Role of Volatility Spillover Effect to Improve Forecasting Performance of GARCH Models Based on Varying Distributions,2023,Volatility forecasting (GARCH),"volatility, garch, forecasting, exchange",1.0217,7
+W4315647493,Stochastic volatility modeling of high-frequency CSI 300 index and dynamic jump prediction driven by machine learning,2023,Volatility forecasting (GARCH),"volatility, financial, frequency, high",1.0095,8
+W7133669295,Time Varying Volatility and Stock Predictability: A Systematic Literature Review,2025,Volatility forecasting (GARCH),"volatility, market, stock, markets",0.932,9
+W4414785850,A new dynamic high-frequency volatility forecasting model for energy market – evidence from real-time realized EGARCH-GAS model,2025,Volatility forecasting (GARCH),"volatility, financial, frequency, high",0.8164,10

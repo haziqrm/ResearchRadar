@@ -24,6 +24,8 @@ STAGES: dict[str, tuple[str, str, str]] = {
     # a2 must run after a: run_decay writes Ken French rows only; combined adds OSAP.
     "a2": ("A", "src.signal_decay.combined", "decay_results.csv (Ken French + OSAP), decay_curve.csv"),
     "b": ("B", "src.research_map.run_map", "network_*.csv, area_forecasts.csv"),
+    # r must run after b: reads B's network, encodings and vectors; writes area_forecasts.csv.
+    "r": ("A", "src.topic_radar.run", "area_forecasts.csv, subtopics.csv, seed_papers.csv, *_eval.csv"),
     "d": ("D", "src.live.run_live", "crowding.csv, backtest_results.csv, briefing.*"),
 }
 
@@ -38,7 +40,7 @@ def module_exists(module: str) -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--only", nargs="+", choices=sorted(STAGES), metavar="STAGE",
-                        help="stages to run (a, a2, b, d); default all")
+                        help="stages to run (a, a2, b, r, d); default all")
     parser.add_argument("--list", action="store_true", help="list stages and exit")
     args = parser.parse_args()
 

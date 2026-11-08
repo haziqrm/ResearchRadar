@@ -1,0 +1,182 @@
+group,subtopic_id,label,n_papers,prior_count,recent_count,growth,p_holm,rising
+Stochastic volatility processes,0,"processes, fractional, brownian, ornstein-uhlenbeck",32,3,2,-0.3877551020408164,1.0,False
+Stochastic volatility processes,1,"volatility, estimation, nonparametric, stochastic",45,1,2,0.4285714285714284,1.0,False
+Stochastic volatility processes,2,"pricing, financial, asset, order",75,4,9,0.8095238095238095,1.0,False
+Stochastic volatility processes,3,"stochastic, volatility, application, modeling",53,5,6,0.012987012987013102,1.0,False
+Stochastic volatility processes,4,"processes, diffusions, simulation, carlo",51,4,9,0.8095238095238095,1.0,False
+Stochastic volatility processes,5,"stochastic volatility, pricing, calibration, forward",45,2,4,0.5428571428571427,1.0,False
+Stochastic volatility processes,6,"asymptotic, estimation, arch, processes",48,5,2,-0.6103896103896104,1.0,False
+Stochastic volatility processes,7,"markov, switching, regime-switching, regime",44,6,1,-0.8021978021978022,1.0,False
+IPOs,0,"ipos, ipo underpricing, initial, pricing",61,5,7,0.36363636363636376,1.0,False
+IPOs,1,"underpricing, ipo, public offerings, ipos",30,2,0,-0.8,1.0,False
+IPOs,2,"performance, market, initial, ipo",46,5,5,0.0,1.0,False
+Copulas and dependence,0,"tail, portfolio, risk, multivariate",34,4,3,0.03703703703703698,1.0,False
+Copulas and dependence,1,"multivariate, testing, yield curve, correlation",62,5,2,-0.3939393939393939,1.0,False
+Copulas and dependence,2,"credit risk, curve, default, bonds",20,1,0,-0.5555555555555556,1.0,False
+Copulas and dependence,3,"copula, dependence, copulas, risk",60,5,5,0.3333333333333335,1.0,False
+Copulas and dependence,4,"copula, copulas, dependence, estimation",44,5,7,0.8181818181818183,1.0,False
+Copulas and dependence,5,"estimation, financial risk, risk management, techniques",30,4,1,-0.5555555555555556,1.0,False
+Deep learning and LLM forecasting,0,"machine learning, stock, returns, market",45,9,24,-0.020288150543957717,1.0,False
+Deep learning and LLM forecasting,1,"trading, intelligence, financial, market",45,6,17,0.022776106574989186,1.0,False
+Deep learning and LLM forecasting,2,"bitcoin, cryptocurrency, price, learning",37,8,21,-0.03910614525139666,1.0,False
+Deep learning and LLM forecasting,3,"lstm, stock, prediction, price",65,16,39,-0.09057050956492296,1.0,False
+Deep learning and LLM forecasting,4,"reinforcement learning, deep reinforcement, portfolio, trading",33,11,10,-0.6531454942919601,1.0,False
+Deep learning and LLM forecasting,5,"forecasting, framework, learning, deep",43,0,22,16.09497206703911,0.22206926157877557,False
+Deep learning and LLM forecasting,6,"stock, news, financial, sentiment",45,10,15,-0.4392125565309922,1.0,False
+Deep learning and LLM forecasting,7,"prediction, stock, forecasting, network",54,8,31,0.4078212290502794,1.0,False
+Optimal investment and consumption,0,"optimal stopping, stopping problems, time, problem",34,6,0,-0.9004524886877828,1.0,False
+Optimal investment and consumption,1,"pension, management, optimal, benefit",46,1,7,5.470588235294118,0.7336059109768862,False
+Optimal investment and consumption,2,"pricing, incomplete, hedging, markets",61,3,3,0.2941176470588236,1.0,False
+Optimal investment and consumption,3,"risk, arbitrage, market, measures",124,11,7,-0.15601023017902815,1.0,False
+Optimal investment and consumption,4,"optimal, trading, price, impact",30,4,4,0.2941176470588234,1.0,False
+Optimal investment and consumption,5,"bonds, credit risk, debt, immunization",46,2,1,-0.22352941176470575,1.0,False
+Optimal investment and consumption,6,"consumption, portfolio, optimal, utility",73,8,4,-0.31487889273356395,1.0,False
+Optimal investment and consumption,7,"optimal, control, stochastic, problem",55,9,8,0.1578947368421053,1.0,False
+"Crypto, COVID and spillovers",0,"market, stock, precious, metals",40,8,18,0.565269943593876,1.0,False
+"Crypto, COVID and spillovers",1,"sentiment, cryptocurrency, herding, behavior",29,9,12,-0.053713049747656894,1.0,False
+"Crypto, COVID and spillovers",2,"cryptocurrencies, cryptocurrency, crypto, risk",48,13,21,0.14535768645357705,1.0,False
+"Crypto, COVID and spillovers",3,"saham, exchange, indonesia, stock",69,20,35,0.24540594721015707,1.0,False
+"Crypto, COVID and spillovers",4,"connectedness, financial, network, stock",46,17,11,-0.5273972602739726,1.0,False
+"Crypto, COVID and spillovers",5,"market, stock, impact, uncertainty",87,22,33,0.07077625570776269,1.0,False
+"Crypto, COVID and spillovers",6,"bitcoin, volatility, returns, uncertainty",26,10,6,-0.5547945205479452,1.0,False
+"Crypto, COVID and spillovers",7,"cryptocurrency, bitcoin, instruments, prices",27,6,10,0.16174920969441509,1.0,False
+Mutual fund performance,0,"mutual funds, india, performance, mutual fund",61,5,8,0.5454545454545454,1.0,False
+Mutual fund performance,1,"mutual fund, performance, mutual funds, style",52,2,4,0.8000000000000003,1.0,False
+Mutual fund performance,2,"funds, index, closed-end, market",39,1,1,0.0,1.0,False
+Mutual fund performance,3,"mutual fund, performance, mutual funds, investment",61,5,2,-0.5454545454545454,1.0,False
+Mutual fund performance,4,"china, fund performance, funds, evaluation",40,1,1,0.0,1.0,False
+Mutual fund performance,5,"hedge funds, hedge fund, risk, performance",66,4,4,0.0,1.0,False
+Mutual fund performance,6,"market timing, timing ability, funds, selectivity",15,1,1,0.0,1.0,False
+Mutual fund performance,7,"performance persistence, fund, mutual, funds",27,3,1,-0.5714285714285714,1.0,False
+Oil and energy prices,0,"carbon, energy, market, volatility",56,8,20,1.514392991239049,0.895775890543601,False
+Oil and energy prices,1,"oil price, shocks, oil prices, impact",131,19,17,-0.06437534097108566,1.0,False
+Oil and energy prices,2,"futures, market, crude oil, commodity",77,16,15,-0.02063185041908444,1.0,False
+Oil and energy prices,3,"oil, prices, market, opec",86,14,4,-0.6764490095377843,1.0,False
+Oil and energy prices,4,"policy uncertainty, global, economic policy, energy",70,15,19,0.311599176389842,1.0,False
+Oil and energy prices,5,"metals, gold, metal, price",63,6,4,-0.2782324058919804,1.0,False
+Oil and energy prices,6,"price, prices, oil, crude",68,11,6,-0.41073080481036073,1.0,False
+Oil and energy prices,7,"commodity, prices, price, food",65,9,9,0.042553191489361764,1.0,False
+Market design and futures,0,"efficiency, market, efficient, stock",38,1,0,-0.4444444444444444,1.0,False
+Market design and futures,1,"price, stock, market, index",61,5,2,-0.24242424242424243,1.0,False
+Market design and futures,2,"stock market, china stock, investment, liquidity",65,3,4,1.1428571428571428,1.0,False
+Market design and futures,3,"price, gold futures, prices, china",34,2,2,0.6666666666666665,1.0,False
+Market design and futures,4,"index futures, stock index, futures market, spot",50,3,2,0.19047619047619024,1.0,False
+Market design and futures,5,"stock market, shanghai, dynamics, random",42,4,0,-0.8148148148148148,1.0,False
+Market design and futures,6,"stock, shanghai, returns, china",66,3,2,0.19047619047619024,1.0,False
+Market design and futures,7,"market, stock, financial, securities",79,4,3,0.2962962962962963,1.0,False
+Macro drivers of stock returns,0,"investor sentiment, returns, sentiment stock, market",54,7,6,0.5599999999999998,1.0,False
+Macro drivers of stock returns,1,"dan, indonesia, saham, terhadap",47,10,8,0.4571428571428573,1.0,False
+Macro drivers of stock returns,2,"indian stock, stock market, india, volatility",59,7,4,0.08000000000000007,1.0,False
+Macro drivers of stock returns,3,"macroeconomic variables, index, stock market, prices",99,22,9,-0.24,1.0,False
+Macro drivers of stock returns,4,"stock exchange, stock market, return, tehran",100,10,2,-0.5714285714285714,1.0,False
+Macro drivers of stock returns,5,"stock, market, volatility, oil",93,15,11,0.3354838709677419,1.0,False
+Macro drivers of stock returns,6,"stock, anomalies, day, week",45,4,3,0.40000000000000013,1.0,False
+Macro drivers of stock returns,7,"market efficiency, stock, markets, emerging",66,6,2,-0.3076923076923077,1.0,False
+Portfolio optimization,0,"var, value risk, value-at-risk, management",44,6,1,-0.6820512820512821,1.0,False
+Portfolio optimization,1,"portfolio, algorithm, optimization, genetic",37,5,1,-0.6242424242424243,1.0,False
+Portfolio optimization,2,"asset allocation, portfolios, optimization, portfolio",60,7,4,-0.17333333333333334,1.0,False
+Portfolio optimization,3,"portfolio, optimal, investment, markowitz",92,16,15,0.29427609427609425,1.0,False
+Portfolio optimization,4,"hedge, portfolios, funds, portfolio",72,4,3,0.07160493827160486,1.0,False
+Portfolio optimization,5,"portfolio selection, investment, optimal, optimization",85,3,0,-0.8031746031746032,1.0,False
+Portfolio optimization,6,"asset, portfolio selection, learning, investment",86,11,19,1.336231884057971,0.4848126050466024,False
+Portfolio optimization,7,"portfolio, risk, optimization, measures",87,10,2,-0.671957671957672,1.0,False
+Option pricing,0,"barrier options, pricing, american, option",75,4,1,-0.47058823529411753,1.0,False
+Option pricing,1,"pricing, risk, convertible, derivatives",76,6,4,0.09954751131221728,1.0,False
+Option pricing,2,"options, option, exercise, stock",62,5,1,-0.5668449197860962,1.0,False
+Option pricing,3,"boundary, american option, american options, difference",44,4,2,-0.11764705882352933,1.0,False
+Option pricing,4,"monte carlo, carlo simulation, pricing, options",58,6,3,-0.14479638009049778,1.0,False
+Option pricing,5,"option pricing, process, fractional, options",113,12,8,0.08000000000000007,1.0,False
+Option pricing,6,"options, option pricing, hedging, european",115,12,8,0.08000000000000007,1.0,False
+Option pricing,7,"implied volatility, options, option, index",76,5,7,1.165775401069519,1.0,False
+Stochastic programming,0,"robust optimization, distributionally robust, risk, uncertainty",50,7,12,-0.2666666666666666,1.0,False
+Stochastic programming,1,"stochastic, programming, problems, two-stage",33,2,6,0.14400000000000013,1.0,False
+Stochastic programming,2,"programming, portfolio, management, risk",54,2,7,0.32000000000000006,1.0,False
+Interest rates and term structure,0,"stock, returns, asset, financial",75,8,3,-0.3566176470588236,1.0,False
+Interest rates and term structure,1,"cointegration, factor, causality, fractional",41,0,2,6.8125,1.0,False
+Interest rates and term structure,2,"term structure, affine term, yield curve, bond",39,1,2,1.604166666666667,1.0,False
+Interest rates and term structure,3,"long memory, series, structural, time",43,3,0,-0.7767857142857143,1.0,False
+Interest rates and term structure,4,"exchange rate, foreign exchange, exchange rates, volatility",48,1,2,1.604166666666667,1.0,False
+Interest rates and term structure,5,"market, returns, volatility, stock",61,3,3,0.5624999999999998,1.0,False
+Interest rates and term structure,6,"tests, garch, arch, conditional",70,5,2,-0.2897727272727273,1.0,False
+Interest rates and term structure,7,"term structure, rate, rates, short",60,4,2,-0.13194444444444442,1.0,False
+Agent-based market models,0,"minority game, games, evolutionary minority, agents",26,0,0,-0.1875,1.0,False
+Agent-based market models,1,"quantum, financial markets, market, stock",35,3,3,-0.1875,1.0,False
+Agent-based market models,2,"dynamics, distribution, wealth, distributions",56,1,6,2.520833333333333,1.0,False
+Agent-based market models,3,"agent-based, market, stock, simulation",31,0,2,3.0625,1.0,False
+Agent-based market models,4,"economic, economics, efficient, law",53,5,4,-0.3352272727272727,1.0,False
+Agent-based market models,5,"market, heterogeneous, markets, asset",54,4,1,-0.7291666666666667,1.0,False
+Information and stock reactions,0,"earnings, returns, forecasts, stock",59,3,3,0.34090909090909083,1.0,False
+Information and stock reactions,1,"insider, trading, analysts, information",90,9,3,-0.5059808612440191,1.0,False
+Information and stock reactions,2,"stock, price, market, announcements",136,9,9,0.34090909090909105,1.0,False
+Information and stock reactions,3,"investors, market, stock, ownership",81,9,6,-0.08253588516746402,1.0,False
+Information and stock reactions,4,"momentum, stock, market, recommendations",50,6,3,-0.277972027972028,1.0,False
+Information and stock reactions,5,"herding, herd, market, behaviour",19,3,3,0.34090909090909083,1.0,False
+Information and stock reactions,6,"market, stock, companies, internet",77,8,7,0.1831550802139037,1.0,False
+Information and stock reactions,7,"stock, news, media, sentiment",71,12,10,0.12636363636363646,1.0,False
+Stochastic differential equations,0,"rough paths, rough differential, gaussian, signature",27,8,1,-0.8142414860681114,1.0,False
+Stochastic differential equations,1,"fractional brownian, brownian motion, calculus, stochastic",78,7,3,-0.5087719298245614,1.0,False
+Stochastic differential equations,2,"bsdes, lipschitz, driven, quadratic",39,4,6,0.5204678362573099,1.0,False
+Stochastic differential equations,3,"stochastic differential, differential equations, solutions, equation",76,6,12,1.0242914979757085,1.0,False
+Stochastic differential equations,4,"stochastic differential, backward stochastic, differential equations, doubly",55,7,6,-0.08771929824561409,1.0,False
+Stochastic differential equations,5,"optimal control, stochastic, games, linear-quadratic",81,13,14,0.13060428849902528,1.0,False
+Stochastic differential equations,6,"approximation, convergence, scheme, diffusion",57,7,7,0.05263157894736836,1.0,False
+Stochastic differential equations,7,"processes, brownian, motion, time",109,8,8,0.05263157894736836,1.0,False
+Behavioral finance,0,"market, rational, markets, stock",37,0,4,3.254545454545454,1.0,False
+Behavioral finance,1,"investors, investment, stock, biases",71,16,24,-0.2980716253443526,1.0,False
+Behavioral finance,2,"herding behavior, social, individual, herding behaviour",22,5,4,-0.6132231404958678,1.0,False
+Behavioral finance,3,"stock, information, investment, trading",41,2,14,1.7418181818181813,1.0,False
+Behavioral finance,4,"behavioral finance, investment, review, behavioural",48,3,9,0.2831168831168831,1.0,False
+Fractals and complex time series,0,"network, complex, series, causality",21,2,5,1.3000000000000003,1.0,False
+Fractals and complex time series,1,"dynamics, nonlinear, time series, econophysics",36,4,4,0.045454545454545414,1.0,False
+Fractals and complex time series,2,"long, processes, dependence, estimation",41,2,1,-0.3727272727272728,1.0,False
+Fractals and complex time series,3,"fractal, financial, series, markets",65,2,2,0.045454545454545414,1.0,False
+Fractals and complex time series,4,"entropy, time series, noise, complex",44,7,6,-0.09393939393939388,1.0,False
+Fractals and complex time series,5,"correlation, detrended, traffic, long-term",26,2,0,-0.7909090909090909,1.0,False
+Fractals and complex time series,6,"law, power, stochastic, distributions",66,4,4,0.045454545454545414,1.0,False
+Classical stock price prediction,0,"gold, price, forecasting, learning",24,6,8,0.5058275058275057,1.0,False
+Classical stock price prediction,1,"stock market, machine learning, prediction, decision",56,17,16,0.08571428571428563,1.0,False
+Classical stock price prediction,2,"stock market, stock price, technical, trading",63,15,8,-0.36852394916911047,1.0,False
+Classical stock price prediction,3,"price, forecasting, series, arima",60,12,12,0.15151515151515138,1.0,False
+Classical stock price prediction,4,"exchange rate, forecasting, neural, foreign",32,5,2,-0.47658402203856753,1.0,False
+Classical stock price prediction,5,"neural network, stock, artificial, financial",54,7,2,-0.6161616161616161,1.0,False
+Classical stock price prediction,6,"stock price, neural network, price prediction, stock market",56,8,16,1.2352941176470589,1.0,False
+Classical stock price prediction,7,"genetic algorithm, price prediction, algorithms, stock",23,6,2,-0.5571095571095571,1.0,False
+Volatility forecasting (GARCH),0,"garch, autoregressive, conditional, markov",37,6,2,-0.31034482758620685,1.0,False
+Volatility forecasting (GARCH),1,"volatility, forecasting, market, stock",73,11,4,-0.2983508245877061,1.0,False
+Volatility forecasting (GARCH),2,"var, risk, value, value-at-risk",94,6,4,0.24137931034482762,1.0,False
+Volatility forecasting (GARCH),3,"futures, hedging, volatility, index",32,2,1,0.07586206896551717,1.0,False
+Volatility forecasting (GARCH),4,"volatility, garch, forecasting, exchange",71,8,6,0.37119675456389456,1.0,False
+Volatility forecasting (GARCH),5,"volatility, financial, frequency, high",56,6,6,0.7931034482758621,1.0,False
+Volatility forecasting (GARCH),6,"volatility, market, stock, markets",62,5,2,-0.1849529780564263,1.0,False
+Volatility forecasting (GARCH),7,"volatility, implied, vix, option",47,8,4,-0.05070993914807298,1.0,False
+Trading and order flow,0,"trading, intelligence, technical, edge",68,6,7,0.5734265734265735,1.0,False
+Trading and order flow,1,"futures markets, futures market, commodity, efficiency",76,7,2,-0.5454545454545454,1.0,False
+Trading and order flow,2,"order, optimal, market, limit",54,6,2,-0.4755244755244754,1.0,False
+Trading and order flow,3,"stock, market, exchange, trading",78,4,2,-0.24242424242424243,1.0,False
+Trading and order flow,4,"exchange, trading, information, market",71,2,3,0.9090909090909092,1.0,False
+Trading and order flow,5,"liquidity, options, market, bond",72,4,10,2.1818181818181817,1.0,False
+Trading and order flow,6,"financial markets, market, high-frequency trading, electronic",57,10,4,-0.4155844155844156,1.0,False
+Trading and order flow,7,"market, arbitrage, short, trading",67,6,3,-0.2657342657342656,1.0,False
+Real estate investment,0,"tax, capital gains, fund, returns",23,2,1,-0.4,1.0,False
+Real estate investment,1,"derivatives, emissions, gold investment, silver",15,1,0,-0.6666666666666667,1.0,False
+Real estate investment,2,"real estate, reits, property, risk",82,8,8,0.0,1.0,False
+Real estate investment,3,"portfolio, diversification, risk, equity",51,5,6,0.18181818181818188,1.0,False
+Real estate investment,4,"investments, investment, equity, practical",62,6,5,-0.15384615384615385,1.0,False
+Real estate investment,5,"pension, asset allocation, plans, manager",45,2,3,0.3999999999999999,1.0,False
+Real estate investment,6,"financial, market, markets, investment",50,3,4,0.2857142857142858,1.0,False
+International market co-movement,0,"volatility, exchange, markets, equity",43,2,0,-0.6928571428571428,1.0,False
+International market co-movement,1,"stock, markets, integration, market",73,4,4,0.5357142857142858,1.0,False
+International market co-movement,2,"stock, oil, markets, gold",45,8,9,0.7163865546218489,1.0,False
+International market co-movement,3,"stock market, china, stock markets, garch",44,7,1,-0.6928571428571428,1.0,False
+International market co-movement,4,"bond, international, returns, markets",49,4,0,-0.8293650793650794,1.0,False
+International market co-movement,5,"diversification, emerging, market, international",33,3,1,-0.34183673469387765,1.0,False
+International market co-movement,6,"contagion, financial, stock, markets",49,11,10,0.4021739130434785,1.0,False
+International market co-movement,7,"transmission, volatility spillover, stock, market",41,4,3,0.19444444444444442,1.0,False
+Asset pricing and risk premia,0,"returns, stock, expected, asset",94,5,6,0.511627906976744,1.0,False
+Asset pricing and risk premia,1,"risk, liquidity, stock, market",74,11,8,-0.05460060667340749,1.0,False
+Asset pricing and risk premia,2,"risk premium, equity premium, equity risk, premium puzzle",61,1,3,1.9844961240310082,1.0,False
+Asset pricing and risk premia,3,"stock returns, value, stock market, earnings",68,11,1,-0.833164812942366,1.0,False
+Asset pricing and risk premia,4,"portfolios, portfolio, hedge, factor",83,9,11,0.5483476132190941,1.0,False
+Asset pricing and risk premia,5,"capm, capital asset, asset pricing, stock",59,5,3,-0.18604651162790697,1.0,False
+Asset pricing and risk premia,6,"factors, french, pricing, fama",65,9,10,0.4137086903304772,1.0,False
+Asset pricing and risk premia,7,"idiosyncratic volatility, international, idiosyncratic risk, emerging",43,4,1,-0.5736434108527132,1.0,False

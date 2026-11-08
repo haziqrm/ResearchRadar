@@ -1,0 +1,351 @@
+area,year,growth_score,boom_probability,predicted_boom,actual_boom
+Stochastic volatility processes,2010,0.0919,0.25,1,0
+IPOs,2010,-0.092,0.1169,0,0
+Copulas and dependence,2010,0.1094,0.274,1,0
+Deep learning and LLM forecasting,2010,-0.1029,0.2928,0,1
+Optimal investment and consumption,2010,0.0843,0.1912,0,0
+"Crypto, COVID and spillovers",2010,-0.0325,0.5742,0,1
+Mutual fund performance,2010,-0.014,0.202,0,0
+Oil and energy prices,2010,0.0246,0.162,0,0
+Market design and futures,2010,-0.0038,0.1143,0,0
+Macro drivers of stock returns,2010,-0.1278,0.112,0,1
+Portfolio optimization,2010,0.1014,0.2127,1,0
+Option pricing,2010,0.0579,0.1332,0,0
+Stochastic programming,2010,-0.0229,0.2871,0,0
+Interest rates and term structure,2010,0.1485,0.255,1,0
+Agent-based market models,2010,-0.0117,0.2998,0,0
+Information and stock reactions,2010,-0.0358,0.1088,0,0
+Stochastic differential equations,2010,-0.0233,0.1118,0,0
+Behavioral finance,2010,-0.0585,0.1334,0,1
+Fractals and complex time series,2010,-0.0372,0.122,0,0
+Classical stock price prediction,2010,-0.0863,0.1699,0,1
+Volatility forecasting (GARCH),2010,0.1266,0.2022,1,0
+Trading and order flow,2010,0.0619,0.2145,0,0
+Real estate investment,2010,-0.0608,0.1808,0,0
+International market co-movement,2010,-0.0293,0.143,0,0
+Asset pricing and risk premia,2010,-0.0675,0.119,0,0
+Stochastic volatility processes,2011,-0.0196,0.1859,0,0
+IPOs,2011,-0.0985,0.091,0,0
+Copulas and dependence,2011,0.1091,0.3439,1,0
+Deep learning and LLM forecasting,2011,0.0241,0.372,0,1
+Optimal investment and consumption,2011,0.1161,0.3189,1,0
+"Crypto, COVID and spillovers",2011,-0.1881,0.1768,0,1
+Mutual fund performance,2011,-0.0588,0.1699,0,0
+Oil and energy prices,2011,-0.0373,0.2071,0,0
+Market design and futures,2011,-0.0103,0.0974,0,0
+Macro drivers of stock returns,2011,-0.0296,0.0949,0,1
+Portfolio optimization,2011,0.0101,0.1408,0,0
+Option pricing,2011,0.0193,0.1321,0,0
+Stochastic programming,2011,-0.1173,0.1918,0,0
+Interest rates and term structure,2011,0.1233,0.2327,1,0
+Agent-based market models,2011,0.0666,0.3894,0,0
+Information and stock reactions,2011,0.0103,0.1167,0,0
+Stochastic differential equations,2011,-0.0852,0.0793,0,0
+Behavioral finance,2011,-0.0733,0.1944,0,0
+Fractals and complex time series,2011,-0.0216,0.2168,0,0
+Classical stock price prediction,2011,-0.0767,0.149,0,1
+Volatility forecasting (GARCH),2011,-0.0596,0.0663,0,0
+Trading and order flow,2011,0.0603,0.1611,0,0
+Real estate investment,2011,0.1672,0.3078,1,0
+International market co-movement,2011,0.0486,0.2171,0,0
+Asset pricing and risk premia,2011,0.1208,0.1604,1,1
+Stochastic volatility processes,2012,0.0616,0.1739,0,0
+IPOs,2012,-0.011,0.1782,0,0
+Copulas and dependence,2012,-0.0563,0.1563,0,0
+Deep learning and LLM forecasting,2012,-0.3128,0.1534,0,0
+Optimal investment and consumption,2012,-0.0291,0.144,0,0
+"Crypto, COVID and spillovers",2012,0.0975,0.4325,1,1
+Mutual fund performance,2012,-0.1221,0.1197,0,0
+Oil and energy prices,2012,-0.0922,0.1187,0,0
+Market design and futures,2012,0.1045,0.1289,1,0
+Macro drivers of stock returns,2012,0.0375,0.1579,0,1
+Portfolio optimization,2012,0.0503,0.1822,0,0
+Option pricing,2012,-0.0863,0.0657,0,0
+Stochastic programming,2012,0.0431,0.2601,0,0
+Interest rates and term structure,2012,0.1267,0.2975,1,0
+Agent-based market models,2012,0.0728,0.4223,0,0
+Information and stock reactions,2012,-0.0628,0.0989,0,0
+Stochastic differential equations,2012,-0.0872,0.0967,0,0
+Behavioral finance,2012,0.0566,0.2007,0,1
+Fractals and complex time series,2012,-0.0704,0.1211,0,0
+Classical stock price prediction,2012,-0.0702,0.1003,0,1
+Volatility forecasting (GARCH),2012,0.024,0.1828,0,0
+Trading and order flow,2012,-0.0263,0.1327,0,0
+Real estate investment,2012,0.1458,0.4271,1,0
+International market co-movement,2012,0.0405,0.2042,0,0
+Asset pricing and risk premia,2012,0.1656,0.3537,1,1
+Stochastic volatility processes,2013,0.0364,0.1685,0,0
+IPOs,2013,0.0392,0.1696,0,0
+Copulas and dependence,2013,-0.1413,0.1301,0,1
+Deep learning and LLM forecasting,2013,-0.0545,0.4225,0,0
+Optimal investment and consumption,2013,-0.023,0.1312,0,0
+"Crypto, COVID and spillovers",2013,0.1851,0.6349,1,1
+Mutual fund performance,2013,-0.1013,0.1184,0,0
+Oil and energy prices,2013,-0.0728,0.1168,0,0
+Market design and futures,2013,0.1854,0.2199,1,0
+Macro drivers of stock returns,2013,0.012,0.1319,0,1
+Portfolio optimization,2013,-0.0547,0.0973,0,0
+Option pricing,2013,-0.1599,0.0412,0,0
+Stochastic programming,2013,-0.0874,0.215,0,1
+Interest rates and term structure,2013,0.1693,0.3238,1,0
+Agent-based market models,2013,-0.0825,0.1346,0,1
+Information and stock reactions,2013,-0.0161,0.1249,0,0
+Stochastic differential equations,2013,-0.0303,0.1224,0,0
+Behavioral finance,2013,0.1507,0.3743,1,0
+Fractals and complex time series,2013,-0.0164,0.1516,0,0
+Classical stock price prediction,2013,-0.0668,0.1507,0,0
+Volatility forecasting (GARCH),2013,-0.0327,0.1118,0,0
+Trading and order flow,2013,-0.0487,0.1166,0,0
+Real estate investment,2013,0.3057,0.593,1,0
+International market co-movement,2013,-0.1192,0.0769,0,0
+Asset pricing and risk premia,2013,0.0236,0.1497,0,0
+Stochastic volatility processes,2014,0.1166,0.2292,1,0
+IPOs,2014,0.0704,0.2084,0,0
+Copulas and dependence,2014,-0.1365,0.1047,0,0
+Deep learning and LLM forecasting,2014,0.1126,0.2958,0,0
+Optimal investment and consumption,2014,-0.0617,0.108,0,0
+"Crypto, COVID and spillovers",2014,0.1156,0.5891,1,0
+Mutual fund performance,2014,-0.1524,0.0953,0,1
+Oil and energy prices,2014,-0.0864,0.1217,0,1
+Market design and futures,2014,0.2045,0.3567,1,0
+Macro drivers of stock returns,2014,-0.058,0.0929,0,1
+Portfolio optimization,2014,0.022,0.1469,0,0
+Option pricing,2014,-0.1735,0.0484,0,0
+Stochastic programming,2014,0.0124,0.2141,0,0
+Interest rates and term structure,2014,0.1571,0.3162,1,0
+Agent-based market models,2014,0.0657,0.4118,0,1
+Information and stock reactions,2014,-0.0189,0.183,0,1
+Stochastic differential equations,2014,-0.0415,0.1504,0,0
+Behavioral finance,2014,0.1225,0.2774,1,0
+Fractals and complex time series,2014,-0.1903,0.0899,0,0
+Classical stock price prediction,2014,0.0141,0.1414,0,0
+Volatility forecasting (GARCH),2014,-0.0596,0.0868,0,0
+Trading and order flow,2014,-0.0334,0.1096,0,0
+Real estate investment,2014,0.0601,0.2686,0,0
+International market co-movement,2014,-0.0713,0.0875,0,0
+Asset pricing and risk premia,2014,0.0099,0.1429,0,0
+Stochastic volatility processes,2015,0.0622,0.255,0,0
+IPOs,2015,0.0724,0.2307,0,0
+Copulas and dependence,2015,-0.0603,0.1287,0,0
+Deep learning and LLM forecasting,2015,0.1219,0.444,1,1
+Optimal investment and consumption,2015,-0.0694,0.0972,0,0
+"Crypto, COVID and spillovers",2015,0.1359,0.5972,1,0
+Mutual fund performance,2015,-0.1071,0.0885,0,1
+Oil and energy prices,2015,-0.0489,0.1098,0,0
+Market design and futures,2015,0.1186,0.3148,1,0
+Macro drivers of stock returns,2015,-0.0702,0.0997,0,0
+Portfolio optimization,2015,-0.0435,0.1205,0,0
+Option pricing,2015,-0.1028,0.0865,0,0
+Stochastic programming,2015,0.0389,0.165,0,0
+Interest rates and term structure,2015,0.0821,0.2467,1,0
+Agent-based market models,2015,-0.0131,0.1616,0,1
+Information and stock reactions,2015,-0.063,0.122,0,0
+Stochastic differential equations,2015,-0.064,0.1345,0,0
+Behavioral finance,2015,0.1383,0.3278,1,0
+Fractals and complex time series,2015,-0.0295,0.1676,0,0
+Classical stock price prediction,2015,-0.0055,0.172,0,0
+Volatility forecasting (GARCH),2015,-0.0437,0.1416,0,1
+Trading and order flow,2015,0.0052,0.1961,0,0
+Real estate investment,2015,0.069,0.2743,0,0
+International market co-movement,2015,-0.0627,0.1149,0,1
+Asset pricing and risk premia,2015,-0.061,0.108,0,0
+Stochastic volatility processes,2016,0.0452,0.2707,0,0
+IPOs,2016,0.0073,0.1729,0,0
+Copulas and dependence,2016,-0.042,0.1585,0,0
+Deep learning and LLM forecasting,2016,0.1332,0.3802,1,1
+Optimal investment and consumption,2016,-0.0677,0.0975,0,0
+"Crypto, COVID and spillovers",2016,0.1718,0.4855,1,1
+Mutual fund performance,2016,-0.0938,0.0902,0,0
+Oil and energy prices,2016,-0.0695,0.0988,0,0
+Market design and futures,2016,0.155,0.5094,1,0
+Macro drivers of stock returns,2016,-0.086,0.0883,0,1
+Portfolio optimization,2016,-0.0687,0.0921,0,0
+Option pricing,2016,-0.085,0.0925,0,0
+Stochastic programming,2016,0.0643,0.2232,0,0
+Interest rates and term structure,2016,0.0149,0.2949,0,0
+Agent-based market models,2016,-0.0008,0.1623,0,1
+Information and stock reactions,2016,-0.0347,0.175,0,0
+Stochastic differential equations,2016,-0.0585,0.105,0,0
+Behavioral finance,2016,0.1153,0.3042,1,0
+Fractals and complex time series,2016,-0.044,0.1452,0,0
+Classical stock price prediction,2016,0.0136,0.203,0,0
+Volatility forecasting (GARCH),2016,-0.0522,0.1161,0,0
+Trading and order flow,2016,-0.0147,0.181,0,0
+Real estate investment,2016,0.069,0.2635,1,0
+International market co-movement,2016,-0.0353,0.1248,0,1
+Asset pricing and risk premia,2016,-0.0369,0.1467,0,0
+Stochastic volatility processes,2017,0.0272,0.2201,0,0
+IPOs,2017,-0.0252,0.1767,0,0
+Copulas and dependence,2017,-0.0327,0.1972,0,0
+Deep learning and LLM forecasting,2017,0.1316,0.327,1,1
+Optimal investment and consumption,2017,-0.0111,0.1975,0,0
+"Crypto, COVID and spillovers",2017,0.1736,0.3362,1,1
+Mutual fund performance,2017,-0.0589,0.1473,0,0
+Oil and energy prices,2017,-0.0675,0.1387,0,0
+Market design and futures,2017,0.0935,0.2619,1,0
+Macro drivers of stock returns,2017,-0.0832,0.1542,0,0
+Portfolio optimization,2017,-0.0536,0.1511,0,0
+Option pricing,2017,-0.0668,0.147,0,1
+Stochastic programming,2017,0.0407,0.2004,0,0
+Interest rates and term structure,2017,0.0305,0.2414,0,0
+Agent-based market models,2017,0.0063,0.1849,0,0
+Information and stock reactions,2017,-0.039,0.1972,0,0
+Stochastic differential equations,2017,-0.0646,0.1521,0,0
+Behavioral finance,2017,0.1005,0.2431,1,0
+Fractals and complex time series,2017,-0.0339,0.1876,0,0
+Classical stock price prediction,2017,0.007,0.1897,0,0
+Volatility forecasting (GARCH),2017,-0.0409,0.1973,0,0
+Trading and order flow,2017,-0.0188,0.1603,0,0
+Real estate investment,2017,0.0576,0.2476,1,0
+International market co-movement,2017,-0.0378,0.1668,0,1
+Asset pricing and risk premia,2017,-0.0344,0.1732,0,1
+Stochastic volatility processes,2018,0.0002,0.1805,0,0
+IPOs,2018,-0.0353,0.1721,0,0
+Copulas and dependence,2018,-0.0195,0.169,0,0
+Deep learning and LLM forecasting,2018,0.0881,0.2407,1,1
+Optimal investment and consumption,2018,0.0033,0.2115,0,0
+"Crypto, COVID and spillovers",2018,0.1664,0.3233,1,1
+Mutual fund performance,2018,-0.0449,0.1587,0,0
+Oil and energy prices,2018,-0.037,0.1698,0,0
+Market design and futures,2018,0.1001,0.2782,1,0
+Macro drivers of stock returns,2018,-0.0955,0.1394,0,0
+Portfolio optimization,2018,-0.0389,0.1648,0,0
+Option pricing,2018,-0.0672,0.1593,0,1
+Stochastic programming,2018,0.0278,0.2583,0,0
+Interest rates and term structure,2018,0.0272,0.2295,0,0
+Agent-based market models,2018,0.0167,0.2188,0,0
+Information and stock reactions,2018,-0.0457,0.1826,0,0
+Stochastic differential equations,2018,-0.0613,0.1473,0,0
+Behavioral finance,2018,0.0868,0.2239,1,0
+Fractals and complex time series,2018,-0.0402,0.1721,0,0
+Classical stock price prediction,2018,0.0264,0.2031,0,1
+Volatility forecasting (GARCH),2018,-0.0424,0.1787,0,0
+Trading and order flow,2018,0.0143,0.2174,0,0
+Real estate investment,2018,0.0631,0.26,1,0
+International market co-movement,2018,-0.0443,0.1589,0,0
+Asset pricing and risk premia,2018,-0.0481,0.1671,0,1
+Stochastic volatility processes,2019,0.0951,0.221,1,0
+IPOs,2019,-0.0699,0.1927,0,0
+Copulas and dependence,2019,-0.008,0.1914,0,0
+Deep learning and LLM forecasting,2019,0.1069,0.2442,1,1
+Optimal investment and consumption,2019,-0.0265,0.1789,0,0
+"Crypto, COVID and spillovers",2019,0.1281,0.3613,1,1
+Mutual fund performance,2019,-0.0376,0.1699,0,0
+Oil and energy prices,2019,-0.0607,0.1575,0,0
+Market design and futures,2019,0.1586,0.3042,1,0
+Macro drivers of stock returns,2019,-0.1334,0.1373,0,0
+Portfolio optimization,2019,0.0014,0.1851,0,0
+Option pricing,2019,-0.0726,0.1538,0,1
+Stochastic programming,2019,0.0217,0.1949,0,0
+Interest rates and term structure,2019,0.031,0.253,0,0
+Agent-based market models,2019,0.0408,0.2339,0,0
+Information and stock reactions,2019,-0.0726,0.1693,0,0
+Stochastic differential equations,2019,-0.0705,0.1444,0,0
+Behavioral finance,2019,0.133,0.223,1,1
+Fractals and complex time series,2019,-0.0223,0.1803,0,0
+Classical stock price prediction,2019,-0.0209,0.167,0,1
+Volatility forecasting (GARCH),2019,-0.0196,0.1803,0,0
+Trading and order flow,2019,-0.0014,0.2074,0,0
+Real estate investment,2019,0.0877,0.2291,0,0
+International market co-movement,2019,-0.0846,0.1511,0,0
+Asset pricing and risk premia,2019,-0.1036,0.1672,0,0
+Stochastic volatility processes,2020,0.1584,0.3045,1,0
+IPOs,2020,-0.0449,0.1922,0,0
+Copulas and dependence,2020,0.0231,0.2248,0,0
+Deep learning and LLM forecasting,2020,0.0349,0.2339,0,1
+Optimal investment and consumption,2020,-0.0614,0.1891,0,0
+"Crypto, COVID and spillovers",2020,0.1306,0.2949,1,1
+Mutual fund performance,2020,-0.0068,0.1949,0,0
+Oil and energy prices,2020,-0.1168,0.1361,0,0
+Market design and futures,2020,0.1928,0.2799,1,0
+Macro drivers of stock returns,2020,-0.1035,0.1496,0,0
+Portfolio optimization,2020,0.049,0.2201,0,0
+Option pricing,2020,-0.1143,0.1362,0,0
+Stochastic programming,2020,-0.0183,0.1801,0,1
+Interest rates and term structure,2020,0.0436,0.2194,0,0
+Agent-based market models,2020,0.0456,0.2236,0,0
+Information and stock reactions,2020,-0.0781,0.1608,0,0
+Stochastic differential equations,2020,-0.1064,0.1401,0,0
+Behavioral finance,2020,0.1624,0.2294,1,1
+Fractals and complex time series,2020,0.0195,0.2081,0,0
+Classical stock price prediction,2020,-0.0556,0.1655,0,1
+Volatility forecasting (GARCH),2020,-0.0029,0.2039,0,0
+Trading and order flow,2020,-0.0485,0.1879,0,0
+Real estate investment,2020,0.1071,0.2096,1,0
+International market co-movement,2020,-0.1249,0.1386,0,0
+Asset pricing and risk premia,2020,-0.0846,0.1631,0,0
+Stochastic volatility processes,2021,0.08,0.2484,1,0
+IPOs,2021,-0.0242,0.2041,0,0
+Copulas and dependence,2021,-0.0779,0.1761,0,0
+Deep learning and LLM forecasting,2021,0.026,0.2081,0,1
+Optimal investment and consumption,2021,-0.0317,0.2216,0,0
+"Crypto, COVID and spillovers",2021,0.1766,0.2487,1,1
+Mutual fund performance,2021,-0.047,0.1833,0,0
+Oil and energy prices,2021,-0.1274,0.1244,0,0
+Market design and futures,2021,0.1751,0.2531,1,0
+Macro drivers of stock returns,2021,-0.0672,0.1443,0,0
+Portfolio optimization,2021,-0.0513,0.1661,0,0
+Option pricing,2021,-0.0721,0.149,0,0
+Stochastic programming,2021,-0.0215,0.2055,0,1
+Interest rates and term structure,2021,0.0611,0.2671,0,0
+Agent-based market models,2021,0.03,0.2438,0,0
+Information and stock reactions,2021,-0.0097,0.2006,0,0
+Stochastic differential equations,2021,-0.1248,0.1309,0,0
+Behavioral finance,2021,0.161,0.206,1,1
+Fractals and complex time series,2021,-0.0391,0.1966,0,0
+Classical stock price prediction,2021,-0.0057,0.1694,0,1
+Volatility forecasting (GARCH),2021,-0.0779,0.1803,0,0
+Trading and order flow,2021,-0.0447,0.1757,0,0
+Real estate investment,2021,0.1449,0.2354,1,0
+International market co-movement,2021,0.0536,0.2401,0,0
+Asset pricing and risk premia,2021,-0.0858,0.1792,0,0
+Stochastic volatility processes,2022,0.0788,0.2487,1,0
+IPOs,2022,0.0199,0.2132,0,0
+Copulas and dependence,2022,-0.1294,0.1922,0,0
+Deep learning and LLM forecasting,2022,0.1695,0.2378,1,1
+Optimal investment and consumption,2022,0.0577,0.233,0,0
+"Crypto, COVID and spillovers",2022,0.2339,0.2489,1,1
+Mutual fund performance,2022,-0.1086,0.1818,0,0
+Oil and energy prices,2022,-0.0637,0.1425,0,0
+Market design and futures,2022,0.1491,0.2413,1,0
+Macro drivers of stock returns,2022,-0.0606,0.1627,0,0
+Portfolio optimization,2022,0.0006,0.1761,0,0
+Option pricing,2022,-0.1177,0.1338,0,0
+Stochastic programming,2022,0.0419,0.22,0,1
+Interest rates and term structure,2022,0.0321,0.2222,0,0
+Agent-based market models,2022,-0.0118,0.2081,0,1
+Information and stock reactions,2022,-0.0187,0.2002,0,0
+Stochastic differential equations,2022,-0.1619,0.1291,0,0
+Behavioral finance,2022,0.1012,0.1963,1,1
+Fractals and complex time series,2022,-0.1486,0.1722,0,0
+Classical stock price prediction,2022,-0.03,0.1615,0,0
+Volatility forecasting (GARCH),2022,0.054,0.2104,0,0
+Trading and order flow,2022,-0.0271,0.1806,0,0
+Real estate investment,2022,0.0787,0.2311,0,0
+International market co-movement,2022,-0.0544,0.185,0,0
+Asset pricing and risk premia,2022,-0.085,0.1991,0,0
+Stochastic volatility processes,2025,-0.0466,0.1035,0,
+IPOs,2025,0.1279,0.4188,1,
+Copulas and dependence,2025,-0.0209,0.2084,0,
+Deep learning and LLM forecasting,2025,0.2172,0.4425,1,
+Optimal investment and consumption,2025,0.0225,0.1463,0,
+"Crypto, COVID and spillovers",2025,0.1849,0.3039,1,
+Mutual fund performance,2025,-0.0398,0.2053,0,
+Oil and energy prices,2025,0.1395,0.2792,1,
+Market design and futures,2025,-0.351,0.0558,0,
+Macro drivers of stock returns,2025,-0.1396,0.1028,0,
+Portfolio optimization,2025,0.0094,0.2168,0,
+Option pricing,2025,-0.0366,0.2039,0,
+Stochastic programming,2025,0.0122,0.2546,0,
+Interest rates and term structure,2025,-0.1068,0.0791,0,
+Agent-based market models,2025,0.038,0.1932,0,
+Information and stock reactions,2025,-0.0962,0.1358,0,
+Stochastic differential equations,2025,0.1161,0.298,0,
+Behavioral finance,2025,0.1333,0.2776,1,
+Fractals and complex time series,2025,0.0256,0.2607,0,
+Classical stock price prediction,2025,0.055,0.2286,0,
+Volatility forecasting (GARCH),2025,-0.155,0.0782,0,
+Trading and order flow,2025,-0.0031,0.1065,0,
+Real estate investment,2025,-0.0414,0.1652,0,
+International market co-movement,2025,0.0275,0.2066,0,
+Asset pricing and risk premia,2025,-0.0721,0.1229,0,

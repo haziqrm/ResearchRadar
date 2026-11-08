@@ -1,0 +1,76 @@
+subtopic_id,label,parent_group,parent_share,n_papers,papers_2020_22,papers_2023_25,growth_score,boom_probability,rank,predicted_boom
+47,"prediction, lstm, deep, forecasting",Deep learning and LLM forecasting,0.888,169,36,94,0.5296,0.2801,1,1
+3,"covid- pandemic, connectedness, global, volatility","Crypto, COVID and spillovers",0.828,186,55,81,0.5035,0.2608,2,1
+40,"bitcoin, cryptocurrency, cryptocurrencies, crypto","Crypto, COVID and spillovers",0.625,120,35,48,0.2867,0.2477,3,1
+48,"reinforcement learning, deep reinforcement, trading, machine",Deep learning and LLM forecasting,0.867,128,22,54,0.2768,0.2424,4,1
+20,"stock price, neural, price prediction, forecasting",Classical stock price prediction,0.923,181,37,43,0.1971,0.2292,5,1
+7,"oil price, oil prices, price shocks, inflation",Oil and energy prices,0.958,192,32,27,0.1571,0.2343,6,1
+54,"investors, behavioral, investment, biases",Behavioral finance,0.989,95,20,29,0.14,0.2496,7,1
+17,"processes, stochastic, differential equations, brownian",Stochastic differential equations,0.887,186,22,26,0.1074,0.2151,8,1
+63,"news, sentiment, media, social",Information and stock reactions,0.407,81,18,19,0.079,0.2211,9,1
+38,"ipo, ipos, underpricing, initial",IPOs,1.0,120,10,11,0.0692,0.2726,10,1
+71,"optimal control, games, stochastic, mean field",Stochastic differential equations,0.724,116,22,20,0.0657,0.2143,11,1
+46,"programming, robust optimization, two-stage, stochastic",Stochastic programming,1.0,85,9,18,0.0636,0.2514,12,1
+9,"mutual funds, mutual fund, performance, funds india",Mutual fund performance,1.0,61,5,7,0.0484,0.2349,13,1
+43,"portfolio, portfolios, allocation, diversification",Portfolio optimization,0.537,216,20,29,0.0434,0.182,14,1
+11,"insider trading, institutional, investors, ownership",Information and stock reactions,0.62,142,22,11,0.0406,0.2066,15,1
+44,"real estate, reits, property, reit",Real estate investment,0.883,94,9,8,0.0264,0.2044,16,0
+36,"metals, commodity, metal, economic",Oil and energy prices,0.86,93,10,14,0.0185,0.1946,17,0
+25,"trading, technical, momentum, intelligence",Trading and order flow,0.481,156,18,18,0.0175,0.2057,18,0
+53,"time series, fractal, multifractal, entropy",Fractals and complex time series,1.0,76,11,5,0.0165,0.2056,19,0
+58,"macroeconomic variables, stock market, index, stock prices",Macro drivers of stock returns,0.893,169,29,19,0.0165,0.1868,20,0
+8,"option pricing, options, black-scholes, european",Option pricing,0.987,151,15,12,0.0136,0.2023,21,0
+32,"stochastic differential, backward, differential equations, bsdes",Stochastic differential equations,1.0,118,11,12,0.0116,0.2256,22,0
+74,"copula, copulas, dependence, multivariate",Copulas and dependence,0.991,114,10,13,0.0076,0.2307,23,0
+39,"herding behavior, herd, behaviour, behavior chinese",Information and stock reactions,0.392,51,12,10,0.0012,0.221,24,0
+13,"stochastic volatility, estimation, processes, markov",Stochastic volatility processes,0.855,186,18,16,-0.0043,0.1896,25,0
+1,"volatility, garch, forecasting, stock",Volatility forecasting (GARCH),0.792,236,28,19,-0.0058,0.2034,26,0
+56,"commodity, agricultural, futures, crude",Oil and energy prices,0.867,105,13,19,-0.0079,0.1957,27,0
+68,"portfolio selection, optimization, investment, optimal",Portfolio optimization,0.934,228,26,13,-0.0095,0.1974,28,0
+26,"optimal, trading, order book, transient",Optimal investment and consumption,0.564,78,11,7,-0.015,0.1993,29,0
+4,"volatility, estimation, factor, dynamic",Volatility forecasting (GARCH),0.356,191,16,15,-0.0202,0.19,30,0
+34,"forecasting, neural network, fuzzy, prediction",Classical stock price prediction,0.858,141,24,14,-0.0253,0.1859,31,0
+24,"brownian motion, processes, fractional brownian, stochastic",Stochastic differential equations,0.841,164,15,7,-0.0253,0.2007,32,0
+35,"high-frequency trading, retail, internet, electronic",Trading and order flow,0.636,77,13,9,-0.0282,0.1859,33,0
+42,"saham, dan, terhadap, harga",Macro drivers of stock returns,0.409,66,16,13,-0.0285,0.1765,34,0
+33,"options, pricing, american, option",Option pricing,0.919,273,21,10,-0.0291,0.1925,35,0
+29,"arbitrage, pricing, processes, martingale",Stochastic volatility processes,0.383,167,12,8,-0.0293,0.1966,36,0
+18,"hedge funds, hedge fund, mutual funds, performance",Mutual fund performance,0.766,145,6,8,-0.0311,0.2033,37,0
+62,"risk, equity premium, premia, returns",Asset pricing and risk premia,0.755,192,9,14,-0.0319,0.1931,38,0
+19,"economics, distribution, law, economic",Agent-based market models,0.802,106,5,9,-0.0322,0.2189,39,0
+67,"china stock, stock market, liquidity, chinese",Market design and futures,0.605,177,9,9,-0.0322,0.1822,40,0
+49,"credit, bonds, pricing, convertible",Option pricing,0.372,180,11,7,-0.0326,0.1945,41,0
+28,"political, stock market, uncertainty stock, impact",Information and stock reactions,0.365,115,22,19,-0.0353,0.1787,42,0
+5,"portfolio optimization, portfolio selection, allocation, portfolios",Portfolio optimization,0.695,154,11,11,-0.0374,0.2044,43,0
+2,"optimal, utility, problem, consumption",Optimal investment and consumption,0.977,213,19,17,-0.0384,0.1941,44,0
+27,"electricity, carbon, energy, natural gas",Oil and energy prices,0.402,92,10,17,-0.0423,0.2121,45,0
+37,"information, experimental, equilibrium, rational",Trading and order flow,0.234,111,9,5,-0.0438,0.182,46,0
+21,"exchange rate, policy uncertainty, economic, monetary",Interest rates and term structure,0.454,141,16,16,-0.0439,0.1739,47,0
+15,"market integration, stock markets, financial, contagion",International market co-movement,0.941,186,26,11,-0.0445,0.1908,48,0
+64,"mutual fund, mutual funds, fund performance, managers",Mutual fund performance,0.993,137,11,5,-0.0461,0.1998,49,0
+30,"behavioral finance, investor, bias, behavior",Behavioral finance,0.843,102,7,20,-0.0511,0.1737,50,0
+16,"volatility spillover, stock markets, china, transmission",International market co-movement,0.691,139,9,11,-0.0516,0.1843,51,0
+60,"announcements, earnings, information, analysts",Information and stock reactions,0.98,152,12,7,-0.0535,0.1816,52,0
+73,"earnings, stock returns, predictability, premium",Asset pricing and risk premia,0.556,153,12,14,-0.0547,0.1804,53,0
+0,"investment, investments, active, investing",Real estate investment,0.783,166,11,14,-0.0557,0.172,54,0
+22,"options, implied, option, volatility",Option pricing,0.718,163,13,15,-0.0557,0.1862,55,0
+6,"gold price, precious metals, markets, commodity",Oil and energy prices,0.353,68,9,13,-0.0604,0.1959,56,0
+14,"complex network, financial networks, collective, network science",Fractals and complex time series,0.31,58,8,8,-0.0612,0.1888,57,0
+52,"var, value risk, value-at-risk, extreme",Volatility forecasting (GARCH),0.486,173,23,7,-0.0613,0.1799,58,0
+61,"stock exchange, stock market, return, indian",Macro drivers of stock returns,0.66,203,28,10,-0.0629,0.1721,59,0
+69,"index futures, futures market, stock index, futures markets",Trading and order flow,0.424,170,11,9,-0.066,0.1867,60,0
+12,"prices, oil price, petroleum, crude oil",Oil and energy prices,1.0,149,26,11,-0.0702,0.1756,61,0
+70,"diversification, international, emerging, foreign",International market co-movement,0.378,82,11,4,-0.071,0.176,62,0
+50,"speculative bubbles, market, financial, stock",Agent-based market models,0.217,106,8,5,-0.0722,0.1769,63,0
+66,"market efficiency, efficient market, market hypothesis, weak-form",Macro drivers of stock returns,0.446,121,8,9,-0.0738,0.1823,64,0
+31,"long memory, estimation, arch, processes",Interest rates and term structure,0.556,196,11,8,-0.074,0.1833,65,0
+10,"asset pricing, capm, capital asset, fama-french",Asset pricing and risk premia,0.844,135,15,10,-0.0778,0.1849,66,0
+51,"risk measures, expected utility, estimation, correlation",Copulas and dependence,0.379,124,14,11,-0.0821,0.1706,67,0
+45,"shanghai, index, stock market, shenzhen",Market design and futures,0.835,103,6,1,-0.0846,0.1678,68,0
+59,"scaling, multifractal, series, law",Fractals and complex time series,0.944,108,7,9,-0.0855,0.1805,69,0
+55,"liquidity, limit order, orders, flow",Trading and order flow,0.972,106,7,3,-0.0864,0.1873,70,0
+72,"minority game, agent-based, agents, evolutionary",Agent-based market models,0.969,96,2,0,-0.0885,0.195,71,0
+65,"term structure, yield, structure rates, curve",Interest rates and term structure,0.716,102,4,4,-0.1051,0.1994,72,0
+23,"trading, intraday, volume, market",Trading and order flow,0.586,157,5,5,-0.1087,0.1847,73,0
+57,"day week, anomalies, calendar, seasonality",Macro drivers of stock returns,0.733,60,4,4,-0.1104,0.1987,74,0
+41,"fractal market, series, multi-fractal, financial",Fractals and complex time series,0.582,79,2,2,-0.193,0.1927,75,0
