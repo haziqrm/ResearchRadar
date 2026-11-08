@@ -14,7 +14,7 @@ python -m src.live.keys              # check the Gemini and ElevenLabs keys
 | Stage | Module | Writes | Committed? |
 |---|---|---|---|
 | fetch | `src/live/arxiv_feed.py` | `data/cache/arxiv/papers.csv` (+ raw XML) | No (cache) |
-| map_tags | `src/live/map_tags.py` | `data/arxiv_map_tags.csv` (Gemini cache in `data/cache/arxiv/`) | Not yet (partial, see below) |
+| map_tags | `src/live/map_tags.py` | `data/arxiv_map_tags.csv` (Gemini cache in `data/cache/arxiv/`) | Yes (complete, see below) |
 | crowding | `src/live/crowding.py` | `data/crowding.csv`, `data/crowding_meta.json` | Yes |
 | backtest | `src/live/backtest.py` | `data/backtest_results.csv`, `data/backtest_summary.csv`, `data/backtest_weights.csv` | Yes |
 | briefing | `src/live/briefing.py` | `data/briefing.txt`, `data/briefing.mp3`, `data/briefing_card.json` | Yes |
@@ -194,7 +194,11 @@ is left as it is because the briefing becomes weekly again with arXiv.
   request). On 2026-11-08, 308 of 3,687 papers were tagged before the daily limit. At
   1,000 papers a day the rest takes about 4 days, or minutes with billing on.
   `map_tags` now stops cleanly at the daily limit and the next run carries on from the
-  cache. `arxiv_map_tags.csv` is not committed until the tagging is complete.
+  cache. **All 3,687 papers were tagged later on 2026-11-08** (three keys, with
+  gemini-3.5-flash, 3.7-flash and 3.8-flash tagging in parallel). The CSV is committed.
+  3.7 and 3.8 tagged 1,338 of them and weren't in the 50-paper accuracy check.
+  `crowding.csv` still uses the OpenAlex source. Switching to `--source arxiv` is a
+  separate decision.
 - **Briefing:** the card now has `period_start`, `unit`, `window`, `source`, and
   `papers` (was `week` and `papers_4w`); `taggers` is gone. The example paper is the
   area's **most cited paper this year** (OpenAlex) or its newest one (arXiv). The text
