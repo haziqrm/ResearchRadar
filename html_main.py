@@ -9,6 +9,10 @@ the 8 trading-relevant areas (see research_data.AREAS).
   GET /api/network     areas (sized by article count) and the links between them
   GET /api/research    articles per area, in total and this year vs last year (not on the page now)
 
+  GET /monthly         the same page, but the map shows Gemini-tagged arXiv papers by
+                       month (monthly_data.py): /api/network/monthly. The map's "By year /
+                       By month" switch moves between the two. The rest of the page stays yearly.
+
 Person D's live layer (live_data.py, static/js/live.js): /api/heading,
 /api/crowding/history, /api/crowding, /api/backtest, /api/briefing, and the
 briefing audio at /media/briefing.mp3.
@@ -23,6 +27,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
 import live_data  # Person D: crowding, backtest and briefing
+import monthly_data  # Person D: the map by month from Gemini-tagged arXiv papers
 import radar_data  # Person A: topic radar and signal decay (data/app/*.json)
 import research_data as data
 
@@ -49,7 +54,7 @@ PAGE = r"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research Lifecycle Radar</title>
+<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
@@ -76,18 +81,22 @@ __CSS_LINKS__
         <h2>Research topic network</h2>
         <div class="net-controls">
           <button type="button" class="path-btn active" id="path-btn" aria-pressed="true"
-            title="The biggest topic in the selected year, in red, and the topics whose papers cite the same earlier work as it. Press play to watch which tightly linked topics grow next.">Hide affected path</button>
+            title="The biggest topic in the selected __PERIOD__, in red, and the topics whose papers cite the same earlier work as it. Press play to watch which tightly linked topics grow next.">Hide affected path</button>
           <div class="year-control">
             <button type="button" class="play-btn" id="play-btn" aria-label="Play years">&#9654;</button>
             <input type="range" id="year-slider" step="1" aria-label="Year">
             <span class="year-label" id="year-label"></span>
           </div>
+          <div class="mode-switch" role="group" aria-label="Map data">
+            <a href="/" class="path-btn__YEAR_ON__" title="OpenAlex: 380 sampled quant-finance papers a year, 2000 on"__YEAR_CUR__>By year</a>
+            <a href="/monthly" class="path-btn__MONTH_ON__" title="arXiv q-fin papers tagged by Gemini, by month, Dec 2024 on"__MONTH_CUR__>By month</a>
+          </div>
         </div>
       </div>
       <div class="net-legend" aria-label="Legend">
-        <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
-        <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker and darker means more shared that year; dotted means none."><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
-        <span class="lg" id="lg-path" title="Red: the biggest topic in the selected year. Bright: the topics linked to it by shared citations. Faded: the rest."><i class="lg-dot root"></i><i class="lg-dot"></i>biggest topic and its links</span>
+        <span class="lg" title="__LG_SIZE_TITLE__"><i class="lg-size"></i><i class="lg-size big"></i>__LG_SIZE__</span>
+        <span class="lg" title="__LG_LINE_TITLE__"><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
+        <span class="lg" id="lg-path" title="Red: the biggest topic in the selected __PERIOD__. Bright: the topics linked to it by shared citations. Faded: the rest."><i class="lg-dot root"></i><i class="lg-dot"></i>biggest topic and its links</span>
         <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
         <!-- shown instead of the items above while a topic is open: a hint until a cloud is
              clicked, then the arrow key (radar.js sets .arrows-on and the hint text) -->
@@ -178,6 +187,8 @@ __CSS_LINKS__
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
 const getJSON = url => fetch(url).then(r => r.json());
+// Which data the map shows: OpenAlex by year (/) or Gemini-tagged arXiv by month (/monthly).
+const MAP_MODE = __MAP_MODE__;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 // ---------------------------------------------------------------- network
@@ -256,11 +267,17 @@ const crowdColour = s => s == null ? "#e3ded6"
   : crowdRamp((Math.max(-CROWD_MAX, Math.min(CROWD_MAX, s)) + CROWD_MAX) / (2 * CROWD_MAX));
 
 async function loadNetwork() {
-  const net = await getJSON("/api/network");
+  const net = await getJSON(MAP_MODE.network);
   const box = document.getElementById("network");
   const LINE = 15;  // label line height (13px text)
+  // The slider's periods: years, or "YYYY-MM" months on /monthly. The slider moves
+  // through their positions; the rest of the page follows the period's year.
   const years = net.slider_years;
-  const countFor = (d, y = yearState.year) => d.by_year[String(y)] || 0;
+  const monthly = MAP_MODE.unit === "month";
+  const labelOf = p => (net.labels || {})[p] || String(p);
+  const yearOf = p => monthly ? +String(p).slice(0, 4) : +p;
+  let period = null;
+  const countFor = (d, y = period) => d.by_year[String(y)] || 0;
 
   // Line thickness and strength: that year's shared links, on one scale across years.
   // Curved (power 1.5) so weak links are hairlines and only strong ones stand out.
@@ -413,32 +430,41 @@ async function loadNetwork() {
       link.classed("quiet", l => countFor(l, year) === 0);
       nodeTitle.text(d => {
         const n = countFor(d, year);
-        return `${d.id}\n${n} article${n === 1 ? "" : "s"} in ${year} · ${d.articles} in total`
+        return `${d.id}\n${n} ${monthly ? "paper" : "article"}${n === 1 ? "" : "s"} in ${labelOf(year)} · ${d.articles} in total`
           + "\nClick to explore its papers";
       });
       linkTitle.text(l => { const n = countFor(l, year);
-        return `${l.source} and ${l.target}\n${n} paper pair${n === 1 ? "" : "s"} in ${year} cite${n === 1 ? "s" : ""} the same earlier work`; });
+        return monthly
+          ? `${l.source} and ${l.target}\n${n} OpenAlex paper pair${n === 1 ? "" : "s"} (all years) cite${n === 1 ? "s" : ""} the same earlier work`
+          : `${l.source} and ${l.target}\n${n} paper pair${n === 1 ? "" : "s"} in ${year} cite${n === 1 ? "s" : ""} the same earlier work`; });
       drawPath();  // the biggest circle can change between years
     };
 
     return { node, link, drawYear, drawPath, clearHover };
   }
 
-  document.addEventListener("yearchange", e => { if (view) view.drawYear(e.detail, playing ? STEP_MS * 0.8 : 400); });
+  document.addEventListener("yearchange", () => { if (view) view.drawYear(period, playing ? STEP_MS * 0.8 : 400); });
 
   // ---- slider and play button
   const slider = document.getElementById("year-slider");
   const yearLabel = document.getElementById("year-label");
   const playBtn = document.getElementById("play-btn");
-  slider.min = years[0];
-  slider.max = years[years.length - 1];
-  slider.value = slider.max;
+  const playLabel = monthly ? "Play months" : "Play years";
+  slider.setAttribute("aria-label", monthly ? "Month" : "Year");
+  playBtn.setAttribute("aria-label", playLabel);
+  slider.min = 0;
+  slider.max = years.length - 1;
+  const startAt = years.indexOf(net.start);
+  slider.value = startAt >= 0 ? startAt : years.length - 1;
 
   const stop = () => {
     clearInterval(playing); playing = null;
-    playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Play years");
+    playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", playLabel);
   };
-  const show = y => { slider.value = y; yearLabel.textContent = y; setYear(+y); };
+  const show = i => {
+    slider.value = i; period = years[+i];
+    yearLabel.textContent = labelOf(period); setYear(yearOf(period));
+  };
 
   slider.addEventListener("input", () => { stop(); show(slider.value); });
   playBtn.addEventListener("click", () => {
@@ -451,8 +477,9 @@ async function loadNetwork() {
       show(next);
     }, STEP_MS);
   });
-  yearLabel.textContent = slider.value;
-  yearState.year = +slider.value;
+  period = years[+slider.value];
+  yearLabel.textContent = labelOf(period);
+  yearState.year = yearOf(period);
 
   // Measure the box whenever it changes: on first load it can still be 0 wide, and the
   // side panel or the window can change it later. Sizes too small to draw are skipped.
@@ -462,7 +489,7 @@ async function loadNetwork() {
     if (W < 80 || H < 80 || (Math.abs(W - drawn[0]) < 2 && Math.abs(H - drawn[1]) < 2)) return;
     drawn = [W, H];
     view = build(W, H);
-    view.drawYear(yearState.year, 0);
+    view.drawYear(period, 0);
   };
   new ResizeObserver(() => { clearTimeout(timer); timer = setTimeout(render, 120); }).observe(box);
   render();
@@ -475,6 +502,39 @@ loadNetwork();
 </body>
 </html>
 """.replace("__CSS_LINKS__", CSS_LINKS)
+
+# What differs between the main page and /monthly: the map's data and its wording.
+YEARLY = {
+    "__TITLE__": "Research Lifecycle Radar",
+    "__PERIOD__": "year",
+    "__YEAR_ON__": " active", "__YEAR_CUR__": ' aria-current="page"',
+    "__MONTH_ON__": "", "__MONTH_CUR__": "",
+    "__LG_SIZE_TITLE__": "Circle size: how many research articles came out on the topic in the selected year.",
+    "__LG_SIZE__": "articles that year",
+    "__LG_LINE_TITLE__": "Lines link topics whose papers cite the same earlier work. Thicker and darker means more shared that year; dotted means none.",
+    "__MAP_MODE__": json.dumps({"unit": "year", "network": "/api/network"}),
+}
+MONTHLY = {
+    "__TITLE__": "Research Lifecycle Radar · monthly",
+    "__PERIOD__": "month",
+    "__YEAR_ON__": "", "__YEAR_CUR__": "",
+    "__MONTH_ON__": " active", "__MONTH_CUR__": ' aria-current="page"',
+    "__LG_SIZE_TITLE__": "Circle size: how many arXiv q-fin papers Gemini put in the topic that month.",
+    "__LG_SIZE__": "papers that month",
+    "__LG_LINE_TITLE__": "Lines link topics whose OpenAlex papers cite the same earlier work, over all years (arXiv gives no reference lists), so they are the same in every month.",
+    "__MAP_MODE__": json.dumps({"unit": "month", "network": "/api/network/monthly"}),
+}
+
+
+def build_page(parts):
+    page = PAGE
+    for key, value in parts.items():
+        page = page.replace(key, value)
+    return page
+
+
+MAIN_PAGE = build_page(YEARLY)
+MONTHLY_PAGE = build_page(MONTHLY)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -513,12 +573,16 @@ class Handler(BaseHTTPRequestHandler):
             "/api/heading": live_data.get_heading,
             "/api/backtest": live_data.get_backtest,
             "/api/briefing": live_data.get_briefing,
+            "/api/network/monthly": monthly_data.get_network,
+            "/api/crowding/history/monthly": monthly_data.get_crowding_history,
         }
         if url.path == "/api/topic":
             name = parse_qs(url.query).get("name", [""])[0]
             self._json(radar_data.get_topic(name))
         elif url.path in ("/", "/index.html"):
-            self._send(200, PAGE, "text/html; charset=utf-8")
+            self._send(200, MAIN_PAGE, "text/html; charset=utf-8")
+        elif url.path in ("/monthly", "/monthly/"):
+            self._send(200, MONTHLY_PAGE, "text/html; charset=utf-8")
         elif url.path == "/media/briefing.mp3" and live_data.AUDIO_FILE.is_file():
             self._send(200, live_data.AUDIO_FILE.read_bytes(), "audio/mpeg")
         elif url.path.startswith("/static/"):
