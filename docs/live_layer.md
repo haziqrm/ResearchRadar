@@ -188,6 +188,105 @@ accuracy figure, and none of the 50 had a signal, so it says nothing about signa
 
 `arxiv_tagged.csv` should be added to `src/common/contracts.py` once C agrees the columns.
 
+### Two area sets, joined by `data/area_map.csv` (needs B's sign-off)
+- The contract had **one shared list of 8 areas** and no way to relate other area
+  sets to it. B's research map instead uses **25 areas** discovered from 10,232
+  OpenAlex papers (2000-2026). The team keeps both: 25 for the descriptive map, 8 for
+  the live crowding score (25 areas would leave about 1.4 arXiv papers per area per
+  week, too few for a score).
+- `data/area_map.csv` (`b_area, d_area`) rolls each of B's 25 areas up into one of the
+  8 live areas, or `Not tracked`:
+
+  | Live area | B areas |
+  |---|---|
+  | Factor and anomaly research | Asset pricing and risk premia; Macro drivers of stock returns; Information and stock reactions; Behavioral finance; Mutual fund performance; IPOs |
+  | Derivatives and volatility | Option pricing; Volatility forecasting (GARCH); Stochastic volatility processes; Stochastic differential equations; Interest rates and term structure |
+  | Portfolio and risk | Portfolio optimization; Optimal investment and consumption; Stochastic programming; Copulas and dependence; International market co-movement |
+  | Market microstructure | Trading and order flow; Market design and futures; Agent-based market models |
+  | Machine learning for returns | Classical stock price prediction; Deep learning and LLM forecasting |
+  | Crypto and DeFi | Crypto, COVID and spillovers |
+  | Not tracked | Real estate investment; Oil and energy prices; Fractals and complex time series |
+
+  **LLMs in finance** and **Alternative data and text** have no B area: they are too
+  new or too narrow to form a group on the 2000-2026 map. The site says so on their rows.
+- **Person B must sign off on `area_map.csv`**: it encodes how B's areas group, and it
+  was drafted by D. Checked against B's `network_nodes.csv` at commit `788772f`
+  (Sun 01:10): all 25 names match exactly.
+- If B renames or adds an area, `real_data.get_topic_network()` **raises an error**
+  naming the unmapped area (the map panel then shows an error, not wrong colours).
+  If `area_map.csv` is missing, the map just isn't coloured.
+- On the site, map nodes are coloured by their live area's crowding score this week
+  (same ±3 scale as the table; grey with a dashed edge = not tracked). Hovering or
+  clicking a crowding row highlights its map areas; node tooltips show the live area
+  and score.
+- **What the map is (and isn't):** B samples a fixed 380 papers a year, so circle size
+  is each area's *share* of research, not its volume, and the map is a long-run view
+  (2017-2021 vs 2022-2026). It can't be weekly: 380 a year is about 0.3 papers per
+  area per week, OpenAlex indexes late, and reference links take years to build up.
+  Only the colours are live. The obvious movers (deep learning / LLM forecasting
+  3.1% -> 15.1% of papers, crypto 4.7% -> 13.6%) are context, not a finding; because
+  sizes are shares, other areas shrink partly as a side effect. Node tooltips show
+  each area's share change.
+- **The site leads with the brief, not the map:** a summary strip answers "what's
+  hidden / how we found it / what we can do with it" with real numbers, including what
+  *doesn't* predict (A's decay models beat a constant guess 0 of 3 times; attention
+  doesn't predict decay) and A's month-ahead forecasts, the one prediction that works.
+- **Partial weeks:** the crowding table's "Papers" column compares this week's days so
+  far with the same weekdays last week (e.g. Mon-Thu vs Mon-Thu). It used to compare a
+  partial week with full weeks, which made most arrows point down.
+- **Open contract issue:** `contracts.validate()` checks every `area` column against
+  the 8 live areas, so B's real `network_nodes.csv` fails
+  `test_real_file_matches_contract_if_present[network_nodes]` (checked locally with
+  B's files). Before B's network goes on `main`, the team should change the contract
+  so `network_nodes.area` is checked against `area_map.csv`'s `b_area` column instead.
+  That's a shared-file change, so it's not done here.
+
+### Research map now shows 8 of B's areas, this week vs last week (2026-11-08)
+- The team chose **8 of B's 25 areas** for the map: Asset pricing and risk premia;
+  Information and stock reactions; Trading and order flow; Behavioral finance;
+  Volatility forecasting (GARCH); Deep learning and LLM forecasting; Classical stock
+  price prediction; Crypto, COVID and spillovers. They are listed in
+  `src/live/map_tags.MAP_AREAS` with short descriptions built from B's group keywords.
+- `python -m src.live.map_tags` re-tags the **last 14 days of arXiv papers** with Gemini
+  into those 8 areas (or none) and writes `data/arxiv_map_tags.csv`
+  (`arxiv_id, published, title, area, confidence, week`). Weeks are rolling 7-day
+  windows ending on the newest paper, so both are full weeks (first run: 23-29 Oct vs
+  30 Oct-5 Nov). Answers are cached in `data/cache/arxiv/map_tags_gemini.jsonl`.
+  This file is new and not in the contracts.
+- **Parallel tagging across models (2026-11-08).** To tag the full feed (3,687 papers)
+  faster, `map_tags` takes `--model` and `--shard K/N`. Three workers ran at once:
+  `gemini-3.5-flash` on 1/3, `gemini-3.7-flash` on 2/3, `gemini-3.8-flash` on 3/3. Papers
+  are split by a CRC32 of the arXiv ID. Each worker writes its own cache file,
+  `map_tags_gemini.<model>.jsonl`, and a plain run afterwards merges all of them into the
+  CSV. **Deviation:** the cache used to be read for the current model only. It is now
+  read for any model, so a paper is tagged once, by whichever model got to it. Each
+  cache line keeps its `model`. 3.7 and 3.8 weren't in the 50-paper accuracy check, so
+  2/3 of the map tags come from models that haven't been hand-checked.
+- **Partial runs.** `--merge-only` writes the CSV from the cache with no API calls.
+  Papers that aren't tagged yet are **left out of the CSV**, not written with a blank
+  area. A blank area means "none", and real_data divides by every paper in the month,
+  so an untagged paper would push every share down. Status on 2026-11-08: the free tier
+  allows 20 requests per model per day, and the new key hit it too, which suggests the
+  limit is per project. A key from another project then took it to **3,460 of 3,687**
+  (3.5: 2,182, 3.7: 649, 3.8: 629). The workers ran on ninths (`--shard K/9`) to even out
+  the load. `--reverse` lets a second worker share a ninth from the other end, because
+  the cache is re-read before every batch. 227 papers are left, almost all in ninth 6.
+  After the reset, run `--shard 6/9` (plus `4/9` and `7/9`, one paper each), then
+  `--merge-only`.
+- When that file exists, `real_data.get_topic_network()` returns the **weekly map**
+  (`"mode": "weekly"`): 8 nodes sized by this week's and last week's paper counts. The
+  Earlier/Recent toggle becomes the two week labels. Tooltips show last week -> this
+  week and the newest title. The area_map colouring is switched off in this mode,
+  because the 8 map areas don't map cleanly onto the 8 live areas.
+- **Links still come from B's OpenAlex papers** (shared references), filtered to the 8
+  areas and rescaled so the strongest is 1. arXiv gives no reference lists, so links
+  show how the areas' literatures connect, not this week's papers.
+- **The counts are small.** First run: 108 papers, of which only 51 fit one of the 8
+  areas (29 last week, 22 this week). Most areas have 0-3 papers a week, so a change
+  such as Crypto 8 -> 1 is not significant on its own. The crowding table (D's 8 areas,
+  z-scored against 2 years of history) stays the statistically grounded signal.
+- Not hand-checked yet: the 92% tag accuracy was measured on D's 8 areas, not these.
+
 ### Repo-wide changes D made
 - `requirements.txt` is pinned. **pandas is 2.2.3**, not 3.x: `openassetpricing`'s
   dependencies cap it, so anyone on pandas 3 is moved down when they reinstall.

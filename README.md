@@ -89,6 +89,7 @@ One page, all from committed files (no API keys, works offline):
 
 | Panel | Data | From |
 |---|---|---|
+| Summary strip: what's hidden, how we found it, what predicts (and what doesn't), the decision | all of the below, plus `osap_h9_summary.csv`, `osap_model_summary.csv`, `tag_audit.csv` | A, B, D |
 | Research map | `network_nodes.csv`, `network_edges.csv`, rolled up to one circle per area | B |
 | Crowded this week | `crowding.csv`, `arxiv_tagged.csv` | D |
 | Do published signals stop working? | `osap_summary.csv`, `decay_results.csv` | A |

@@ -110,6 +110,9 @@ def get_topic_network():
             "id": t["topic"],
             "papers": t["papers"],
             "papers_last_week": t["papers_last_week"],
+            # same shape as real_data: made-up topics have no live area
+            "d_area": None,
+            "crowding_score": None,
         }
         for t in topics
     ]
@@ -133,4 +136,5 @@ def get_topic_network():
                 else:
                     skipped.append(row)
 
-    return {"nodes": nodes, "links": links, "skipped_rows": len(skipped)}
+    return {"nodes": nodes, "links": links, "skipped_rows": len(skipped),
+            "area_map": False, "crowding_week": None}

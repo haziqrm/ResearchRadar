@@ -11,6 +11,7 @@ the site runs offline from a fresh clone.
   GET /api/decay       A: do published signals stop working?
   GET /api/backtest    D: allocation backtest vs baselines, with intervals
   GET /api/briefing    D: decision card and spoken briefing
+  GET /api/summary     top strip: what's hidden, inputs, what predicts, the decision
   GET /media/briefing.mp3
 
 synthetic_data.py (C's original made-up data) is kept for building the page
@@ -64,11 +65,18 @@ __CSS_LINKS__
     <p class="sub">Where quant-finance research is heading, and how fast published trading signals stop working. Free public data only.</p>
   </header>
   <main>
+    <div class="story" id="story"></div>
+
     <section class="panel net-panel">
       <div class="panel-head">
         <h2>Research map <span class="badge" id="net-badge" hidden>sample data</span></h2>
         <div class="net-controls">
           <button type="button" class="path-btn" id="path-btn" aria-pressed="false">Highlight largest area</button>
+          <div class="month-ctl" id="month-ctl" hidden>
+            <button type="button" class="play-btn" id="play-btn" aria-label="Play months">&#9654;</button>
+            <input type="range" id="month-slider" min="0" max="0" value="0" aria-label="Month">
+            <span class="month-label" id="month-label"></span>
+          </div>
           <div class="toggle" id="week-toggle">
             <button type="button" data-week="last">Earlier</button>
             <button type="button" data-week="this" class="active">Recent</button>
@@ -77,6 +85,11 @@ __CSS_LINKS__
       </div>
       <div class="sub" id="net-sub">Circle size shows how many papers each research area has in the period. Lines join areas whose papers cite the same references.</div>
       <div class="network" id="network"></div>
+      <div class="net-legend" id="net-legend" hidden>
+        <span class="sub">Colour: crowding this week in the live area it rolls up to</span>
+        <span class="ramp"><span>quieter</span><i></i><span>more crowded</span></span>
+        <span class="nt"><i></i>not tracked live</span>
+      </div>
     </section>
 
     <section class="panel">
@@ -129,6 +142,18 @@ const parseDay = iso => new Date(iso + "T00:00:00");
 const dayLabel = iso => parseDay(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 const signed = (x, d = 2) => x == null ? "–" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(d);
 const showBadge = (id, on) => { document.getElementById(id).hidden = !on; };
+
+// Map nodes are coloured by the crowding score of the live area they roll up to
+// (data/area_map.csv). Same +-3 range as the table bars; 0 is neutral.
+const crowdColor = d3.scaleLinear().domain([-3, 0, 3])
+  .range(["#5f7fa3", "#e9e2d7", "#8e2b30"]).clamp(true);
+const NOT_TRACKED_FILL = "#c8c2ba";
+const nodeFill = d => d.d_area == null ? null
+  : d.crowding_score == null ? NOT_TRACKED_FILL : crowdColor(d.crowding_score);
+
+// Set by drawNetwork: highlight the map nodes in one live area (null clears).
+let highlightLiveArea = () => {};
+let pinnedArea = null;
 
 // ---------------------------------------------------------------- network
 
@@ -198,11 +223,14 @@ function drawNetwork() {
   if (W < 100 || H < 100) return;
   box.innerHTML = "";
 
-  const maxPapers = d3.max(net.nodes, n => Math.max(n.papers, n.papers_last_week)) || 1;
+  const monthly = net.mode === "monthly";
+  const peak = d => monthly ? d3.max(d.series, p => p.share3) : Math.max(d.papers, d.papers_last_week);
+  const maxPapers = d3.max(net.nodes, peak) || 1;
   const radius = d3.scaleSqrt().domain([0, maxPapers]).range([4, Math.min(W, H) / (net.nodes.length > 16 ? 14 : 11)]);
   let week = document.querySelector("#week-toggle .active").dataset.week;
-  const papersFor = d => week === "this" ? d.papers : d.papers_last_week;
-  const period = () => net.periods ? net.periods[week] : (week === "this" ? "this week" : "last week");
+  const papersFor = d => monthly ? d.series[MONTH].share3 : week === "this" ? d.papers : d.papers_last_week;
+  const period = () => monthly ? net.months[MONTH].label
+    : net.periods ? net.periods[week] : (week === "this" ? "this week" : "last week");
 
   const wrap = (text, max = 18) => text.split(" ").reduce((lines, word) => {
     const last = lines[lines.length - 1];
@@ -216,7 +244,7 @@ function drawNetwork() {
     d.lines = wrap(d.id);
     d.r = radius(papersFor(d));
     // lay out for the bigger of the two periods so switching never overlaps
-    d.rMax = radius(Math.max(d.papers, d.papers_last_week));
+    d.rMax = radius(peak(d));
     d.space = d.rMax + 10 + d.lines.length * LINE / 2;
   });
 
@@ -265,14 +293,30 @@ function drawNetwork() {
   const node = svg.append("g").selectAll("g").data(nodes).join("g")
     .attr("class", "net-node")
     .attr("transform", d => `translate(${d.x},${d.y})`);
-  const circle = node.append("circle").attr("r", d => d.r);
+  const circle = node.append("circle").attr("r", d => d.r)
+    .style("fill", d => net.area_map ? nodeFill(d) : null)
+    .classed("not-tracked", d => net.area_map && d.d_area != null && d.crowding_score == null);
   const label = node.append("text").attr("class", "net-label")
     .attr("text-anchor", "middle").attr("y", d => d.r + 12);
   label.selectAll("tspan").data(d => d.lines).join("tspan")
     .attr("x", 0).attr("dy", (t, i) => i === 0 ? 0 : LINE).text(t => t);
   const title = node.append("title");
-  const setTitles = () => title.text(d => `${d.id}\n${papersFor(d)} papers in ${period()}` +
-    (d.stage ? `\nlifecycle: ${d.stage}` : ""));
+  const liveLine = d => !net.area_map || d.d_area == null ? ""
+    : d.crowding_score == null ? "\nNot tracked in the live arXiv feed"
+    : `\nLive area: ${d.d_area} (crowding ${signed(d.crowding_score)} this week)`;
+  const shareLine = d => d.share == null || d.share_before == null ? ""
+    : `\nshare of papers: ${d.share_before}% (${net.periods.last}) → ${d.share}% (${net.periods.this})`;
+  const monthTitle = d => {
+    const p = d.series[MONTH], first = d.series[0], last = d.series[d.series.length - 1];
+    return `${d.id}\n${period()}: ${p.share3}% of q-fin papers (3-month average)` +
+      `\n${p.papers} paper${p.papers === 1 ? "" : "s"} this month (${p.share}%)` +
+      `\ntrend: ${first.share3}% (${net.months[0].label}) → ${last.share3}% (${net.months[net.months.length - 1].label})` +
+      (p.newest ? `\nnewest: ${p.newest}` : "") + (d.stage ? `\nlifecycle (OpenAlex): ${d.stage}` : "");
+  };
+  const setTitles = () => monthly ? title.text(monthTitle) : title.text(d => `${d.id}\n${papersFor(d)} papers in ${period()}` +
+    shareLine(d) + (net.mode === "weekly" ? `\n${d.papers_last_week} last week → ${d.papers} this week` : "") +
+    (d.newest ? `\nnewest this week: ${d.newest}` : "") +
+    (d.stage ? `\nlifecycle (OpenAlex): ${d.stage}` : "") + liveLine(d));
   setTitles();
 
   const lineEnds = l => {
@@ -292,15 +336,33 @@ function drawNetwork() {
   const linked = new Set(net.links.map(l => l.source + "|" + l.target));
   const isLinked = (a, b) => a === b || linked.has(a + "|" + b) || linked.has(b + "|" + a);
   let pathOn = false;
+  const clearHl = () => {
+    box.classList.remove("focus");
+    node.classed("hl", false); link.classed("hl", false);
+  };
+  // Highlight every map node in one live area, and the links among them.
+  highlightLiveArea = area => {
+    if (pathOn) return;
+    if (!area) { clearHl(); return; }
+    const ids = new Set(nodes.filter(n => n.d_area === area).map(n => n.id));
+    box.classList.add("focus");
+    node.classed("hl", n => ids.has(n.id));
+    link.classed("hl", l => ids.has(l.source) && ids.has(l.target));
+  };
+  const markRow = area => document.querySelectorAll("#research tbody tr")
+    .forEach(tr => tr.classList.toggle("row-hl", !!area && tr.dataset.area === area));
   node.on("mouseenter", (e, d) => {
     if (pathOn) return;
     box.classList.add("focus");
     node.classed("hl", n => isLinked(d.id, n.id));
     link.classed("hl", l => l.source === d.id || l.target === d.id);
+    if (net.area_map) markRow(d.d_area);
   }).on("mouseleave", () => {
-    box.classList.remove("focus");
-    node.classed("hl", false); link.classed("hl", false);
+    clearHl();
+    markRow(pinnedArea);
+    if (pinnedArea) highlightLiveArea(pinnedArea);
   });
+  if (pinnedArea) highlightLiveArea(pinnedArea);   // keep a pinned row across redraws
 
   // Highlight the largest area in this period and the areas it links to.
   const pathBtn = document.getElementById("path-btn");
@@ -320,22 +382,55 @@ function drawNetwork() {
   };
   pathBtn.onclick = () => {
     pathOn = !pathOn;
-    box.classList.remove("focus"); node.classed("hl", false); link.classed("hl", false);
+    clearHl();
+    if (!pathOn && pinnedArea) highlightLiveArea(pinnedArea);
     drawPath();
   };
 
+  const resize = (ms = 600) => {
+    nodes.forEach(d => { d.r = radius(papersFor(d)); });
+    circle.transition().duration(ms).attr("r", d => d.r);
+    label.transition().duration(ms).attr("y", d => d.r + 12);
+    placeLinks(link.transition().duration(ms));
+    setTitles();
+    if (pathOn) drawPath();
+  };
+  showMonth = ms => { document.getElementById("month-label").textContent = period(); resize(ms); };
+  if (monthly) showMonth(0);
   document.querySelectorAll("#week-toggle button").forEach(btn => {
     btn.onclick = () => {
       week = btn.dataset.week;
       document.querySelectorAll("#week-toggle button").forEach(b => b.classList.toggle("active", b === btn));
-      nodes.forEach(d => { d.r = radius(papersFor(d)); });
-      circle.transition().duration(600).attr("r", d => d.r);
-      label.transition().duration(600).attr("y", d => d.r + 12);
-      placeLinks(link.transition().duration(600));
-      setTitles();
-      if (pathOn) drawPath();
+      resize();
     };
   });
+}
+
+// Monthly map: the slider picks the month; play steps through them.
+let MONTH = 0, showMonth = () => {}, playTimer = null;
+function setupMonths() {
+  const slider = document.getElementById("month-slider"), play = document.getElementById("play-btn");
+  const n = NET.months.length;
+  slider.max = n - 1; slider.value = MONTH = n - 1;
+  const stop = () => { clearInterval(playTimer); playTimer = null; play.innerHTML = "&#9654;"; };
+  slider.oninput = () => { stop(); MONTH = +slider.value; showMonth(250); };
+  play.onclick = () => {
+    if (playTimer) return stop();
+    if (MONTH >= n - 1) MONTH = 0;
+    play.innerHTML = "&#10074;&#10074;";
+    slider.value = MONTH; showMonth(0);
+    playTimer = setInterval(() => {
+      if (MONTH >= n - 1) return stop();
+      slider.value = ++MONTH; showMonth(500);
+    }, 700);
+  };
+  document.getElementById("month-ctl").hidden = false;
+  document.getElementById("week-toggle").hidden = true;
+  document.getElementById("net-sub").textContent =
+    `How research moves, month by month: ${NET.arxiv_total.toLocaleString()} arXiv q-fin papers ` +
+    `(${NET.months[0].label} – ${NET.months[n - 1].label}), tagged by Gemini into ${NET.nodes.length} areas. ` +
+    `Circle size: the area's share of that month's papers (3-month average). Press ▶ to play. ` +
+    `Lines join areas whose literatures cite the same work (${NET.papers_total.toLocaleString()} OpenAlex papers).`;
 }
 
 async function loadNetwork() {
@@ -344,10 +439,14 @@ async function loadNetwork() {
   if (NET.periods) {
     const [early, recent] = document.querySelectorAll("#week-toggle button");
     early.textContent = NET.periods.last; recent.textContent = NET.periods.this;
+    const live = new Set(NET.nodes.map(n => n.d_area).filter(a => a && a !== "Not tracked"));
     document.getElementById("net-sub").textContent =
-      `${NET.papers_total.toLocaleString()} OpenAlex papers, ${NET.nodes.length} research areas. ` +
-      "Circle size: papers in the chosen period. Lines join areas whose papers cite the same references (strongest links only).";
+      `${NET.papers_total.toLocaleString()} OpenAlex papers, a fixed random sample per year, so circle size is each area's share of research in the period. ` +
+      "Lines join areas whose papers cite the same references (strongest links only)." +
+      (NET.area_map ? ` The ${NET.nodes.length} map areas roll up into ${live.size} of the 8 live areas on the right; hover or click a row to find them.` : "");
   }
+  document.getElementById("net-legend").hidden = !NET.area_map;
+  if (NET.mode === "monthly") setupMonths();
   drawNetwork();
   // redraw when the box changes size (also covers a first layout at width 0)
   let lastW = 0, timer = null;
@@ -361,10 +460,10 @@ async function loadNetwork() {
 // ---------------------------------------------------------------- crowding table
 
 function paperChange(r) {
-  const diff = r.papers_change;
-  if (diff > 0) return `<span class="arrow up" title="Up ${diff} from last week">&#9650;</span>`;
-  if (diff < 0) return `<span class="arrow down" title="Down ${-diff} from last week">&#9660;</span>`;
-  return `<span class="arrow same" title="Same as last week">&ndash;</span>`;
+  const diff = r.papers_change, vs = `the same days last week (${r.papers_last_week})`;
+  if (diff > 0) return `<span class="arrow up" title="Up ${diff} on ${vs}">&#9650;</span>`;
+  if (diff < 0) return `<span class="arrow down" title="Down ${-diff} on ${vs}">&#9660;</span>`;
+  return `<span class="arrow same" title="Same as ${vs}">&ndash;</span>`;
 }
 
 // Bar centred on zero: right for crowded, left for quiet. Scale: +-3.
@@ -377,17 +476,81 @@ function scoreBar(x) {
 async function loadResearch() {
   const snap = await getJSON("/api/research");
   showBadge("research-badge", snap.sample);
-  document.getElementById("research-week").textContent = "Week of " + dayLabel(snap.week_start);
+  document.getElementById("research-week").textContent = "Week of " + dayLabel(snap.week_start) +
+    (snap.papers_compare ? " · papers " + snap.papers_compare : "");
   document.querySelector("#research tbody").innerHTML = snap.topics.map(r => {
     const tip = `${r.papers_4w} papers in the last 4 weeks` +
       (r.newest ? `\nNewest: ${r.newest.title} (${r.newest.published})` : "");
     return `
-    <tr title="${esc(tip)}">
-      <td>${esc(r.topic)}</td>
+    <tr title="${esc(tip)}" data-area="${esc(r.topic)}">
+      <td>${esc(r.topic)}<span class="row-note"></span></td>
       <td class="num"><div class="pop-bar">${signed(r.score)} ${scoreBar(r.score ?? 0)}</div></td>
       <td class="num papers">${r.papers} ${paperChange(r)}</td>
     </tr>`;
   }).join("");
+}
+
+// Link table rows to the map: hover a row to light up its map areas, click to pin.
+// Rows with no map area (too new or too narrow for 2000-2026) get a short note.
+function linkTableToMap() {
+  if (!NET || !NET.area_map) return;
+  const counts = d3.rollup(NET.nodes, v => v.length, n => n.d_area);
+  document.querySelectorAll("#research tbody tr").forEach(tr => {
+    const area = tr.dataset.area, n = counts.get(area) || 0;
+    tr.classList.add("linked");
+    tr.querySelector(".row-note").textContent = n ? ` · ${n} on map`
+      : " · not on the map: too new or too narrow for 2000–2026";
+    tr.onmouseenter = () => highlightLiveArea(area);
+    tr.onmouseleave = () => highlightLiveArea(pinnedArea);
+    tr.onclick = () => {
+      pinnedArea = pinnedArea === area ? null : area;
+      document.querySelectorAll("#research tbody tr")
+        .forEach(t => t.classList.toggle("row-hl", t.dataset.area === pinnedArea));
+      highlightLiveArea(pinnedArea);
+    };
+  });
+}
+
+// ---------------------------------------------------------------- summary strip
+// The brief's questions: what's hidden, how we found it, what predicts, the decision.
+
+async function loadSummary() {
+  const s = await getJSON("/api/summary");
+  const cards = [];
+  const h = s.hidden;
+  if (h) cards.push(`
+    <div class="card"><span class="step">What's hidden</span>
+      <p class="big">Published trading signals keep only <b>${h.after_publication}%</b> of their in-sample return after publication.</p>
+      <p class="sub">${h.n_signals} signals: ${h.after_sample}% left once the paper's sample ends, a further drop at publication (p = ${h.publication_p}).
+      Fake publication dates don't reproduce it (${h.placebo_p === 0 ? "p < 0.0001" : "p = " + h.placebo_p}).</p>
+      ${h.crowded_area ? `<p class="sub">And where researchers are crowding in this week: <b>${esc(h.crowded_area)}</b> (${signed(h.crowded_score, 1)}).</p>` : ""}
+    </div>`);
+  if (s.inputs.length) cards.push(`
+    <div class="card"><span class="step">How we found it: free public data</span>
+      <ul class="inputs">${s.inputs.map(i => `<li><b>${i.n.toLocaleString()}</b> ${esc(i.what)} <span class="sub">${esc(i.detail)}</span></li>`).join("")}</ul>
+      <p class="sub">Market data and alternative data (papers, citations) combined.</p>
+    </div>`);
+  const p = s.predict, rows = [];
+  if (p.momentum) rows.push(`<li class="ok">Next month's factor momentum: past winners beat losers by <b>${p.momentum.spread_pct}%</b> a month (t = ${p.momentum.t}, ${p.momentum.months} months).</li>`);
+  if (p.volatility) rows.push(`<li class="ok">Next month's volatility: the model beats a simple baseline (t = ${p.volatility.t})${p.volatility.sharpe_managed ? `; volatility-managed Sharpe ${p.volatility.sharpe_managed} vs ${p.volatility.sharpe_plain}, before costs` : ""}.</li>`);
+  if (p.decay_model) rows.push(`<li class="no">Which signal will decay: ${p.decay_model.beat_baseline} of ${p.decay_model.n_models} models beat a constant guess.</li>`);
+  if (p.attention) {
+    const moved = p.attention_moved && p.attention_moved[0];
+    rows.push(`<li class="no">${moved ? `Research attention moved to ${esc(moved.area)} (${moved.before}% → ${moved.after}% of papers), but a` : "A"}ttention doesn't predict decay (ρ = ${p.attention.rho}, p = ${p.attention.p}, ${p.attention.n} signals).</li>`);
+  }
+  if (rows.length) cards.push(`
+    <div class="card"><span class="step">What we can predict, and what we can't</span><ul class="checks">${rows.join("")}</ul></div>`);
+  const d = s.decide;
+  if (d) {
+    const held = d.held.map(x => `${esc(x.signal)} ${Math.round(x.weight * 100)}%`).join(", ") || "cash";
+    cards.push(`
+    <div class="card decide"><span class="step">The decision</span>
+      <p class="big">Hold for ${esc(d.for_month)}: <b>${held}</b>.</p>
+      ${d.naive ? `<p class="sub">Trusting the paper's numbers is <b>reliably worse</b> than equal weight after costs: ${signed(d.naive.vs_equal)} Sharpe (95% CI ${signed(d.naive.vs_equal_ci[0])} to ${signed(d.naive.vs_equal_ci[1])}).</p>` : ""}
+      ${d.tilt ? `<p class="sub">Our decay rule: ${signed(d.tilt.vs_equal)} vs equal weight (${signed(d.tilt.vs_equal_ci[0])} to ${signed(d.tilt.vs_equal_ci[1])}): not proven, so we say so.</p>` : ""}
+    </div>`);
+  }
+  document.getElementById("story").innerHTML = cards.join("");
 }
 
 // ---------------------------------------------------------------- decay (A)
@@ -486,7 +649,8 @@ async function loadBriefing() {
     </div>`;
 }
 
-loadNetwork(); loadResearch(); loadDecay(); loadBacktest(); loadBriefing();
+Promise.all([loadNetwork(), loadResearch()]).then(linkTableToMap);
+loadSummary(); loadDecay(); loadBacktest(); loadBriefing();
 </script>
 </body>
 </html>
@@ -499,6 +663,7 @@ ROUTES = {
     "/api/decay": "get_decay",
     "/api/backtest": "get_backtest",
     "/api/briefing": "get_briefing",
+    "/api/summary": "get_summary",
 }
 
 

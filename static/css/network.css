@@ -107,3 +107,19 @@
 
 .toggle button + button { border-left: 1px solid var(--line); }
 .toggle button.active { background: var(--slate); color: #fff; }
+
+/* monthly map: play button, month slider, month label */
+.month-ctl { display: inline-flex; align-items: center; gap: 8px; }
+.month-ctl[hidden], .toggle[hidden] { display: none; }
+.play-btn {
+  width: 28px; height: 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--slate);
+  color: #fff;
+  font: 11px var(--font);
+  cursor: pointer;
+}
+.month-ctl input[type="range"] { width: 160px; accent-color: var(--slate); }
+.month-label { min-width: 64px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) { .month-ctl input[type="range"] { width: 110px; } }
