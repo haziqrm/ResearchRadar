@@ -88,6 +88,14 @@ __CSS_LINKS__
         <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker and darker means more shared that year; dotted means none."><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
         <span class="lg" title="Is the topic taking more than its usual share of papers that year? Compared with its own share over the five years before."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
         <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
+        <!-- shown instead of the items above while a topic is open: a hint until a cloud is
+             clicked, then the arrow key (radar.js sets .arrows-on and the hint text) -->
+        <span class="lg-flow-hint" id="lg-flow-hint"></span>
+        <span class="lg-flow" title="Arrows are direct citations between sub-topics, from the cited to the citing side. They show who builds on whom, not cause and effect.">
+          <span class="lg"><svg class="lg-arrow" viewBox="0 0 30 12" aria-hidden="true"><line x1="1" y1="6" x2="17" y2="6" stroke="#617891"/><path d="M12.5,2 L18,6 L12.5,10" stroke="#617891"/><circle cx="24" cy="6" r="4.5"/></svg>builds on</span>
+          <span class="lg"><svg class="lg-arrow" viewBox="0 0 30 12" aria-hidden="true"><circle cx="6" cy="6" r="4.5"/><line x1="12" y1="6" x2="28" y2="6" stroke="#632024"/><path d="M23.5,2 L29,6 L23.5,10" stroke="#632024"/></svg>built on by</span>
+          <span class="lg">number on an arrow = citations</span>
+        </span>
       </div>
       <div class="map-body">
         <div class="network" id="network"></div>
@@ -397,6 +405,10 @@ async function loadNetwork() {
     // the crowding score under the name, so the colour is not the only way to read it
     const score = label.append("tspan").attr("class", "net-val").attr("x", 0).attr("dy", LINE);
     const nodeTitle = node.append("title");
+    // The mouse target: an invisible circle on top, a little bigger than the visible one and
+    // never scaled on hover. If the visible circle took the mouse, its hover grow would move
+    // its edge under a still cursor and hover would flicker on and off.
+    const hit = node.append("circle").attr("class", "hit");
 
     // stop each line at the edge of both circles
     const lineEnds = l => {
@@ -425,6 +437,7 @@ async function loadNetwork() {
       net.nodes.forEach(d => { d.r = radius(countFor(d, year)); });
       const t = sel => ms ? sel.transition().duration(ms) : sel;
       t(circle).attr("r", d => d.r).style("fill", d => crowdColour(crowdFor(d, year)));
+      t(hit).attr("r", d => d.r + 6);
       t(label).attr("y", d => d.r + 20);  // clears the dashed forecast ring (r + 4)
       score.text(d => { const c = crowdFor(d, year);
         return c == null ? "" : `${c > 0.05 ? "+" : c < -0.05 ? "−" : ""}${Math.abs(c).toFixed(1)} SD`; });

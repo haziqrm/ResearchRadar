@@ -178,3 +178,28 @@
 /* Person A's dashed "predicted to grow" ring sits on top of the circle: keep it hollow,
    or it hides the crowding colour underneath */
 .net-node circle.next-ring { fill: none; filter: none; stroke: var(--navy); stroke-width: 2; }
+
+/* Only the invisible .hit circle takes the mouse (html_main.py). It never changes size on
+   hover, so the hover grow on the visible circle can't move the edge under the cursor.
+   !important keeps every hover, focus and path rule above from styling it. */
+.net-node circle { pointer-events: none; }
+.net-node circle.hit {
+  fill: transparent !important;
+  stroke: none !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: all !important;
+}
+
+/* While a topic is open the overview legend doesn't apply, so the same row shows the
+   arrow key instead (same height, so the map doesn't resize). */
+.lg-flow, .lg-flow-hint { display: none; }
+.lg-flow { align-items: center; gap: 6px 18px; flex-wrap: wrap; }
+body.topic-open .net-legend > .lg { display: none; }
+body.topic-open .net-legend:not(.arrows-on) > .lg-flow-hint { display: inline; }
+body.topic-open .net-legend.arrows-on > .lg-flow { display: inline-flex; }
+.lg-flow .lg { white-space: nowrap; cursor: default; }
+.lg-arrow { width: 30px; height: 12px; flex: none; }
+.lg-arrow line, .lg-arrow path { fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.lg-arrow circle { fill: #b9b2a8; }

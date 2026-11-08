@@ -62,7 +62,6 @@ body.topic-open #dock { display: flex; flex-direction: column; }
 .flow { cursor: help; transition: opacity 0.3s; }
 .flow:hover .flow-line { stroke-opacity: 1; }
 .flow-count { font-size: 11px; font-weight: 700; text-anchor: middle; paint-order: stroke; stroke: var(--panel); stroke-width: 4px; stroke-linejoin: round; }
-.flow-key { font-weight: 600; }
 
 /* "you can click this" on the overview map */
 .map-hint {

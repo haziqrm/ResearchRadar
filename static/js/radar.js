@@ -41,7 +41,7 @@
   const TOP = BAR + 16;
   const WINDOW = 5;  // islands are sized by their papers in the last five years
   const NAMED = 5;   // clouds named on the map before one is picked; the rest on hover
-  const IN_COLOUR = "#617891", OUT_COLOUR = "#632024";  // builds on (slate) / feeds (oxblood)
+  const IN_COLOUR = "#617891", OUT_COLOUR = "#632024";  // builds on (slate) / built on by (oxblood); key in html_main.py
   const overlay = d3.select(box).append("div").attr("class", "topic-map");
   const bar = overlay.append("div").attr("class", "topic-bar");
   bar.append("button").attr("type", "button").attr("class", "path-btn back-btn").text("← All topics")
@@ -373,10 +373,15 @@
     // only the focused island's links are drawn; none while a paper's trail is shown
     const fs = zoom.pinned != null ? [] : focusFlows(t, geo, year, t.y0, sel);
     const partners = new Set(fs.map(f => f.other));
-    const key = `<span class="flow-key"><span style="color:${IN_COLOUR}">← builds on</span> · <span style="color:${OUT_COLOUR}">feeds →</span></span>`;
-    barWindow.html(`papers from ${lo}–${year} · `
-      + (sel == null ? "click a cloud to see who it builds on and feeds"
-        : fs.length ? key : "no citations between this and other sub-topics yet"));
+    // The legend row above (html_main.py) shows a hint until a cloud with arrows is
+    // picked, then the arrow key, so the key appears exactly when the arrows do.
+    barWindow.text(`papers from ${lo}–${year}`);
+    const legend = document.querySelector(".net-legend");
+    if (legend) legend.classList.toggle("arrows-on", sel != null && fs.length > 0);
+    const hintEl = document.getElementById("lg-flow-hint");
+    if (hintEl) hintEl.textContent = sel == null ? "Click a cloud to see what it builds on and what builds on it"
+      : zoom.pinned != null ? "Showing one paper's citation trail. Click it again to go back to the arrows"
+      : "No citations between this and other sub-topics yet";
 
     // outlines from the papers in the window, at their current (scaled) positions; only
     // real sub-topics get an outline and a name (the grey "other" papers stay unnamed)
@@ -535,7 +540,7 @@
           <h3>Suggested reading${sel != null ? " in this sub-topic" : ""}</h3>
           ${seeds.length ? `<ol class="seed-list">${seeds.map(p => `<li>${esc(p.t)} <span class="sub">(${p.y})</span></li>`).join("")}</ol>`
             : `<div class="sub">No suggested papers here.</div>`}
-          <div class="sub key-line" title="Click a cloud to see its arrows: direct citations between it and other sub-topics, pointing from the cited to the citing side. Slate arrows come in (it builds on them), oxblood arrows go out (they build on it); the number is how many citations. They show who builds on whom, not cause and effect.">How to read the arrows ⓘ</div>
+          <div class="sub key-line" title="Click a cloud to see its arrows: direct citations between it and other sub-topics, pointing from the cited to the citing side. Slate arrows point in (it builds on them), oxblood arrows point out (it is built on by them); the number is how many citations. They show who builds on whom, not cause and effect.">How to read the arrows ⓘ</div>
         </div>
       </div>`;
     if (sel != null) timeline(document.getElementById("zoom-timeline"), t, sel, colour);
