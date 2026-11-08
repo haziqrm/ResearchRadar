@@ -12,7 +12,13 @@ signals stop working, using only free public data.
 | C | Frontend and pitch | `src/app/` | Streamlit app, demo |
 | D | Live layer and decision | `src/live/` | `crowding.csv`, `backtest_results.csv`, `briefing.txt/.mp3` |
 
-Full per-person plans: [docs/roadmap/](docs/roadmap/). Challenge briefs we're judged against: [docs/challenges/](docs/challenges/).
+Full per-person plans: [docs/roadmap/](docs/roadmap/). Where D's outputs differ from the plan (crowding is a z-score, new files, arXiv volume): [docs/live_layer.md](docs/live_layer.md). Challenge briefs we're judged against: [docs/challenges/](docs/challenges/).
+
+## Measured results
+
+- **Tag accuracy (D):** Gemini's area tags on arXiv papers were 92% correct (46 of 50) in a
+  random sample checked by hand. Signal tags haven't been checked: none of the 50 sampled
+  papers had one. Details: [docs/live_layer.md](docs/live_layer.md#tag-accuracy-d4).
 
 ## Repo rules (to avoid merge conflicts)
 

@@ -1,0 +1,585 @@
+date,area,paper_count,crowding_score
+2025-06-16,Factor and anomaly research,0,0.66
+2025-06-16,Machine learning for returns,1,-0.01
+2025-06-16,Market microstructure,1,-0.09
+2025-06-16,Portfolio and risk,4,-0.6
+2025-06-16,Derivatives and volatility,5,0.83
+2025-06-16,Alternative data and text,2,0.45
+2025-06-16,Crypto and DeFi,0,0.21
+2025-06-16,LLMs in finance,1,-0.77
+2025-06-23,Factor and anomaly research,0,-0.29
+2025-06-23,Machine learning for returns,2,-0.79
+2025-06-23,Market microstructure,3,-0.24
+2025-06-23,Portfolio and risk,12,0.04
+2025-06-23,Derivatives and volatility,4,0.21
+2025-06-23,Alternative data and text,2,0.77
+2025-06-23,Crypto and DeFi,5,1.21
+2025-06-23,LLMs in finance,1,-0.68
+2025-06-30,Factor and anomaly research,0,-0.91
+2025-06-30,Machine learning for returns,3,-1.02
+2025-06-30,Market microstructure,1,-0.39
+2025-06-30,Portfolio and risk,8,0.41
+2025-06-30,Derivatives and volatility,3,0.11
+2025-06-30,Alternative data and text,2,2.16
+2025-06-30,Crypto and DeFi,2,1.33
+2025-06-30,LLMs in finance,0,-1.32
+2025-07-07,Factor and anomaly research,0,-1.62
+2025-07-07,Machine learning for returns,4,-0.59
+2025-07-07,Market microstructure,3,-1.23
+2025-07-07,Portfolio and risk,12,1.21
+2025-07-07,Derivatives and volatility,4,-0.41
+2025-07-07,Alternative data and text,1,2.7
+2025-07-07,Crypto and DeFi,4,0.63
+2025-07-07,LLMs in finance,4,-0.75
+2025-07-14,Factor and anomaly research,1,-1.1
+2025-07-14,Machine learning for returns,1,-0.89
+2025-07-14,Market microstructure,2,-1.23
+2025-07-14,Portfolio and risk,8,1.32
+2025-07-14,Derivatives and volatility,7,-0.43
+2025-07-14,Alternative data and text,0,1.05
+2025-07-14,Crypto and DeFi,5,1.96
+2025-07-14,LLMs in finance,0,-1.33
+2025-07-21,Factor and anomaly research,0,-1.06
+2025-07-21,Machine learning for returns,4,-0.31
+2025-07-21,Market microstructure,2,-1.5
+2025-07-21,Portfolio and risk,10,0.83
+2025-07-21,Derivatives and volatility,7,0.24
+2025-07-21,Alternative data and text,1,0.37
+2025-07-21,Crypto and DeFi,1,0.54
+2025-07-21,LLMs in finance,5,0.05
+2025-07-28,Factor and anomaly research,0,-1.05
+2025-07-28,Machine learning for returns,2,-0.67
+2025-07-28,Market microstructure,2,-1.24
+2025-07-28,Portfolio and risk,5,0.15
+2025-07-28,Derivatives and volatility,6,0.84
+2025-07-28,Alternative data and text,1,-0.31
+2025-07-28,Crypto and DeFi,3,0.78
+2025-07-28,LLMs in finance,2,0.74
+2025-08-04,Factor and anomaly research,3,0.8
+2025-08-04,Machine learning for returns,2,-1.27
+2025-08-04,Market microstructure,5,-0.73
+2025-08-04,Portfolio and risk,8,-0.68
+2025-08-04,Derivatives and volatility,5,1.04
+2025-08-04,Alternative data and text,0,-0.86
+2025-08-04,Crypto and DeFi,8,1.89
+2025-08-04,LLMs in finance,3,0.28
+2025-08-11,Factor and anomaly research,0,0.07
+2025-08-11,Machine learning for returns,2,-1.11
+2025-08-11,Market microstructure,3,-0.61
+2025-08-11,Portfolio and risk,12,-0.33
+2025-08-11,Derivatives and volatility,5,0.26
+2025-08-11,Alternative data and text,2,0.14
+2025-08-11,Crypto and DeFi,4,1.23
+2025-08-11,LLMs in finance,2,0.86
+2025-08-18,Factor and anomaly research,2,1.31
+2025-08-18,Machine learning for returns,4,-1.14
+2025-08-18,Market microstructure,2,-0.58
+2025-08-18,Portfolio and risk,10,-0.39
+2025-08-18,Derivatives and volatility,9,0.61
+2025-08-18,Alternative data and text,1,0.12
+2025-08-18,Crypto and DeFi,2,1.59
+2025-08-18,LLMs in finance,1,-0.58
+2025-08-25,Factor and anomaly research,3,2.93
+2025-08-25,Machine learning for returns,7,-0.09
+2025-08-25,Market microstructure,6,0.2
+2025-08-25,Portfolio and risk,5,-0.79
+2025-08-25,Derivatives and volatility,4,-0.23
+2025-08-25,Alternative data and text,1,-0.05
+2025-08-25,Crypto and DeFi,0,0.39
+2025-08-25,LLMs in finance,4,-0.18
+2025-09-01,Factor and anomaly research,3,2.62
+2025-09-01,Machine learning for returns,4,0.5
+2025-09-01,Market microstructure,4,-0.08
+2025-09-01,Portfolio and risk,9,-0.57
+2025-09-01,Derivatives and volatility,4,-0.39
+2025-09-01,Alternative data and text,2,1.03
+2025-09-01,Crypto and DeFi,5,-0.62
+2025-09-01,LLMs in finance,3,-0.19
+2025-09-08,Factor and anomaly research,0,2.88
+2025-09-08,Machine learning for returns,0,0.23
+2025-09-08,Market microstructure,3,0.13
+2025-09-08,Portfolio and risk,12,-0.33
+2025-09-08,Derivatives and volatility,3,-0.56
+2025-09-08,Alternative data and text,0,0.05
+2025-09-08,Crypto and DeFi,3,-0.76
+2025-09-08,LLMs in finance,3,0.31
+2025-09-15,Factor and anomaly research,1,2.21
+2025-09-15,Machine learning for returns,3,0.02
+2025-09-15,Market microstructure,3,0.52
+2025-09-15,Portfolio and risk,10,-0.23
+2025-09-15,Derivatives and volatility,9,-0.56
+2025-09-15,Alternative data and text,0,-0.42
+2025-09-15,Crypto and DeFi,2,-0.67
+2025-09-15,LLMs in finance,1,0.43
+2025-09-22,Factor and anomaly research,0,0.33
+2025-09-22,Machine learning for returns,2,-1.43
+2025-09-22,Market microstructure,3,-0.38
+2025-09-22,Portfolio and risk,17,1.78
+2025-09-22,Derivatives and volatility,4,-0.56
+2025-09-22,Alternative data and text,1,-0.44
+2025-09-22,Crypto and DeFi,2,-0.02
+2025-09-22,LLMs in finance,2,-0.3
+2025-09-29,Factor and anomaly research,1,-0.88
+2025-09-29,Machine learning for returns,0,-2.53
+2025-09-29,Market microstructure,1,-1.22
+2025-09-29,Portfolio and risk,15,2.67
+2025-09-29,Derivatives and volatility,9,0.47
+2025-09-29,Alternative data and text,4,0.48
+2025-09-29,Crypto and DeFi,1,-1.26
+2025-09-29,LLMs in finance,5,0.28
+2025-10-06,Factor and anomaly research,3,0.36
+2025-10-06,Machine learning for returns,3,-2.18
+2025-10-06,Market microstructure,3,-1.77
+2025-10-06,Portfolio and risk,14,1.62
+2025-10-06,Derivatives and volatility,9,0.83
+2025-10-06,Alternative data and text,0,0.15
+2025-10-06,Crypto and DeFi,9,-0.21
+2025-10-06,LLMs in finance,5,0.26
+2025-10-13,Factor and anomaly research,3,1.26
+2025-10-13,Machine learning for returns,3,-2.23
+2025-10-13,Market microstructure,4,-1.59
+2025-10-13,Portfolio and risk,6,0.86
+2025-10-13,Derivatives and volatility,7,0.24
+2025-10-13,Alternative data and text,3,1.56
+2025-10-13,Crypto and DeFi,3,0.0
+2025-10-13,LLMs in finance,3,0.81
+2025-10-20,Factor and anomaly research,3,2.68
+2025-10-20,Machine learning for returns,4,-1.82
+2025-10-20,Market microstructure,2,-1.92
+2025-10-20,Portfolio and risk,12,-0.25
+2025-10-20,Derivatives and volatility,8,0.85
+2025-10-20,Alternative data and text,1,1.46
+2025-10-20,Crypto and DeFi,2,-0.09
+2025-10-20,LLMs in finance,4,1.27
+2025-10-27,Factor and anomaly research,2,3.28
+2025-10-27,Machine learning for returns,1,-1.36
+2025-10-27,Market microstructure,5,-0.76
+2025-10-27,Portfolio and risk,13,-0.36
+2025-10-27,Derivatives and volatility,6,0.42
+2025-10-27,Alternative data and text,0,-0.45
+2025-10-27,Crypto and DeFi,2,0.4
+2025-10-27,LLMs in finance,2,0.47
+2025-11-03,Factor and anomaly research,1,2.35
+2025-11-03,Machine learning for returns,4,-0.85
+2025-11-03,Market microstructure,5,0.02
+2025-11-03,Portfolio and risk,14,0.03
+2025-11-03,Derivatives and volatility,6,0.14
+2025-11-03,Alternative data and text,0,-0.25
+2025-11-03,Crypto and DeFi,3,-1.11
+2025-11-03,LLMs in finance,5,0.65
+2025-11-10,Factor and anomaly research,2,1.75
+2025-11-10,Machine learning for returns,5,-0.27
+2025-11-10,Market microstructure,1,-0.69
+2025-11-10,Portfolio and risk,14,1.42
+2025-11-10,Derivatives and volatility,7,0.2
+2025-11-10,Alternative data and text,0,-1.7
+2025-11-10,Crypto and DeFi,1,-1.59
+2025-11-10,LLMs in finance,0,-0.19
+2025-11-17,Factor and anomaly research,2,1.23
+2025-11-17,Machine learning for returns,4,-0.16
+2025-11-17,Market microstructure,6,0.51
+2025-11-17,Portfolio and risk,8,1.02
+2025-11-17,Derivatives and volatility,4,-0.46
+2025-11-17,Alternative data and text,1,-1.66
+2025-11-17,Crypto and DeFi,4,-0.92
+2025-11-17,LLMs in finance,3,-0.41
+2025-11-24,Factor and anomaly research,1,0.62
+2025-11-24,Machine learning for returns,2,0.05
+2025-11-24,Market microstructure,1,-0.67
+2025-11-24,Portfolio and risk,15,1.06
+2025-11-24,Derivatives and volatility,5,-0.8
+2025-11-24,Alternative data and text,1,-1.2
+2025-11-24,Crypto and DeFi,6,0.1
+2025-11-24,LLMs in finance,4,0.1
+2025-12-01,Factor and anomaly research,0,0.16
+2025-12-01,Machine learning for returns,4,0.03
+2025-12-01,Market microstructure,5,-0.71
+2025-12-01,Portfolio and risk,9,0.23
+2025-12-01,Derivatives and volatility,10,-0.03
+2025-12-01,Alternative data and text,3,0.26
+2025-12-01,Crypto and DeFi,3,0.09
+2025-12-01,LLMs in finance,5,0.02
+2025-12-08,Factor and anomaly research,1,-0.5
+2025-12-08,Machine learning for returns,5,-0.32
+2025-12-08,Market microstructure,4,-0.2
+2025-12-08,Portfolio and risk,11,-0.79
+2025-12-08,Derivatives and volatility,10,0.11
+2025-12-08,Alternative data and text,1,0.6
+2025-12-08,Crypto and DeFi,2,0.12
+2025-12-08,LLMs in finance,7,1.8
+2025-12-15,Factor and anomaly research,1,-0.86
+2025-12-15,Machine learning for returns,4,-0.08
+2025-12-15,Market microstructure,3,-0.76
+2025-12-15,Portfolio and risk,9,-0.19
+2025-12-15,Derivatives and volatility,5,0.69
+2025-12-15,Alternative data and text,0,0.28
+2025-12-15,Crypto and DeFi,1,-0.47
+2025-12-15,LLMs in finance,0,1.2
+2025-12-22,Factor and anomaly research,3,0.09
+2025-12-22,Machine learning for returns,2,0.06
+2025-12-22,Market microstructure,1,-0.62
+2025-12-22,Portfolio and risk,13,-0.39
+2025-12-22,Derivatives and volatility,5,0.85
+2025-12-22,Alternative data and text,3,1.29
+2025-12-22,Crypto and DeFi,4,-0.98
+2025-12-22,LLMs in finance,1,0.37
+2025-12-29,Factor and anomaly research,0,0.25
+2025-12-29,Machine learning for returns,2,-0.27
+2025-12-29,Market microstructure,1,-1.49
+2025-12-29,Portfolio and risk,12,0.56
+2025-12-29,Derivatives and volatility,6,0.31
+2025-12-29,Alternative data and text,1,0.39
+2025-12-29,Crypto and DeFi,5,-0.2
+2025-12-29,LLMs in finance,4,0.3
+2026-01-05,Factor and anomaly research,2,0.78
+2026-01-05,Machine learning for returns,1,-1.19
+2026-01-05,Market microstructure,9,0.02
+2026-01-05,Portfolio and risk,14,1.26
+2026-01-05,Derivatives and volatility,3,-0.95
+2026-01-05,Alternative data and text,1,0.53
+2026-01-05,Crypto and DeFi,2,-0.05
+2026-01-05,LLMs in finance,4,-0.5
+2026-01-12,Factor and anomaly research,0,0.19
+2026-01-12,Machine learning for returns,5,-1.32
+2026-01-12,Market microstructure,2,-0.7
+2026-01-12,Portfolio and risk,14,1.13
+2026-01-12,Derivatives and volatility,9,-0.72
+2026-01-12,Alternative data and text,0,0.24
+2026-01-12,Crypto and DeFi,6,0.84
+2026-01-12,LLMs in finance,3,-0.01
+2026-01-19,Factor and anomaly research,1,-0.78
+2026-01-19,Machine learning for returns,8,0.49
+2026-01-19,Market microstructure,4,0.29
+2026-01-19,Portfolio and risk,4,-0.0
+2026-01-19,Derivatives and volatility,3,-0.97
+2026-01-19,Alternative data and text,0,-1.21
+2026-01-19,Crypto and DeFi,4,0.98
+2026-01-19,LLMs in finance,3,0.78
+2026-01-26,Factor and anomaly research,2,0.16
+2026-01-26,Machine learning for returns,3,0.75
+2026-01-26,Market microstructure,5,1.38
+2026-01-26,Portfolio and risk,9,-0.53
+2026-01-26,Derivatives and volatility,6,-0.99
+2026-01-26,Alternative data and text,0,-1.67
+2026-01-26,Crypto and DeFi,5,0.89
+2026-01-26,LLMs in finance,2,0.12
+2026-02-02,Factor and anomaly research,1,-0.25
+2026-02-02,Machine learning for returns,6,2.29
+2026-02-02,Market microstructure,1,-0.64
+2026-02-02,Portfolio and risk,10,-0.93
+2026-02-02,Derivatives and volatility,7,0.07
+2026-02-02,Alternative data and text,0,-2.11
+2026-02-02,Crypto and DeFi,1,0.82
+2026-02-02,LLMs in finance,5,0.51
+2026-02-09,Factor and anomaly research,2,1.13
+2026-02-09,Machine learning for returns,4,2.63
+2026-02-09,Market microstructure,0,-0.64
+2026-02-09,Portfolio and risk,6,-1.4
+2026-02-09,Derivatives and volatility,2,-0.75
+2026-02-09,Alternative data and text,0,-1.95
+2026-02-09,Crypto and DeFi,4,0.77
+2026-02-09,LLMs in finance,4,1.34
+2026-02-16,Factor and anomaly research,0,0.5
+2026-02-16,Machine learning for returns,3,0.85
+2026-02-16,Market microstructure,1,-1.58
+2026-02-16,Portfolio and risk,10,-0.54
+2026-02-16,Derivatives and volatility,8,0.19
+2026-02-16,Alternative data and text,4,0.08
+2026-02-16,Crypto and DeFi,3,0.31
+2026-02-16,LLMs in finance,2,0.85
+2026-02-23,Factor and anomaly research,2,0.66
+2026-02-23,Machine learning for returns,4,1.37
+2026-02-23,Market microstructure,6,-1.19
+2026-02-23,Portfolio and risk,9,-0.27
+2026-02-23,Derivatives and volatility,1,-0.68
+2026-02-23,Alternative data and text,0,0.18
+2026-02-23,Crypto and DeFi,4,0.09
+2026-02-23,LLMs in finance,1,0.71
+2026-03-02,Factor and anomaly research,0,0.08
+2026-03-02,Machine learning for returns,2,0.07
+2026-03-02,Market microstructure,3,-0.69
+2026-03-02,Portfolio and risk,19,1.0
+2026-03-02,Derivatives and volatility,5,-1.34
+2026-03-02,Alternative data and text,1,0.64
+2026-03-02,Crypto and DeFi,4,0.9
+2026-03-02,LLMs in finance,1,-0.68
+2026-03-09,Factor and anomaly research,2,-0.46
+2026-03-09,Machine learning for returns,4,-0.79
+2026-03-09,Market microstructure,6,0.18
+2026-03-09,Portfolio and risk,22,1.73
+2026-03-09,Derivatives and volatility,9,-0.9
+2026-03-09,Alternative data and text,0,0.16
+2026-03-09,Crypto and DeFi,2,-0.54
+2026-03-09,LLMs in finance,7,-0.55
+2026-03-16,Factor and anomaly research,1,-0.06
+2026-03-16,Machine learning for returns,4,-0.67
+2026-03-16,Market microstructure,1,0.07
+2026-03-16,Portfolio and risk,16,2.28
+2026-03-16,Derivatives and volatility,4,-1.9
+2026-03-16,Alternative data and text,2,-0.91
+2026-03-16,Crypto and DeFi,3,-0.73
+2026-03-16,LLMs in finance,6,0.49
+2026-03-23,Factor and anomaly research,2,-0.33
+2026-03-23,Machine learning for returns,2,-1.5
+2026-03-23,Market microstructure,2,-1.24
+2026-03-23,Portfolio and risk,20,3.07
+2026-03-23,Derivatives and volatility,8,-0.88
+2026-03-23,Alternative data and text,0,-0.98
+2026-03-23,Crypto and DeFi,4,-0.98
+2026-03-23,LLMs in finance,1,0.24
+2026-03-30,Factor and anomaly research,1,0.03
+2026-03-30,Machine learning for returns,4,-1.06
+2026-03-30,Market microstructure,2,-1.46
+2026-03-30,Portfolio and risk,9,1.4
+2026-03-30,Derivatives and volatility,11,0.1
+2026-03-30,Alternative data and text,2,-0.64
+2026-03-30,Crypto and DeFi,5,-0.9
+2026-03-30,LLMs in finance,5,1.26
+2026-04-06,Factor and anomaly research,5,1.55
+2026-04-06,Machine learning for returns,5,-0.33
+2026-04-06,Market microstructure,2,-2.13
+2026-04-06,Portfolio and risk,14,1.08
+2026-04-06,Derivatives and volatility,2,-0.6
+2026-04-06,Alternative data and text,3,0.99
+2026-04-06,Crypto and DeFi,2,-0.41
+2026-04-06,LLMs in finance,2,0.28
+2026-04-13,Factor and anomaly research,4,2.92
+2026-04-13,Machine learning for returns,4,-0.16
+2026-04-13,Market microstructure,3,-1.45
+2026-04-13,Portfolio and risk,11,0.67
+2026-04-13,Derivatives and volatility,1,-0.91
+2026-04-13,Alternative data and text,2,1.0
+2026-04-13,Crypto and DeFi,2,-0.54
+2026-04-13,LLMs in finance,4,-0.19
+2026-04-20,Factor and anomaly research,1,2.52
+2026-04-20,Machine learning for returns,1,-0.25
+2026-04-20,Market microstructure,7,-0.02
+2026-04-20,Portfolio and risk,10,-0.66
+2026-04-20,Derivatives and volatility,7,-0.99
+2026-04-20,Alternative data and text,1,1.64
+2026-04-20,Crypto and DeFi,2,-0.89
+2026-04-20,LLMs in finance,6,1.4
+2026-04-27,Factor and anomaly research,2,2.81
+2026-04-27,Machine learning for returns,3,-0.66
+2026-04-27,Market microstructure,8,1.53
+2026-04-27,Portfolio and risk,13,-0.24
+2026-04-27,Derivatives and volatility,8,-1.81
+2026-04-27,Alternative data and text,2,1.46
+2026-04-27,Crypto and DeFi,5,-1.06
+2026-04-27,LLMs in finance,3,0.66
+2026-05-04,Factor and anomaly research,4,2.1
+2026-05-04,Machine learning for returns,5,-0.66
+2026-05-04,Market microstructure,3,1.83
+2026-05-04,Portfolio and risk,13,-0.47
+2026-05-04,Derivatives and volatility,5,-1.16
+2026-05-04,Alternative data and text,1,0.45
+2026-05-04,Crypto and DeFi,3,-0.85
+2026-05-04,LLMs in finance,2,0.65
+2026-05-11,Factor and anomaly research,0,0.11
+2026-05-11,Machine learning for returns,8,0.0
+2026-05-11,Market microstructure,3,1.4
+2026-05-11,Portfolio and risk,12,-0.99
+2026-05-11,Derivatives and volatility,9,-0.04
+2026-05-11,Alternative data and text,1,-0.27
+2026-05-11,Crypto and DeFi,8,0.32
+2026-05-11,LLMs in finance,4,0.3
+2026-05-18,Factor and anomaly research,1,0.2
+2026-05-18,Machine learning for returns,5,1.26
+2026-05-18,Market microstructure,5,0.94
+2026-05-18,Portfolio and risk,5,-1.33
+2026-05-18,Derivatives and volatility,6,0.03
+2026-05-18,Alternative data and text,0,-0.59
+2026-05-18,Crypto and DeFi,3,0.86
+2026-05-18,LLMs in finance,3,-0.48
+2026-05-25,Factor and anomaly research,0,-0.73
+2026-05-25,Machine learning for returns,6,1.87
+2026-05-25,Market microstructure,5,-0.06
+2026-05-25,Portfolio and risk,14,-1.43
+2026-05-25,Derivatives and volatility,14,0.95
+2026-05-25,Alternative data and text,0,-1.56
+2026-05-25,Crypto and DeFi,5,0.58
+2026-05-25,LLMs in finance,7,0.38
+2026-06-01,Factor and anomaly research,1,-2.12
+2026-06-01,Machine learning for returns,6,1.58
+2026-06-01,Market microstructure,6,0.27
+2026-06-01,Portfolio and risk,14,-2.0
+2026-06-01,Derivatives and volatility,7,0.75
+2026-06-01,Alternative data and text,3,-0.91
+2026-06-01,Crypto and DeFi,8,1.34
+2026-06-01,LLMs in finance,8,1.49
+2026-06-08,Factor and anomaly research,1,-1.69
+2026-06-08,Machine learning for returns,5,0.89
+2026-06-08,Market microstructure,5,0.87
+2026-06-08,Portfolio and risk,14,-1.63
+2026-06-08,Derivatives and volatility,10,1.05
+2026-06-08,Alternative data and text,0,-1.22
+2026-06-08,Crypto and DeFi,3,0.19
+2026-06-08,LLMs in finance,4,1.56
+2026-06-15,Factor and anomaly research,1,-1.78
+2026-06-15,Machine learning for returns,1,-0.32
+2026-06-15,Market microstructure,3,0.09
+2026-06-15,Portfolio and risk,14,-0.87
+2026-06-15,Derivatives and volatility,8,0.91
+2026-06-15,Alternative data and text,0,-1.28
+2026-06-15,Crypto and DeFi,7,0.87
+2026-06-15,LLMs in finance,5,1.71
+2026-06-22,Factor and anomaly research,1,-1.4
+2026-06-22,Machine learning for returns,3,-1.07
+2026-06-22,Market microstructure,5,0.01
+2026-06-22,Portfolio and risk,20,-0.24
+2026-06-22,Derivatives and volatility,16,1.03
+2026-06-22,Alternative data and text,0,-1.24
+2026-06-22,Crypto and DeFi,5,0.76
+2026-06-22,LLMs in finance,5,1.01
+2026-06-29,Factor and anomaly research,4,-0.12
+2026-06-29,Machine learning for returns,4,-1.25
+2026-06-29,Market microstructure,8,0.74
+2026-06-29,Portfolio and risk,12,0.06
+2026-06-29,Derivatives and volatility,3,0.81
+2026-06-29,Alternative data and text,1,-2.01
+2026-06-29,Crypto and DeFi,4,0.07
+2026-06-29,LLMs in finance,5,0.5
+2026-07-06,Factor and anomaly research,4,0.79
+2026-07-06,Machine learning for returns,4,-1.77
+2026-07-06,Market microstructure,9,1.38
+2026-07-06,Portfolio and risk,19,0.1
+2026-07-06,Derivatives and volatility,9,0.17
+2026-07-06,Alternative data and text,1,-1.7
+2026-07-06,Crypto and DeFi,7,0.75
+2026-07-06,LLMs in finance,2,-0.29
+2026-07-13,Factor and anomaly research,0,0.47
+2026-07-13,Machine learning for returns,2,-1.45
+2026-07-13,Market microstructure,4,1.68
+2026-07-13,Portfolio and risk,15,0.29
+2026-07-13,Derivatives and volatility,8,0.26
+2026-07-13,Alternative data and text,2,-0.78
+2026-07-13,Crypto and DeFi,4,0.02
+2026-07-13,LLMs in finance,2,-0.99
+2026-07-20,Factor and anomaly research,2,1.29
+2026-07-20,Machine learning for returns,3,-0.9
+2026-07-20,Market microstructure,2,1.69
+2026-07-20,Portfolio and risk,14,0.66
+2026-07-20,Derivatives and volatility,3,-1.36
+2026-07-20,Alternative data and text,1,0.07
+2026-07-20,Crypto and DeFi,5,0.72
+2026-07-20,LLMs in finance,0,-1.74
+2026-07-27,Factor and anomaly research,2,0.07
+2026-07-27,Machine learning for returns,3,-1.52
+2026-07-27,Market microstructure,7,0.77
+2026-07-27,Portfolio and risk,14,0.06
+2026-07-27,Derivatives and volatility,19,0.88
+2026-07-27,Alternative data and text,3,0.75
+2026-07-27,Crypto and DeFi,8,1.13
+2026-07-27,LLMs in finance,5,-2.15
+2026-08-03,Factor and anomaly research,0,-1.32
+2026-08-03,Machine learning for returns,2,-1.76
+2026-08-03,Market microstructure,5,0.0
+2026-08-03,Portfolio and risk,19,0.51
+2026-08-03,Derivatives and volatility,6,0.69
+2026-08-03,Alternative data and text,2,1.38
+2026-08-03,Crypto and DeFi,5,0.92
+2026-08-03,LLMs in finance,6,-0.92
+2026-08-10,Factor and anomaly research,1,-1.06
+2026-08-10,Machine learning for returns,6,-1.03
+2026-08-10,Market microstructure,2,-0.73
+2026-08-10,Portfolio and risk,15,-0.01
+2026-08-10,Derivatives and volatility,11,0.86
+2026-08-10,Alternative data and text,3,1.54
+2026-08-10,Crypto and DeFi,7,1.38
+2026-08-10,LLMs in finance,3,-0.92
+2026-08-17,Factor and anomaly research,0,-1.83
+2026-08-17,Machine learning for returns,1,-1.51
+2026-08-17,Market microstructure,3,-0.55
+2026-08-17,Portfolio and risk,11,-0.52
+2026-08-17,Derivatives and volatility,10,2.07
+2026-08-17,Alternative data and text,1,1.51
+2026-08-17,Crypto and DeFi,3,0.76
+2026-08-17,LLMs in finance,3,-0.14
+2026-08-24,Factor and anomaly research,0,-2.31
+2026-08-24,Machine learning for returns,2,-1.2
+2026-08-24,Market microstructure,5,-0.46
+2026-08-24,Portfolio and risk,13,0.51
+2026-08-24,Derivatives and volatility,10,1.3
+2026-08-24,Alternative data and text,0,0.55
+2026-08-24,Crypto and DeFi,2,-0.01
+2026-08-24,LLMs in finance,4,0.21
+2026-08-31,Factor and anomaly research,1,-1.88
+2026-08-31,Machine learning for returns,4,-0.72
+2026-08-31,Market microstructure,8,0.25
+2026-08-31,Portfolio and risk,11,-0.75
+2026-08-31,Derivatives and volatility,14,2.7
+2026-08-31,Alternative data and text,0,-0.45
+2026-08-31,Crypto and DeFi,4,-0.22
+2026-08-31,LLMs in finance,5,-0.13
+2026-09-07,Factor and anomaly research,3,-1.07
+2026-09-07,Machine learning for returns,5,-0.9
+2026-09-07,Market microstructure,9,2.18
+2026-09-07,Portfolio and risk,10,-1.18
+2026-09-07,Derivatives and volatility,12,3.05
+2026-09-07,Alternative data and text,0,-1.76
+2026-09-07,Crypto and DeFi,3,-1.1
+2026-09-07,LLMs in finance,1,-0.52
+2026-09-14,Factor and anomaly research,2,-0.34
+2026-09-14,Machine learning for returns,4,-0.25
+2026-09-14,Market microstructure,9,3.39
+2026-09-14,Portfolio and risk,7,-2.01
+2026-09-14,Derivatives and volatility,9,2.55
+2026-09-14,Alternative data and text,1,-1.82
+2026-09-14,Crypto and DeFi,4,-1.03
+2026-09-14,LLMs in finance,3,-0.71
+2026-09-21,Factor and anomaly research,1,-0.07
+2026-09-21,Machine learning for returns,5,0.28
+2026-09-21,Market microstructure,6,3.2
+2026-09-21,Portfolio and risk,15,-2.34
+2026-09-21,Derivatives and volatility,10,1.91
+2026-09-21,Alternative data and text,2,-1.04
+2026-09-21,Crypto and DeFi,3,-1.12
+2026-09-21,LLMs in finance,8,-0.03
+2026-09-28,Factor and anomaly research,5,1.3
+2026-09-28,Machine learning for returns,5,0.25
+2026-09-28,Market microstructure,8,2.71
+2026-09-28,Portfolio and risk,15,-2.29
+2026-09-28,Derivatives and volatility,10,0.64
+2026-09-28,Alternative data and text,3,0.18
+2026-09-28,Crypto and DeFi,6,-0.9
+2026-09-28,LLMs in finance,8,0.37
+2026-10-05,Factor and anomaly research,0,-0.01
+2026-10-05,Machine learning for returns,5,-0.02
+2026-10-05,Market microstructure,8,2.11
+2026-10-05,Portfolio and risk,21,-1.19
+2026-10-05,Derivatives and volatility,8,-0.38
+2026-10-05,Alternative data and text,1,0.5
+2026-10-05,Crypto and DeFi,3,-1.04
+2026-10-05,LLMs in finance,6,1.4
+2026-10-12,Factor and anomaly research,1,-0.59
+2026-10-12,Machine learning for returns,1,-1.02
+2026-10-12,Market microstructure,14,2.58
+2026-10-12,Portfolio and risk,16,-0.64
+2026-10-12,Derivatives and volatility,11,-0.51
+2026-10-12,Alternative data and text,3,1.06
+2026-10-12,Crypto and DeFi,7,-0.74
+2026-10-12,LLMs in finance,2,0.77
+2026-10-19,Factor and anomaly research,1,-0.5
+2026-10-19,Machine learning for returns,9,0.0
+2026-10-19,Market microstructure,8,3.2
+2026-10-19,Portfolio and risk,9,-0.95
+2026-10-19,Derivatives and volatility,7,-0.78
+2026-10-19,Alternative data and text,1,0.75
+2026-10-19,Crypto and DeFi,3,-0.55
+2026-10-19,LLMs in finance,4,-0.05
+2026-10-26,Factor and anomaly research,2,-1.53
+2026-10-26,Machine learning for returns,0,-1.02
+2026-10-26,Market microstructure,9,3.54
+2026-10-26,Portfolio and risk,14,-0.68
+2026-10-26,Derivatives and volatility,12,-0.17
+2026-10-26,Alternative data and text,2,0.53
+2026-10-26,Crypto and DeFi,8,0.0
+2026-10-26,LLMs in finance,5,-0.57
+2026-11-02,Factor and anomaly research,3,-0.1
+2026-11-02,Machine learning for returns,1,-1.57
+2026-11-02,Market microstructure,3,3.03
+2026-11-02,Portfolio and risk,10,-1.31
+2026-11-02,Derivatives and volatility,5,0.04
+2026-11-02,Alternative data and text,0,0.35
+2026-11-02,Crypto and DeFi,1,0.18
+2026-11-02,LLMs in finance,8,0.36
