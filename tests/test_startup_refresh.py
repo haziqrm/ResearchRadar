@@ -112,3 +112,25 @@ def test_hours_zero_checks_only_at_start(monkeypatch):
     thread = sr.start_in_background()
     thread.join(timeout=5)
     assert not thread.is_alive() and runs == [1]
+
+
+def test_no_arxiv_cache_keeps_every_tagged_paper(files, monkeypatch):
+    """The arXiv cache is git-ignored, so most machines start without it. The refresh
+    must then start from the tags CSV, not from this month's papers alone."""
+    def no_cache():
+        raise FileNotFoundError("no cache")
+    monkeypatch.setattr(feed, "load_papers", no_cache)
+    calls = []
+    sr.refresh(client_factory=lambda: (None, "m"),
+               fetch_month=arxiv_with([paper(9, "2026-11-07")]), call=answer_all(calls))
+    got = tags(files)
+    assert got["p0"] == AREA and got["p1"] == "none"     # old papers still there
+    assert got["p9"] == AREA and len(got) == 3           # and the new one added
+    assert len(calls) == 1
+
+
+def test_never_writes_a_smaller_table(files):
+    before = files.read_text()
+    one = pd.DataFrame([paper(0, "2026-10-30")]).astype(str)
+    assert sr.write_table(one, {"p0": {"area": AREA, "confidence": 1}}, files) is False
+    assert files.read_text() == before

@@ -62,6 +62,23 @@ def fetch_new_papers(papers: pd.DataFrame, today: date | None = None,
               .reset_index(drop=True))
 
 
+def with_tagged_papers(papers: pd.DataFrame, path: Path = mt.MAP_TAGS_CSV) -> pd.DataFrame:
+    """papers plus every paper already in the tags CSV. The arXiv cache (PAPERS_CSV) is
+    git-ignored, so on any machine but the one that built it, papers starts empty; the
+    committed CSV is then the only record of the 3,687 tagged papers. Without them the
+    rewrite would keep only this month's papers."""
+    if not path.exists():
+        return papers
+    tagged = pd.read_csv(path, dtype=str, keep_default_na=False)
+    missing = tagged[~tagged["arxiv_id"].isin(papers["arxiv_id"])]
+    if missing.empty:
+        return papers
+    extra = pd.DataFrame({c: missing[c] if c in missing else "" for c in feed.PAPER_COLUMNS})
+    extra["updated"] = extra["published"]
+    return (pd.concat([papers, extra.astype(str)], ignore_index=True)
+              .sort_values("published").reset_index(drop=True))
+
+
 def untagged(papers: pd.DataFrame, cache: dict) -> pd.DataFrame:
     """The newest BATCH_SIZE papers with no cached Gemini answer."""
     todo = papers[~papers["arxiv_id"].isin(cache)]
@@ -111,11 +128,20 @@ def tag_once(batch: pd.DataFrame, client, model: str, cache: dict,
     return len(answers)
 
 
-def write_table(papers: pd.DataFrame, cache: dict, path: Path = mt.MAP_TAGS_CSV) -> None:
-    """Write via a temp file, so a request reading the CSV never sees half of it."""
+def write_table(papers: pd.DataFrame, cache: dict, path: Path = mt.MAP_TAGS_CSV) -> bool:
+    """Write via a temp file, so a request reading the CSV never sees half of it.
+    Refuses (returns False) to write fewer papers than the CSV already has: a refresh
+    only ever adds papers, so a smaller table means something upstream went wrong."""
+    table = mt.build_table(papers, cache)
+    if path.exists():
+        existing = len(pd.read_csv(path, dtype=str, usecols=["arxiv_id"]))
+        if len(table) < existing:
+            _log(f"not writing {path.name}: {len(table)} papers would replace {existing}")
+            return False
     tmp = path.with_suffix(".tmp")
-    mt.build_table(papers, cache).to_csv(tmp, index=False)
+    table.to_csv(tmp, index=False)
     os.replace(tmp, path)
+    return True
 
 
 def refresh(client_factory=gemini_client, fetch_month=feed.fetch_month,
@@ -126,6 +152,7 @@ def refresh(client_factory=gemini_client, fetch_month=feed.fetch_month,
         papers = feed.load_papers()
     except FileNotFoundError:
         papers = pd.DataFrame(columns=feed.PAPER_COLUMNS)
+    papers = with_tagged_papers(papers, mt.MAP_TAGS_CSV)
 
     before = len(papers)
     try:
