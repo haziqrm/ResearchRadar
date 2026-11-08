@@ -79,6 +79,27 @@ pytest
 
 Python 3.12. Versions in `requirements.txt` are pinned; pin anything you add.
 
+## Run the website (the demo)
+
+```bash
+python html_main.py       # then open http://localhost:8000  (PORT=8001 to change)
+```
+
+One page, all from committed files (no API keys, works offline):
+
+| Panel | Data | From |
+|---|---|---|
+| Research map | `network_nodes.csv`, `network_edges.csv`, rolled up to one circle per area | B |
+| Crowded this week | `crowding.csv`, `arxiv_tagged.csv` | D |
+| Do published signals stop working? | `osap_summary.csv`, `decay_results.csv` | A |
+| Does trading on decay help? | `backtest_results.csv`, `backtest_summary.csv` | D |
+| This week's briefing | `briefing_card.json`, `briefing.txt`, `briefing.mp3` | D |
+
+Page and server: `html_main.py` and `static/css/` (C). Data: `real_data.py`, one function
+per panel. A panel whose real file is missing uses `data/sample/` and shows a
+"sample data" badge. `DATA_MODULE=synthetic_data python html_main.py` runs C's original
+made-up data for the map and table.
+
 ## Rebuild every output
 
 ```bash

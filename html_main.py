@@ -1,18 +1,24 @@
-"""Stock tracker and research prediction website.
+"""Research Radar website: the team's results on one page.
 
-Run:  py html_main.py      then open http://localhost:8000
+Run:  python html_main.py      then open http://localhost:8000
 
-The page loads its data from JSON endpoints. Those endpoints call
-synthetic_data.py, so swapping in real data means changing that module only.
+The page loads its data from JSON endpoints. Those endpoints call real_data.py,
+which reads the committed output files in data/ (falling back to data/sample/), so
+the site runs offline from a fresh clone.
 
-  GET /api/network     topics (sized by paper count) and knock-on links
-  GET /api/research    this week's research topic snapshot
-  GET /api/account     account value summary (not shown on the page now)
-  GET /api/stocks      most traded stocks today (not shown on the page now)
+  GET /api/network     B: research areas (sized by papers) and shared-reference links
+  GET /api/research    D: this week's crowding score per area
+  GET /api/decay       A: do published signals stop working?
+  GET /api/backtest    D: allocation backtest vs baselines, with intervals
+  GET /api/briefing    D: decision card and spoken briefing
+  GET /media/briefing.mp3
 
-The knock-on links are read from data/topic_links.csv.
+synthetic_data.py (C's original made-up data) is kept for building the page
+without real files; set DATA_MODULE=synthetic_data to use it (only the network
+and research panels have synthetic data).
 Styles live in static/css/, one file per component (see CSS_FILES).
 """
+import importlib
 import json
 import mimetypes
 import os
@@ -20,10 +26,12 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
-import synthetic_data as data  # swap this import for the live data module
+data = importlib.import_module(os.environ.get("DATA_MODULE", "real_data"))
 
 PORT = int(os.environ.get("PORT", "8000"))
-STATIC_DIR = Path(__file__).resolve().parent / "static"
+ROOT = Path(__file__).resolve().parent
+STATIC_DIR = ROOT / "static"
+AUDIO_FILE = ROOT / "data" / "briefing.mp3"
 
 # Loaded in this order: base tokens first, then layout, then each component.
 CSS_FILES = [
@@ -33,6 +41,7 @@ CSS_FILES = [
     "table.css",
     "network.css",
     "research.css",
+    "results.css",
 ]
 CSS_LINKS = "\n".join(
     f'<link rel="stylesheet" href="/static/css/{name}">' for name in CSS_FILES
@@ -43,39 +52,73 @@ PAGE = r"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stock Tracker</title>
+<title>Research Radar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
 __CSS_LINKS__
 </head>
 <body>
+  <header class="site-head">
+    <h1>Research Radar</h1>
+    <p class="sub">Where quant-finance research is heading, and how fast published trading signals stop working. Free public data only.</p>
+  </header>
   <main>
-    <section class="panel">
+    <section class="panel net-panel">
       <div class="panel-head">
-        <h2>Research topic network</h2>
+        <h2>Research map <span class="badge" id="net-badge" hidden>sample data</span></h2>
         <div class="net-controls">
-          <button type="button" class="path-btn" id="path-btn" aria-pressed="false">Show affected path</button>
+          <button type="button" class="path-btn" id="path-btn" aria-pressed="false">Highlight largest area</button>
           <div class="toggle" id="week-toggle">
-            <button type="button" data-week="last">Last week</button>
-            <button type="button" data-week="this" class="active">This week</button>
+            <button type="button" data-week="last">Earlier</button>
+            <button type="button" data-week="this" class="active">Recent</button>
           </div>
         </div>
       </div>
-      <div class="sub">Circle size shows how many research papers are out on a topic. Arrows show knock-on effects of one topic on another. Show affected path highlights the largest topic and the topics it affects directly.</div>
+      <div class="sub" id="net-sub">Circle size shows how many papers each research area has in the period. Lines join areas whose papers cite the same references.</div>
       <div class="network" id="network"></div>
     </section>
 
     <section class="panel">
       <div class="panel-head">
-        <h2>Research topics</h2>
+        <h2>Crowded this week <span class="badge" id="research-badge" hidden>sample data</span></h2>
         <span class="sub" id="research-week"></span>
       </div>
+      <div class="sub">New arXiv q-fin papers, tagged by Gemini. Score compares each area's share of the last 4 weeks with its usual share: 0 is normal, +2 unusually crowded.</div>
       <table class="data-table research" id="research">
-        <thead><tr><th>Topic</th><th class="num">Popularity</th><th class="num">Papers</th></tr></thead>
+        <thead><tr><th>Area</th><th class="num">Crowding</th><th class="num">Papers</th></tr></thead>
         <tbody></tbody>
       </table>
     </section>
+
+    <div class="row3">
+      <section class="panel">
+        <div class="panel-head"><h2>Do published signals stop working?</h2></div>
+        <div id="decay-headline" class="headline"></div>
+        <table class="data-table" id="decay">
+          <thead><tr><th>Signal</th><th class="num">Published</th><th class="num">Before</th><th class="num">After</th><th class="num">Change (95% CI)</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="sub">Mean monthly return before and after the paper, Ken French data. Bold: the interval excludes zero.</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Does trading on decay help?</h2><span class="sub" id="bt-range"></span></div>
+        <div class="chart" id="bt-chart"></div>
+        <table class="data-table" id="backtest">
+          <thead><tr><th>Strategy</th><th class="num">Sharpe (95% CI)</th><th class="num">vs equal weight</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="sub">Cumulative return after costs. Walk-forward: each month uses only past returns. Market (table only) is before costs, for scale.</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>This week's briefing</h2><span class="sub" id="brief-source"></span></div>
+        <audio id="brief-audio" controls preload="none" hidden></audio>
+        <div id="brief-card"></div>
+        <details class="brief-text"><summary>Read the briefing</summary><p id="brief-text"></p></details>
+      </section>
+    </div>
   </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
@@ -84,6 +127,8 @@ const getJSON = url => fetch(url).then(r => r.json());
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const parseDay = iso => new Date(iso + "T00:00:00");
 const dayLabel = iso => parseDay(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+const signed = (x, d = 2) => x == null ? "–" : (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(d);
+const showBadge = (id, on) => { document.getElementById(id).hidden = !on; };
 
 // ---------------------------------------------------------------- network
 
@@ -100,7 +145,7 @@ function distanceToSegment(p, a, b) {
   return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
 }
 
-// How messy a layout is: arrows crossing arrows, plus arrows running
+// How messy a layout is: lines crossing lines, plus lines running
 // through circles they are not attached to (counted double).
 function layoutScore(nodes, links) {
   const byId = new Map(nodes.map(n => [n.id, n]));
@@ -125,13 +170,14 @@ function layoutScore(nodes, links) {
 // Seeded, so the graph looks the same every time the page loads.
 function bestLayout(nodes, links, W, H, fit, finish) {
   let best = null;
-  for (let seed = 1; seed <= 40; seed++) {
-    const rand = d3.randomLcg(seed / 41);
+  const tries = nodes.length > 16 ? 15 : 40;   // bigger graphs: fewer tries, still seeded
+  for (let seed = 1; seed <= tries; seed++) {
+    const rand = d3.randomLcg(seed / (tries + 1));
     const ns = nodes.map(n => ({ ...n, x: W * (0.2 + 0.6 * rand()), y: H * (0.2 + 0.6 * rand()) }));
     const ls = links.map(l => ({ ...l }));
     const sim = d3.forceSimulation(ns).randomSource(rand).stop()
-      .force("link", d3.forceLink(ls).id(d => d.id).distance(d => 70 + d.source.rMax + d.target.rMax).strength(d => 0.1 + d.strength * 0.2))
-      .force("charge", d3.forceManyBody().strength(-500))
+      .force("link", d3.forceLink(ls).id(d => d.id).distance(d => 50 + d.source.rMax + d.target.rMax).strength(d => 0.1 + d.strength * 0.2))
+      .force("charge", d3.forceManyBody().strength(nodes.length > 16 ? -260 : -500))
       .force("x", d3.forceX(W / 2).strength(0.04))
       .force("y", d3.forceY(H / 2).strength(0.06))
       .force("collide", d3.forceCollide(d => d.space).iterations(3));
@@ -143,18 +189,21 @@ function bestLayout(nodes, links, W, H, fit, finish) {
   return new Map(best.ns.map(n => [n.id, { x: n.x, y: n.y }]));
 }
 
-async function loadNetwork() {
-  const net = await getJSON("/api/network");
-  const box = document.getElementById("network");
+let NET = null;
+
+function drawNetwork() {
+  const net = NET, box = document.getElementById("network");
+  // The box can measure 0 wide before layout settles; wait for a real size.
   const W = box.clientWidth, H = box.clientHeight, LINE = 12;
+  if (W < 100 || H < 100) return;
+  box.innerHTML = "";
 
-  const maxPapers = d3.max(net.nodes, n => Math.max(n.papers, n.papers_last_week));
-  const radius = d3.scaleSqrt().domain([0, maxPapers]).range([5, Math.min(W, H) / 11]);
-  let week = "this";
+  const maxPapers = d3.max(net.nodes, n => Math.max(n.papers, n.papers_last_week)) || 1;
+  const radius = d3.scaleSqrt().domain([0, maxPapers]).range([4, Math.min(W, H) / (net.nodes.length > 16 ? 14 : 11)]);
+  let week = document.querySelector("#week-toggle .active").dataset.week;
   const papersFor = d => week === "this" ? d.papers : d.papers_last_week;
+  const period = () => net.periods ? net.periods[week] : (week === "this" ? "this week" : "last week");
 
-  // Label each circle with the same topic name as the research table,
-  // wrapped onto short lines under the circle.
   const wrap = (text, max = 18) => text.split(" ").reduce((lines, word) => {
     const last = lines[lines.length - 1];
     if (last && (last + " " + word).length <= max) lines[lines.length - 1] = last + " " + word;
@@ -162,23 +211,20 @@ async function loadNetwork() {
     return lines;
   }, []);
 
-  net.nodes.forEach(d => {
+  const nodes = net.nodes.map(d => ({ ...d }));
+  nodes.forEach(d => {
     d.lines = wrap(d.id);
     d.r = radius(papersFor(d));
-    // lay out for the bigger of the two weeks so switching never overlaps
+    // lay out for the bigger of the two periods so switching never overlaps
     d.rMax = radius(Math.max(d.papers, d.papers_last_week));
-    d.space = d.rMax + 14 + d.lines.length * LINE / 2;
+    d.space = d.rMax + 10 + d.lines.length * LINE / 2;
   });
 
-  // keep circles and their labels inside the box
   const fit = d => {
-    const half = Math.max(d.rMax, 50);
-    d.x = Math.max(half + 8, Math.min(W - half - 8, d.x));
-    d.y = Math.max(d.rMax + 12, Math.min(H - d.rMax - 8 - d.lines.length * LINE, d.y));
+    const half = Math.max(d.rMax, 46);
+    d.x = Math.max(half + 6, Math.min(W - half - 6, d.x));
+    d.y = Math.max(d.rMax + 10, Math.min(H - d.rMax - 6 - d.lines.length * LINE, d.y));
   };
-
-  // A layout settles in the middle of the box. Stretch it so the circles
-  // (and their labels) reach the edges.
   const stretch = (ns, padLo, padHi, size, get, set) => {
     const a = d3.least(ns, d => get(d)), b = d3.greatest(ns, d => get(d));
     const from0 = get(a), from1 = get(b);
@@ -187,20 +233,20 @@ async function loadNetwork() {
     ns.forEach(d => set(d, to0 + (get(d) - from0) * (to1 - to0) / (from1 - from0)));
   };
   const fillBox = ns => {
-    stretch(ns, d => Math.max(d.rMax, 50) + 8, d => Math.max(d.rMax, 50) + 8, W,
+    stretch(ns, d => Math.max(d.rMax, 46) + 6, d => Math.max(d.rMax, 46) + 6, W,
             d => d.x, (d, v) => { d.x = v; });
-    stretch(ns, d => d.rMax + 12, d => d.rMax + 8 + d.lines.length * LINE, H,
+    stretch(ns, d => d.rMax + 10, d => d.rMax + 6 + d.lines.length * LINE, H,
             d => d.y, (d, v) => { d.y = v; });
     ns.forEach(fit);
   };
 
-  const pos = bestLayout(net.nodes, net.links, W, H, fit, fillBox);
-  net.nodes.forEach(d => Object.assign(d, pos.get(d.id)));
-  const byId = new Map(net.nodes.map(d => [d.id, d]));
+  const pos = bestLayout(nodes, net.links, W, H, fit, fillBox);
+  nodes.forEach(d => Object.assign(d, pos.get(d.id)));
+  const byId = new Map(nodes.map(d => [d.id, d]));
 
   const svg = d3.select(box).append("svg")
     .attr("viewBox", [0, 0, W, H]).attr("width", "100%").attr("height", "100%");
-
+  const directed = net.directed !== false;
   const defs = svg.append("defs");
   [["net-arrow", "net-arrowhead"], ["net-arrow-path", "net-arrowhead-path"]].forEach(([id, cls]) =>
     defs.append("marker")
@@ -208,31 +254,33 @@ async function loadNetwork() {
       .attr("refX", 10).attr("refY", 0)
       .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
       .append("path").attr("d", "M0,-5L10,0L0,5").attr("class", cls));
+  const arrow = id => directed ? `url(#${id})` : null;
 
   const link = svg.append("g").selectAll("line").data(net.links).join("line")
     .attr("class", "net-link")
     .attr("stroke-width", d => 1 + d.strength * 3)
-    .attr("marker-end", "url(#net-arrow)");
+    .attr("marker-end", arrow("net-arrow"));
+  link.append("title").text(l => l.shared ? `${l.source} – ${l.target}\n${l.shared} paper pairs share references` : "");
 
-  const node = svg.append("g").selectAll("g").data(net.nodes).join("g")
+  const node = svg.append("g").selectAll("g").data(nodes).join("g")
     .attr("class", "net-node")
     .attr("transform", d => `translate(${d.x},${d.y})`);
   const circle = node.append("circle").attr("r", d => d.r);
   const label = node.append("text").attr("class", "net-label")
-    .attr("text-anchor", "middle").attr("y", d => d.r + 13);
+    .attr("text-anchor", "middle").attr("y", d => d.r + 12);
   label.selectAll("tspan").data(d => d.lines).join("tspan")
     .attr("x", 0).attr("dy", (t, i) => i === 0 ? 0 : LINE).text(t => t);
   const title = node.append("title");
-  const setTitles = () => title.text(d => `${d.id}\n${papersFor(d)} papers ${week === "this" ? "this" : "last"} week`);
+  const setTitles = () => title.text(d => `${d.id}\n${papersFor(d)} papers in ${period()}` +
+    (d.stage ? `\nlifecycle: ${d.stage}` : ""));
   setTitles();
 
-  // stop each line at the edge of the circle so the arrowhead shows
   const lineEnds = l => {
     const s = byId.get(l.source), t = byId.get(l.target);
     const dx = t.x - s.x, dy = t.y - s.y, dist = Math.hypot(dx, dy) || 1;
     return {
       x1: s.x + dx / dist * s.r, y1: s.y + dy / dist * s.r,
-      x2: t.x - dx / dist * (t.r + 2), y2: t.y - dy / dist * (t.r + 2),
+      x2: t.x - dx / dist * (t.r + (directed ? 2 : 0)), y2: t.y - dy / dist * (t.r + (directed ? 2 : 0)),
     };
   };
   const placeLinks = sel => sel
@@ -240,7 +288,7 @@ async function loadNetwork() {
     .attr("x2", l => lineEnds(l).x2).attr("y2", l => lineEnds(l).y2);
   placeLinks(link);
 
-  // Hovering a topic highlights it and the topics it is linked to.
+  // Hovering an area highlights it and the areas it is linked to.
   const linked = new Set(net.links.map(l => l.source + "|" + l.target));
   const isLinked = (a, b) => a === b || linked.has(a + "|" + b) || linked.has(b + "|" + a);
   let pathOn = false;
@@ -254,42 +302,63 @@ async function loadNetwork() {
     node.classed("hl", false); link.classed("hl", false);
   });
 
-  // Show affected path: the largest circle this week, and the circles its
-  // arrows point to (the topics it has a knock-on effect on).
+  // Highlight the largest area in this period and the areas it links to.
   const pathBtn = document.getElementById("path-btn");
+  const touches = (l, id) => l.source === id || (!directed && l.target === id);
   const drawPath = () => {
     box.classList.toggle("path", pathOn);
     pathBtn.classList.toggle("active", pathOn);
     pathBtn.setAttribute("aria-pressed", pathOn);
-    pathBtn.textContent = pathOn ? "Hide affected path" : "Show affected path";
-    const root = net.nodes.reduce((a, b) => papersFor(b) > papersFor(a) ? b : a);
-    const hits = new Set(net.links.filter(l => l.source === root.id).map(l => l.target));
+    pathBtn.textContent = pathOn ? "Clear highlight" : "Highlight largest area";
+    const root = nodes.reduce((a, b) => papersFor(b) > papersFor(a) ? b : a);
+    const hits = new Set(net.links.filter(l => touches(l, root.id))
+      .map(l => l.source === root.id ? l.target : l.source));
     node.classed("path-root", d => pathOn && d === root)
         .classed("path-hit", d => pathOn && hits.has(d.id));
-    link.classed("path-link", l => pathOn && l.source === root.id)
-        .attr("marker-end", l => pathOn && l.source === root.id ? "url(#net-arrow-path)" : "url(#net-arrow)");
+    link.classed("path-link", l => pathOn && touches(l, root.id))
+        .attr("marker-end", l => pathOn && touches(l, root.id) ? arrow("net-arrow-path") : arrow("net-arrow"));
   };
-  pathBtn.addEventListener("click", () => {
+  pathBtn.onclick = () => {
     pathOn = !pathOn;
     box.classList.remove("focus"); node.classed("hl", false); link.classed("hl", false);
     drawPath();
-  });
+  };
 
-  // Last week / this week: circles grow or shrink to that week's paper count.
-  document.querySelectorAll("#week-toggle button").forEach(btn =>
-    btn.addEventListener("click", () => {
+  document.querySelectorAll("#week-toggle button").forEach(btn => {
+    btn.onclick = () => {
       week = btn.dataset.week;
       document.querySelectorAll("#week-toggle button").forEach(b => b.classList.toggle("active", b === btn));
-      net.nodes.forEach(d => { d.r = radius(papersFor(d)); });
+      nodes.forEach(d => { d.r = radius(papersFor(d)); });
       circle.transition().duration(600).attr("r", d => d.r);
-      label.transition().duration(600).attr("y", d => d.r + 13);
+      label.transition().duration(600).attr("y", d => d.r + 12);
       placeLinks(link.transition().duration(600));
       setTitles();
-      if (pathOn) drawPath();  // the largest circle can change between weeks
-    }));
+      if (pathOn) drawPath();
+    };
+  });
 }
 
-// ---------------------------------------------------------------- research table
+async function loadNetwork() {
+  NET = await getJSON("/api/network");
+  showBadge("net-badge", NET.sample);
+  if (NET.periods) {
+    const [early, recent] = document.querySelectorAll("#week-toggle button");
+    early.textContent = NET.periods.last; recent.textContent = NET.periods.this;
+    document.getElementById("net-sub").textContent =
+      `${NET.papers_total.toLocaleString()} OpenAlex papers, ${NET.nodes.length} research areas. ` +
+      "Circle size: papers in the chosen period. Lines join areas whose papers cite the same references (strongest links only).";
+  }
+  drawNetwork();
+  // redraw when the box changes size (also covers a first layout at width 0)
+  let lastW = 0, timer = null;
+  new ResizeObserver(entries => {
+    const w = Math.round(entries[0].contentRect.width);
+    if (Math.abs(w - lastW) < 40) return;
+    lastW = w; clearTimeout(timer); timer = setTimeout(drawNetwork, 150);
+  }).observe(document.getElementById("network"));
+}
+
+// ---------------------------------------------------------------- crowding table
 
 function paperChange(r) {
   const diff = r.papers_change;
@@ -298,23 +367,139 @@ function paperChange(r) {
   return `<span class="arrow same" title="Same as last week">&ndash;</span>`;
 }
 
+// Bar centred on zero: right for crowded, left for quiet. Scale: +-3.
+function scoreBar(x) {
+  const w = Math.min(Math.abs(x) / 3, 1) * 50;
+  const side = x >= 0 ? `left:50%;width:${w}%` : `left:${50 - w}%;width:${w}%`;
+  return `<span class="zbar"><i class="${x >= 0 ? "pos" : "neg"}${Math.abs(x) >= 2 ? " strong" : ""}" style="${side}"></i></span>`;
+}
+
 async function loadResearch() {
   const snap = await getJSON("/api/research");
+  showBadge("research-badge", snap.sample);
   document.getElementById("research-week").textContent = "Week of " + dayLabel(snap.week_start);
-  document.querySelector("#research tbody").innerHTML = snap.topics.map(r => `
-    <tr>
+  document.querySelector("#research tbody").innerHTML = snap.topics.map(r => {
+    const tip = `${r.papers_4w} papers in the last 4 weeks` +
+      (r.newest ? `\nNewest: ${r.newest.title} (${r.newest.published})` : "");
+    return `
+    <tr title="${esc(tip)}">
       <td>${esc(r.topic)}</td>
-      <td class="num"><div class="pop-bar">${r.popularity}
-        <span class="track"><i class="fill" style="width:${r.popularity}%"></i></span></div></td>
+      <td class="num"><div class="pop-bar">${signed(r.score)} ${scoreBar(r.score ?? 0)}</div></td>
       <td class="num papers">${r.papers} ${paperChange(r)}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ---------------------------------------------------------------- decay (A)
+
+async function loadDecay() {
+  const d = await getJSON("/api/decay");
+  const h = d.headline;
+  if (h) {
+    const p = h.placebo_p === 0 ? "p < 0.0001" : `p = ${h.placebo_p}`;
+    document.getElementById("decay-headline").innerHTML = `
+      <div class="stats">
+        <div><b>100%</b><span>in-sample return</span></div>
+        <div><b>${h.after_sample}%</b><span>left after the sample ends</span></div>
+        <div><b>${h.after_publication}%</b><span>left after publication</span></div>
+      </div>
+      <p class="sub">Across ${h.n_signals} published signals (Open Source Asset Pricing). The extra drop at publication
+      is significant (p = ${h.publication_p}); fake publication dates give a much smaller drop (${h.placebo_n} signals, ${p}).
+      Replicates McLean &amp; Pontiff (2016).</p>`;
+  }
+  document.querySelector("#decay tbody").innerHTML = d.signals.map(s => `
+    <tr class="${s.clear ? "clear" : ""}">
+      <td>${esc(s.signal)}</td>
+      <td class="num">${s.published}</td>
+      <td class="num">${s.pre.toFixed(2)}%</td>
+      <td class="num">${s.post.toFixed(2)}%</td>
+      <td class="num change">${signed(s.post - s.pre)}<span class="sub">${signed(s.diff_low)} to ${signed(s.diff_high)}</span></td>
     </tr>`).join("");
 }
 
-loadNetwork(); loadResearch();
+// ---------------------------------------------------------------- backtest (D)
+
+function drawBacktest(bt) {
+  const box = document.getElementById("bt-chart");
+  box.innerHTML = "";
+  const W = box.clientWidth || 360, H = 170, M = { t: 8, r: 8, b: 20, l: 34 };
+  const parse = d3.utcParse("%Y-%m-%d");
+  const series = bt.series.map(s => ({ ...s, pts: s.points.map(([d, v]) => [parse(d), v]) }));
+  const all = series.flatMap(s => s.pts);
+  const x = d3.scaleUtc().domain(d3.extent(all, p => p[0])).range([M.l, W - M.r]);
+  const y = d3.scaleLinear().domain(d3.extent(all, p => p[1])).nice().range([H - M.b, M.t]);
+  const svg = d3.select(box).append("svg").attr("viewBox", [0, 0, W, H]).attr("width", "100%");
+  svg.append("g").attr("class", "axis").attr("transform", `translate(0,${H - M.b})`)
+    .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0));
+  svg.append("g").attr("class", "axis").attr("transform", `translate(${M.l},0)`)
+    .call(d3.axisLeft(y).ticks(4).tickFormat(d3.format(".0%")).tickSizeOuter(0));
+  svg.append("line").attr("class", "zero").attr("x1", M.l).attr("x2", W - M.r)
+    .attr("y1", y(0)).attr("y2", y(0));
+  const line = d3.line().x(p => x(p[0])).y(p => y(p[1]));
+  svg.append("g").selectAll("path").data(series).join("path")
+    .attr("class", s => "series " + s.key).attr("d", s => line(s.pts));
+  const legend = d3.select(box).append("div").attr("class", "legend");
+  series.forEach(s => legend.append("span").attr("class", "key " + s.key).text(s.label));
+}
+
+async function loadBacktest() {
+  const bt = await getJSON("/api/backtest");
+  document.getElementById("bt-range").textContent = `${bt.start.slice(0, 4)}–${bt.end.slice(0, 4)}`;
+  drawBacktest(bt);
+  document.querySelector("#backtest tbody").innerHTML = bt.rows.map(r => `
+    <tr class="${r.key === "decay_tilt" ? "ours" : ""}">
+      <td>${esc(r.label)}</td>
+      <td class="num">${r.sharpe.toFixed(2)} (${signed(r.ci[0])}, ${signed(r.ci[1])})</td>
+      <td class="num">${r.vs_equal == null ? "" :
+        `<span class="${r.vs_equal_ci[0] > 0 || r.vs_equal_ci[1] < 0 ? "sig" : ""}">${signed(r.vs_equal)}</span>
+         <span class="sub">(${signed(r.vs_equal_ci[0])}, ${signed(r.vs_equal_ci[1])})</span>`}</td>
+    </tr>`).join("");
+}
+
+// ---------------------------------------------------------------- briefing (D)
+
+async function loadBriefing() {
+  const b = await getJSON("/api/briefing");
+  if (b.audio) {
+    const audio = document.getElementById("brief-audio");
+    audio.src = "/media/briefing.mp3"; audio.hidden = false;
+  }
+  document.getElementById("brief-text").textContent = b.text;
+  const c = b.card;
+  if (!c) return;
+  const src = (c.text_source || "").startsWith("gemini") ? "worded by Gemini, numbers checked" : "template text";
+  document.getElementById("brief-source").textContent = "Week of " + dayLabel(c.week) + " · " + src;
+  const a = c.allocation;
+  const held = a.held.length ? a.held.map(h => `<li><b>${esc(h.signal)}</b> ${Math.round(h.weight * 100)}%</li>`).join("")
+                             : "<li>Cash: no signal clears the cost hurdle</li>";
+  const cv = c.caveat;
+  document.getElementById("brief-card").innerHTML = `
+    <div class="card-grid">
+      <div><span class="sub">Most crowded vs usual</span>
+        <b>${esc(c.busiest[0].area)}</b> <span class="sub">${signed(c.busiest[0].score, 1)}, ${c.busiest[0].papers_4w} papers / 4 wks</span></div>
+      <div><span class="sub">Quietest vs usual</span>
+        <b>${esc(c.quietest.area)}</b> <span class="sub">${signed(c.quietest.score, 1)}</span></div>
+      <div><span class="sub">Hold for ${esc(a.for_month)}</span><ul class="held">${held}</ul>
+        <span class="sub">Skipped: ${a.skipped.map(esc).join(", ") || "none"}</span></div>
+      <div><span class="sub">Caveat</span>
+        <span>Beat equal weight by ${signed(cv.sharpe_minus_equal_weight)} Sharpe (95% CI ${signed(cv.ci_low)} to ${signed(cv.ci_high)})${cv.significant ? "" : ": not proven"}.</span></div>
+    </div>`;
+}
+
+loadNetwork(); loadResearch(); loadDecay(); loadBacktest(); loadBriefing();
 </script>
 </body>
 </html>
 """.replace("__CSS_LINKS__", CSS_LINKS)
+
+
+ROUTES = {
+    "/api/network": "get_topic_network",
+    "/api/research": "get_research_snapshot",
+    "/api/decay": "get_decay",
+    "/api/backtest": "get_backtest",
+    "/api/briefing": "get_briefing",
+}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -340,25 +525,27 @@ class Handler(BaseHTTPRequestHandler):
             ctype += "; charset=utf-8"
         self._send(200, file.read_bytes(), ctype)
 
+    def log_message(self, fmt, *args):  # keep the console quiet during demos
+        pass
+
     def do_GET(self):
         url = urlparse(self.path)
-        routes = {
-            "/api/network": data.get_topic_network,
-            "/api/research": data.get_research_snapshot,
-            "/api/account": data.get_account,
-            "/api/stocks": data.get_most_traded,
-        }
         if url.path in ("/", "/index.html"):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif url.path.startswith("/static/"):
             self._static(unquote(url.path[len("/static/"):]))
-        elif url.path in routes:
-            self._json(routes[url.path]())
+        elif url.path == "/media/briefing.mp3" and AUDIO_FILE.is_file():
+            self._send(200, AUDIO_FILE.read_bytes(), "audio/mpeg")
+        elif url.path in ROUTES and hasattr(data, ROUTES[url.path]):
+            try:
+                self._json(getattr(data, ROUTES[url.path])())
+            except Exception as exc:  # one broken file must not take the page down
+                self._json({"error": f"{type(exc).__name__}: {exc}"}, 500)
         else:
             self._json({"error": "not found"}, 404)
 
 
 if __name__ == "__main__":
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
-    print(f"Stock tracker running at http://localhost:{PORT}")
+    print(f"Research Radar running at http://localhost:{PORT}")
     server.serve_forever()
