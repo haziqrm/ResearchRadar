@@ -597,6 +597,14 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    # Person D: fetch new arXiv papers and tag them with one Gemini call, in the
+    # background, at start and every 2 hours; on any failure the site just runs on
+    # its current data. LIVE_REFRESH=0 turns it off. See src/live/startup_refresh.py.
+    try:
+        from src.live.startup_refresh import start_in_background
+        start_in_background()
+    except Exception as exc:  # e.g. pandas missing: the site itself is standard library
+        print(f"live refresh: skipped ({type(exc).__name__})")
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     print(f"Stock tracker running at http://localhost:{PORT}")
     server.serve_forever()

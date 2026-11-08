@@ -409,6 +409,30 @@ accuracy figure, and none of the 50 had a signal, so it says nothing about signa
   now steps through the positions in `slider_years`, so the same code handles
   "YYYY-MM". `MAP_MODE` in the page picks the endpoints. On `/` it behaves as before.
 
+### The monthly map refreshes itself while the site runs (2026-11-08)
+- **What it does.** The plan ran the arXiv feed and tagging by hand
+  (`python -m src.live.run_live`). Now `python html_main.py` also starts
+  `src/live/startup_refresh.py` in a background thread. It runs once at start and
+  then every 2 hours (`LIVE_REFRESH_HOURS`; `0` = only at start). Each run refetches
+  arXiv from the newest cached paper's month, adds new papers to
+  `data/cache/arxiv/papers.csv`, and tags untagged papers with **one** Gemini request.
+  That's at most 50 papers, newest first, with no retries. Then it rewrites
+  `data/arxiv_map_tags.csv`. `/monthly` reads that file on every request, so a reload
+  shows the new papers.
+- **Cost.** A run with nothing new to tag makes no Gemini call. The worst case is 12
+  calls a day, inside the free tier's 20. A backlog of more than 50 papers is worked
+  through over later runs.
+- **Failures are silent.** If arXiv is unreachable, there's no `GEMINI_API_KEY`,
+  google-genai isn't installed, the quota is used up or the answer is bad, it prints
+  one `live refresh: ...` line and the site carries on with its current data. Tags
+  already in the CSV are kept even when `GEMINI_MODEL` changes. The CSV is written
+  through a temp file, so a request never reads half of one. `LIVE_REFRESH=0` turns
+  the refresh off. The key is read from the repo's `.env`, or from a `.env` in the
+  folder the site was started from.
+- **Deviation: a committed file changes on its own.** `data/arxiv_map_tags.csv` is
+  committed and is now rewritten whenever there are new papers. Expect it in
+  `git status` after running the site. Commit it when you want the newer tags shared.
+
 ### Briefing: numbers come from code, Gemini only rewords
 - Plan: "Gemini text, ElevenLabs audio". Built: **code computes every fact**, a fixed
   template turns them into text, and Gemini (optional) only rewords it to sound natural
