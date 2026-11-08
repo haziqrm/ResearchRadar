@@ -1,0 +1,27 @@
+/* Table: shared styles for every data table. */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.data-table th {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.data-table tbody tr:hover { background: var(--row-hover); }
+
+/* right-aligned number columns */
+.data-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

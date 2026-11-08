@@ -1,0 +1,20 @@
+source,target,strength
+12-1 month momentum,Short interest squeeze,0.7
+12-1 month momentum,Supply chain network momentum,0.6
+Low volatility anomaly,Quality minus junk,0.8
+Low volatility anomaly,12-1 month momentum,0.4
+Post-earnings announcement drift,Earnings call tone (NLP),0.7
+Post-earnings announcement drift,LLM-generated earnings summaries,0.6
+LLM-generated earnings summaries,Earnings call tone (NLP),0.9
+Retail sentiment from Reddit,Short interest squeeze,0.9
+Retail sentiment from Reddit,Options flow imbalance,0.7
+Options flow imbalance,Short interest squeeze,0.5
+Insider buying clusters,Post-earnings announcement drift,0.4
+Job postings growth,Quality minus junk,0.3
+Satellite imagery of retail car parks,Credit card transaction panels,0.6
+Credit card transaction panels,Post-earnings announcement drift,0.5
+ESG controversy signals,Low volatility anomaly,0.3
+ESG controversy signals,Retail sentiment from Reddit,0.4
+Patent citation novelty,Supply chain network momentum,0.3
+Supply chain network momentum,Post-earnings announcement drift,0.4
+Earnings call tone (NLP),Retail sentiment from Reddit,0.3

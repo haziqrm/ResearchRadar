@@ -1,0 +1,36 @@
+/* Research: the weekly topics table and its popularity bars. */
+
+.pop-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.pop-bar .track {
+  width: 80px;
+  background: var(--line);
+  border-radius: var(--radius);
+}
+
+.pop-bar .fill {
+  display: block;
+  height: 6px;
+  background: var(--slate);
+  border-radius: var(--radius);
+}
+
+/* papers column: count plus a green up / red down arrow vs last week */
+.research .papers { white-space: nowrap; }
+.research .arrow {
+  display: inline-block;
+  width: 12px;
+  margin-left: 2px;
+  font-size: 10px;
+  text-align: center;
+}
+.research .arrow.same { color: var(--muted); }
+
+@media (max-width: 720px) {
+  .pop-bar .track { width: 70px; }
+}

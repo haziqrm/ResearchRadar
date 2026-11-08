@@ -1,0 +1,23 @@
+/* Panel: the card that wraps each section. */
+
+.panel {
+  /* column so the network can stretch to fill the panel's height */
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;   /* the topics list scrolls inside its box if it is too long */
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* heading row with small text on the right */
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
