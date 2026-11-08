@@ -273,3 +273,96 @@ at publication. H9 asks two month-ahead questions a trader of published signals 
 ## What would change the conclusions
 - H9a p >= 0.05: no evidence that recent winners among published signals keep winning.
 - H9b p >= 0.05: recent volatility is no better a guide than long-run volatility.
+
+---
+
+# H10. Trained volatility model (written before any H10 model was fitted)
+
+Known when this was written: the H9b result (the 12-month rule beats the long-run rule,
+t = 4.7). A test download of FRED's daily VIX (`VIXCLS`) succeeded; it starts 1990-01-02.
+No H10 feature, model fit, loss or portfolio had been computed. H1-H9 files, rules and
+results are not changed.
+
+## Question
+Does a trained model forecast a published signal's next-month volatility better than
+the H9b 12-month rule?
+
+## Data
+- The H9 panel: OSAP original-paper long-short returns, post-publication months only.
+- Sample: months from January 1990 onward (so the VIX is available), with every feature
+  and both H9b forecasts available. All models and baselines are scored on the same rows.
+- Every feature for month t uses data up to the end of month t-1.
+
+## Target and loss
+- Target: |r_t|, the absolute monthly return.
+- Loss, as in H9b: | |r_t| - sqrt(2/pi) x forecast |. Each model outputs a volatility forecast.
+
+## Features (all logs of volatilities, HAR-style, except age)
+- Root mean squared return over the last 1, 3, 6 and 12 months, and over all prior months.
+- Volatility of volatility: standard deviation of |r| over t-12 to t-1.
+- Signal age: months since January of the year after publication.
+- Cross-signal average volatility: mean of |r_{t-1}| across all OSAP predictors in t-1.
+- Market volatility: root mean squared Ken French Mkt-RF over the last 1 and 12 months.
+- VIX: month-end close of month t-1, divided by 100 and by sqrt(12) (monthly decimal scale).
+- Logs use log(x + 1e-4).
+
+## Models
+- Baseline A: the H9b 12-month rule. Baseline B: the H9b long-run rule.
+- Model 1 (primary): ridge on standardised features, target log(|r_t| + 1e-4); forecast =
+  exp(prediction) x c. c is chosen on the validation block to minimise the H9 loss
+  (never on the rows the ridge was fitted on).
+- Model 2 (secondary): HistGradientBoostingRegressor, loss = absolute error, target
+  |r_t| / sqrt(2/pi), so it predicts the volatility forecast directly.
+- No neural networks.
+
+## Walk-forward
+- One fold per test year Y, 1996-2025. Training months: January 1990 to December Y-2. Year
+  Y-1 is a 12-month gap and is never used to train the fold that tests Y.
+- Folds with at least 8 training years (test years 1999 onward) tune settings on time-based
+  validation inside the training years: validation = the last 3 training years, a 12-month
+  gap before it, and the inner model trained on the years before that gap.
+  - Ridge penalty grid: logspace(-3, 3, 13); c from the validation block.
+  - Boosting grid: learning_rate {0.05, 0.1} x max_leaf_nodes {15, 31} x
+    min_samples_leaf {50, 200}, max_iter 300.
+- Folds with fewer than 8 training years (test years 1996-1998) use fixed defaults:
+  ridge alpha = 1, c = exp((Euler's gamma + ln 2) / 2) = 1.887 (the exact correction for
+  log|r| under a normal); boosting learning_rate 0.1, max_leaf_nodes 31,
+  min_samples_leaf 200, max_iter 300.
+- After choosing settings, each model is fitted once on all training months of the fold.
+
+## Test
+- Primary period: test years 2000-2025. Secondary: 1996-1999, reported separately.
+- Statistic: monthly mean across signals of (model loss - baseline A loss); its time-series
+  mean < 0, Newey-West t with 12 lags, one-sided p.
+- Ridge is primary and boosting secondary; the two p-values are Holm-adjusted, and a model
+  passes only if its adjusted p < 0.05.
+- Also reported: the same against baseline B, mean loss (MAE), Spearman correlation of
+  forecast with |r|, and a 95% bootstrap interval for the mean loss difference that
+  resamples signals (2,000 draws, seed 0).
+
+## Decision check (descriptive)
+- A volatility-managed equal-weight portfolio of published signals for each forecast
+  (baseline A, ridge, boosting), on test months: raw weight 1 / forecast^2, capped at 5 times
+  the average raw weight, then scaled so average gross exposure is 1. Same cap and scaling
+  for all three; plain equal weight is shown for reference.
+- Costs, illustrative only: 10 and 25 bps per unit of one-way weight change per month.
+  Only the extra trading from rescaling is charged; the long-short portfolios' own
+  trading costs are not included.
+- Reported: annualised Sharpe before and after costs, average monthly turnover, maximum
+  drawdown, and the break-even cost at which each model's net Sharpe equals the H9b rule's.
+
+## What would change the conclusions
+- Neither Holm-adjusted p < 0.05: a trained model adds nothing over the 12-month rule; the
+  dashboard keeps the H9b rule.
+- A model wins on loss but its net Sharpe is below the H9b rule's at 10 bps: statistically
+  better, not worth trading.
+
+## H10 addition before any real-data run: scale-corrected baselines
+A synthetic test with constant volatility showed that a trained model beats the long-run
+rule under the H9 loss without any timing skill: the loss rewards forecasts scaled to the
+*median* of |r| (0.674 sigma), while sqrt(2/pi) x sigma is its *mean*, and the ridge's
+validation scale c learns that shift. To separate scale from timing, two descriptive
+baselines are added: baseline A and baseline B each multiplied by one constant, chosen to
+minimise the H9 loss on that fold's training rows (no model is fitted on them). The
+pre-registered primary and secondary tests (against unscaled baseline A) are unchanged;
+comparisons against the scaled baselines are reported alongside and labelled as added.

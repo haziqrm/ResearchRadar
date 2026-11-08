@@ -25,6 +25,7 @@ MODULES = [
     "src.signal_decay.decay_model",
     "src.signal_decay.decay_model_h8",
     "src.signal_decay.forecasts",
+    "src.signal_decay.vol_model",
 ]
 
 PAPER_COLS = contracts.CONTRACTS["papers"][1]
@@ -1013,3 +1014,118 @@ def test_h9_latest_forecasts_snapshot():
     assert snap.loc["S0", "name"] == "Zero" and snap.loc["S1", "name"] == "S1"
     assert snap.loc["S0", "mom_12m"] == pytest.approx(raw.mean())
     assert snap.loc["S0", "momentum_on"] == (raw.mean() > 0)
+
+
+# ---------- H10 trained volatility model ----------
+
+def _h10_inputs(clustered=True, n=25, seed=0):
+    rng = np.random.default_rng(seed)
+    dates = pd.date_range("1984-01-31", "2010-12-31", freq="ME")
+    T = len(dates)
+    frames = []
+    for i in range(n):
+        if clustered:  # persistent log-volatility (AR(1)): recent months beat a 12-month average
+            lv = np.zeros(T)
+            for t in range(1, T):
+                lv[t] = 0.9 * lv[t - 1] + 0.35 * rng.standard_normal()
+            sigma = 0.03 * np.exp(lv)
+        else:
+            sigma = np.full(T, 0.03)
+        frames.append(pd.DataFrame({"date": dates, "signal": f"S{i}", "return": sigma * rng.standard_normal(T)}))
+    returns = pd.concat(frames, ignore_index=True)
+    pub = pd.Series({f"S{i}": 1984 for i in range(n)})
+    market = pd.Series(0.04 * rng.standard_normal(T), index=dates)
+    vix = pd.Series(rng.uniform(10, 40, T), index=dates)
+    return returns, pub, market, vix
+
+
+def test_h10_features_use_only_past_data():
+    from src.signal_decay.vol_model import FEATURES, build_features
+
+    r, pub, mkt, vix = _h10_inputs()
+    a = build_features(r, pub, mkt, vix)
+    last = r["date"].max()
+    r2 = r.assign(**{"return": np.where(r["date"] == last, 5.0, r["return"])})
+    mkt2, vix2 = mkt.copy(), vix.copy()
+    mkt2.loc[last], vix2.loc[last] = 5.0, 500.0
+    b = build_features(r2, pub, mkt2, vix2)
+    pd.testing.assert_frame_equal(a[FEATURES], b[FEATURES])  # month-t features ignore month t
+    assert not np.allclose(a["abs_r"], b["abs_r"])
+
+
+def test_h10_vix_is_previous_month_end_on_monthly_scale():
+    from src.signal_decay.vol_model import build_features, parse_vix
+
+    daily = "\n".join(["observation_date,VIXCLS", "1999-12-30,20", "1999-12-31,24", "2000-01-31,.",
+                       "2000-01-28,30"])
+    v = parse_vix(daily)
+    assert v.loc["1999-12-31"] == 24 and v.loc["2000-01-31"] == 30  # last valid close of each month
+    r, pub, mkt, vix = _h10_inputs()
+    f = build_features(r, pub, mkt, vix)
+    row = f[f["date"] == pd.Timestamp("2000-06-30")].iloc[0]
+    assert row["vix"] == pytest.approx(vix.loc["2000-05-31"] / 100 / np.sqrt(12))
+
+
+def test_h10_walk_forward_keeps_twelve_month_gap_and_ignores_test_data():
+    from src.signal_decay.vol_model import build_features, walk_forward
+
+    r, pub, mkt, vix = _h10_inputs()
+    df = build_features(r, pub, mkt, vix)
+    pred, folds = walk_forward(df, test_years=[2003, 2004])
+    assert (folds["train_last"] <= folds["test_year"] - 2).all()
+    assert folds["tuned"].all()  # 1990..2001 = 12 training years >= 8
+    shocked = df.copy()
+    shocked.loc[shocked["date"].dt.year == 2004, "abs_r"] *= 10
+    _, folds2 = walk_forward(shocked, test_years=[2004])
+    cols = ["ridge_alpha", "ridge_c", "hgb_learning_rate", "hgb_max_leaf_nodes", "hgb_min_samples_leaf"]
+    pd.testing.assert_frame_equal(folds.loc[folds["test_year"] == 2004, cols].reset_index(drop=True),
+                                  folds2[cols].reset_index(drop=True))
+
+
+def test_h10_short_history_uses_fixed_defaults():
+    from src.signal_decay.vol_model import DEFAULT_C, HGB_DEFAULT, choose_settings
+
+    s = choose_settings(pd.DataFrame({"date": pd.to_datetime(["1990-01-31"])}), 1996)
+    assert not s["tuned"] and s["c"] == pytest.approx(1.887, abs=1e-3) and s["c"] == DEFAULT_C
+    assert s["hgb"] == HGB_DEFAULT and s["alpha"] == 1.0
+
+
+def test_h10_ridge_finds_persistent_volatility_and_no_spurious_skill():
+    from src.signal_decay.vol_model import build_features, compare, walk_forward
+
+    years = list(range(2006, 2011))
+    r, pub, mkt, vix = _h10_inputs(clustered=True)
+    pred, _ = walk_forward(build_features(r, pub, mkt, vix), test_years=years)
+    assert compare(pred, "ridge", "a", (2006, 2010), ci=False)["p_one_sided"] < 0.05
+    # Constant volatility: the scale-corrected long-run average is optimal, so ridge must not beat it.
+    r, pub, mkt, vix = _h10_inputs(clustered=False)
+    pred, _ = walk_forward(build_features(r, pub, mkt, vix), test_years=years)
+    assert compare(pred, "ridge", "b_scaled", (2006, 2010), ci=False)["p_one_sided"] > 0.05
+
+
+def test_h10_best_scale_and_holm():
+    from src.signal_decay.vol_model import ABS_SCALE, best_scale, holm
+
+    e = np.ones(5)
+    a = ABS_SCALE * np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+    assert best_scale(e, a) == pytest.approx(3.0)  # median ratio minimises absolute error
+    assert holm([0.01, 0.04]) == pytest.approx([0.02, 0.04])
+    assert holm([0.04, 0.01]) == pytest.approx([0.04, 0.02])
+
+
+def test_h10_portfolio_cap_scaling_and_costs():
+    from src.signal_decay.vol_model import WEIGHT_CAP, max_drawdown, portfolio_returns, portfolio_weights
+
+    dates = pd.to_datetime(["2000-01-31", "2000-01-31", "2000-02-29", "2000-02-29"])
+    pred = pd.DataFrame({"date": dates, "signal": ["x", "y", "x", "y"],
+                         "vol": [0.001, 0.05, 0.05, 0.05], "ret": [0.01, -0.02, 0.03, 0.01]})
+    W = portfolio_weights(pred, "vol")
+    assert W.sum(axis=1).mean() == pytest.approx(1.0)  # average gross exposure 1
+    raw = 1 / pred["vol"] ** 2
+    capped = np.minimum(raw, WEIGHT_CAP * raw.mean())
+    assert W.loc["2000-01-31", "x"] / W.loc["2000-01-31", "y"] == pytest.approx(capped[0] / capped[1])
+    gross, _ = portfolio_returns(pred, W, 0)
+    net, turnover = portfolio_returns(pred, W, 25)
+    assert np.isnan(turnover.iloc[0])
+    assert net.iloc[1] == pytest.approx(gross.iloc[1] - 0.0025 * turnover.iloc[1])
+    assert max_drawdown(pd.Series([0.1, -0.5, 0.2])) == pytest.approx(-0.5)

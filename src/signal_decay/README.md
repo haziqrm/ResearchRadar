@@ -14,6 +14,7 @@ python -m src.signal_decay.run_osap --charts      # 212 OSAP signals -> data/osa
 python -m src.signal_decay.decay_model --charts   # decay predictor (H7) -> data/osap_model_*.csv
 python -m src.signal_decay.decay_model_h8 --charts  # second attempt (H8) -> data/osap_h8_*.csv
 python -m src.signal_decay.forecasts --charts       # month-ahead forecasts (H9) -> data/osap_h9_summary.csv, data/signal_forecasts.csv
+python -m src.signal_decay.vol_model --charts       # trained volatility model (H10) -> data/osap_h10_*.csv (downloads VIX from FRED once)
 ```
 
 Citations need `OPENALEX_API_KEY` and `OPENALEX_EMAIL` in `.env`. Every OpenAlex and
@@ -33,6 +34,7 @@ OSAP download is cached in `data/cache/`, so reruns are fast and offline.
 | H8 | Do trading-cost, novelty and crowding inputs help? | 181 test signals over 3 walk-forward folds | Pooled error 0.447 vs baseline 0.435; ridge is slightly *worse* (CI +0.002 to +0.023) | Not supported |
 | H9a | Do recent winners among published signals keep winning next month? | 195+ OSAP, 479 months | Past-year winners earn 0.64%/month vs about 0% for the rest, t = 4.1 | Supported |
 | H9b | Does recent volatility predict next month's better than long-run volatility? | 624 months | Lower forecast error, t = 4.7; volatility-managed Sharpe 1.55 vs 1.01 (before costs) | Supported |
+| H10 | Does a trained model beat the H9b 12-month volatility rule? | 211 OSAP, 2000-2025 (312 months) | Ridge cuts forecast error 7% (t = 3.2, Holm p = 0.001); boosting does not pass (p = 0.06). About 60% of ridge's gain is rescaling; the rest is timing (t = 2.7). Its portfolio edge disappears above about 10 bps of trading cost | Supported (ridge), statistically, not after costs |
 
 **In one line:** published signals keep roughly 40-45% of their in-sample edge, part
 of the drop is caused by publication itself, and neither attention nor other features
@@ -63,6 +65,7 @@ uncorrected checks), the opposite of the H8 expectation. Treat it as a lead, not
 | `data/osap_model_summary.csv`, `_predictions.csv`, `_importance.csv` | H7 decay predictor |
 | `data/osap_h8_summary.csv`, `_predictions.csv`, `_features.csv`, `_coefficients.csv` | H8 walk-forward predictor and its new inputs |
 | `data/osap_h9_summary.csv` | H9 tests and descriptive Sharpe ratios |
+| `data/osap_h10_summary.csv`, `_folds.csv`, `_portfolio.csv` | H10 tests, per-year settings, and volatility-managed portfolios before and after costs |
 | `data/signal_forecasts.csv` | Latest month-ahead forecast per signal (OSAP and the 7 Ken French signals, with D's signal names in `name`) |
 
 ## Limits
@@ -85,7 +88,10 @@ uncorrected checks), the opposite of the H8 expectation. Treat it as a lead, not
 - **Selection.** OSAP covers signals that were published and later replicated; signals
   that never got published, or got dropped, are missing.
 - **No trading costs.** Returns are before costs. H9's momentum and volatility-managed
-  portfolios trade more and change leverage, so their edge after costs would be smaller. High-turnover signals such as
+  portfolios trade more and change leverage, so their edge after costs would be smaller.
+  H10's 10 and 25 bps costs are illustrative and charge only the extra rescaling trades,
+  not the long-short portfolios' own trading. H10's weight cap and exposure scaling use the
+  average weight over the test period, the same for every version. High-turnover signals such as
   short-term reversal would earn less in practice.
 - **Small samples.** 7 signals for H1-H3; about 130 training signals for H7, which is
   little for any model. H8's first walk-forward fold trains on only 27 signals.

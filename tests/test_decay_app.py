@@ -155,3 +155,28 @@ def test_haircut_states_its_caveat():
         doc = " ".join(doc.split())  # ignore line wrapping
         assert "not a prediction for any one signal" in doc and "replicable published signals only" in doc
     assert haircut(0.01, _toy_distribution())["caveat"] == CAVEAT
+
+
+def test_robust_curve_splits_at_publication_and_uses_ratio_of_averages():
+    from src.signal_decay.combined import robust_curve
+
+    returns, info = _curve_inputs()
+    r = robust_curve(event_panel(returns, info), draws=50).set_index("years_from")
+    assert r.loc[-5, "share_of_in_sample_mean"] == pytest.approx(1.0)
+    assert r.loc[0, "share_of_in_sample_mean"] == pytest.approx(0.0)
+    # One signal with a tiny in-sample mean: averaging ratios explodes, ratio of averages does not.
+    info.loc[0, "is_mean"] = 1e-6
+    returns.loc[returns["signal"] == "S0", "return"] = 0.01
+    p = event_panel(returns, info)
+    assert abs(decay_curve(p, draws=20).set_index("years_since_publication").loc[0, "mean_scaled_return"]) > 100
+    assert robust_curve(p, draws=20).set_index("years_from").loc[0, "share_of_in_sample_mean"] < 0.1
+
+
+def test_robust_curve_minimum_signals_rule():
+    from src.signal_decay.combined import ROBUST_CURVE_CSV, robust_curve
+
+    returns, info = _curve_inputs(n_signals=60, short=20)
+    r = robust_curve(event_panel(returns, info), draws=50)
+    assert (r["n_signals"] >= CURVE_MIN_SIGNALS).all() and r["years_from"].max() == 0
+    if ROBUST_CURVE_CSV.exists():
+        assert (pd.read_csv(ROBUST_CURVE_CSV)["n_signals"] >= CURVE_MIN_SIGNALS).all()

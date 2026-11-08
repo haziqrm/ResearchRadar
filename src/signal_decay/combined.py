@@ -10,6 +10,7 @@ Writes:
     data/decay_results.csv     contract: 7 Ken French + 212 OSAP rows, key = (source, signal)
     data/osap_paper_ids.csv    signal, openalex_id for OSAP signals whose paper matched (H6)
     data/decay_curve.csv       descriptive event-time curve (OSAP), needs the OSAP returns
+    data/decay_curve_robust.csv  less noisy version: ratio of averages, 5-year buckets
 
 Inputs (all A-owned): data/papers.csv, data/decay_details.csv (from run_decay),
 data/osap_decay_results.csv and data/osap_papers.csv (from run_osap).
@@ -41,6 +42,9 @@ OSAP_RESULTS_CSV = DATA_DIR / "osap_decay_results.csv"
 OSAP_PAPERS_CSV = DATA_DIR / "osap_papers.csv"
 OSAP_PAPER_IDS_CSV = DATA_DIR / "osap_paper_ids.csv"
 CURVE_CSV = DATA_DIR / "decay_curve.csv"
+ROBUST_CURVE_CSV = DATA_DIR / "decay_curve_robust.csv"
+ROBUST_BUCKET_YEARS = 5
+ROBUST_MIN_MONTHS = 24  # months a signal needs inside a 5-year bucket to count in it
 
 CURVE_FIRST_YEAR = -10  # buckets of 12 months; bucket 0 = first 12 months after publication
 CURVE_LAST_YEAR = 19  # i.e. up to 20 years after publication
@@ -154,7 +158,44 @@ def decay_curve(panel: pd.DataFrame, first: int = CURVE_FIRST_YEAR, last: int = 
     return out[out["n_signals"] >= min_signals].reset_index(drop=True)
 
 
-def plot_curve(curve: pd.DataFrame, path) -> None:
+def robust_curve(panel: pd.DataFrame, bucket_years: int = ROBUST_BUCKET_YEARS,
+                 first: int = CURVE_FIRST_YEAR, last: int = CURVE_LAST_YEAR,
+                 min_signals: int = CURVE_MIN_SIGNALS, min_months: int = ROBUST_MIN_MONTHS,
+                 draws: int = BOOTSTRAP_DRAWS, seed: int = SEED) -> pd.DataFrame:
+    """Ratio of averages by multi-year bucket: mean return across signals / mean in-sample mean.
+
+    Dividing averages rather than averaging ratios stops signals with a tiny in-sample mean
+    from dominating. Signals in a bucket are weighted equally; bootstrap resamples signals.
+    Descriptive only; eras overlap across signals.
+    """
+    p = panel[panel["bucket"].between(first, last)].copy()
+    p["rbucket"] = np.floor_divide(p["bucket"], bucket_years) * bucket_years
+    g = p.groupby(["signal", "rbucket"]).agg(ret=("return", "mean"), n=("return", "size"), is_mean=("is_mean", "first"))
+    g = g[g["n"] >= min_months]
+    R = g["ret"].unstack("rbucket")
+    cols = sorted(R.columns)
+    R = R[cols]
+    Mask = R.notna().to_numpy(float)
+    Rv = R.fillna(0.0).to_numpy()
+    I = g["is_mean"].groupby(level="signal").first().reindex(R.index).to_numpy()[:, None] * Mask
+
+    def ratio(w):
+        num, den = w @ Rv, w @ I
+        return np.divide(num, den, out=np.full(num.shape, np.nan), where=den > 0)
+
+    n = Mask.sum(axis=0)
+    est = ratio(np.ones(len(R)))
+    rng = np.random.default_rng(seed)
+    S = len(R)
+    boot = np.array([ratio(np.bincount(rng.integers(0, S, S), minlength=S).astype(float)) for _ in range(draws)])
+    lo, hi = np.nanpercentile(boot, [2.5, 97.5], axis=0)
+    out = pd.DataFrame({"years_from": cols, "years_to": [c + bucket_years for c in cols], "n_signals": n.astype(int),
+                        "share_of_in_sample_mean": est, "ci_low": lo, "ci_high": hi})
+    out["period"] = np.where(out["years_from"] >= 0, "post-publication", "pre-publication")
+    return out[out["n_signals"] >= min_signals].reset_index(drop=True)
+
+
+def plot_curve(curve: pd.DataFrame, path, robust: pd.DataFrame | None = None) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
@@ -162,12 +203,19 @@ def plot_curve(curve: pd.DataFrame, path) -> None:
 
     fig, ax = plt.subplots(figsize=(10, 4.8))
     x = curve["years_since_publication"] + 0.5
-    ax.fill_between(x, curve["ci_low"], curve["ci_high"], alpha=0.25, label="95% bootstrap interval (signals)")
-    ax.plot(x, curve["mean_scaled_return"], marker="o", ms=3, label="mean return / in-sample mean")
+    ax.plot(x, curve["mean_scaled_return"], marker="o", ms=3, lw=0.8, alpha=0.35, color="grey",
+            label="yearly: mean of (return / in-sample mean), noisy")
+    if robust is not None:
+        xr = (robust["years_from"] + robust["years_to"]) / 2
+        ax.fill_between(xr, robust["ci_low"], robust["ci_high"], alpha=0.25, color="C0",
+                        label="95% bootstrap interval (signals)")
+        ax.plot(xr, robust["share_of_in_sample_mean"], marker="o", color="C0", lw=2,
+                label="5-year: mean return / mean in-sample mean")
     ax.axvline(0, color="black", lw=1, label="publication (January after the publication year)")
     ax.axhline(1, color="grey", ls="--", lw=0.8)
     ax.axhline(0, color="grey", lw=0.8)
-    ax.set_xlabel("Years since publication (12-month buckets)")
+    ax.set_ylim(-1, 2.5)
+    ax.set_xlabel("Years since publication")
     ax.set_ylabel("Return as a share of the in-sample mean")
     ax.set_title(f"Event-time decay, OSAP signals (descriptive; eras overlap; at least {CURVE_MIN_SIGNALS} "
                  "signals per bucket)\nPre-publication buckets partly overlap the in-sample period, "
@@ -202,9 +250,12 @@ def main(argv: list[str] | None = None) -> None:
     curve = decay_curve(event_panel(load_ls_returns(), info))
     curve.to_csv(CURVE_CSV, index=False)
     print(f"Wrote {len(curve)} buckets to {CURVE_CSV}")
+    robust = robust_curve(event_panel(load_ls_returns(), info))
+    robust.to_csv(ROBUST_CURVE_CSV, index=False)
+    print(f"Wrote {len(robust)} buckets to {ROBUST_CURVE_CSV}")
     if args.charts:
         CHARTS_DIR.mkdir(parents=True, exist_ok=True)
-        plot_curve(curve, CHARTS_DIR / "decay_curve.png")
+        plot_curve(curve, CHARTS_DIR / "decay_curve.png", robust)
         print(f"Saved chart to {CHARTS_DIR / 'decay_curve.png'}")
 
 
