@@ -55,7 +55,7 @@ def get(url):
         return r.status, r.headers["Content-Type"], r.read()
 
 
-@pytest.mark.parametrize("path", ["/api/crowding", "/api/backtest", "/api/briefing"])
+@pytest.mark.parametrize("path", ["/api/crowding", "/api/backtest", "/api/briefing", "/api/heading"])
 def test_routes_return_json(server, path):
     status, ctype, body = get(server + path)
     assert status == 200 and ctype == "application/json"
@@ -64,7 +64,8 @@ def test_routes_return_json(server, path):
 
 def test_page_loads_live_panels_and_audio(server):
     _, _, page = get(server + "/")
-    for needle in [b'id="crowding-panel"', b"/static/js/live.js", b"/static/css/live.css"]:
+    for needle in [b'id="heading-panel"', b'id="help-drawer"', b'id="brief-modal"',
+                   b"/static/js/live.js", b"/static/css/live.css"]:
         assert needle in page
     status, ctype, audio = get(server + "/media/briefing.mp3")
     assert status == 200 and ctype == "audio/mpeg" and len(audio) > 1000
@@ -81,3 +82,24 @@ def test_page_title_and_no_year_watermark(server):
     _, _, page = get(server + "/")
     assert b"<title>Research Lifecycle Radar</title>" in page
     assert b"net-year" not in page and b"net-legend" in page
+
+
+def test_heading_covers_the_map_topics_with_forecast_and_reading():
+    h = live_data.get_heading()
+    assert len(h["topics"]) == 8
+    scores = [t["score"] for t in h["topics"]]
+    assert scores == sorted(scores, reverse=True)
+    ranks = sorted(t["forecast"]["rank"] for t in h["topics"] if t["forecast"])
+    assert ranks == list(range(1, len(ranks) + 1))          # re-ranked among the map's topics
+    assert all(t["forecast"]["of"] == len(ranks) for t in h["topics"] if t["forecast"])
+    assert h["forecast_passed"] is False                     # labelled exploratory on the page
+    assert all(t["read_first"] and t["read_first"]["title"] for t in h["topics"])
+
+
+def test_briefing_card_has_a_date_for_the_new_dot():
+    assert live_data.get_briefing()["card"]["generated"]
+
+
+def test_cut_parts_are_gone(server):
+    _, _, page = get(server + "/")
+    assert b'id="path-btn"' not in page and b'id="research"' not in page

@@ -1,42 +1,158 @@
-/* Live layer (Person D): crowding, backtest and briefing panels.
-   Uses the tokens from base.css and the table styles from table.css / research.css. */
+/* Live layer (Person D): header buttons, "Where research is heading", the ? drawer and
+   the Weekly briefing modal. Uses the tokens from base.css and table styles from table.css. */
 
-/* the three panels share one full-width row below the map (hidden in map-only mode,
-   like Person A's panels, because the row also has .radar-wide) */
-.live-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-.live-row > .panel { overflow: visible; }
-@media (max-width: 1280px) { .live-row { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 960px) { .live-row { grid-template-columns: 1fr; } }
-
-/* crowding score bar, centred on zero */
-.zbar {
+/* ---- header buttons ---- */
+.head-btn {
   position: relative;
-  display: inline-block;
-  width: 80px;
-  height: 6px;
-  background: var(--line);
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--navy);
+  background: var(--navy);
+  color: #fff;
+  font: 600 13px var(--font);
+  cursor: pointer;
 }
-.zbar::after {            /* the zero line */
-  content: "";
+.head-btn:hover { background: #1b2740; }
+.head-btn.round {
+  width: 32px;
+  padding: 0;
+  border-color: var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--navy);
+  font-size: 15px;
+}
+.head-btn.round:hover { border-color: var(--slate); background: var(--panel); }
+.new-dot {
   position: absolute;
-  left: 50%;
-  top: -3px;
-  bottom: -3px;
-  width: 1px;
-  background: var(--muted);
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  background: var(--down);
 }
-.zbar i { position: absolute; top: 0; bottom: 0; display: block; }
-.zbar i.pos { background: var(--slate); }
-.zbar i.neg { background: #c9b9a6; }
-.zbar i.pos.strong { background: var(--oxblood); }
-#crowding td:first-child { min-width: 120px; }
-#crowding tr { cursor: default; }
+.new-dot[hidden] { display: none; }
+.headline b { color: var(--navy); }
+.headline .score { font-variant-numeric: tabular-nums; font-weight: 600; }
 
-/* backtest chart */
+/* ---- "Where research is heading" ---- */
+#heading td { vertical-align: top; }
+#heading td.topic { font-weight: 600; color: var(--navy); }
+#heading td.crowd { width: 92px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+#heading td.forecast { white-space: nowrap; }
+#heading td.forecast .likely { color: var(--up); font-weight: 600; }
+#heading td.read { font-size: 12px; color: var(--muted); max-width: 300px; }
+#heading td.read .title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--text);
+}
+#heading tbody tr:hover td { background: var(--row-hover); }
+#heading tbody tr:hover td.crowd { filter: brightness(0.97); }
+#heading tbody tr:focus-visible { outline: 2px solid var(--navy); outline-offset: -2px; }
+#heading th .badge { margin-left: 4px; font-size: 10px; padding: 0 5px; vertical-align: 1px; }
+#heading th[title] { cursor: help; }
+
+/* ---- "What happens to a published edge": one line on top ---- */
+.lead { margin: 0 0 4px; font-size: 15px; color: var(--navy); }
+.lead b { font-weight: 700; }
+/* half-width column: chart on top, calculator underneath */
+#decay-panel .decay-body { grid-template-columns: 1fr; gap: 8px; }
+#decay-panel .haircut { display: grid; grid-template-columns: minmax(150px, 0.8fr) 1.2fr; gap: 4px 16px; align-items: start; }
+#decay-panel .haircut h3 { grid-column: 1 / -1; margin: 0; }
+
+/* ---- drawer (?) and modal (Weekly briefing) ---- */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(37, 52, 79, 0.35);
+}
+.scrim[hidden], .drawer[hidden], .modal[hidden] { display: none; }
+.drawer, .modal {
+  position: fixed;
+  z-index: 50;
+  overflow: auto;
+  background: var(--panel);
+  box-shadow: 0 12px 40px rgba(37, 52, 79, 0.3);
+}
+.drawer { top: 0; right: 0; bottom: 0; width: min(560px, 100vw); padding: 20px 24px 32px; }
+.modal {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  padding: 20px 24px 24px;
+}
+.dlg-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.dlg-head h2 { margin: 0; font-size: 18px; font-weight: 700; color: var(--navy); }
+.close-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--navy);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.close-btn:hover { border-color: var(--slate); }
+.dlg-section { padding: 14px 0; border-top: 1px solid var(--line); }
+.dlg-section h3 { margin: 0 0 8px; font-size: 14px; font-weight: 700; color: var(--navy); }
+.key-list, .caveats { margin: 0; padding: 0; list-style: none; }
+.key-list li { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: start; margin-bottom: 10px; font-size: 13px; }
+.key-list .key { display: flex; align-items: center; gap: 2px; min-height: 18px; }
+.lg-ring { display: inline-block; width: 16px; height: 16px; border: 2px dashed var(--oxblood); border-radius: 50%; }
+.lg-island {
+  display: inline-block;
+  width: 26px;
+  height: 18px;
+  border: 1.2px solid #4e79a7;
+  border-radius: 45% 55% 50% 50%;
+  background: radial-gradient(circle, #4e79a7 1.5px, transparent 2px) 0 0 / 6px 6px, rgba(78, 121, 167, 0.08);
+}
+.caveats li { margin-bottom: 8px; font-size: 13px; }
+.caveats b { color: var(--navy); }
+.drawer .tests-grid { grid-template-columns: 1fr; }
+
+/* ---- briefing modal ---- */
+#brief-audio { width: 100%; margin: 4px 0 12px; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.card-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: var(--row-hover);
+  border: 1px solid var(--line);
+}
+.card-grid .wide { grid-column: 1 / -1; }
+.card-grid .label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.card-grid b { color: var(--navy); }
+.card-grid ol, .card-grid ul { margin: 0; padding-left: 18px; }
+.card-grid li { margin: 1px 0; }
+.chip {
+  display: inline-block;
+  min-width: 38px;
+  margin-left: 6px;
+  padding: 0 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.more { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; }
+.more summary { cursor: pointer; color: var(--navy); font-weight: 600; font-size: 13px; }
+.more summary .sub { font-weight: 400; margin-left: 6px; }
+.more[open] summary { margin-bottom: 8px; }
+.more p { font-size: 13px; }
+
+/* backtest chart (inside the modal) */
 .live-chart { margin: 4px 0 8px; }
 .live-chart svg { display: block; overflow: visible; }
 .live-chart .axis text { fill: var(--muted); font: 10px var(--font); }
@@ -63,25 +179,7 @@
 #backtest tr.ours td:first-child { font-weight: 700; color: var(--oxblood); }
 #backtest .sig { font-weight: 700; }
 
-/* briefing */
-#brief-audio { width: 100%; margin: 4px 0 10px; }
-.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.card-grid > div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 8px;
-  background: var(--row-hover);
-  border: 1px solid var(--line);
-}
-.card-grid b { color: var(--navy); }
-.held { margin: 2px 0; padding-left: 16px; }
-.brief-text { margin-top: 10px; }
-.brief-text summary { cursor: pointer; color: var(--slate); font-size: 13px; }
-.brief-text p { margin: 6px 0 0; font-size: 13px; }
-
 @media (max-width: 720px) {
-  .zbar { width: 48px; }
-  #crowding td:first-child { min-width: 0; }
   .card-grid { grid-template-columns: 1fr; }
+  #heading td.read { max-width: none; }
 }

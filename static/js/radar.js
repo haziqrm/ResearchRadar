@@ -16,28 +16,13 @@
   let topicSize = new Map();
   let forecastByTopic = new Map();
 
-  // ---------------------------------------------------------------- map-only layout
-  // The map fills the screen; the topics table and the open topic's details float in a dock
-  // on the right. Set MAP_ONLY to false to get the full page (with the panels below) back.
-  const MAP_ONLY = !new URLSearchParams(location.search).has("full");  // ?full shows every panel (D)
-  const dock = document.createElement("div");
-  dock.id = "dock";
-  if (MAP_ONLY) {
-    document.body.classList.add("map-only");
-    const toggle = document.createElement("button");
-    toggle.type = "button";
-    toggle.className = "dock-toggle";
-    toggle.textContent = "Hide panel ›";
-    toggle.addEventListener("click", () => {
-      const collapsed = dock.classList.toggle("collapsed");
-      document.body.classList.toggle("dock-collapsed", collapsed);
-      toggle.textContent = collapsed ? "‹ Show panel" : "Hide panel ›";
-    });
-    const research = document.getElementById("research").closest(".panel");
-    research.id = "research-panel";
-    dock.append(toggle, research, document.getElementById("zoom-panel"));
-    document.body.appendChild(dock);
-  }
+  // ---------------------------------------------------------------- layout
+  // "Inside a topic" sits in a dock beside the map, shown only while a topic is open
+  // (body.topic-open narrows the map, and the map redraws for its new width).
+  // ?full is an unlinked internal view that also shows the extra panels.
+  document.body.classList.toggle("full-view", new URLSearchParams(location.search).has("full"));
+  const dock = document.getElementById("dock");
+  dock.append(document.getElementById("zoom-panel"));
 
   // ---------------------------------------------------------------- topic drill-down
   // Opens inside the map box: the network zooms into the clicked circle and fades, the
@@ -587,6 +572,8 @@
   async function openTopic(name, origin) {
     const res = await getJSON(`/api/topic?name=${encodeURIComponent(name)}`);
     if (res.error) return showError(zoom.side, res);
+    document.body.classList.add("topic-open");
+    dock.classList.add("topic-open");
     zoom.W = box.clientWidth;
     zoom.H = box.clientHeight;
     zoom.origin = origin || { x: zoom.W / 2, y: zoom.H / 2 };
@@ -597,7 +584,6 @@
     zoom.open = true;
     hover.classed("on", false);
     hideHint();
-    dock.classList.add("topic-open");
     zoom.select.value = name;
     document.getElementById("zoom-title").textContent = name;
     barTitle.text(name);
@@ -614,6 +600,7 @@
     const o = zoom.origin;
     zoom.open = false;
     dock.classList.remove("topic-open");
+    document.body.classList.remove("topic-open");
     zoom.pinned = null;
     stopParticles();
     tip.style("opacity", 0);
@@ -637,14 +624,20 @@
     return { x: c.left + c.width / 2 - b.left, y: c.top + c.height / 2 - b.top };
   }
 
-  const scrollToMap = () => { if (!MAP_ONLY) box.closest(".panel").scrollIntoView({ behavior: "smooth", block: "start" }); };
+  const scrollToMap = () => {
+    const panel = box.closest(".panel"), top = panel.getBoundingClientRect().top;
+    if (top < -40 || top > window.innerHeight / 3) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
-  // clicking a row in the topics table opens that topic, flying out of its map circle if shown
-  document.getElementById("research").addEventListener("click", e => {
-    const row = e.target.closest("tbody tr");
-    if (!row || !row.cells.length) return;
-    const name = row.cells[0].textContent.trim();
+  // any element with data-topic (a row in "Where research is heading") opens that topic,
+  // flying out of its map circle, the same as clicking the circle
+  document.addEventListener("click", e => {
+    const row = e.target.closest("[data-topic]");
+    if (!row || row.closest(".topic-map") || e.target.closest("a")) return;
+    const name = row.dataset.topic;
     if (!topicNames.includes(name)) return;
+    scrollToMap();
+    hideHint();
     const node = [...box.querySelectorAll(".net-node")].find(g => { const d = d3.select(g).datum(); return d && d.id === name; });
     openTopic(name, node ? circleCentre(node) : null);
   });

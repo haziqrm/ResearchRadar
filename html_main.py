@@ -7,7 +7,7 @@ research_data.py, which reads the research map's CSVs in data/ and keeps
 the 8 trading-relevant areas (see research_data.AREAS).
 
   GET /api/network     areas (sized by article count) and the links between them
-  GET /api/research    articles per area, in total and this year vs last year
+  GET /api/research    articles per area, in total and this year vs last year (not on the page now)
 
 Person D's live panels (live_data.py, static/js/live.js): /api/crowding,
 /api/backtest, /api/briefing, and the briefing audio at /media/briefing.mp3.
@@ -55,12 +55,22 @@ PAGE = r"""<!doctype html>
 __CSS_LINKS__
 </head>
 <body>
+  <header class="site-head">
+    <div class="brand">
+      <h1>Research Lifecycle Radar</h1>
+      <p class="headline" id="headline"></p>
+    </div>
+    <div class="head-actions">
+      <button type="button" class="head-btn" id="brief-btn" aria-haspopup="dialog">Weekly briefing<span class="new-dot" id="brief-new" hidden title="New since your last visit"></span></button>
+      <button type="button" class="head-btn round" id="help-btn" aria-haspopup="dialog" aria-label="How to read this page">?</button>
+    </div>
+  </header>
+
   <main>
-    <section class="panel">
+    <section class="panel map-panel">
       <div class="panel-head">
         <h2>Research topic network</h2>
         <div class="net-controls">
-          <button type="button" class="path-btn" id="path-btn" aria-pressed="false">Show affected path</button>
           <div class="year-control">
             <button type="button" class="play-btn" id="play-btn" aria-label="Play years">&#9654;</button>
             <input type="range" id="year-slider" step="1" aria-label="Year">
@@ -69,37 +79,58 @@ __CSS_LINKS__
         </div>
       </div>
       <div class="net-legend" aria-label="Legend">
-        <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year (from a sample of 380 OpenAlex quant-finance papers a year), on one scale across years."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
+        <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
         <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker means more shared that year; dotted means none."><i class="lg-line"></i>shared citations</span>
-        <span class="lg" title="Colour: is the topic taking more than its usual share of papers? Warm = crowded, cool = quiet, compared with its own share over the five years before. Grey: no score."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
-        <span class="lg-help" tabindex="0" title="Drag the slider or press play to move through the years. Click a circle to open its sub-topics and papers.">?</span>
+        <span class="lg" title="Is the topic taking more than its usual share of papers that year? Compared with its own share over the five years before."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
       </div>
-      <div class="network" id="network"></div>
+      <div class="map-body">
+        <div class="network" id="network"></div>
+        <div id="dock"></div>
+      </div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>Research topics</h2>
-        <span class="sub" id="research-range"></span>
-      </div>
-      <table class="data-table research" id="research">
-        <thead><tr><th>Topic</th><th class="num">Articles</th><th class="num" id="year-col">This year</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
+    <div class="below">
+      <!-- Person D (live.js): crowding now, Person A's forecast, a paper to start with -->
+      <section class="panel" id="heading-panel">
+        <div class="panel-head"><h2>Where research is heading</h2><span class="sub" id="heading-period"></span></div>
+        <table class="data-table opens-topic" id="heading">
+          <thead><tr>
+            <th>Topic</th>
+            <th class="num" title="Share of this year's papers vs the topic's usual share: 0 is normal, +2 crowded, −2 quiet.">Crowding now</th>
+            <th title="Person A's growth forecast, ranked among the topics on the map. Exploratory: it did not pass its pre-registered test.">Forecast <span class="badge warn">exploratory</span></th>
+            <th title="The topic's most cited paper this year.">Read first</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
 
-    <!-- Person A: topic drill-down (radar.js). Click a circle above, or pick a topic. -->
-    <section class="panel radar-wide" id="zoom-panel">
+      <!-- Person A (radar.js draws the chart and calculator) -->
+      <section class="panel" id="decay-panel">
+        <div class="panel-head"><h2>What happens to a published edge</h2></div>
+        <p class="lead" id="decay-lead"></p>
+        <div class="decay-body">
+          <div class="decay-plot" id="decay-plot"></div>
+          <div class="haircut">
+            <h3>Haircut calculator</h3>
+            <label>Paper claims <input type="number" id="hc-input" value="1.0" step="0.1" min="0"> % a month</label>
+            <div id="hc-out"></div>
+            <div class="sub" id="hc-caveat" hidden></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Person A: "Inside a topic" (radar.js moves it into #dock beside the map while a topic is open) -->
+    <section class="panel" id="zoom-panel">
       <div class="panel-head">
         <h2 id="zoom-title">Inside a topic</h2>
         <select id="zoom-select" aria-label="Topic"></select>
       </div>
-      <div class="sub" id="zoom-sub">Click a circle on the map (or pick a topic here) to open its sub-topic map: one island per sub-topic, with similar sub-topics placed close together. Each dot is a paper, and inside an island similar papers sit together (t-SNE on SPECTER2 paper vectors). Island size follows the last five years of papers, so press play to watch sub-topics grow, shrink and emerge. Arrows are direct citations between sub-topics (from the cited to the citing side), with moving dots showing the direction. Click an island to see who it built on and who it fed; hover a paper for its citations; click a paper for its citation trail. Rings mark suggested reading. Citations show who builds on whom, not cause and effect.</div>
       <div class="zoom-side" id="zoom-side"></div>
     </section>
 
-    <!-- Person A: what's next, signal decay, and how each claim was tested (radar.js) -->
-    <section class="panel radar-wide" id="next-panel">
+    <!-- internal view only (?full) -->
+    <section class="panel full-only" id="next-panel">
       <div class="panel-head"><h2>What could be next</h2><span class="badge warn">exploratory</span></div>
       <div class="sub" id="next-sub"></div>
       <div class="next-grid">
@@ -107,66 +138,76 @@ __CSS_LINKS__
         <div><h3>Sub-topics</h3><ol class="rank-list" id="next-subtopics"></ol></div>
       </div>
     </section>
+  </main>
 
-    <section class="panel radar-wide" id="decay-panel">
-      <div class="panel-head"><h2>What happens to an edge once it is published</h2></div>
-      <div class="sub">Average return of 208 published trading signals, as a share of their in-sample return, by years since publication. Shaded: 95% interval.</div>
-      <div class="decay-body">
-        <div class="decay-plot" id="decay-plot"></div>
-        <div class="haircut">
-          <h3>Haircut calculator</h3>
-          <label>Paper claims <input type="number" id="hc-input" value="1.0" step="0.1" min="0"> % a month</label>
-          <div id="hc-out"></div>
-          <div class="sub" id="hc-caveat"></div>
-        </div>
-      </div>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <!-- the ? button: how to read it, how it was tested, data and caveats -->
+  <aside class="drawer" id="help-drawer" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+    <div class="dlg-head">
+      <h2 id="help-title">About this radar</h2>
+      <button type="button" class="close-btn" data-close aria-label="Close">&times;</button>
+    </div>
+    <section class="dlg-section">
+      <h3>How to read the map</h3>
+      <ul class="key-list">
+        <li><span class="key"><i class="lg-size"></i><i class="lg-size big"></i></span><span><b>Circle size</b>: research articles on the topic in the selected year, on one scale across years. Drag the slider or press play to move through the years.</span></li>
+        <li><span class="key"><i class="lg-line"></i></span><span><b>Lines</b>: the two topics' papers cite the same earlier work. Thicker means more shared that year; dotted means none.</span></li>
+        <li><span class="key"><span class="lg-ramp"></span></span><span><b>Colour</b>: crowding. Warm means the topic is taking more than its usual share of that year's papers, cool less, compared with its own share over the five years before. Grey: no score.</span></li>
+        <li><span class="key"><i class="lg-ring"></i></span><span><b>Dashed ring</b>: predicted to grow (top 5 of 25 topics). Exploratory: the forecast did not pass its test.</span></li>
+        <li><span class="key"><i class="lg-island"></i></span><span><b>Click a circle</b> to open its sub-topics. Each dot is a paper and similar papers sit together; each outlined island is a sub-topic, sized by its papers in the last five years. Rings mark suggested reading. Arrows are direct citations between sub-topics, from the cited to the citing side. Click an island to focus it, a paper for its citation trail.</span></li>
+      </ul>
     </section>
-
-    <section class="panel radar-wide" id="signals-panel">
-      <div class="panel-head"><h2>Signals right now</h2><span class="sub" id="signals-asof"></span></div>
-      <div class="sub">Momentum: average return over the last 12 months (past winners kept winning, H9). Volatility: next month's forecast (H10 model). Kept: share of the edge that survived publication.</div>
-      <table class="data-table" id="signals-table">
-        <thead><tr><th>Signal</th><th class="num">12-month mean</th><th class="num">Vol forecast</th><th class="num">Kept after publication</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div class="sub" id="portfolio-line"></div>
-    </section>
-
-    <section class="panel radar-wide" id="tests-panel">
-      <div class="panel-head"><h2>How we tested it</h2></div>
-      <div class="sub">Every claim was tested on data the model had not seen, against simple rules, with the pass rule written down before the run. For the forecasts, the grey bars are 200 simulated worlds where no topic truly grows; the line is the real result.</div>
+    <section class="dlg-section">
+      <h3>How we tested it</h3>
+      <p class="sub">Every claim was tested on data the model had not seen, against simple rules, with the pass rule written down before the run. For the forecasts, the grey bars are 200 simulated worlds where no topic truly grows; the line is the real result.</p>
       <div class="tests-grid" id="tests-grid"></div>
     </section>
+    <section class="dlg-section">
+      <h3>Data and caveats</h3>
+      <ul class="caveats">
+        <li><b>OpenAlex sample.</b> The map and the crowding score use 380 quant-finance papers sampled at random each year from OpenAlex (2000–2026), so sizes show each topic's share of attention, not every paper written.</li>
+        <li><b>2026 is a partial year</b> (353 of 380 papers so far). Crowding compares shares, so it still works, but counts for 2026 are lower.</li>
+        <li><b>Topics</b> are 25 groups found automatically from the papers' text; the map shows the 8 the team chose.</li>
+        <li><b>Tagging accuracy.</b> Gemini's arXiv tags were right on the area for 92% of 50 papers checked by hand. That check used the earlier live areas, not the map's topics, and the arXiv feed isn't on the map yet.</li>
+        <li><b>Forecasts are exploratory.</b> The topic and sub-topic growth forecasts did not pass their pre-registered tests.</li>
+        <li><b>Citations</b> show who builds on whom, not cause and effect.</li>
+        <li><b>The haircut</b> applies a historical average as an assumption, not a prediction for any one signal.</li>
+      </ul>
+    </section>
+  </aside>
 
-    <!-- Person D: crowding score, allocation backtest and spoken briefing (live.js) -->
-    <div class="live-row radar-wide">
-      <section class="panel" id="crowding-panel">
-        <div class="panel-head"><h2 id="crowding-title">Crowded now</h2></div>
-        <div class="sub" id="crowding-sub"></div>
-        <table class="data-table research" id="crowding">
-          <thead><tr><th>Area</th><th class="num">Crowding</th><th class="num" id="crowding-papers">Papers</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <section class="panel" id="backtest-panel">
-        <div class="panel-head"><h2>Does trading on decay help?</h2><span class="sub" id="bt-range"></span></div>
-        <div class="live-chart" id="bt-chart"></div>
-        <table class="data-table" id="backtest">
-          <thead><tr><th>Strategy</th><th class="num">Sharpe (95% CI)</th><th class="num">vs equal weight</th></tr></thead>
-          <tbody></tbody>
-        </table>
-        <div class="sub">Cumulative return after costs. Walk-forward: each month uses only past returns. Market (table only) is before costs, for scale.</div>
-      </section>
-
-      <section class="panel" id="briefing-panel">
-        <div class="panel-head"><h2 id="brief-title">Briefing</h2><span class="sub" id="brief-source"></span></div>
-        <audio id="brief-audio" controls preload="none" hidden></audio>
-        <div id="brief-card"></div>
-        <details class="brief-text"><summary>Read the briefing</summary><p id="brief-text"></p></details>
-      </section>
+  <!-- the Weekly briefing button (live.js) -->
+  <div class="modal" id="brief-modal" role="dialog" aria-modal="true" aria-labelledby="brief-title" hidden>
+    <div class="dlg-head">
+      <div><h2 id="brief-title">Weekly briefing</h2><span class="sub" id="brief-date"></span></div>
+      <button type="button" class="close-btn" data-close aria-label="Close">&times;</button>
     </div>
-  </main>
+    <audio id="brief-audio" controls preload="none" hidden></audio>
+    <div id="brief-card"></div>
+    <details class="more">
+      <summary>Does trading on decay help? <span class="sub" id="bt-range"></span></summary>
+      <div class="live-chart" id="bt-chart"></div>
+      <table class="data-table" id="backtest">
+        <thead><tr><th>Strategy</th><th class="num">Sharpe (95% CI)</th><th class="num">vs equal weight</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="sub">Cumulative return after costs. Walk-forward: each month uses only past returns. Market (table only) is before costs, for scale.</p>
+    </details>
+    <details class="more">
+      <summary>Signals right now <span class="sub" id="signals-asof"></span></summary>
+      <p class="sub">Momentum: average return over the last 12 months. Volatility: next month's forecast. Kept: share of the edge that survived publication.</p>
+      <table class="data-table" id="signals-table">
+        <thead><tr><th>Signal</th><th class="num">12-month mean</th><th class="num">Vol forecast</th><th class="num">Kept</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="sub" id="portfolio-line"></p>
+    </details>
+    <details class="more">
+      <summary>Read the briefing</summary>
+      <p id="brief-text"></p>
+    </details>
+  </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
@@ -273,7 +314,7 @@ async function loadNetwork() {
   }, []);
 
   const STEP_MS = 900;
-  let playing = null, pathOn = false, view = null;
+  let playing = null, view = null;
 
   // Links count as "there" in a year only if that year had shared work.
   const active = l => countFor(l) > 0;
@@ -360,7 +401,6 @@ async function loadNetwork() {
     // Hovering a topic highlights it and the topics it is linked to that year.
     const clearHover = () => { box.classList.remove("focus"); node.classed("hl", false); link.classed("hl", false); };
     node.on("mouseenter", (e, d) => {
-      if (pathOn) return;
       const near = neighbours(d.id);
       box.classList.add("focus");
       node.classed("hl", n => n.id === d.id || near.has(n.id));
@@ -383,32 +423,10 @@ async function loadNetwork() {
           + "\nClick to explore its papers";
       });
       linkTitle.text(l => `${l.source} and ${l.target}\n${countFor(l, year)} paper pairs in ${year} cite the same earlier work`);
-      if (pathOn) drawPath();  // the largest circle can change between years
     };
 
     return { node, link, drawYear, clearHover };
   }
-
-  // Show affected path: the largest circle in the selected year, and the
-  // topics linked to it that year.
-  const pathBtn = document.getElementById("path-btn");
-  function drawPath() {
-    box.classList.toggle("path", pathOn);
-    pathBtn.classList.toggle("active", pathOn);
-    pathBtn.setAttribute("aria-pressed", pathOn);
-    pathBtn.textContent = pathOn ? "Hide affected path" : "Show affected path";
-    if (!view) return;
-    const root = net.nodes.reduce((a, b) => countFor(b) > countFor(a) ? b : a);
-    const hits = neighbours(root.id);
-    view.node.classed("path-root", d => pathOn && d === root)
-        .classed("path-hit", d => pathOn && hits.has(d.id));
-    view.link.classed("path-link", l => pathOn && active(l) && touches(l, root.id));
-  }
-  pathBtn.addEventListener("click", () => {
-    pathOn = !pathOn;
-    if (view) view.clearHover();
-    drawPath();
-  });
 
   document.addEventListener("yearchange", e => { if (view) view.drawYear(e.detail, playing ? STEP_MS * 0.8 : 400); });
 
@@ -449,43 +467,12 @@ async function loadNetwork() {
     drawn = [W, H];
     view = build(W, H);
     view.drawYear(yearState.year, 0);
-    if (pathOn) drawPath();
   };
   new ResizeObserver(() => { clearTimeout(timer); timer = setTimeout(render, 120); }).observe(box);
   render();
 }
 
-// ---------------------------------------------------------------- research table
-
-function yearChange(now, before, prevYear) {
-  const diff = now - before;
-  if (diff > 0) return `<span class="arrow up" title="Up ${diff} from ${prevYear}">&#9650;</span>`;
-  if (diff < 0) return `<span class="arrow down" title="Down ${-diff} from ${prevYear}">&#9660;</span>`;
-  return `<span class="arrow same" title="Same as ${prevYear}">&ndash;</span>`;
-}
-
-async function loadResearch() {
-  const snap = await getJSON("/api/research");
-  const most = Math.max(...snap.topics.map(r => r.articles), 1);
-  document.getElementById("research-range").textContent = `Articles ${snap.first_year}–${snap.this_year}`;
-  const count = (r, y) => r.by_year[String(y)] || 0;
-
-  // The last column follows the slider: that year's articles, arrow vs the year before.
-  const render = year => {
-    document.getElementById("year-col").textContent = year;
-    document.querySelector("#research tbody").innerHTML = snap.topics.map(r => `
-      <tr>
-        <td>${esc(r.topic)}</td>
-        <td class="num"><div class="pop-bar">${r.articles}
-          <span class="track"><i class="fill" style="width:${(100 * r.articles / most).toFixed(1)}%"></i></span></div></td>
-        <td class="num papers" title="${count(r, year - 1)} in ${year - 1}">${count(r, year)} ${yearChange(count(r, year), count(r, year - 1), year - 1)}</td>
-      </tr>`).join("");
-  };
-  document.addEventListener("yearchange", e => render(e.detail));
-  render(yearState.year || snap.this_year);
-}
-
-loadNetwork(); loadResearch();
+loadNetwork();
 </script>
 <script src="/static/js/radar.js"></script>
 <script src="/static/js/live.js"></script>
@@ -527,6 +514,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/signals": radar_data.get_signals,
             "/api/crowding": live_data.get_crowding,
             "/api/crowding/history": live_data.get_crowding_history,
+            "/api/heading": live_data.get_heading,
             "/api/backtest": live_data.get_backtest,
             "/api/briefing": live_data.get_briefing,
         }

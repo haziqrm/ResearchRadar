@@ -138,6 +138,7 @@ def build_card() -> dict:
         card["example_paper"] = newest_paper(tags, top)
     card["allocation"] = allocation_facts(returns, pub)
     card["caveat"] = caveat_facts(pd.read_csv(bt.SUMMARY_CSV))
+    card["generated"] = pd.Timestamp.now().strftime("%Y-%m-%d")  # for the site: "Week of ..."
     return card
 
 

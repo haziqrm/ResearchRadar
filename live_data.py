@@ -2,6 +2,7 @@
 
 Reads D's committed outputs in data/, so the page runs offline from a fresh clone:
 
+  get_heading()    "Where research is heading": crowding, forecast and a paper per map topic
   get_crowding_history()  crowding score per area and year (colours the map)
   get_crowding()   crowding score per research-map area for the latest period
                    (crowding.csv + crowding_meta.json; a year for OpenAlex, a week for arXiv)
@@ -92,6 +93,38 @@ def get_crowding():
     return {"source": meta["source"], "unit": meta["unit"], "window": meta["window"],
             "baseline": meta.get("baseline"), "period_start": latest, "prev_start": prev,
             "topics": topics}
+
+
+def _app_json(name):
+    path = DATA_DIR / "app" / name
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
+
+
+def get_heading():
+    """"Where research is heading": the map's topics with crowding now, Person A's
+    growth forecast re-ranked among those same topics, and a paper to read first
+    (the topic's most cited paper in the latest crowding year)."""
+    crowd = get_crowding()
+    if "error" in crowd:
+        return crowd
+    fc = _app_json("forecasts.json") or {}
+    growth = {t["topic"]: t for t in fc.get("topics", [])}
+    on_map = [t["topic"] for t in crowd["topics"]]
+    ranked = sorted((a for a in on_map if a in growth), key=lambda a: -growth[a]["growth_score"])
+    rank = {a: i + 1 for i, a in enumerate(ranked)}
+    passed = next((t["passed"] for t in fc.get("tests", []) if t.get("key") == "H11"), None)
+    rows = []
+    for t in crowd["topics"]:
+        g = growth.get(t["topic"])
+        rows.append({
+            "topic": t["topic"], "score": t["score"], "papers": t["papers"],
+            "forecast": None if g is None else {
+                "rank": rank[t["topic"]], "of": len(ranked),
+                "likely": bool(g["predicted_boom"]), "rank_all": g["rank"], "of_all": len(growth)},
+            "read_first": t["example"],
+        })
+    return {"period_start": crowd["period_start"], "unit": crowd["unit"],
+            "forecast_passed": passed, "topics": rows}
 
 
 def get_crowding_history():

@@ -1,62 +1,140 @@
-// Live layer (Person D): crowding score, allocation backtest and the spoken briefing.
-// Data comes from live_data.py (/api/crowding, /api/backtest, /api/briefing), written
-// ahead of time by `python -m src.live.run_live`. Uses d3 from the page; touches only
-// its own panels (#crowding-panel, #backtest-panel, #briefing-panel).
+// Live layer (Person D): the headline above the map, "Where research is heading", the
+// one-line lead on the decay panel, the ? drawer and the Weekly briefing modal.
+// Data: live_data.py (/api/heading, /api/briefing, /api/backtest) and Person A's
+// /api/signals. Uses d3 and crowdColour() from the page, so the table's shading matches
+// the map circles. Rows carry data-topic; radar.js opens that topic on click.
 (() => {
+  const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const getJSON = url => fetch(url).then(r => r.json());
-  const signed = (v, d = 2) => v == null ? "–" : (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(d);
-  const showError = (id, res) => {
-    document.getElementById(id).insertAdjacentHTML("beforeend", `<div class="sub">${esc(res.error)}</div>`);
+  const signed = (v, d = 2) => {   // rounded first, so -0.02 shows as 0.0, not −0.0
+    if (v == null) return "–";
+    const r = +v.toFixed(d);
+    return (r > 0 ? "+" : r < 0 ? "−" : "") + Math.abs(r).toFixed(d);
+  };
+  const colour = s => typeof crowdColour === "function" ? crowdColour(s) : "transparent";
+  const ink = s => s != null && Math.abs(s) >= 1.6 ? "#fff" : "var(--text)";  // readable on the shade
+  const chip = s => `<span class="chip" style="background:${colour(s)};color:${ink(s)}">${signed(s, 1)}</span>`;
+  const periodLabel = (unit, start) => unit === "year" ? `${start.slice(0, 4)} so far` : "This week";
+  const SEEN_KEY = "radar-briefing-seen";
+  const store = {
+    get: k => { try { return localStorage.getItem(k); } catch (_) { return null; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch (_) { /* private mode */ } },
   };
 
-  // Bar centred on zero for a score on roughly a ±3 scale; +2 or more is "strong".
-  function scoreBar(score) {
-    const w = Math.min(Math.abs(score), 3) / 3 * 50;
-    const cls = score >= 0 ? "pos" + (score >= 2 ? " strong" : "") : "neg";
-    const left = score >= 0 ? 50 : 50 - w;
-    return `<span class="zbar"><i class="${cls}" style="left:${left}%;width:${w}%"></i></span>`;
+  // ---------------------------------------------------------------- dialogs
+  const scrim = $("scrim");
+  let openDlg = null, lastFocus = null;
+  function openDialog(el) {
+    closeDialog();
+    lastFocus = document.activeElement;
+    el.hidden = false;
+    scrim.hidden = false;
+    openDlg = el;
+    el.querySelector(".close-btn").focus();
   }
-
-  function change(now, before, label) {
-    const d = now - before;
-    if (d > 0) return `<span class="arrow up" title="Up ${d} from ${label}">&#9650;</span>`;
-    if (d < 0) return `<span class="arrow down" title="Down ${-d} from ${label}">&#9660;</span>`;
-    return `<span class="arrow same" title="Same as ${label}">&ndash;</span>`;
+  function closeDialog() {
+    if (!openDlg) return;
+    openDlg.hidden = true;
+    scrim.hidden = true;
+    openDlg = null;
+    if (lastFocus) lastFocus.focus();
   }
+  scrim.addEventListener("click", closeDialog);
+  document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeDialog));
+  // capture phase: Escape closes the dialog first, without also closing an open topic
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && openDlg) { e.stopImmediatePropagation(); closeDialog(); }
+  }, true);
+  $("help-btn").addEventListener("click", () => openDialog($("help-drawer")));
 
-  const periodName = (unit, start) => unit === "year" ? start.slice(0, 4)
-    : "week of " + new Date(start + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
-
-  // ---------------------------------------------------------------- crowding
-  async function loadCrowding() {
-    const c = await getJSON("/api/crowding");
-    if (c.error) return showError("crowding-panel", c);
-    const yearly = c.unit === "year";
-    const now = periodName(c.unit, c.period_start), prev = c.prev_start ? periodName(c.unit, c.prev_start) : "before";
-    document.getElementById("crowding-title").textContent = yearly ? `Crowded in ${now}` : "Crowded this week";
-    document.getElementById("crowding-sub").textContent = yearly
-      ? `OpenAlex quant-finance papers (B's sample of 380 a year). Score compares each area's share of ${now} so far with its share over the ${c.baseline} years before: 0 is normal, +2 unusually crowded.`
-      : `New arXiv q-fin papers, tagged by Gemini. Score compares each area's share of the last ${c.window} weeks with its usual share: 0 is normal, +2 unusually crowded.`;
-    document.getElementById("crowding-papers").textContent = yearly ? `Papers ${now}` : "Papers";
-    document.querySelector("#crowding tbody").innerHTML = c.topics.map(t => {
-      const ex = t.example;
-      const tip = ex ? (yearly ? `Most cited in ${now}: ${ex.title} (${ex.citations} citations)`
-                               : `Newest: ${ex.title} (${ex.published})`) : "";
+  // ---------------------------------------------------------------- where research is heading
+  async function loadHeading() {
+    const h = await getJSON("/api/heading");
+    const body = document.querySelector("#heading tbody");
+    if (h.error) { body.innerHTML = `<tr><td colspan="4" class="sub">${esc(h.error)}</td></tr>`; return; }
+    $("heading-period").textContent = `crowding: ${periodLabel(h.unit, h.period_start)} · click a row to open it on the map`;
+    body.innerHTML = h.topics.map(t => {
+      const f = t.forecast;
+      const fc = !f ? "—" : `#${f.rank} of ${f.of}` + (f.likely ? ` · <span class="likely">likely to grow</span>` : "");
+      const fTip = f ? `Rank ${f.rank_all} of ${f.of_all} topics overall${f.likely ? ", in the predicted top 5" : ""}. Exploratory.` : "";
+      const r = t.read_first;
+      const read = r ? `<span class="title" title="${esc(r.title)}">${esc(r.title)}</span>${r.year}${r.citations ? ` · ${r.citations} citations` : ""}` : "—";
       return `
-      <tr title="${esc(tip)}">
-        <td>${esc(t.topic)}</td>
-        <td class="num"><div class="pop-bar">${signed(t.score)} ${scoreBar(t.score ?? 0)}</div></td>
-        <td class="num papers" title="${t.papers_prev} in ${esc(prev)}">${t.papers} ${change(t.papers, t.papers_prev, prev)}</td>
+      <tr data-topic="${esc(t.topic)}" tabindex="0" title="Open ${esc(t.topic)} on the map">
+        <td class="topic">${esc(t.topic)}</td>
+        <td class="crowd" style="background:${colour(t.score)};color:${ink(t.score)}" title="${t.papers} papers in ${h.period_start.slice(0, 4)}">${signed(t.score, 1)}</td>
+        <td class="forecast" title="${esc(fTip)}">${fc}</td>
+        <td class="read">${read}</td>
       </tr>`;
     }).join("");
+    body.querySelectorAll("tr[data-topic]").forEach(tr => tr.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tr.click(); }
+    }));
   }
 
-  // ---------------------------------------------------------------- backtest
+  // ---------------------------------------------------------------- decay panel lead
+  async function loadDecayLead() {
+    const sig = await getJSON("/api/signals");
+    if (sig.error) return;
+    const after = sig.curve.find(r => r.years_from === 0), med = sig.haircut && sig.haircut.median;
+    if (!after || med == null) return;
+    $("decay-lead").innerHTML = `Published signals keep <b>about half</b> their in-sample return on average `
+      + `(${Math.round(after.share_of_in_sample_mean * 100)}% in the first five years); the typical one keeps ${Math.round(med * 100)}%.`;
+  }
+
+  // ---------------------------------------------------------------- briefing: headline, button, modal
+  const mondayOf = iso => {
+    const d = new Date(iso + "T00:00:00Z");
+    d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+  };
+
+  async function loadBriefing() {
+    const b = await getJSON("/api/briefing");
+    if (b.error || !b.card) return;
+    const c = b.card, top = c.busiest[0], q = c.quietest;
+    const when = periodLabel(c.unit, c.period_start);
+
+    $("headline").innerHTML = `<b>${esc(when)}:</b> ${esc(top.area)} is the most crowded area `
+      + `(<span class="score">${signed(top.score, 1)}</span>); ${esc(q.area)} is the quietest `
+      + `(<span class="score">${signed(q.score, 1)}</span>).`;
+
+    // "new" dot: the briefing is newer than the last one this browser opened
+    const seen = store.get(SEEN_KEY);
+    $("brief-new").hidden = !c.generated || (seen && seen >= c.generated);
+
+    $("brief-date").textContent = (c.generated ? `Week of ${mondayOf(c.generated)} · ` : "")
+      + `crowding for ${when.toLowerCase()}`;
+    if (b.audio) { $("brief-audio").src = "/media/briefing.mp3"; $("brief-audio").hidden = false; }
+    $("brief-text").textContent = b.text;
+    const a = c.allocation, cv = c.caveat;
+    const held = a.held.length ? a.held.map(h => `<b>${esc(h.signal)}</b> ${Math.round(h.weight * 100)}%`).join(", ")
+                               : "nothing: cash, because no signal clears the cost hurdle";
+    const record = `beat equal weight by ${signed(cv.sharpe_minus_equal_weight)} Sharpe (95% CI ${signed(cv.ci_low)} to ${signed(cv.ci_high)})`;
+    $("brief-card").innerHTML = `
+      <div class="card-grid">
+        <div><span class="label">Most crowded vs usual</span>
+          <ol>${c.busiest.map(r => `<li>${esc(r.area)}${chip(r.score)}</li>`).join("")}</ol></div>
+        <div><span class="label">Quietest</span><span>${esc(q.area)}${chip(q.score)}</span></div>
+        <div class="wide"><span class="label">Hold for ${esc(a.for_month)}</span><span>${held}</span>
+          ${a.skipped.length ? `<span class="sub">Skipped after costs: ${a.skipped.map(esc).join(", ")}</span>` : ""}</div>
+        <div class="wide"><span class="label">Caveat</span>
+          <span>${cv.significant ? `Since 1981 the rule ${record}.` : `Edge not proven: since 1981 the rule ${record}.`}</span></div>
+      </div>`;
+
+    $("brief-btn").addEventListener("click", () => {
+      openDialog($("brief-modal"));
+      if (c.generated) { store.set(SEEN_KEY, c.generated); $("brief-new").hidden = true; }
+    });
+  }
+
+  // ---------------------------------------------------------------- backtest (inside the modal)
+  let backtest = null;
   function drawBacktest(bt) {
-    const box = document.getElementById("bt-chart");
+    const box = $("bt-chart");
     box.innerHTML = "";
-    const W = box.clientWidth || 360, H = 170, M = { t: 8, r: 8, b: 20, l: 38 };
+    const W = box.clientWidth || 520, H = 170, M = { t: 8, r: 8, b: 20, l: 38 };
     const parse = d3.utcParse("%Y-%m-%d");
     const series = bt.series.map(s => ({ ...s, pts: s.points.map(([d, v]) => [parse(d), v]) }));
     const all = series.flatMap(s => s.pts);
@@ -78,9 +156,9 @@
 
   async function loadBacktest() {
     const bt = await getJSON("/api/backtest");
-    if (bt.error) return showError("backtest-panel", bt);
-    document.getElementById("bt-range").textContent = `${bt.start.slice(0, 4)}–${bt.end.slice(0, 4)}`;
-    drawBacktest(bt);
+    if (bt.error) return;
+    backtest = bt;
+    $("bt-range").textContent = `${bt.start.slice(0, 4)}–${bt.end.slice(0, 4)}`;
     document.querySelector("#backtest tbody").innerHTML = bt.rows.map(r => `
       <tr class="${r.key === "decay_tilt" ? "ours" : ""}">
         <td>${esc(r.label)}</td>
@@ -89,41 +167,11 @@
           `<span class="${r.vs_equal_ci[0] > 0 || r.vs_equal_ci[1] < 0 ? "sig" : ""}">${signed(r.vs_equal)}</span>
            <span class="sub">(${signed(r.vs_equal_ci[0])}, ${signed(r.vs_equal_ci[1])})</span>`}</td>
       </tr>`).join("");
+    // the chart needs a width, so draw it when its section is first opened
+    $("bt-chart").closest("details").addEventListener("toggle", e => {
+      if (e.target.open && backtest && !$("bt-chart").firstChild) drawBacktest(backtest);
+    });
   }
 
-  // ---------------------------------------------------------------- briefing
-  async function loadBriefing() {
-    const b = await getJSON("/api/briefing");
-    if (b.error) return showError("briefing-panel", b);
-    if (b.audio) {
-      const audio = document.getElementById("brief-audio");
-      audio.src = "/media/briefing.mp3";
-      audio.hidden = false;
-    }
-    document.getElementById("brief-text").textContent = b.text;
-    const c = b.card;
-    if (!c) return;
-    const yearly = c.unit === "year";
-    const when = periodName(c.unit, c.period_start);
-    const src = (c.text_source || "").startsWith("gemini") ? "worded by Gemini, numbers checked" : "template text";
-    document.getElementById("brief-title").textContent = yearly ? `Briefing: ${when} so far` : "This week's briefing";
-    document.getElementById("brief-source").textContent = src;
-    const span = yearly ? `papers in ${when}` : `papers / ${c.window} wks`;
-    const a = c.allocation, cv = c.caveat;
-    const held = a.held.length ? a.held.map(h => `<li><b>${esc(h.signal)}</b> ${Math.round(h.weight * 100)}%</li>`).join("")
-                               : "<li>Cash: no signal clears the cost hurdle</li>";
-    document.getElementById("brief-card").innerHTML = `
-      <div class="card-grid">
-        <div><span class="sub">Most crowded vs usual</span>
-          <b>${esc(c.busiest[0].area)}</b> <span class="sub">${signed(c.busiest[0].score, 1)}, ${c.busiest[0].papers} ${span}</span></div>
-        <div><span class="sub">Quietest vs usual</span>
-          <b>${esc(c.quietest.area)}</b> <span class="sub">${signed(c.quietest.score, 1)}</span></div>
-        <div><span class="sub">Hold for ${esc(a.for_month)}</span><ul class="held">${held}</ul>
-          <span class="sub">Skipped: ${a.skipped.map(esc).join(", ") || "none"}</span></div>
-        <div><span class="sub">Caveat</span>
-          <span>Beat equal weight by ${signed(cv.sharpe_minus_equal_weight)} Sharpe (95% CI ${signed(cv.ci_low)} to ${signed(cv.ci_high)})${cv.significant ? "" : ": not proven"}.</span></div>
-      </div>`;
-  }
-
-  loadCrowding(); loadBacktest(); loadBriefing();
+  loadHeading(); loadDecayLead(); loadBriefing(); loadBacktest();
 })();

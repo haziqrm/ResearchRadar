@@ -1,51 +1,19 @@
 /* Radar (Person A): topic drill-down, what's next, signal decay, tests.
    Uses the tokens from base.css. */
 
-/* the map and topics table keep the first screen; these panels sit below at full width */
-main { height: auto; grid-template-rows: calc(100vh - 32px); }
-.radar-wide { grid-column: 1 / -1; overflow: visible; }
-@media (max-width: 960px) { main { grid-template-rows: none; } .network { min-height: 480px; } }
-
-/* ---- map-only mode (radar.js sets body.map-only): the map fills the screen and the
-   topics table / topic details float in a dock on the right. Remove the class to get
-   the full page back. ---- */
+/* ---- "Inside a topic": a dock beside the map, shown while a topic is open ---- */
 :root { --dock-w: 340px; }
-body.map-only { overflow: hidden; }
-body.map-only main { display: block; height: 100vh; padding: 0; }
-body.map-only main > .panel:first-child { height: 100vh; border: 0; padding: 16px calc(var(--dock-w) + 32px) 16px var(--gutter); }
-body.map-only.dock-collapsed main > .panel:first-child { padding-right: 130px; }  /* room for "Show panel" */
-body.map-only .radar-wide:not(#zoom-panel) { display: none; }
-#dock { display: none; }
-body.map-only #dock {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  bottom: 16px;
-  width: var(--dock-w);
-  z-index: 10;
-  pointer-events: none;
-}
-#dock > * { pointer-events: auto; }
-#dock > .panel { flex: 1; min-height: 0; overflow: auto; box-shadow: 0 6px 24px rgba(37, 52, 79, 0.16); }
+main > #zoom-panel { display: none; }            /* until radar.js moves it into the dock */
+#dock { display: none; flex: none; width: var(--dock-w); margin-left: 12px; min-height: 0; }
+body.topic-open #dock { display: flex; flex-direction: column; }
+#dock > .panel { flex: 1; min-height: 0; overflow: auto; padding: 12px; }
 #dock .zoom-cols { grid-template-columns: 1fr; gap: 4px; }
-#dock #zoom-sub { display: none; }
-#dock.topic-open #research-panel, #dock:not(.topic-open) #zoom-panel { display: none; }
-.dock-toggle {
-  align-self: flex-end;
-  padding: 4px 10px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  color: var(--slate);
-  font: 500 12px var(--font);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37, 52, 79, 0.12);
-}
-#dock.collapsed > .panel { display: none !important; }
-#research tbody tr { cursor: pointer; }
+.opens-topic tbody tr { cursor: pointer; }
 .flows-btn.active { background: var(--path-root); color: #fff; }
+@media (max-width: 960px) {
+  body.topic-open .map-body { flex-direction: column; }
+  #dock { width: auto; margin: 12px 0 0; max-height: 50vh; }
+}
 @media (max-width: 720px) { :root { --dock-w: 280px; } }
 
 .panel h3 { margin: 12px 0 6px; font-size: 13px; font-weight: 600; color: var(--navy); }
