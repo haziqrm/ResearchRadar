@@ -1,0 +1,9 @@
+paper_id,top_topic,topic_ids,topic_scores,topic_labels,model,text_quality
+W001,0,0,0.930,Cross-section of returns,allenai/specter2_base+allenai/specter2,full
+W002,1,1;0,0.610;0.350,ML return prediction | Cross-section of returns,allenai/specter2_base+allenai/specter2,full
+W003,2,2,0.900,Trading and liquidity,allenai/specter2_base+allenai/specter2,full
+W004,5,5;1,0.700;0.220,News and social media sentiment | ML return prediction,allenai/specter2_base+allenai/specter2,full
+W005,6,6;2,0.580;0.300,Crypto and blockchain | Trading and liquidity,allenai/specter2_base+allenai/specter2,partial
+W006,7,7;5,0.650;0.280,LLM applications | News and social media sentiment,allenai/specter2_base+allenai/specter2,full
+W007,4,4;1,0.580;0.380,Options and volatility | ML return prediction,allenai/specter2_base+allenai/specter2,full
+W008,3,3,0.970,Portfolio and risk management,allenai/specter2_base+allenai/specter2,full

@@ -1,0 +1,9 @@
+group_id,name,keywords
+0,Cross-section of returns,"stock returns, cross-section, anomalies, momentum"
+1,ML return prediction,"machine learning, prediction, neural networks, stock"
+2,Trading and liquidity,"trading, liquidity, high-frequency, order book"
+3,Portfolio and risk management,"portfolio optimization, risk management, covariance"
+4,Options and volatility,"volatility, options, pricing, stochastic"
+5,News and social media sentiment,"sentiment, news, social media, text"
+6,Crypto and blockchain,"cryptocurrency, bitcoin, blockchain, defi"
+7,LLM applications,"large language models, llms, agents, finance"
