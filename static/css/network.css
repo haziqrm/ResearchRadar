@@ -172,4 +172,4 @@
 
 /* Person A's dashed "predicted to grow" ring sits on top of the circle: keep it hollow,
    or it hides the crowding colour underneath */
-.net-node circle.next-ring { fill: none; filter: none; stroke: var(--oxblood); stroke-width: 2; }
+.net-node circle.next-ring { fill: none; filter: none; stroke: var(--navy); stroke-width: 2; }

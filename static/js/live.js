@@ -14,7 +14,10 @@
   };
   const colour = s => typeof crowdColour === "function" ? crowdColour(s) : "transparent";
   const ink = s => s != null && Math.abs(s) >= 1.6 ? "#fff" : "var(--text)";  // readable on the shade
-  const chip = s => `<span class="chip" style="background:${colour(s)};color:${ink(s)}">${signed(s, 1)}</span>`;
+  // crowding is a z-score: standard deviations above (+) or below (−) the usual share
+  const sd = s => s == null ? "–" : `${signed(s, 1)} SD`;
+  const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+  const chip = s => `<span class="chip" style="background:${colour(s)};color:${ink(s)}">${sd(s)}</span>`;
   const periodLabel = (unit, start) => unit === "year" ? `${start.slice(0, 4)} so far` : "This week";
   const SEEN_KEY = "radar-briefing-seen";
   const store = {
@@ -54,16 +57,21 @@
     const body = document.querySelector("#heading tbody");
     if (h.error) { body.innerHTML = `<tr><td colspan="4" class="sub">${esc(h.error)}</td></tr>`; return; }
     $("heading-period").textContent = `crowding: ${periodLabel(h.unit, h.period_start)} · click a row to open it on the map`;
+    if (h.read_first_years) {
+      const [a, b] = h.read_first_years;
+      $("read-first-th").title = `The topic's most cited paper per year since publication, among papers from ${a}–${b}.`;
+    }
     body.innerHTML = h.topics.map(t => {
       const f = t.forecast;
-      const fc = !f ? "—" : `#${f.rank} of ${f.of}` + (f.likely ? ` · <span class="likely">likely to grow</span>` : "");
-      const fTip = f ? `Rank ${f.rank_all} of ${f.of_all} topics overall${f.likely ? ", in the predicted top 5" : ""}. Exploratory.` : "";
+      const fc = !f ? "—" : `#${f.rank} of ${f.of}` + (f.likely ? ` · <span class="likely">predicted to grow</span>` : "");
+      const fTip = f ? `#${f.rank} of the ${f.of} topics on the map (#${f.rank_all} of all ${f.of_all} forecast topics). `
+        + `"Predicted to grow" means in the forecast's top ${f.top} of all ${f.of_all}. Exploratory.` : "";
       const r = t.read_first;
-      const read = r ? `<span class="title" title="${esc(r.title)}">${esc(r.title)}</span>${r.year}${r.citations ? ` · ${r.citations} citations` : ""}` : "—";
+      const read = r ? `<span class="title" title="${esc(r.title)}">${esc(r.title)}</span>${r.year} · ${plural(r.citations, "citation")}` : "—";
       return `
       <tr data-topic="${esc(t.topic)}" tabindex="0" title="Open ${esc(t.topic)} on the map">
         <td class="topic">${esc(t.topic)}</td>
-        <td class="crowd" style="background:${colour(t.score)};color:${ink(t.score)}" title="${t.papers} papers in ${h.period_start.slice(0, 4)}">${signed(t.score, 1)}</td>
+        <td class="crowd" style="background:${colour(t.score)};color:${ink(t.score)}" title="${plural(t.papers, "paper")} in ${h.period_start.slice(0, 4)}">${sd(t.score)}</td>
         <td class="forecast" title="${esc(fTip)}">${fc}</td>
         <td class="read">${read}</td>
       </tr>`;
@@ -97,8 +105,8 @@
     const when = periodLabel(c.unit, c.period_start);
 
     $("headline").innerHTML = `<b>${esc(when)}:</b> ${esc(top.area)} is the most crowded area `
-      + `(<span class="score">${signed(top.score, 1)}</span>); ${esc(q.area)} is the quietest `
-      + `(<span class="score">${signed(q.score, 1)}</span>).`;
+      + `(<span class="score" title="Standard deviations above its usual share of papers">${sd(top.score)}</span> vs its usual share); `
+      + `${esc(q.area)} is the quietest (<span class="score">${sd(q.score)}</span>).`;
 
     // "new" dot: the briefing is newer than the last one this browser opened
     const seen = store.get(SEEN_KEY);

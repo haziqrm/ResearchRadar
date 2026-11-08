@@ -1,0 +1,196 @@
+signal,name,authors,year
+AM,Total assets to market,Fama and French,1992
+AOP,Analyst Optimism,Frankel and Lee,1998
+AbnormalAccruals,Abnormal Accruals,Xie,2001
+Accruals,Accruals,Sloan,1996
+AccrualsBM,Book-to-market and accruals,Bartov and Kim,2004
+AdExp,Advertising Expense,"Chan, Lakonishok and Sougiannis",2001
+AgeIPO,IPO and age,Ritter,1991
+AnalystRevision,EPS forecast revision,"Hawkins, Chamberlin, Daniel",1984
+AnalystValue,Analyst Value,Frankel and Lee,1998
+AnnouncementReturn,Earnings announcement return,"Chan, Jegadeesh and Lakonishok",1996
+AssetGrowth,Asset growth,"Cooper, Gulen and Schill",2008
+BM,"Book to market, original (Stattman 1980)",Stattman,1980
+BMdec,Book to market using December ME,Fama and French,1992
+BPEBM,Leverage component of BM,"Penman, Richardson and Tuna",2007
+Beta,CAPM beta,Fama and MacBeth,1973
+BetaFP,Frazzini-Pedersen Beta,Frazzini and Pedersen,2014
+BetaLiquidityPS,Pastor-Stambaugh liquidity beta,Pastor and Stambaugh,2003
+BetaTailRisk,Tail risk beta,Kelly and Jiang,2014
+BidAskSpread,Bid-ask spread,Amihud and Mendelson,1986
+BookLeverage,Book leverage (annual),Fama and French,1992
+BrandInvest,Brand capital investment,"Belo, Lin and Vitorino",2014
+CBOperProf,Cash-based operating profitability,Ball et al.,2016
+CF,Cash flow to market,"Lakonishok, Shleifer, Vishny",1994
+Cash,Cash to assets,Palazzo,2012
+CashProd,Cash Productivity,Chandrashekar and Rao,2009
+ChAssetTurnover,Change in Asset Turnover,Soliman,2008
+ChEQ,Growth in book equity,Lockwood and Prombutr,2010
+ChForecastAccrual,Change in Forecast and Accrual,Barth and Hutton,2004
+ChInv,Inventory Growth,Thomas and Zhang,2002
+ChInvIA,Change in capital inv (ind adj),Abarbanell and Bushee,1998
+ChNAnalyst,Decline in Analyst Coverage,Scherbina,2008
+ChNNCOA,Change in Net Noncurrent Op Assets,Soliman,2008
+ChNWC,Change in Net Working Capital,Soliman,2008
+ChTax,Change in Taxes,Thomas and Zhang,2011
+ChangeInRecommendation,Change in recommendation,Jegadeesh et al.,2004
+CitationsRD,Citations to RD expenses,"Hirschleifer, Hsu and Li",2013
+CompEquIss,Composite equity issuance,Daniel and Titman,2006
+CompositeDebtIssuance,Composite debt issuance,"Lyandres, Sun and Zhang",2008
+ConsRecomm,Consensus Recommendation,Barber et al.,2001
+ConvDebt,Convertible debt indicator,Valta,2016
+CoskewACX,Coskewness using daily returns,"Ang, Chen and Xing",2006
+Coskewness,Coskewness,Harvey and Siddique,2000
+CredRatDG,Credit Rating Downgrade,Dichev and Piotroski,2001
+CustomerMomentum,Customer momentum,Cohen and Frazzini,2008
+DebtIssuance,Debt Issuance,Spiess and Affleck-Graves,1999
+DelBreadth,Breadth of ownership,"Chen, Hong and Stein",2002
+DelCOA,Change in current operating assets,Richardson et al.,2005
+DelCOL,Change in current operating liabilities,Richardson et al.,2005
+DelDRC,Deferred Revenue,Prakash and Sinha,2013
+DelEqu,Change in equity to assets,Richardson et al.,2005
+DelFINL,Change in financial liabilities,Richardson et al.,2005
+DelLTI,Change in long-term investment,Richardson et al.,2005
+DelNetFin,Change in net financial assets,Richardson et al.,2005
+DivInit,Dividend Initiation,"Michaely, Thaler and Womack",1995
+DivOmit,Dividend Omission,"Michaely, Thaler and Womack",1995
+DivSeason,Dividend seasonality,Hartzmark and Salomon,2013
+DivYieldST,Predicted div yield next month,Litzenberger and Ramaswamy,1979
+DolVol,Past trading volume,"Brennan, Chordia, Subra",1998
+DownRecomm,Down forecast EPS,Barber et al.,2001
+EBM,Enterprise component of BM,"Penman, Richardson and Tuna",2007
+EP,Earnings-to-Price Ratio,Basu,1977
+EarnSupBig,Earnings surprise of big firms,Hou,2007
+EarningsConsistency,Earnings consistency,Alwathainani,2009
+EarningsForecastDisparity,Long-vs-short EPS forecasts,Da and Warachka,2011
+EarningsStreak,Earnings surprise streak,Loh and Warachka,2012
+EarningsSurprise,Earnings Surprise,"Foster, Olsen and Shevlin",1984
+EntMult,Enterprise Multiple,Loughran and Wellman,2011
+EquityDuration,Equity Duration,"Dechow, Sloan and Soliman",2004
+ExchSwitch,Exchange Switch,Dharan and Ikenberry,1995
+ExclExp,Excluded Expenses,"Doyle, Lundholm and Soliman",2003
+FEPS,Analyst earnings per share,"Cen, Wei, and Zhang",2006
+FR,Pension Funding Status,Franzoni and Marin,2006
+FirmAge,Firm age based on CRSP,Barry and Brown,1984
+FirmAgeMom,Firm Age - Momentum,Zhang,2006
+ForecastDispersion,EPS Forecast Dispersion,"Diether, Malloy and Scherbina",2002
+Frontier,Efficient frontier index,Nguyen and Swanson,2009
+GP,gross profits / total assets,Novy-Marx,2013
+GrAdExp,Growth in advertising expenses,Lou,2014
+GrLTNOA,Growth in long term operating assets,"Fairfield, Whisenant and Yohn",2003
+GrSaleToGrInv,Sales growth over inventory growth,Abarbanell and Bushee,1998
+GrSaleToGrOverhead,Sales growth over overhead growth,Abarbanell and Bushee,1998
+Herf,Industry concentration (sales),Hou and Robinson,2006
+HerfAsset,Industry concentration (assets),Hou and Robinson,2006
+HerfBE,Industry concentration (equity),Hou and Robinson,2006
+High52,52 week high,George and Hwang,2004
+IO_ShortInterest,Inst own among high short interest,Asquith Pathak and Ritter,2005
+IdioVol3F,Idiosyncratic risk (3 factor),Ang et al.,2006
+IdioVolAHT,Idiosyncratic risk (AHT),"Ali, Hwang, and Trombley",2003
+Illiquidity,Amihud's illiquidity,Amihud,2002
+IndIPO,Initial Public Offerings,Ritter,1991
+IndMom,Industry Momentum,Grinblatt and Moskowitz,1999
+IndRetBig,Industry return of big firms,Hou,2007
+IntMom,Intermediate Momentum,Novy-Marx,2012
+IntanBM,Intangible return using BM,Daniel and Titman,2006
+IntanCFP,Intangible return using CFtoP,Daniel and Titman,2006
+IntanEP,Intangible return using EP,Daniel and Titman,2006
+IntanSP,Intangible return using Sale2P,Daniel and Titman,2006
+InvGrowth,Inventory Growth,Belo and Lin,2012
+InvestPPEInv,change in ppe and inv/assets,"Lyandres, Sun and Zhang",2008
+Investment,Investment to revenue,"Titman, Wei and Xie",2004
+LRreversal,Long-run reversal,De Bondt and Thaler,1985
+Leverage,Market leverage,Bhandari,1988
+MRreversal,Medium-run reversal,De Bondt and Thaler,1985
+MS,Mohanram G-score,Mohanram,2005
+MaxRet,Maximum return over month,"Bali, Cakici, and Whitelaw",2011
+MeanRankRevGrowth,Revenue Growth Rank,"Lakonishok, Shleifer, Vishny",1994
+Mom12m,Momentum (12 month),Jegadeesh and Titman,1993
+Mom12mOffSeason,Momentum without the seasonal part,Heston and Sadka,2008
+Mom6m,Momentum (6 month),Jegadeesh and Titman,1993
+Mom6mJunk,Junk Stock Momentum,Avramov et al,2007
+MomOffSeason,Off season long-term reversal,Heston and Sadka,2008
+MomOffSeason06YrPlus,Off season reversal years 6 to 10,Heston and Sadka,2008
+MomOffSeason11YrPlus,Off season reversal years 11 to 15,Heston and Sadka,2008
+MomOffSeason16YrPlus,Off season reversal years 16 to 20,Heston and Sadka,2008
+MomRev,Momentum and LT Reversal,Chan and Ko,2006
+MomSeason,Return seasonality years 2 to 5,Heston and Sadka,2008
+MomSeason06YrPlus,Return seasonality years 6 to 10,Heston and Sadka,2008
+MomSeason11YrPlus,Return seasonality years 11 to 15,Heston and Sadka,2008
+MomSeason16YrPlus,Return seasonality years 16 to 20,Heston and Sadka,2008
+MomSeasonShort,Return seasonality last year,Heston and Sadka,2008
+MomVol,Momentum in high volume stocks,Lee and Swaminathan,2000
+NOA,Net Operating Assets,Hirshleifer et al.,2004
+NetDebtFinance,Net debt financing,"Bradshaw, Richardson, Sloan",2006
+NetDebtPrice,Net debt to price,"Penman, Richardson and Tuna",2007
+NetEquityFinance,Net equity financing,"Bradshaw, Richardson, Sloan",2006
+NetPayoutYield,Net Payout Yield,Boudoukh et al.,2007
+NumEarnIncrease,Earnings streak length,Loh and Warachka,2012
+OPLeverage,Operating leverage,Novy-Marx,2011
+OScore,O Score,Dichev,1998
+OperProf,operating profits / book equity,Fama and French,2006
+OperProfRD,Operating profitability R&D adjusted,Ball et al.,2016
+OrderBacklog,Order backlog,"Rajgopal, Shevlin, Venkatachalam",2003
+OrderBacklogChg,Change in order backlog,Baik and Ahn,2007
+OrgCap,Organizational capital,Eisfeldt and Papanikolaou,2013
+PS,Piotroski F-score,Piotroski,2000
+PayoutYield,Payout Yield,Boudoukh et al.,2007
+PctAcc,Percent Operating Accruals,"Hafzalla, Lundholm, Van Winkle",2011
+PctTotAcc,Percent Total Accruals,"Hafzalla, Lundholm, Van Winkle",2011
+PredictedFE,Predicted Analyst forecast error,Frankel and Lee,1998
+Price,Price,Blume and Husic,1973
+RD,R&D over market cap,"Chan, Lakonishok and Sougiannis",2001
+RDAbility,R&D ability,"Cohen, Diether and Malloy",2013
+RDIPO,IPO and no R&D spending,"Gou, Lev and Shi",2006
+RDS,Real dirty surplus,Landsman et al.,2011
+RDcap,R&D capital-to-assets,Li,2011
+REV6,Earnings forecast revisions,"Chan, Jegadeesh and Lakonishok",1996
+RIO_Disp,Inst Own and Forecast Dispersion,Nagel,2005
+RIO_MB,Inst Own and Market to Book,Nagel,2005
+RIO_Turnover,Inst Own and Turnover,Nagel,2005
+RIO_Volatility,Inst Own and Idio Vol,Nagel,2005
+RealizedVol,Realized (Total) Volatility,Ang et al.,2006
+Recomm_ShortInterest,Analyst Recommendations and Short-Interest,"Drake, Rees and Swanson",2011
+ResidualMomentum,Momentum based on FF3 residuals,"Blitz, Huij and Martens",2011
+ReturnSkew,Return skewness,"Bali, Engle and Murray",2015
+ReturnSkew3F,Idiosyncratic skewness (3F model),"Bali, Engle and Murray",2015
+RevenueSurprise,Revenue Surprise,Jegadeesh and Livnat,2006
+RoE,net income / book equity,Haugen and Baker,1996
+SP,Sales-to-price,"Barbee, Mukherji and Raines",1996
+STreversal,Short term reversal,Jegadeesh,1990
+ShareIss1Y,Share issuance (1 year),Pontiff and Woodgate,2008
+ShareIss5Y,Share issuance (5 year),Daniel and Titman,2006
+ShareRepurchase,Share repurchases,"Ikenberry, Lakonishok, Vermaelen",1995
+ShareVol,Share Volume,"Datar, Naik and Radcliffe",1998
+ShortInterest,Short Interest,Dechow et al.,2001
+Size,Size,Banz,1981
+Spinoff,Spinoffs,"Cusatis, Miles and Woolridge",1993
+SurpriseRD,Unexpected R&D increase,"Eberhart, Maxwell and Siddique",2004
+Tax,Taxable income to income,Lev and Nissim,2004
+TotalAccruals,Total accruals,Richardson et al.,2005
+TrendFactor,Trend Factor,"Han, Zhou, Zhu",2016
+UpRecomm,Up Forecast,Barber et al.,2001
+VarCF,Cash-flow  to price variance,Haugen and Baker,1996
+VolMkt,Volume to market equity,Haugen and Baker,1996
+VolSD,Volume Variance,"Chordia, Subra, Anshuman",2001
+VolumeTrend,Volume Trend,Haugen and Baker,1996
+XFIN,Net external financing,"Bradshaw, Richardson, Sloan",2006
+betaVIX,Systematic volatility,Ang et al.,2006
+cfp,Operating Cash flows to price,"Desai, Rajgopal, Venkatachalam",2004
+dNoa,change in net operating assets,"Hirshleifer, Hou, Teoh, Zhang",2004
+fgr5yrLag,Long-term EPS forecast,La Porta,1996
+grcapx,Change in capex (two years),Anderson and Garcia-Feijoo,2006
+grcapx3y,Change in capex (three years),Anderson and Garcia-Feijoo,2006
+hire,Employment growth,"Bazdresch, Belo and Lin",2014
+iomom_cust,Customers momentum,Menzly and Ozbas,2010
+iomom_supp,Suppliers momentum,Menzly and Ozbas,2010
+realestate,Real estate holdings,Tuzel,2010
+retConglomerate,Conglomerate return,Cohen and Lou,2012
+roaq,Return on assets (qtrly),"Balakrishnan, Bartov and Faurel",2010
+sfe,Earnings Forecast to price,"Elgers, Lo and Pfeiffer",2001
+sinAlgo,Sin Stock (selection criteria),Hong and Kacperczyk,2009
+std_turn,Share turnover volatility,"Chordia, Subra, Anshuman",2001
+tang,Tangibility,Hahn and Lee,2009
+zerotrade12M,Days with zero trades,Liu,2006
+zerotrade1M,Days with zero trades,Liu,2006
+zerotrade6M,Days with zero trades,Liu,2006

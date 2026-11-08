@@ -9,8 +9,9 @@ the 8 trading-relevant areas (see research_data.AREAS).
   GET /api/network     areas (sized by article count) and the links between them
   GET /api/research    articles per area, in total and this year vs last year (not on the page now)
 
-Person D's live panels (live_data.py, static/js/live.js): /api/crowding,
-/api/backtest, /api/briefing, and the briefing audio at /media/briefing.mp3.
+Person D's live layer (live_data.py, static/js/live.js): /api/heading,
+/api/crowding/history, /api/crowding, /api/backtest, /api/briefing, and the
+briefing audio at /media/briefing.mp3.
 
 Styles live in static/css/, one file per component (see CSS_FILES).
 """
@@ -61,8 +62,12 @@ __CSS_LINKS__
       <p class="headline" id="headline"></p>
     </div>
     <div class="head-actions">
-      <button type="button" class="head-btn" id="brief-btn" aria-haspopup="dialog">Weekly briefing<span class="new-dot" id="brief-new" hidden title="New since your last visit"></span></button>
-      <button type="button" class="head-btn round" id="help-btn" aria-haspopup="dialog" aria-label="How to read this page">?</button>
+      <button type="button" class="head-btn" id="brief-btn" aria-haspopup="dialog">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 11v-1a7 7 0 0 1 14 0v1"/><rect x="2.5" y="11" width="3.5" height="6" rx="1"/><rect x="14" y="11" width="3.5" height="6" rx="1"/></svg>
+        <span>Weekly briefing</span><span class="new-dot" id="brief-new" hidden title="New since your last visit"></span></button>
+      <button type="button" class="head-btn ghost" id="help-btn" aria-haspopup="dialog" aria-label="How to read this page" title="How to read this page">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M7.8 7.9a2.3 2.3 0 1 1 3.2 2.1c-.6.3-1 .8-1 1.5v.4"/><circle class="dot" cx="10" cy="14.3" r="0.6"/></svg>
+        <span>Guide</span></button>
     </div>
   </header>
 
@@ -82,6 +87,7 @@ __CSS_LINKS__
         <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
         <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker means more shared that year; dotted means none."><i class="lg-line"></i>shared citations</span>
         <span class="lg" title="Is the topic taking more than its usual share of papers that year? Compared with its own share over the five years before."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
+        <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
       </div>
       <div class="map-body">
         <div class="network" id="network"></div>
@@ -96,9 +102,9 @@ __CSS_LINKS__
         <table class="data-table opens-topic" id="heading">
           <thead><tr>
             <th>Topic</th>
-            <th class="num" title="Share of this year's papers vs the topic's usual share: 0 is normal, +2 crowded, −2 quiet.">Crowding now</th>
-            <th title="Person A's growth forecast, ranked among the topics on the map. Exploratory: it did not pass its pre-registered test.">Forecast <span class="badge warn">exploratory</span></th>
-            <th title="The topic's most cited paper this year.">Read first</th>
+            <th class="num" title="This year's share of papers vs the topic's usual share, in standard deviations (SD): 0 is normal, +2 SD crowded, −2 SD quiet.">Crowding now</th>
+            <th title="Person A's growth forecast: the topic's rank among the 8 topics on the map. Exploratory: it did not pass its pre-registered test.">Forecast rank <span class="badge warn">exploratory</span></th>
+            <th id="read-first-th" title="The topic's most cited paper per year since publication, among papers from the last five years.">Read first</th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -153,8 +159,8 @@ __CSS_LINKS__
       <ul class="key-list">
         <li><span class="key"><i class="lg-size"></i><i class="lg-size big"></i></span><span><b>Circle size</b>: research articles on the topic in the selected year, on one scale across years. Drag the slider or press play to move through the years.</span></li>
         <li><span class="key"><i class="lg-line"></i></span><span><b>Lines</b>: the two topics' papers cite the same earlier work. Thicker means more shared that year; dotted means none.</span></li>
-        <li><span class="key"><span class="lg-ramp"></span></span><span><b>Colour</b>: crowding. Warm means the topic is taking more than its usual share of that year's papers, cool less, compared with its own share over the five years before. Grey: no score.</span></li>
-        <li><span class="key"><i class="lg-ring"></i></span><span><b>Dashed ring</b>: predicted to grow (top 5 of 25 topics). Exploratory: the forecast did not pass its test.</span></li>
+        <li><span class="key"><span class="lg-ramp"></span></span><span><b>Colour</b>: crowding. Warm means the topic is taking more than its usual share of that year's papers, cool less, compared with its own share over the five years before. Scores are in standard deviations (SD): beyond ±2 SD is unusual. Grey: no score.</span></li>
+        <li><span class="key"><i class="lg-ring"></i></span><span><b>Dashed ring</b>: predicted to grow over the next three years (the forecast's top <span class="fc-top">5</span> of all <span class="fc-n">25</span> topics; ranks elsewhere on the page are among the 8 on the map). The forecast uses data up to 2025, so the rings show only from 2025 on. Exploratory: the forecast did not pass its test.</span></li>
         <li><span class="key"><i class="lg-island"></i></span><span><b>Click a circle</b> to open its sub-topics. Each dot is a paper and similar papers sit together; each outlined island is a sub-topic, sized by its papers in the last five years. Rings mark suggested reading. Arrows are direct citations between sub-topics, from the cited to the citing side. Click an island to focus it, a paper for its citation trail.</span></li>
       </ul>
     </section>
@@ -196,7 +202,7 @@ __CSS_LINKS__
     </details>
     <details class="more">
       <summary>Signals right now <span class="sub" id="signals-asof"></span></summary>
-      <p class="sub">Momentum: average return over the last 12 months. Volatility: next month's forecast. Kept: share of the edge that survived publication.</p>
+      <p class="sub">Momentum: average return over the last 12 months. Volatility: next month's forecast. Kept: return since publication as a share of the return in the original paper. Over 100% means it earned more after publication than the paper reported; below 0% means it lost money.</p>
       <table class="data-table" id="signals-table">
         <thead><tr><th>Signal</th><th class="num">12-month mean</th><th class="num">Vol forecast</th><th class="num">Kept</th></tr></thead>
         <tbody></tbody>
@@ -417,12 +423,13 @@ async function loadNetwork() {
       placeLinks(t(link));
       link.classed("quiet", l => countFor(l, year) === 0);
       nodeTitle.text(d => {
-        const c = crowdFor(d, year);
-        return `${d.id}\n${countFor(d, year)} articles in ${year} · ${d.articles} in total`
-          + `\n${crowdWord(c)}${c == null ? "" : ` (crowding ${c > 0 ? "+" : ""}${c.toFixed(1)})`}`
+        const c = crowdFor(d, year), n = countFor(d, year);
+        return `${d.id}\n${n} article${n === 1 ? "" : "s"} in ${year} · ${d.articles} in total`
+          + `\n${crowdWord(c)}${c == null ? "" : ` (crowding ${c > 0 ? "+" : ""}${c.toFixed(1)} SD vs its usual share)`}`
           + "\nClick to explore its papers";
       });
-      linkTitle.text(l => `${l.source} and ${l.target}\n${countFor(l, year)} paper pairs in ${year} cite the same earlier work`);
+      linkTitle.text(l => { const n = countFor(l, year);
+        return `${l.source} and ${l.target}\n${n} paper pair${n === 1 ? "" : "s"} in ${year} cite${n === 1 ? "s" : ""} the same earlier work`; });
     };
 
     return { node, link, drawYear, clearHover };

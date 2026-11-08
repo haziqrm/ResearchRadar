@@ -89,11 +89,51 @@ def test_heading_covers_the_map_topics_with_forecast_and_reading():
     assert len(h["topics"]) == 8
     scores = [t["score"] for t in h["topics"]]
     assert scores == sorted(scores, reverse=True)
-    ranks = sorted(t["forecast"]["rank"] for t in h["topics"] if t["forecast"])
-    assert ranks == list(range(1, len(ranks) + 1))          # re-ranked among the map's topics
-    assert all(t["forecast"]["of"] == len(ranks) for t in h["topics"] if t["forecast"])
     assert h["forecast_passed"] is False                     # labelled exploratory on the page
     assert all(t["read_first"] and t["read_first"]["title"] for t in h["topics"])
+
+
+def test_heading_forecast_ranks_match_the_drill_down():
+    """One denominator for topic ranks: among the 8 map topics, in the table and the
+    drill-down alike. "Predicted to grow" is the forecast's own top 5 of all 25."""
+    import radar_data
+    fc = radar_data.get_forecasts()
+    by_topic = {t["topic"]: t for t in fc["topics"]}
+    h = live_data.get_heading()["topics"]
+    ranks = sorted(t["forecast"]["rank"] for t in h)
+    assert ranks == list(range(1, len(h) + 1)) and fc["n_map"] == len(h) == 8
+    for t in h:
+        f, g = t["forecast"], by_topic[t["topic"]]
+        assert f["rank"] == g["map_rank"] and f["of"] == fc["n_map"]
+        assert f["rank_all"] == g["rank"] and f["of_all"] == fc["n_topics"] == len(fc["topics"])
+        assert f["likely"] == (f["rank_all"] <= f["top"] == fc["top_topics"])
+    # same order as the overall forecast
+    assert sorted(h, key=lambda t: t["forecast"]["rank"]) == sorted(h, key=lambda t: t["forecast"]["rank_all"])
+
+
+def test_read_first_is_cited_and_recent():
+    h = live_data.get_heading()
+    lo, hi = h["read_first_years"]
+    assert hi - lo + 1 == live_data.READ_FIRST_YEARS
+    for t in h["topics"]:
+        r = t["read_first"]
+        assert lo <= r["year"] <= hi
+        assert r["per_year"] == round(r["citations"] / (hi - r["year"] + 1), 1)
+    # it beats this year's most cited paper on citations per year for every topic
+    this_year = {t["topic"]: t["example"] for t in live_data.get_crowding()["topics"]}
+    assert all(t["read_first"]["per_year"] >= (this_year[t["topic"]] or {}).get("citations", 0)
+               for t in h["topics"])
+
+
+def test_readable_names_for_subtopics_and_signals():
+    import radar_data
+    fc = radar_data.get_forecasts()
+    assert all(s["name"] and s["name"] != s["label"] for s in fc["subtopics"])   # all 75 named
+    topic = radar_data.get_topic("Information and stock reactions")
+    assert all(s["name"] != s["label"] for s in topic["subtopics"] if s["id"] >= 0)  # -1: "other"
+    sig = {s["code"]: s["name"] for s in radar_data.get_signals()["signals"]}
+    assert sig["MomOffSeason11YrPlus"] == "Off season reversal years 11 to 15"   # OSAP's description
+    assert sig["Mom"] == "Momentum"
 
 
 def test_briefing_card_has_a_date_for_the_new_dot():

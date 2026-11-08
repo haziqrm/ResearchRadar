@@ -1,0 +1,76 @@
+subtopic_id,name
+0,Investing strategies and wealth management
+1,Volatility modelling and forecasting (GARCH)
+2,"Optimal investment, consumption and pensions"
+3,"Global shocks and spillovers (COVID, geopolitics)"
+4,Volatility and correlation estimation
+5,Portfolio optimisation models
+6,Gold and precious metals
+7,Oil price shocks and the economy
+8,Option pricing models and numerical methods
+9,Indian mutual fund performance
+10,CAPM and factor model tests
+11,"Institutional, insider and short-selling trades"
+12,Crude oil markets and supply
+13,Stochastic volatility and diffusion estimation
+14,Financial networks and complex systems
+15,Stock market integration and contagion
+16,Volatility spillovers between stock markets
+17,Stochastic differential equations (theory)
+18,Hedge fund and mutual fund performance
+19,Econophysics of income and economic systems
+20,Stock price prediction with machine learning
+21,"Policy uncertainty, exchange rates and business cycles"
+22,Implied volatility and options markets
+23,"Intraday trading, volume and market rules"
+24,Brownian motion and stochastic process theory
+25,Trading strategies and technical analysis
+26,Optimal execution and algorithmic trading
+27,"Energy, electricity and carbon markets"
+28,Political events and stock market reactions
+29,Arbitrage theory and mathematical market models
+30,Behavioural finance and investor psychology
+31,Time-series econometrics: long memory and ARCH
+32,Backward stochastic differential equations
+33,American and exotic option pricing
+34,"Hybrid neural, fuzzy and wavelet forecasting"
+35,Electronic and retail trading
+36,Metals and commodity prices
+37,Market information and efficiency theory
+38,IPO underpricing
+39,Herding behaviour
+40,Bitcoin and cryptocurrencies
+41,Fractal and chaotic market analysis
+42,Indonesian-language stock market studies
+43,Asset allocation and diversification
+44,Real estate and REITs
+45,"Chinese stock indices (Shanghai, Shenzhen)"
+46,Robust and stochastic optimisation
+47,Deep learning stock forecasting (LSTM)
+48,Machine learning and reinforcement-learning trading
+49,"Bond, credit and warrant pricing"
+50,"Bubbles, sentiment and stylised facts"
+51,Risk measures and their estimation
+52,Value at risk and extreme losses
+53,Fractal time-series methods (mostly outside finance)
+54,Investor biases and decision-making
+55,"Liquidity, order flow and price discovery"
+56,Commodity and agricultural futures
+57,"Calendar anomalies (day-of-week, January, Ramadan)"
+58,Macroeconomic drivers of stock markets
+59,Scaling and multifractal statistics
+60,Earnings announcements and investor attention
+61,Stock return studies in emerging markets
+62,Risk premia and consumption-based asset pricing
+63,News and social-media sentiment
+64,Mutual fund performance and managers
+65,Term structure of interest rates
+66,Market efficiency tests
+67,Chinese stock market structure and policy
+68,Markowitz portfolio selection in practice
+69,Index futures: hedging and price discovery
+70,International diversification and emerging markets
+71,Stochastic optimal control and mean-field games
+72,Agent-based models and minority games
+73,Accounting anomalies and return predictability
+74,Copulas and dependence modelling

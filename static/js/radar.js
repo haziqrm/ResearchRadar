@@ -15,6 +15,9 @@
   let topicNames = [];
   let topicSize = new Map();
   let forecastByTopic = new Map();
+  // forecast set sizes, from forecasts.json: every "rank N of M" and "top K" on the page
+  // uses these, so the denominators always agree with the forecast itself
+  let fcCount = { n: 25, nMap: 8, top: 5, subN: 75, subTop: 15 };
 
   // ---------------------------------------------------------------- layout
   // "Inside a topic" sits in a dock beside the map, shown only while a topic is open
@@ -94,12 +97,23 @@
     return keep.map(x => d3.line().curve(d3.curveBasisClosed)(x.r.slice(0, -1))).join("");
   }
 
-  // positions (x in 0..1, v in 0..max) fitted into the box, aspect kept
+  // Positions (x, v) fitted into the box. The papers' own extent is fitted (not the 0..1
+  // square), so the islands use the whole width instead of bunching in the middle. Each
+  // axis may stretch up to STRETCH times the other: the layout's distances are only
+  // relative, and a wide box would otherwise leave its sides empty. SIDE keeps room for
+  // labels at the edges; LABEL_ROOM for labels under the lowest islands.
+  const SIDE = 80, LABEL_ROOM = 22, STRETCH = 1.6;
   function scales(t) {
-    const vMax = d3.max(t.papers, p => p.v) || 1;
-    const k = Math.min(zoom.W - 2 * PAD, (zoom.H - TOP - PAD) / vMax);
-    const ox = (zoom.W - k) / 2, oy = TOP + (zoom.H - TOP - PAD - k * vMax) / 2;
-    return { x: p => ox + k * p.x, y: p => oy + k * p.v };
+    if (!t.extent) t.extent = { x: d3.extent(t.papers, p => p.x), v: d3.extent(t.papers, p => p.v) };
+    const [x0, x1] = t.extent.x, [v0, v1] = t.extent.v;
+    const dx = (x1 - x0) || 1, dv = (v1 - v0) || 1;
+    const aw = Math.max(50, zoom.W - 2 * SIDE), ah = Math.max(50, zoom.H - TOP - PAD - LABEL_ROOM);
+    let kx = aw / dx, ky = ah / dv;
+    kx = Math.min(kx, ky * STRETCH);
+    ky = Math.min(ky, kx * STRETCH);
+    const ox = (zoom.W - kx * dx) / 2 - kx * x0;
+    const oy = TOP + 8 + (ah - ky * dv) / 2 - ky * v0;
+    return { x: p => ox + kx * p.x, y: p => oy + ky * p.v };
   }
 
   // per-topic lookups, built once when a topic opens
@@ -336,9 +350,11 @@
     });
   }
 
+  // readable sub-topic name (data/subtopic_names.csv via radar_data.py); the keyword
+  // list it was named from stays available as `label` for tooltips
   const label = (t, s) => {
     const sub = t.subtopics.find(u => u.id === s);
-    return sub ? sub.label.split(", ").slice(0, 2).join(", ") : "other";
+    return sub ? (sub.name || sub.label.split(", ").slice(0, 2).join(", ")) : "other";
   };
 
   // hover: who this paper cites (solid, to older papers) and who cites it (dashed);
@@ -524,7 +540,12 @@
   function drawSide(t, colour, geo, year, lo) {
     const subs = t.subtopics.filter(s => !HIDE_LABEL.test(s.label));
     const sel = zoom.selected;
-    const rank = t.rank ? `Forecast rank ${t.rank} of ${topicNames.length}${t.predicted_boom ? " · <b>predicted to grow</b>" : ""}` : "";
+    // ranked among the map's topics, like the heading table; a topic opened from the
+    // dropdown or a "builds on" link may be off the map, so it says "of all" instead
+    const f = forecastByTopic.get(t.name);
+    const grow = t.predicted_boom ? " · <b>predicted to grow</b>" : "";
+    const rank = f && f.map_rank ? `Forecast rank ${f.map_rank} of ${fcCount.nMap} on the map${grow}`
+      : t.rank ? `Forecast rank ${t.rank} of all ${fcCount.n} (not on the map)${grow}` : "";
     const seeds = t.papers.filter(p => p.seed != null && (sel == null || p.s === sel))
       .sort((a, b) => a.seed - b.seed).slice(0, 8);
     const all = flows(t, t.y1, t.y0);  // every year, for the focus lists
@@ -540,13 +561,13 @@
             <span class="counts">${lo}–${String(year).slice(2)}</span>
             <span class="counts">${String(t.prior[0]).slice(2)}–${String(t.prior[1]).slice(2)} → ${String(t.recent[0]).slice(2)}–${String(t.recent[1]).slice(2)}</span></div>
           ${subs.map(s => { const g = geo.get(s.id) || {}; return `
-            <div class="sub-row${sel === s.id ? " on" : ""}" data-id="${s.id}">
+            <div class="sub-row${sel === s.id ? " on" : ""}" data-id="${s.id}" title="Keywords: ${esc(s.label)}">
               <span class="swatch" style="border-color:${colour.get(s.id)}"></span>
-              <span>${esc(s.label)}${s.rank && s.rank <= 15 ? ` <span class="rank">#${s.rank}/75</span>` : ""}${g.emerging ? ` <span class="emerging-tag">↑ emerging</span>` : ""}</span>
+              <span>${esc(s.name || s.label)}${s.rank && s.rank <= fcCount.subTop ? ` <span class="rank">#${s.rank} of ${fcCount.subN}</span>` : ""}${g.emerging ? ` <span class="emerging-tag">↑ emerging</span>` : ""}</span>
               <span class="counts">${g.n ?? 0}</span>
               <span class="counts">${s.prior} → ${s.recent}</span>
             </div>`; }).join("")}
-          <div class="sub key-line"><span title="Predicted top 15 of 75 sub-topics. Exploratory: the forecast did not pass its test.">▲ / #rank = forecast</span> · <span title="Its share of this topic's papers is at least 1.5× what it was in the five years before.">↑ = emerging</span></div>
+          <div class="sub key-line"><span title="Predicted top ${fcCount.subTop} of ${fcCount.subN} sub-topics. Exploratory: the forecast did not pass its test.">▲ / #rank = forecast</span> · <span title="Its share of this topic's papers is at least 1.5× what it was in the five years before.">↑ = emerging</span></div>
         </div>
         <div>
           ${sel != null ? `
@@ -698,17 +719,22 @@
     if (zoom.pinned != null) { zoom.pinned = null; drawTopic(); } else closeTopic();
   });
 
-  // "next up" rings on the map circles for the predicted top 5 topics
+  // "next up" rings on the map circles for the predicted top 5 topics. The forecast is
+  // made from one year's data (f.year, 2025) about the years after it, so the rings show
+  // only from that year on; on earlier years of the slider they would claim too much.
   function syncRings() {
+    const shown = typeof yearState === "undefined" ? null : yearState.year;
     d3.selectAll("#network .net-node").each(function (d) {
       const g = d3.select(this);
       const f = d && forecastByTopic.get(d.id);
       const circle = g.select("circle:not(.next-ring)");
       let ring = g.select("circle.next-ring");
-      if (!f || !f.predicted_boom || circle.empty()) { ring.remove(); return; }
+      if (!f || !f.predicted_boom || circle.empty() || (shown != null && f.year && shown < f.year)) {
+        ring.remove(); return;
+      }
       if (ring.empty()) {
         ring = g.insert("circle", "text").attr("class", "next-ring");
-        ring.append("title").text("Predicted to grow (exploratory)");
+        ring.append("title").text(`Predicted to grow over the next three years (forecast from ${f.year} data; exploratory)`);
       }
       const r = String(+circle.attr("r") + 4);
       if (ring.attr("r") !== r) ring.attr("r", r).attr("cx", circle.attr("cx")).attr("cy", circle.attr("cy"));
@@ -716,6 +742,7 @@
   }
   new MutationObserver(recs => { if (recs.some(r => !overlay.node().contains(r.target))) syncRings(); }).observe(box,
     { childList: true, subtree: true, attributes: true, attributeFilter: ["r"] });
+  document.addEventListener("yearchange", syncRings);
 
   // ---------------------------------------------------------------- what could be next
   function drawNext(fc) {
@@ -725,10 +752,10 @@
       + "In testing it ranked better than chance but did not clear every pre-registered bar, so treat this as a lead, not a call.";
     document.getElementById("next-topics").innerHTML = topics.map(t => `
       <li class="${t.predicted_boom ? "top" : ""}"><a href="#zoom-panel" data-topic="${esc(t.topic)}">${esc(t.topic)}</a>
-      <span class="meta">${t.predicted_boom ? " · predicted top 5" : ""}</span></li>`).join("");
+      <span class="meta">${t.predicted_boom ? ` · predicted top ${fcCount.top}` : ""}</span></li>`).join("");
     const subs = fc.subtopics.filter(s => !HIDE_LABEL.test(s.label)).slice(0, 10);
     document.getElementById("next-subtopics").innerHTML = subs.map(s => `
-      <li class="${s.predicted_boom ? "top" : ""}">${esc(s.label)}
+      <li class="${s.predicted_boom ? "top" : ""}" title="Keywords: ${esc(s.label)}">${esc(s.name || s.label)}
       <span class="meta"> · in <a href="#zoom-panel" data-topic="${esc(s.parent_group)}">${esc(s.parent_group)}</a>
       · ${s.papers_2020_22} → ${s.papers_2023_25} papers</span></li>`).join("");
     document.querySelectorAll("#next-panel a[data-topic]").forEach(a => a.addEventListener("click", e => {
@@ -749,6 +776,8 @@
       .call(d3.axisBottom(x).ticks(6).tickFormat(d => d > 0 ? `+${d}` : d));
     s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")));
     s.append("text").attr("class", "pub-label").attr("x", w - m.r).attr("y", h - 4).attr("text-anchor", "end").attr("fill", "currentColor").text("years since publication");
+    s.append("text").attr("class", "pub-label").attr("x", m.l + 4).attr("y", y(1) - 5).attr("fill", "currentColor")
+      .text("100% = the return the paper reported");
     s.append("path").attr("class", "ci-band").attr("d", d3.area().x(r => x(r.mid)).y0(r => y(r.ci_low)).y1(r => y(r.ci_high))(rows));
     s.append("line").attr("class", "pub-line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", m.t).attr("y2", h - m.b);
     s.append("text").attr("class", "pub-label").attr("x", x(0) + 4).attr("y", m.t + 10).text("published");
@@ -779,7 +808,7 @@
     const maxAbs = d3.max(pick, r => Math.abs(r.mom_12m)) || 1;
     document.getElementById("signals-asof").textContent = rows.length ? `as of ${rows[0].as_of} · ${rows.length} signals, best 8 and worst 4` : "";
     document.querySelector("#signals-table tbody").innerHTML = pick.map(r => `
-      <tr><td>${esc(r.name)}${r.paper ? ` <span class="sub">${esc(r.paper)}</span>` : ""}</td>
+      <tr><td title="${r.code && r.code !== r.name ? `Code: ${esc(r.code)}` : ""}">${esc(r.name)}${r.paper ? ` <span class="sub">${esc(r.paper)}</span>` : ""}</td>
       <td class="num ${r.mom_12m >= 0 ? "up" : "down"}">${(r.mom_12m * 100).toFixed(2)}%/mo
         <span class="bar-cell ${r.mom_12m >= 0 ? "pos" : "neg"}" style="width:${Math.round(40 * Math.abs(r.mom_12m) / maxAbs)}px"></span></td>
       <td class="num">${pct(r.vol_forecast, 1)}</td>
@@ -851,6 +880,13 @@
       .map(t => `<option value="${esc(t.name)}">${esc(t.name)}${t.predicted_boom ? " ▲" : ""}</option>`).join("");
     if (!fc.error) {
       forecastByTopic = new Map(fc.topics.map(t => [t.topic, t]));
+      fcCount = { n: fc.n_topics ?? fc.topics.length, nMap: fc.n_map ?? 8, top: fc.top_topics ?? fc.topics.filter(t => t.predicted_boom).length,
+                  subN: fc.n_subtopics ?? fc.subtopics.length, subTop: fc.top_subtopics ?? 15 };
+      document.querySelectorAll(".fc-top").forEach(el => { el.textContent = fcCount.top; });
+      document.querySelectorAll(".fc-n").forEach(el => { el.textContent = fcCount.n; });
+      const lg = document.getElementById("lg-ring");
+      if (lg) lg.title = `Predicted to grow over the next three years (top ${fcCount.top} of ${fcCount.n} topics), `
+        + "from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test.";
       drawNext(fc);
       drawTests(fc);
       syncRings();

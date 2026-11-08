@@ -92,6 +92,14 @@ pytest
 
 Python 3.12. Versions in `requirements.txt` are pinned; pin anything you add.
 
+## Run the website
+
+```bash
+python html_main.py       # then open http://localhost:8000 (set PORT to change it)
+```
+
+It reads only committed files in `data/`, so it runs offline from a fresh clone. The page leads with the research map (circles coloured by crowding, with a year slider). Clicking a topic opens "Inside a topic" beside it. Below the map are "Where research is heading" (crowding now, the exploratory forecast and a paper to read first) and "What happens to a published edge" (decay curve and haircut calculator). The header has the weekly briefing (audio, holdings, backtest) and a **?** drawer with how to read the map, the tests and the caveats. Add `?full` to the URL for the internal "What could be next" panel. Details: `docs/live_layer.md`.
+
 ## Rebuild every output
 
 ```bash

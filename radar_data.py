@@ -8,12 +8,33 @@ Reads the JSON that `python -m src.topic_radar.app_export` writes to data/app/:
   get_signals()     decay curve, haircut distribution, signal forecasts, H10 portfolios
 
 If the export has not been run, each returns {"error": ...} so the page can say so.
+
+Readable names are added on the way out, so the export doesn't need rerunning:
+  data/subtopic_names.csv   a name per sub-topic, written by reading each sub-topic's
+                            papers (the export's `label` is a keyword list; it is kept)
+  data/signal_names.csv     OSAP's own description of each signal code (from its
+                            signal documentation), e.g. MomOffSeason11YrPlus ->
+                            "Off season reversal years 11 to 15"
 """
+import csv
 import json
 from pathlib import Path
 
-APP_DIR = Path(__file__).resolve().parent / "data" / "app"
+DATA_DIR = Path(__file__).resolve().parent / "data"
+APP_DIR = DATA_DIR / "app"
 _cache = {}
+
+
+def _names(file, key):
+    path = DATA_DIR / file
+    if not path.exists():
+        return {}
+    with path.open(newline="", encoding="utf-8") as f:
+        return {r[key]: r["name"] for r in csv.DictReader(f)}
+
+
+def _sub_name(names, sid, label):
+    return names.get(str(sid)) or label
 
 
 def _load(name):
@@ -46,12 +67,37 @@ def get_topic(name):
     topic = data["topics"].get(name)
     if topic is None:
         return {"error": f"unknown topic: {name}"}
-    return {**topic, "prior": data["prior"], "recent": data["recent"], "note": data["note"]}
+    names = _names("subtopic_names.csv", "subtopic_id")
+    subs = [{**s, "name": _sub_name(names, s["id"], s["label"])} for s in topic["subtopics"]]
+    return {**topic, "subtopics": subs, "prior": data["prior"], "recent": data["recent"],
+            "note": data["note"]}
 
 
 def get_forecasts():
-    return _load("forecasts.json") or _missing("forecasts.json")
+    fc = _load("forecasts.json")
+    if fc is None:
+        return _missing("forecasts.json")
+    names = _names("subtopic_names.csv", "subtopic_id")
+    subs = [{**s, "name": _sub_name(names, s["subtopic_id"], s["label"])} for s in fc["subtopics"]]
+    # The site ranks topics among the ones on the map (map_rank of n_map). `rank` stays
+    # the rank among all forecast topics, which "predicted to grow" (top_topics) uses.
+    on_map = map_rank(fc["topics"])
+    topics = [{**t, "map_rank": on_map.get(t["topic"])} for t in fc["topics"]]
+    return {**fc, "topics": topics, "subtopics": subs, "n_topics": len(fc["topics"]),
+            "n_map": len(on_map), "top_topics": sum(1 for t in fc["topics"] if t["predicted_boom"])}
+
+
+def map_rank(topics):
+    """{topic: rank among the map's topics}, ordered by the forecast's own rank."""
+    from research_data import AREAS
+    ranked = sorted((t for t in topics if t["topic"] in AREAS), key=lambda t: t["rank"])
+    return {t["topic"]: i + 1 for i, t in enumerate(ranked)}
 
 
 def get_signals():
-    return _load("signals.json") or _missing("signals.json")
+    sig = _load("signals.json")
+    if sig is None:
+        return _missing("signals.json")
+    names = _names("signal_names.csv", "signal")
+    rows = [{**s, "code": s["signal"], "name": names.get(s["signal"], s["name"])} for s in sig["signals"]]
+    return {**sig, "signals": rows}

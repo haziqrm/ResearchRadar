@@ -2,12 +2,15 @@
    Uses the tokens from base.css. */
 
 /* ---- "Inside a topic": a dock beside the map, shown while a topic is open ---- */
-:root { --dock-w: 340px; }
+:root { --dock-w: clamp(340px, 27vw, 440px); }
 main > #zoom-panel { display: none; }            /* until radar.js moves it into the dock */
 #dock { display: none; flex: none; width: var(--dock-w); margin-left: 12px; min-height: 0; }
 body.topic-open #dock { display: flex; flex-direction: column; }
 #dock > .panel { flex: 1; min-height: 0; overflow: auto; padding: 12px; }
 #dock .zoom-cols { grid-template-columns: 1fr; gap: 4px; }
+#dock > .panel { padding: 14px 16px; }
+#dock .sub-row { grid-template-columns: 12px minmax(0, 1fr) 44px 70px; gap: 8px; padding: 7px 4px; line-height: 1.4; }
+#dock .sub-row .counts { font-size: 11.5px; }
 .opens-topic tbody tr { cursor: pointer; }
 .flows-btn.active { background: var(--path-root); color: #fff; }
 @media (max-width: 960px) {
@@ -32,7 +35,7 @@ body.topic-open #dock { display: flex; flex-direction: column; }
 .badge.warn { border-color: var(--oxblood); color: var(--oxblood); }
 
 /* "next up" mark on the map circles */
-.next-ring { fill: none; stroke: var(--oxblood); stroke-width: 2; stroke-dasharray: 4 3; pointer-events: none; }
+.next-ring { fill: none; stroke: var(--navy); stroke-width: 2; stroke-dasharray: 4 3; pointer-events: none; }
 .net-node { cursor: pointer; }
 
 /* ---- topic drill-down: opens inside the map box ---- */

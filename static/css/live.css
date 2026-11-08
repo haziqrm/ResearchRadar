@@ -4,36 +4,68 @@
 /* ---- header buttons ---- */
 .head-btn {
   position: relative;
-  height: 32px;
-  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px 0 13px;
   border: 1px solid var(--navy);
+  border-radius: var(--radius);
   background: var(--navy);
   color: #fff;
   font: 600 13px var(--font);
+  letter-spacing: 0.01em;
   cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 2px 6px rgba(37, 52, 79, 0.22);
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s, border-color 0.15s;
 }
-.head-btn:hover { background: #1b2740; }
-.head-btn.round {
-  width: 32px;
-  padding: 0;
-  border-color: var(--line);
-  border-radius: 50%;
-  background: var(--panel);
+.head-btn:hover { background: #1b2740; transform: translateY(-1px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 4px 12px rgba(37, 52, 79, 0.28); }
+.head-btn:active { transform: none; box-shadow: 0 1px 2px rgba(37, 52, 79, 0.25); }
+.head-btn:focus-visible { outline: 2px solid var(--slate); outline-offset: 2px; }
+.head-btn .ico {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.head-btn .ico rect { fill: currentColor; stroke: none; }
+.head-btn .ico .dot { fill: currentColor; }
+.head-btn.ghost {
+  padding: 0 14px 0 11px;
+  border-color: rgba(37, 52, 79, 0.25);
+  background: rgba(255, 255, 255, 0.55);
   color: var(--navy);
-  font-size: 15px;
+  box-shadow: none;
 }
-.head-btn.round:hover { border-color: var(--slate); background: var(--panel); }
+.head-btn.ghost:hover { border-color: var(--navy); background: var(--panel);
+  box-shadow: 0 3px 10px rgba(37, 52, 79, 0.12); }
 .new-dot {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 10px;
-  height: 10px;
+  top: -5px;
+  right: -5px;
+  width: 11px;
+  height: 11px;
   border: 2px solid var(--bg);
   border-radius: 50%;
   background: var(--down);
 }
+.new-dot::after {                 /* soft pulse so a new briefing is noticed */
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--down);
+  animation: new-pulse 1.8s ease-out infinite;
+}
+@keyframes new-pulse { from { transform: scale(0.8); opacity: 0.8; } to { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .new-dot::after { animation: none; display: none; } }
 .new-dot[hidden] { display: none; }
+@media (max-width: 560px) { .head-btn.ghost span { display: none; } .head-btn.ghost { padding: 0 9px; } }
 .headline b { color: var(--navy); }
 .headline .score { font-variant-numeric: tabular-nums; font-weight: 600; }
 
@@ -107,7 +139,7 @@
 .key-list, .caveats { margin: 0; padding: 0; list-style: none; }
 .key-list li { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: start; margin-bottom: 10px; font-size: 13px; }
 .key-list .key { display: flex; align-items: center; gap: 2px; min-height: 18px; }
-.lg-ring { display: inline-block; width: 16px; height: 16px; border: 2px dashed var(--oxblood); border-radius: 50%; }
+.lg-ring { display: inline-block; width: 14px; height: 14px; border: 2px dashed var(--navy); border-radius: 50%; }
 .lg-island {
   display: inline-block;
   width: 26px;

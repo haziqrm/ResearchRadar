@@ -3,6 +3,7 @@
 Reads D's committed outputs in data/, so the page runs offline from a fresh clone:
 
   get_heading()    "Where research is heading": crowding, forecast and a paper per map topic
+                   (the paper: most cited per year over the last five years)
   get_crowding_history()  crowding score per area and year (colours the map)
   get_crowding()   crowding score per research-map area for the latest period
                    (crowding.csv + crowding_meta.json; a year for OpenAlex, a week for arXiv)
@@ -100,31 +101,57 @@ def _app_json(name):
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
+READ_FIRST_YEARS = 5   # "Read first" looks at papers from the last five years
+
+
+def _read_first(latest_year, years=READ_FIRST_YEARS):
+    """One paper per area: the most cited per year since publication among papers from
+    the last `years` years (OpenAlex sample). Citations per year stops a paper from this
+    year (few citations yet) or from long ago (decades to collect them) from winning on
+    age alone."""
+    out = {}
+    for r in _rows("network_nodes.csv") or []:
+        year = int(r["year"])
+        if not latest_year - years < year <= latest_year:
+            continue
+        cites = int(r["citations"] or 0)
+        per_year = cites / (latest_year - year + 1)
+        best = out.get(r["area"])
+        if best is None or per_year > best["per_year"]:
+            out[r["area"]] = {"title": " ".join(r["title"].split()), "year": year,
+                              "citations": cites, "per_year": round(per_year, 1), "id": r["paper_id"]}
+    return out
+
+
 def get_heading():
     """"Where research is heading": the map's topics with crowding now, Person A's
-    growth forecast re-ranked among those same topics, and a paper to read first
-    (the topic's most cited paper in the latest crowding year)."""
+    growth forecast ranked among the map's topics (radar_data.map_rank, the same rank
+    the drill-down shows) and a paper to read first (_read_first)."""
+    from radar_data import map_rank
     crowd = get_crowding()
     if "error" in crowd:
         return crowd
     fc = _app_json("forecasts.json") or {}
     growth = {t["topic"]: t for t in fc.get("topics", [])}
-    on_map = [t["topic"] for t in crowd["topics"]]
-    ranked = sorted((a for a in on_map if a in growth), key=lambda a: -growth[a]["growth_score"])
-    rank = {a: i + 1 for i, a in enumerate(ranked)}
+    top = sum(1 for t in growth.values() if t["predicted_boom"])
+    on_map = map_rank(list(growth.values()))
     passed = next((t["passed"] for t in fc.get("tests", []) if t.get("key") == "H11"), None)
+    latest = int(crowd["period_start"][:4])
+    reading = _read_first(latest) if crowd["source"] == "openalex" else {}
     rows = []
     for t in crowd["topics"]:
         g = growth.get(t["topic"])
         rows.append({
             "topic": t["topic"], "score": t["score"], "papers": t["papers"],
-            "forecast": None if g is None else {
-                "rank": rank[t["topic"]], "of": len(ranked),
-                "likely": bool(g["predicted_boom"]), "rank_all": g["rank"], "of_all": len(growth)},
-            "read_first": t["example"],
+            "forecast": None if g is None or t["topic"] not in on_map else {
+                "rank": on_map[t["topic"]], "of": len(on_map),
+                "rank_all": g["rank"], "of_all": len(growth), "top": top,
+                "likely": bool(g["predicted_boom"])},
+            "read_first": reading.get(t["topic"]) or t["example"],
         })
     return {"period_start": crowd["period_start"], "unit": crowd["unit"],
-            "forecast_passed": passed, "topics": rows}
+            "forecast_passed": passed, "read_first_years": [latest - READ_FIRST_YEARS + 1, latest],
+            "topics": rows}
 
 
 def get_crowding_history():

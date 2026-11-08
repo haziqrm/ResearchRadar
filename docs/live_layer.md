@@ -22,12 +22,152 @@ python -m src.live.keys              # check the Gemini and ElevenLabs keys
 `src/live/tagging.py` (D's original 8 areas plus the paper -> signal match) is no longer a
 stage. Its committed outputs `arxiv_tagged.csv` and `tag_audit.csv` are kept as they were.
 
-On the website, D's panels are `live_data.py` (standard library only), `static/js/live.js`
-and `static/css/live.css`: **Crowded in <year>**, **Does trading on decay help?** and the
-**Briefing**, served at `/api/crowding`, `/api/backtest`, `/api/briefing` and
-`/media/briefing.mp3`.
+On the website, D's code is `live_data.py` (standard library only), `static/js/live.js`
+and `static/css/live.css`. It draws the **headline** above the map, **Where research is
+heading**, the one-line lead on the decay panel, the **?** drawer and the **Weekly
+briefing** modal. It is served at `/api/heading`, `/api/crowding/history`,
+`/api/crowding`, `/api/backtest`, `/api/briefing` and `/media/briefing.mp3`. The page
+layout is described in "The page is built around the map" below.
 
 ## Differences from the plan
+
+### The page is built around the map (2026-11-08)
+The plan had a dashboard of side-by-side panels: D's crowding table, the backtest and
+the briefing next to C's map and A's radar. The page now leads with the map and keeps
+everything else one click away.
+
+**Layout, top to bottom** (`html_main.py`):
+- **Header.** The title, a one-line **headline** from the briefing card ("2026 so far:
+  Deep learning and LLM forecasting is the most crowded area (+4.8); Classical stock
+  price prediction is the quietest (−2.5)."), a **Weekly briefing** button and a **?**
+  button.
+- **The map** (C's code, inline in `html_main.py`) fills the first screen at full width
+  and redraws through a `ResizeObserver`. Circles are coloured by crowding for the
+  slider's year, using `crowdColour()` and `/api/crowding/history`. **Inside a topic**
+  (A's `radar.js`) moves into `#dock` beside the map only while a topic is open
+  (`body.topic-open`); otherwise the map has the full width.
+- **Where research is heading** (D, `/api/heading`, drawn by `live.js`). It has one
+  row per map topic, sorted by crowding:
+  - **Crowding now:** the latest score, shaded with the map's colours.
+  - **Forecast:** A's 25-topic growth forecast re-ranked among the 8 map topics ("#2 of
+    8"). "likely to grow" marks A's predicted top 5. The column is badged
+    **exploratory** because test H11 did not pass. The overall rank is in the tooltip.
+  - **Read first:** the topic's most cited paper in the latest crowding year.
+  - Rows carry `data-topic`. `radar.js` opens any `[data-topic]` element on the map
+    when clicked; Enter and Space work too.
+- **What happens to a published edge** (A's decay chart and haircut calculator, drawn
+  by `radar.js`). D's `live.js` adds the one-line lead, computed from `/api/signals`:
+  about half kept on average, and the typical signal's share.
+- **What could be next** (A's topic and sub-topic forecasts) shows only with `?full` in
+  the URL. It is an internal view, not part of the demo.
+
+**Numbers made to agree, names made readable (2026-11-08):**
+- **One rank denominator, always labelled.** Three places ranked the same forecast
+  against different, unlabelled totals: the drill-down said "rank N of" the number of
+  topics in its dropdown (25), the heading table re-ranked among the 8 map topics, and
+  the guide hard-coded "top 5 of 25". Now:
+  - **Topic ranks are among the 8 topics on the map**, in the heading table ("#2 of 8")
+    and the drill-down ("Forecast rank 2 of 8 on the map"). Both read
+    `radar_data.map_rank()`, which orders the map's topics by the forecast's own rank.
+    `get_forecasts()` adds `map_rank` per topic and `n_map`.
+  - A topic **off the map** (opened from the dropdown or a "builds on" link) has no map
+    rank, so the drill-down says "Forecast rank N of all 25 (not on the map)".
+  - **"Predicted to grow"** is still the forecast's own top 5 of all 25 topics (that is
+    how the model picks them), and every place says so: the legend, the guide and the
+    table tooltip, which also gives the overall rank ("#1 of the 8 topics on the map
+    (#1 of all 25 forecast topics)").
+  - Every total comes from `forecasts.json` (`n_topics`, `n_map`, `top_topics`,
+    `n_subtopics`, `top_subtopics`), kept in `fcCount` in `radar.js`, which also fills
+    the guide's `.fc-top` / `.fc-n` spans. Nothing is hard-coded.
+  - `/api/heading`'s `forecast` is `{rank, of, rank_all, of_all, top, likely}`. "likely
+    to grow" now reads "predicted to grow", as everywhere else.
+- **Crowding has a unit:** scores show as "+4.8 SD" (standard deviations vs the topic's
+  usual share) in the headline, the table, the briefing chips and the map tooltip.
+- **"Kept" over 100%** is explained under the signals table: over 100% means the signal
+  earned more after publication than the paper reported, below 0% that it lost money.
+  The decay chart labels its 100% line "the return the paper reported".
+- **Plurals:** "1 citation", "1 paper", "1 article", "1 paper pair … cites".
+- **Readable sub-topic names.** The export labels sub-topics with keyword lists
+  ("prediction, lstm, deep, forecasting"). `data/subtopic_names.csv` gives each of the
+  75 a name (e.g. "Deep learning stock forecasting (LSTM)"). **How they were checked:**
+  each name was written after reading 9 of the sub-topic's paper titles (its suggested
+  reading first, then a random draw, seed 1), not from the keywords alone. Where the
+  papers are mixed the name says so or stays broad: 53 is "Fractal time-series methods
+  (mostly outside finance)", 0 is "Investing strategies and wealth management". The
+  keywords are still in the data (`label`) and show as the row's tooltip.
+  `radar_data.py` adds `name` on the way out, so the export doesn't need rerunning.
+  **If A re-clusters, the ids change and this file must be rewritten.**
+- **Readable signal names.** Codes like `MomOffSeason11YrPlus` now show OSAP's own
+  description from its signal documentation ("Off season reversal years 11 to 15",
+  Heston and Sadka 2008), written to `data/signal_names.csv` from the cached
+  `signal_doc.parquet` (195 OSAP codes; the 7 Ken French factors already had names).
+  Nothing was named by hand. The code shows on hover.
+- **"Read first" picks a cited paper.** It used to be the topic's most cited paper in
+  2026, which picked papers with 0 to 2 citations (for example a 0-citation paper on AI
+  trading in Indonesia). It is now the **most cited per year since publication among
+  papers from the last five years** (2022–2026, `READ_FIRST_YEARS`). Dividing by age
+  stops both brand-new and decades-old papers from winning on age alone. Examples:
+  Deep learning and LLM forecasting went from a 12-citation 2026 paper to a 2022 review
+  with 246 citations; Information and stock reactions from 2 citations to
+  "Information in Financial Markets and Its Real Effects" (2022, 249). The briefing's
+  example paper is unchanged (still this year's most cited).
+
+**Map changes after the restructure (2026-11-08):**
+- A's dashed **"predicted to grow" rings** used to show on every year of the slider, but
+  the forecast is made from 2025 data (`forecasts.json` `year`) about the next three
+  years. They now show only when the slider is on 2025 or later (`syncRings` in
+  `radar.js`). They are **navy** (the site's brand colour), not oxblood, and are in the
+  map legend as "predicted to grow".
+- **Inside a topic was too cramped** with the dock open: `scales()` in `radar.js` fitted
+  the papers into a fixed square in the middle of the box, so islands and labels piled
+  up with empty space either side. It now fits the papers' own extent to the box, with
+  80px at each side for labels, and lets one axis stretch up to 1.6 times the other. At
+  1440px wide the 14 island labels for "Information and stock reactions" no longer
+  overlap. The dock is wider on big screens (`clamp(340px, 27vw, 440px)`, was 340px)
+  and its sub-topic rows have more room.
+- The header buttons were restyled: **Weekly briefing** has a headphones icon and a
+  pulsing "new" dot (off under `prefers-reduced-motion`), and **?** is now an outlined
+  **Guide** button with a question-mark icon (icon only under 560px).
+
+**Dialogs:**
+- **? drawer:** how to read the map (size, lines, colour, dashed ring, islands), A's
+  test cards ("How we tested it") and "Data and caveats".
+- **Weekly briefing modal:** the audio, the date, the 3 most crowded areas and the
+  quietest, next month's holdings and skipped signals, and the caveat. Collapsed under
+  it are **Does trading on decay help?** (backtest chart and table), **Signals right
+  now** (A's `/api/signals`) and the briefing text.
+- A **"new" dot** on the briefing button shows when the card's `generated` date is newer
+  than `localStorage["radar-briefing-seen"]`. Opening the modal records the date. If
+  storage is blocked, the dot simply shows.
+
+**New endpoint `/api/heading`** (`live_data.get_heading`) returns
+`{period_start, unit, forecast_passed, topics: [{topic, score, papers, forecast: {rank,
+of, likely, rank_all, of_all} | null, read_first}]}`. It joins `get_crowding()` with
+A's `data/app/forecasts.json`; `forecast_passed` is H11's `passed` flag.
+
+**`briefing_card.json` has a new `generated` field** (ISO date the card was written, set
+by `src/live/briefing.py`). The "new" dot and the modal's "Week of …" label read it.
+
+**Cut from the page:**
+- The side **Research topics** table, which repeated what the map and the heading
+  table show.
+- **Show affected path** on the map.
+- D's separate **Crowded in <year>** panel. Its content is now the heading table and
+  the map colours. `/api/crowding` is still served but the page no longer fetches it
+  directly.
+- The backtest and signals are no longer panels on the page; they are collapsed inside
+  the briefing modal.
+
+**Why the headline says "2026 so far", not "This week":** crowding is now scored by
+calendar year from OpenAlex (see the next section), and 2026 is a partial year. `live.js`
+says "<year> so far" when `crowding_meta.json` has `unit = "year"` and "This week"
+when it has `"week"`. Once the arXiv tagging is complete and crowding switches to
+`--source arxiv`, the headline goes back to "This week" without code changes.
+
+**Known mismatch:** the button and modal are still called **Weekly briefing**, and the
+modal date reads "Week of <Monday of `generated`>", while the crowding inside it is for
+the year so far. The modal also says "crowding for 2026 so far" next to the date. This
+is left as it is because the briefing becomes weekly again with arXiv.
 
 ### Crowding now uses B's areas and OpenAlex, by year (2026-11-08)
 - **Why it changed:** the shared area list in `contracts.py` is now B's 25 groups
