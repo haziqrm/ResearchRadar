@@ -1,0 +1,45 @@
+/* Base: design tokens, reset, typography and small shared helpers.
+   Change colours and fonts here to restyle the whole site. */
+
+:root {
+  /* brand */
+  --navy: #25344f;
+  --slate: #617891;
+  --oxblood: #632024;
+
+  /* surfaces */
+  --bg: #f1e6d2;
+  --panel: #ffffff;
+  --line: #ece3d6;
+  --row-hover: #faf6f0;
+
+  /* text */
+  --text: #2b1f17;
+  --muted: #7a6858;
+
+  /* meaning: green and red for price changes */
+  --up: #1a7f37;
+  --down: #cf222e;
+  --accent: var(--slate);
+
+  /* shape and type */
+  --radius: 0;   /* corner rounding for every box, button and bar */
+  --gutter: 24px;
+  --font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 var(--font);
+}
+
+h2 { margin: 0 0 12px; font-size: 16px; font-weight: 500; }
+
+/* helpers used across components */
+.up { color: var(--up); }
+.down { color: var(--down); }
+.sub { color: var(--muted); font-size: 12px; }

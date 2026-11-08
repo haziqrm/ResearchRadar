@@ -1,0 +1,21 @@
+/* Layout: two panels filling the screen, network 2/3 and topics 1/3. */
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+  height: 100vh;
+  padding: 16px var(--gutter);
+}
+
+/* narrow screens: stack the panels and let the page scroll */
+@media (max-width: 960px) {
+  main {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  :root { --gutter: 16px; }
+}

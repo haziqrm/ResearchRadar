@@ -1,0 +1,109 @@
+/* Network: research topics as circles, knock-on effects as arrows. */
+
+:root {
+  --node: var(--slate);
+  --node-hover: var(--navy);
+  --link: #617971;
+  --link-hover: var(--navy);
+  --path-root: var(--oxblood);   /* the largest circle in "show affected path" */
+}
+
+.network {
+  position: relative;
+  flex: 1;           /* fill whatever height is left in the panel */
+  min-height: 420px;
+  margin-top: 8px;
+}
+
+.network svg { display: block; }
+
+.net-node circle {
+  fill: var(--node);
+  stroke: var(--panel);
+  stroke-width: 1.5;
+  transition: fill 0.2s;
+}
+
+.net-label {
+  fill: var(--text);
+  font-size: 11px;
+  pointer-events: none;
+  /* outline in the box colour so labels stay readable where arrows cross */
+  paint-order: stroke;
+  stroke: var(--panel);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.net-link {
+  stroke: var(--link);
+  stroke-opacity: 0.9;
+}
+
+/* arrowheads take the colour of the line they sit on (normal, hover and
+   affected path); the first value is a fallback for older browsers */
+.net-arrowhead,
+.net-arrowhead-path {
+  fill: var(--link);
+  fill: context-stroke;
+}
+
+/* fade with opacity (not stroke-opacity) so arrowheads fade with their line */
+.net-node, .net-link { transition: opacity 0.2s; }
+
+/* hover: fade everything that is not linked to the topic under the mouse */
+.network.focus .net-node { opacity: 0.25; }
+.network.focus .net-link { opacity: 0.15; }
+.network.focus .net-node.hl { opacity: 1; }
+.network.focus .net-node.hl circle { fill: var(--node-hover); }
+.network.focus .net-link.hl { stroke: var(--link-hover); opacity: 1; }
+
+/* show affected path: largest circle in oxblood, the circles it affects
+   stay blue, everything else fades */
+.network.path .net-node { opacity: 0.25; }
+.network.path .net-link { opacity: 0.12; }
+.network.path .net-node.path-root,
+.network.path .net-node.path-hit { opacity: 1; }
+.network.path .net-node.path-root circle { fill: var(--path-root); }
+.network.path .net-link.path-link { stroke: var(--path-root); opacity: 1; }
+
+/* controls above the graph */
+.net-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.path-btn {
+  padding: 4px 10px;
+  border: 1px solid var(--path-root);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--path-root);
+  font: 500 12px var(--font);
+  cursor: pointer;
+}
+
+.path-btn:hover { background: rgba(99, 32, 36, 0.08); }
+.path-btn.active { background: var(--path-root); color: #fff; }
+
+/* last week / this week switch */
+.toggle {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.toggle button {
+  padding: 4px 10px;
+  border: 0;
+  background: var(--panel);
+  color: var(--muted);
+  font: 12px var(--font);
+  cursor: pointer;
+}
+
+.toggle button + button { border-left: 1px solid var(--line); }
+.toggle button.active { background: var(--slate); color: #fff; }
