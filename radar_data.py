@@ -60,6 +60,15 @@ def get_topics():
     return {"topics": sorted(rows, key=lambda r: (r["rank"] is None, r["rank"] or 0))}
 
 
+def _citations():
+    """Citation count per paper (B's network_nodes.csv), for the suggested-reading popup."""
+    path = DATA_DIR / "network_nodes.csv"
+    if not path.exists():
+        return {}
+    with path.open(newline="", encoding="utf-8") as f:
+        return {r["paper_id"]: int(r["citations"] or 0) for r in csv.DictReader(f)}
+
+
 def get_topic(name):
     data = _load("topic_papers.json")
     if data is None:
@@ -69,7 +78,9 @@ def get_topic(name):
         return {"error": f"unknown topic: {name}"}
     names = _names("subtopic_names.csv", "subtopic_id")
     subs = [{**s, "name": _sub_name(names, s["id"], s["label"])} for s in topic["subtopics"]]
-    return {**topic, "subtopics": subs, "prior": data["prior"], "recent": data["recent"],
+    cites = _citations()
+    papers = [{**p, "c": cites.get(p["id"])} for p in topic["papers"]]  # c: citations
+    return {**topic, "subtopics": subs, "papers": papers, "prior": data["prior"], "recent": data["recent"],
             "note": data["note"]}
 
 

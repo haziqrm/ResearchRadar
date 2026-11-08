@@ -1,22 +1,43 @@
 /* Radar (Person A): topic drill-down, what's next, signal decay, tests.
    Uses the tokens from base.css. */
 
-/* ---- "Inside a topic": a dock beside the map, shown while a topic is open ---- */
-:root { --dock-w: clamp(340px, 27vw, 440px); }
-main > #zoom-panel { display: none; }            /* until radar.js moves it into the dock */
-#dock { display: none; flex: none; width: var(--dock-w); margin-left: 12px; min-height: 0; }
-body.topic-open #dock { display: flex; flex-direction: column; }
-#dock > .panel { flex: 1; min-height: 0; overflow: auto; padding: 12px; }
-#dock .zoom-cols { grid-template-columns: 1fr; gap: 4px; }
-#dock > .panel { padding: 14px 16px; }
-#dock .sub-row { grid-template-columns: 12px minmax(0, 1fr) 44px 70px; gap: 8px; padding: 7px 4px; line-height: 1.4; }
-#dock .sub-row .counts { font-size: 12px; }
+/* ---- "Inside a topic": no side panel; the dock that holds its markup stays hidden ---- */
+main > #zoom-panel, #dock { display: none; }
 .opens-topic tbody tr { cursor: pointer; }
-@media (max-width: 960px) {
-  body.topic-open .map-body { flex-direction: column; }
-  #dock { width: auto; margin: 12px 0 0; max-height: 50vh; }
+
+/* ---- suggested reading: a button on the topic bar and a popup under it (drawReading) ---- */
+.topic-bar .read-btn { margin-left: auto; max-width: 46%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.topic-bar .read-btn.active { background: var(--path-root); color: #fff; }
+.reading-pop {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  z-index: 4;
+  width: min(400px, calc(100% - 16px));
+  max-height: calc(100% - 52px);
+  overflow: auto;
+  padding: 14px 16px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(37, 52, 79, 0.18);
+  animation: rp-in 0.18s ease-out;
 }
-@media (max-width: 720px) { :root { --dock-w: 280px; } }
+.reading-pop[hidden] { display: none; }
+@keyframes rp-in { from { opacity: 0; transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) { .reading-pop { animation: none; } }
+.rp-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.rp-head h3 { margin: 0; font-size: 15px; }
+.rp-head .close-btn { flex: none; width: 26px; height: 26px; font-size: 16px; border-radius: 6px; }
+.rp-list { margin: 0; padding-left: 20px; }
+.rp-list li { margin-bottom: 9px; font-size: 13px; line-height: 1.4; }
+.rp-list a { color: var(--text); text-decoration: none; }
+.rp-list a:hover { color: var(--navy); text-decoration: underline; }
+.rp-list .sub { display: block; margin-top: 1px; }
+.rp-tag { padding: 0 5px; font-size: 11px; font-weight: 600; }
+.rp-tag.pick { background: #e3e9f2; color: var(--navy); }
+.rp-tag.cited { background: #efe8dc; color: #6b5a45; }
+.rp-note { margin: 8px 0 0; padding-top: 8px; border-top: 1px solid var(--line); line-height: 1.45; }
 
 .panel h3 { margin: 12px 0 6px; font-size: 13px; font-weight: 600; color: var(--navy); }
 

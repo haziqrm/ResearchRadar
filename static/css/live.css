@@ -1,5 +1,5 @@
-/* Live layer (Person D): header buttons, "Where research is heading", the ? drawer and
-   the Weekly briefing modal. Uses the tokens from base.css and table styles from table.css. */
+/* Live layer (Person D): header buttons, the "Where research is heading" drawer and the
+   Weekly briefing modal. Uses the tokens from base.css and table styles from table.css. */
 
 /* ---- header buttons ---- */
 .head-btn {
@@ -66,26 +66,20 @@
 @media (prefers-reduced-motion: reduce) { .new-dot::after { animation: none; display: none; } }
 .new-dot[hidden] { display: none; }
 @media (max-width: 560px) { .head-btn.ghost span { display: none; } .head-btn.ghost { padding: 0 9px; } }
-.headline b { color: var(--navy); }
-.headline .score { font-variant-numeric: tabular-nums; font-weight: 600; }
 
 /* ---- "Where research is heading" ---- */
 #heading td { vertical-align: top; }
 #heading td.topic { font-weight: 600; color: var(--navy); }
-/* crowding: value first, then a bar on a soft track (shaded middle = the normal ±2 SD range) */
-#heading td.crowd { width: 172px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-#heading td.crowd .v { display: inline-block; width: 58px; margin-right: 8px; text-align: right; font-weight: 700; color: var(--text); }
-#heading td.crowd .v.hot { color: #8e2a30; }
-#heading td.crowd .v.cold { color: #34557d; }
-#heading .cbar { position: relative; display: inline-block; width: 92px; height: 10px; vertical-align: 0; border-radius: 5px; background: #f1ebe2; }
-#heading .cbar .normal { position: absolute; top: 0; bottom: 0; background: #e6dfd4; }
-#heading .cbar .zero { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1.5px; margin-left: -0.75px; background: #8f877c; border-radius: 1px; }
-#heading .cbar .fill { position: absolute; top: 1px; bottom: 1px; z-index: 1; }
-#heading .cbar .fill.pos { border-radius: 0 4px 4px 0; }
-#heading .cbar .fill.neg { border-radius: 4px 0 0 4px; }
-#heading tbody tr:hover .cbar .fill { filter: saturate(1.15) brightness(0.95); }
+/* change on last year: an arrow, last year's share (muted) and this year's */
+#heading td.change { white-space: nowrap; font-variant-numeric: tabular-nums; }
+#heading td.change .arrow { display: inline-block; width: 20px; font-size: 16px; font-weight: 700; line-height: 1; }
+#heading td.change .arrow.up { color: var(--up); }
+#heading td.change .arrow.down { color: var(--down); }
+#heading td.change .arrow.flat { color: var(--muted); }
+#heading td.change .was { color: var(--muted); }
+#heading td.change b { font-weight: 700; color: var(--text); }
 #heading td.forecast { white-space: nowrap; }
-/* one navy tag for the forecast, so red/blue only ever mean crowding */
+/* one navy tag for the forecast, so green/red only ever mean up/down */
 #heading td.forecast .likely {
   margin-left: 6px;
   padding: 1px 7px;
@@ -107,16 +101,7 @@
 #heading th .badge { margin-left: 4px; font-size: 11px; padding: 0 5px; vertical-align: 1px; }
 #heading th[title] { cursor: help; }
 
-/* ---- "What happens to a published edge": one line on top ---- */
-.lead { margin: -6px 0 4px; font-size: 13px; color: var(--muted); }
-.lead b { font-weight: 700; }
-/* half-width column: chart on top, calculator underneath */
-/* right-hand column: the decay chart, with the calculator as its own card underneath */
-.below-col { display: grid; gap: 16px; min-width: 0; }
-#decay-panel .decay-plot { margin-top: 8px; }
-#haircut-panel .haircut { display: grid; grid-template-columns: minmax(150px, 0.8fr) 1.2fr; gap: 4px 24px; align-items: start; margin-top: 6px; }
-
-/* ---- drawer (?) and modal (Weekly briefing) ---- */
+/* ---- drawer (Where research is heading) and modal (Weekly briefing) ---- */
 .scrim {
   position: fixed;
   inset: 0;
@@ -132,6 +117,29 @@
   box-shadow: 0 12px 40px rgba(37, 52, 79, 0.3);
 }
 .drawer { top: 0; right: 0; bottom: 0; width: min(560px, 100vw); padding: 20px 24px 32px; }
+/* "Where research is heading": a rounded card inset from the window edges that slides in
+   from the right (and back out: live.js adds .leaving before hiding it) */
+.drawer.wide {
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: min(860px, calc(100vw - 32px));
+  padding: 22px 26px 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  animation: drawer-in 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.drawer.wide .close-btn { border-radius: 8px; }
+.drawer.wide.leaving { animation: drawer-out 0.24s cubic-bezier(0.55, 0, 0.75, 0) forwards; }
+.scrim { animation: fade-in 0.25s ease; }
+.scrim.leaving { animation: fade-out 0.24s ease forwards; }
+@keyframes drawer-in { from { transform: translateX(calc(100% + 24px)); } }
+@keyframes drawer-out { to { transform: translateX(calc(100% + 24px)); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes fade-out { to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .drawer.wide, .drawer.wide.leaving, .scrim, .scrim.leaving { animation: none; }
+}
 .modal {
   top: 50%;
   left: 50%;
@@ -233,9 +241,4 @@
 @media (max-width: 720px) {
   .card-grid { grid-template-columns: 1fr; }
   #heading td.read { max-width: none; }
-  /* phones: narrower bar with the value under it, calculator in one column */
-  #heading td.crowd { width: auto; }
-  #heading .cbar { width: 72px; display: block; margin-top: 6px; }
-  #heading td.crowd .v { width: auto; margin: 0; text-align: left; font-size: 13px; }
-  #haircut-panel .haircut { grid-template-columns: 1fr; }
 }

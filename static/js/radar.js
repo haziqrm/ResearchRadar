@@ -10,7 +10,7 @@
   const num = (v, d = 2) => v == null ? "–" : (+v).toFixed(d);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const getJSON = url => fetch(url).then(r => r.json());
-  const showError = (el, res) => { el.innerHTML = `<div class="sub">${esc(res.error)}</div>`; };
+  const showError = (el, res) => { if (el) el.innerHTML = `<div class="sub">${esc(res.error)}</div>`; };
 
   let topicNames = [];
   let topicSize = new Map();
@@ -20,8 +20,8 @@
   let fcCount = { n: 25, nMap: 8, top: 5, subN: 75, subTop: 15 };
 
   // ---------------------------------------------------------------- layout
-  // "Inside a topic" sits in a dock beside the map, shown only while a topic is open
-  // (body.topic-open narrows the map, and the map redraws for its new width).
+  // A topic opens inside the map box with no side panel; its suggested reading is a popup
+  // (drawReading). The "Inside a topic" markup still lives in the hidden dock.
   // ?full is an unlinked internal view that also shows the extra panels.
   document.body.classList.toggle("full-view", new URLSearchParams(location.search).has("full"));
   const dock = document.getElementById("dock");
@@ -48,6 +48,13 @@
     .on("click", () => closeTopic());
   const barTitle = bar.append("span").attr("class", "topic-name");
   const barWindow = bar.append("span").attr("class", "sub");
+  // Suggested reading: a button on the bar opens a popup for the focused sub-topic (or the
+  // whole topic when none is focused). It replaces the side panel.
+  const readBtn = bar.append("button").attr("type", "button").attr("class", "path-btn read-btn")
+    .attr("aria-haspopup", "dialog")
+    .on("click", e => { e.stopPropagation(); zoom.reading = !zoom.reading; drawReading(); });
+  const readPop = overlay.append("div").attr("class", "reading-pop").attr("role", "dialog")
+    .attr("aria-label", "Suggested reading").property("hidden", true);
   const svg = overlay.append("svg");
   const gHull = svg.append("g"), gFlow = svg.append("g");
   const gLink = svg.append("g"), gTrail = svg.append("g"), gDot = svg.append("g"), gLabel = svg.append("g");
@@ -228,21 +235,6 @@
     });
   }
 
-  // other topics this one builds on ("out": its papers cite them) and that build on it ("in"),
-  // limited to the focused island when there is one; listed in the side panel
-  function externalLinks(t, year, sel) {
-    const agg = new Map();
-    t.papers.forEach(p => {
-      if (p.y > year || (sel != null && p.s !== sel)) return;
-      t.ext[p._i].forEach(e => {
-        const k = `${e.dir}|${e.topic}`;
-        if (!agg.has(k)) agg.set(k, { dir: e.dir, topic: e.topic, n: 0 });
-        agg.get(k).n += e.n;
-      });
-    });
-    const side = dir => [...agg.values()].filter(a => a.dir === dir).sort((a, b) => b.n - a.n).slice(0, 5);
-    return { out: side("out"), in: side("in") };
-  }
 
   // Island labels. Each label tries spots around its island (above, below, beside, further
   // out) and takes the one that covers the fewest dots of other islands and no label already
@@ -459,103 +451,45 @@
         .attr("cx", p => pos(p)[0]).attr("cy", p => pos(p)[1]).attr("r", r);
     }
 
-    drawSide(t, colour, geo, year, lo);
+    drawReading();
   }
 
-  // small timeline for the focused sub-topic: its papers per year, and citations coming in
-  function timeline(el, t, s, colour) {
-    const years = d3.range(t.y0, t.y1 + 1);
-    const papers = years.map(y => ({ y, n: (t.byYear.get(s) || new Map()).get(y) || 0 }));
-    const inflow = d3.rollup(t.cites.filter(([a, b]) => t.papers[a].s === s && t.papers[b].s !== s && t.papers[b].s !== OTHER),
-      v => v.length, ([a]) => t.papers[a].y, ([, b]) => t.papers[b].s);
-    const sources = [...new Set(t.cites.filter(([a, b]) => t.papers[a].s === s && t.papers[b].s !== s && t.papers[b].s !== OTHER)
-      .map(([, b]) => t.papers[b].s))];
-    const w = 520, h = 150, m = { t: 8, r: 8, b: 20, l: 28 }, mid = 92;
-    const xb = d3.scaleBand().domain(years).range([m.l, w - m.r]).padding(0.15);
-    const yp = d3.scaleLinear().domain([0, d3.max(papers, d => d.n) || 1]).nice().range([mid, m.t]);
-    const stack = years.map(y => { const r = { y }; sources.forEach(k => { r[k] = (inflow.get(y) || new Map()).get(k) || 0; }); return r; });
-    const series = d3.stack().keys(sources)(stack);
-    const yi = d3.scaleLinear().domain([0, Math.max(3, d3.max(series.flat(), d => d[1]) || 1)]).range([mid + 6, h - m.b]);
-    const sv = d3.select(el).append("svg").attr("viewBox", `0 0 ${w} ${h}`);
-    sv.append("g").selectAll("rect").data(papers).join("rect").attr("fill", colour.get(s))
-      .attr("x", d => xb(d.y)).attr("width", xb.bandwidth()).attr("y", d => yp(d.n)).attr("height", d => mid - yp(d.n))
-      .append("title").text(d => `${d.y}: ${d.n} papers`);
-    sv.append("g").selectAll("g").data(series).join("g").attr("fill", d => colour.get(+d.key)).attr("opacity", 0.8)
-      .selectAll("rect").data(d => d.map(v => ({ v, key: d.key }))).join("rect")
-      .attr("x", d => xb(d.v.data.y)).attr("width", xb.bandwidth())
-      .attr("y", d => yi(d.v[0])).attr("height", d => yi(d.v[1]) - yi(d.v[0]))
-      .append("title").text(d => `${d.v.data.y}: ${d.v[1] - d.v[0]} citations to ${label(t, +d.key)}`);
-    sv.append("line").attr("stroke", "var(--line)").attr("x1", m.l).attr("x2", w - m.r).attr("y1", mid + 3).attr("y2", mid + 3);
-    sv.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`)
-      .call(d3.axisBottom(xb).tickValues(years.filter(y => y % 5 === 0)));
-    sv.append("text").attr("class", "tl-note").attr("x", m.l).attr("y", m.t + 8).text("papers per year");
-    sv.append("text").attr("class", "tl-note").attr("x", m.l).attr("y", h - m.b - 4).text("citations to other sub-topics (by colour)");
+
+  // Model picks first: the reading-list model's top papers (p.seed, its rank within the
+  // topic; data/seed_papers.csv, H12). A focused sub-topic is topped up with its most cited
+  // recent papers, by citations per year since publication, the same rule as "Read first".
+  const READ_N = 5, READ_YEARS = 5;
+  function drawReading() {
+    const t = zoom.data, sel = zoom.selected;
+    const name = t && sel != null ? label(t, sel) : null;
+    readBtn.text(name ? `Suggested reading: ${name}` : "Suggested reading")
+      .attr("aria-expanded", zoom.reading ? "true" : "false").classed("active", !!zoom.reading);
+    readPop.property("hidden", !zoom.reading || !zoom.open || !t);
+    if (!zoom.reading || !t) return;
+    const picks = t.papers.filter(p => p.seed != null && (sel == null || p.s === sel))
+      .sort((a, b) => a.seed - b.seed).slice(0, sel == null ? 10 : READ_N);
+    const taken = new Set(picks);
+    const perYear = p => p.c / (t.y1 - p.y + 1);
+    const cited = sel == null ? [] : t.papers
+      .filter(p => p.s === sel && !taken.has(p) && p.c != null && p.y > t.y1 - READ_YEARS)
+      .sort((a, b) => perYear(b) - perYear(a)).slice(0, Math.max(0, READ_N - picks.length));
+    const item = (p, tag) => `<li>
+        <a href="https://openalex.org/${esc(p.id)}" target="_blank" rel="noopener">${esc(p.t)}</a>
+        <span class="sub">${p.y}${p.c != null ? ` · ${p.c} citation${p.c === 1 ? "" : "s"}` : ""}
+          · <span class="rp-tag ${tag.cls}">${tag.text}</span></span></li>`;
+    const list = picks.map(p => item(p, { cls: "pick", text: `model pick #${p.seed}` }))
+      .concat(cited.map(p => item(p, { cls: "cited", text: "most cited recently" })));
+    readPop.html(`
+      <div class="rp-head">
+        <div><h3>Suggested reading</h3>
+          <div class="sub">${name ? `in ${esc(name)}` : `across ${esc(t.name)} · click a cloud for one sub-topic`}</div></div>
+        <button type="button" class="close-btn rp-close" aria-label="Close">&times;</button>
+      </div>
+      ${list.length ? `<ol class="rp-list">${list.join("")}</ol>` : `<div class="sub">No papers from the last ${READ_YEARS} years here.</div>`}
+      ${list.length ? `<p class="sub rp-note">${picks.length ? `<b>Model pick:</b> ranked by a model trained on 2003–2022 to find recent papers that later work clusters around. Exploratory: it did not beat simply picking papers in busy areas. ` : ""}${cited.length ? `<b>Most cited recently:</b> citations per year since publication, papers from ${t.y1 - READ_YEARS + 1}–${t.y1}.` : ""}</p>` : ""}`);
+    readPop.select(".rp-close").on("click", e => { e.stopPropagation(); zoom.reading = false; drawReading(); });
   }
 
-  function drawSide(t, colour, geo, year, lo) {
-    const subs = t.subtopics.filter(s => !HIDE_LABEL.test(s.label));
-    const sel = zoom.selected;
-    // ranked among the map's topics, like the heading table; a topic opened from the
-    // dropdown or a "builds on" link may be off the map, so it says "of all" instead
-    const f = forecastByTopic.get(t.name);
-    const grow = t.predicted_boom ? " · <b>predicted to grow</b>" : "";
-    const rank = f && f.map_rank ? `Forecast rank ${f.map_rank} of ${fcCount.nMap} on the map${grow}`
-      : t.rank ? `Forecast rank ${t.rank} of all ${fcCount.n} (not on the map)${grow}` : "";
-    const seeds = t.papers.filter(p => p.seed != null && (sel == null || p.s === sel))
-      .sort((a, b) => a.seed - b.seed).slice(0, 8);
-    const all = flows(t, t.y1, t.y0);  // every year, for the focus lists
-    const fedBy = sel == null ? [] : all.filter(f => f.to === sel).sort((a, b) => b.n - a.n);
-    const fed = sel == null ? [] : all.filter(f => f.from === sel).sort((a, b) => b.n - a.n);
-    const ext = externalLinks(t, year, sel);
-    const extList = (xs, dir) => xs.length ? xs.map(a => `<li><button type="button" class="ext-link ${dir}" data-topic="${esc(a.topic)}"
-        title="${dir === "out" ? `Papers here cite ${esc(a.topic)} ${a.n} times` : `${esc(a.topic)} papers cite papers here ${a.n} times`} (up to ${year}). Click to open it.">${esc(a.topic)}</button> <span class="sub">${a.n}</span></li>`).join("")
-      : `<li class="sub">none in the sample</li>`;
-    const flowList = (fs, key) => fs.length ? fs.map(f => `<li><span class="swatch-inline" style="background:${colour.get(f[key])}"></span>${esc(label(t, f[key]))} <span class="sub">${f.n}</span></li>`).join("") : `<li class="sub">none in the sample</li>`;
-    zoom.side.innerHTML = `
-      <div class="sub">${t.n} papers in the sample · showing ${lo}–${year} · stage: ${esc(t.stage || "–")} · ${rank}</div>
-      <div class="zoom-cols">
-        <div>
-          <h3>Sub-topics</h3>
-          <div class="sub-row head"><span></span><span class="sub">click to focus</span>
-            <span class="counts">${lo}–${String(year).slice(2)}</span>
-            <span class="counts">${String(t.prior[0]).slice(2)}–${String(t.prior[1]).slice(2)} → ${String(t.recent[0]).slice(2)}–${String(t.recent[1]).slice(2)}</span></div>
-          ${subs.map(s => { const g = geo.get(s.id) || {}; return `
-            <div class="sub-row${sel === s.id ? " on" : ""}" data-id="${s.id}" title="Keywords: ${esc(s.label)}">
-              <span class="swatch" style="border-color:${colour.get(s.id)}"></span>
-              <span>${esc(s.name || s.label)}${s.rank && s.rank <= fcCount.subTop ? ` <span class="rank">#${s.rank} of ${fcCount.subN}</span>` : ""}${g.emerging ? ` <span class="emerging-tag">↑ emerging</span>` : ""}</span>
-              <span class="counts">${g.n ?? 0}</span>
-              <span class="counts">${s.prior} → ${s.recent}</span>
-            </div>`; }).join("")}
-          <div class="sub key-line"><span title="Predicted top ${fcCount.subTop} of ${fcCount.subN} sub-topics. Exploratory: the forecast did not pass its test.">▲ / #rank = forecast</span> · <span title="Its share of this topic's papers is at least 1.5× what it was in the five years before.">↑ = emerging</span></div>
-        </div>
-        <div>
-          ${sel != null ? `
-          <h3>${esc(label(t, sel))}: who fed whom</h3>
-          <div class="flow-cols"><div><div class="sub">built on (it cites them)</div><ul class="flow-list">${flowList(fedBy, "from")}</ul></div>
-          <div><div class="sub">fed (they cite it)</div><ul class="flow-list">${flowList(fed, "to")}</ul></div></div>
-          <div class="tl" id="zoom-timeline"></div>` : ""}
-          <h3>Other topics${sel != null ? ` linked to ${esc(label(t, sel))}` : ""}</h3>
-          <div class="flow-cols"><div><div class="sub">builds on (cites them)</div><ul class="flow-list">${extList(ext.out, "out")}</ul></div>
-          <div><div class="sub">built on by (they cite it)</div><ul class="flow-list">${extList(ext.in, "in")}</ul></div></div>
-          <h3>Suggested reading${sel != null ? " in this sub-topic" : ""}</h3>
-          ${seeds.length ? `<ol class="seed-list">${seeds.map(p => `<li>${esc(p.t)} <span class="sub">(${p.y})</span></li>`).join("")}</ol>`
-            : `<div class="sub">No suggested papers here.</div>`}
-          <div class="sub key-line" title="Click a cloud to see its arrows: direct citations between it and other sub-topics, pointing from the cited to the citing side. Slate arrows point in (it builds on them), oxblood arrows point out (it is built on by them); the number is how many citations. They show who builds on whom, not cause and effect.">How to read the arrows ⓘ</div>
-        </div>
-      </div>`;
-    if (sel != null) timeline(document.getElementById("zoom-timeline"), t, sel, colour);
-    zoom.side.querySelectorAll(".sub-row[data-id]").forEach(row => {
-      row.addEventListener("click", () => {
-        const id = +row.dataset.id;
-        zoom.selected = zoom.selected === id ? null : id;
-        drawTopic();
-      });
-      row.addEventListener("mouseenter", () => hoverLabel(+row.dataset.id));
-      row.addEventListener("mouseleave", () => hoverLabel(null));
-    });
-    zoom.side.querySelectorAll(".ext-link").forEach(b => b.addEventListener("click", () =>
-      openTopic(b.dataset.topic, { x: zoom.W / 2, y: zoom.H / 2 })));
-  }
 
   // origin: {x, y} in map-box pixels where the papers fly out from (the clicked circle)
   async function openTopic(name, origin) {
@@ -570,6 +504,7 @@
     zoom.data = res;
     zoom.selected = null;
     zoom.pinned = null;
+    zoom.reading = false;
     zoom.open = true;
     hover.classed("on", false);
     hideHint();
@@ -588,6 +523,8 @@
     if (!zoom.open) return;
     const o = zoom.origin;
     zoom.open = false;
+    zoom.reading = false;
+    readPop.property("hidden", true);
     dock.classList.remove("topic-open");
     document.body.classList.remove("topic-open");
     zoom.pinned = null;
@@ -681,6 +618,7 @@
   });
   document.addEventListener("keydown", e => {
     if (e.key !== "Escape" || !zoom.open) return;
+    if (zoom.reading) { zoom.reading = false; drawReading(); return; }
     if (zoom.pinned != null) { zoom.pinned = null; drawTopic(); } else closeTopic();
   });
 
@@ -735,6 +673,7 @@
   // right-hand column ends level with the table beside it
   const DECAY_H = 292;
   function drawDecay(sig, h = DECAY_H) {
+    if (!document.getElementById("decay-plot")) return;  // the panel is not on the page
     const rows = sig.curve.map(r => ({ ...r, mid: (r.years_from + r.years_to) / 2 }));
     const w = 640, m = { t: 16, r: 16, b: 42, l: 48 };
     const x = d3.scaleLinear().domain(d3.extent(rows, r => r.mid)).nice().range([m.l, w - m.r]);
@@ -894,6 +833,7 @@
 
   function drawTests(fc) {
     const grid = document.getElementById("tests-grid");
+    if (!grid) return;  // the Guide drawer is not on the page
     const order = ["H9", "H10", "H11", "H13", "H12"];
     grid.innerHTML = "";
     fc.tests.slice().sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key)).forEach(t => {

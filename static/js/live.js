@@ -1,8 +1,7 @@
-// Live layer (Person D): the headline above the map, "Where research is heading", the
-// one-line lead on the decay panel, the ? drawer and the Weekly briefing modal.
-// Data: live_data.py (/api/heading, /api/briefing, /api/backtest) and Person A's
-// /api/signals. Uses d3 and crowdColour() from the page, so the table's shading matches
-// the map circles. Rows carry data-topic; radar.js opens that topic on click.
+// Live layer (Person D): "Where research is heading" (a drawer from the header) and the
+// Weekly briefing modal. Data: live_data.py (/api/heading, /api/briefing, /api/backtest)
+// and Person A's /api/signals. Uses d3 and crowdColour() from the page, so the briefing's
+// chips match the map circles. Rows carry data-topic; radar.js opens that topic on click.
 (() => {
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -18,18 +17,6 @@
   const sd = s => s == null ? "–" : `${signed(s, 1)} SD`;
   const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
   const chip = s => `<span class="chip" style="background:${colour(s)};color:${ink(s)}">${sd(s)}</span>`;
-  // Table bar: on a soft track from −5 to +5 SD, with the "normal" ±2 SD zone shaded and a
-  // zero line. The bar grows right (busier) or left (quieter) and is rounded at its outer end.
-  const BAR_MAX = 5, NORMAL = 2;
-  const pos = v => (Math.max(-BAR_MAX, Math.min(BAR_MAX, v)) + BAR_MAX) / (2 * BAR_MAX) * 100;
-  const tone = s => s == null ? "none" : s >= NORMAL ? "hot" : s <= -NORMAL ? "cold" : "normal";
-  const crowdBar = s => {
-    const track = `<i class="normal" style="left:${pos(-NORMAL)}%;width:${pos(NORMAL) - pos(-NORMAL)}%"></i><i class="zero"></i>`;
-    if (s == null) return `<span class="cbar">${track}</span>`;
-    const w = Math.abs(pos(s) - 50);
-    const fill = s >= 0 ? `left:50%;width:${w}%` : `right:50%;width:${w}%`;
-    return `<span class="cbar">${track}<i class="fill ${s >= 0 ? "pos" : "neg"}" style="${fill};background:${colour(s)}"></i></span>`;
-  };
   const periodLabel = (unit, start) => unit === "year" ? `${start.slice(0, 4)} so far` : "This week";
   const SEEN_KEY = "radar-briefing-seen";
   const store = {
@@ -40,8 +27,23 @@
   // ---------------------------------------------------------------- dialogs
   const scrim = $("scrim");
   let openDlg = null, lastFocus = null;
+  // A drawer slides out before it is hidden (.leaving runs the CSS animation); the
+  // timer matches its length. Reduced motion, or the modal, hides at once.
+  const LEAVE_MS = 240;
+  let leaving = null;
+  const calm = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function finishLeaving() {
+    if (!leaving) return;
+    clearTimeout(leaving.timer);
+    leaving.el.hidden = true;
+    leaving.el.classList.remove("leaving");
+    scrim.hidden = true;
+    scrim.classList.remove("leaving");
+    leaving = null;
+  }
   function openDialog(el) {
     closeDialog();
+    finishLeaving();
     lastFocus = document.activeElement;
     el.hidden = false;
     scrim.hidden = false;
@@ -50,9 +52,16 @@
   }
   function closeDialog() {
     if (!openDlg) return;
-    openDlg.hidden = true;
-    scrim.hidden = true;
+    const el = openDlg;
     openDlg = null;
+    if (el.classList.contains("drawer") && !calm()) {
+      el.classList.add("leaving");
+      scrim.classList.add("leaving");
+      leaving = { el, timer: setTimeout(finishLeaving, LEAVE_MS) };
+    } else {
+      el.hidden = true;
+      scrim.hidden = true;
+    }
     if (lastFocus) lastFocus.focus();
   }
   scrim.addEventListener("click", closeDialog);
@@ -61,29 +70,44 @@
   document.addEventListener("keydown", e => {
     if (e.key === "Escape" && openDlg) { e.stopImmediatePropagation(); closeDialog(); }
   }, true);
-  $("help-btn").addEventListener("click", () => openDialog($("help-drawer")));
+  // "Where research is heading" opens as a drawer; a row opens its topic on the map
+  // (radar.js), so the drawer closes first to show it.
+  $("heading-btn").addEventListener("click", () => openDialog($("heading-drawer")));
+  $("heading").addEventListener("click", e => { if (e.target.closest("tr[data-topic]")) closeDialog(); });
 
   // ---------------------------------------------------------------- where research is heading
+  // Each topic's share of the year's papers against last year: an arrow and both shares.
+  const ARROW = { up: "↑", down: "↓", flat: "→" };
+  const WORD = { up: "up", down: "down", flat: "level" };
   async function loadHeading() {
     const h = await getJSON("/api/heading");
     const body = document.querySelector("#heading tbody");
     if (h.error) { body.innerHTML = `<tr><td colspan="4" class="sub">${esc(h.error)}</td></tr>`; return; }
-    $("heading-period").textContent = `crowding: ${periodLabel(h.unit, h.period_start)} · click a row to open it on the map`;
+    const now = h.period_start.slice(0, 4), prev = (h.prev_start || "").slice(0, 4);
+    $("heading-period").textContent = h.unit === "year"
+      ? `Share of papers, ${now} so far vs ${prev} · click a row to open it on the map`
+      : `This week vs last week · click a row to open it on the map`;
     if (h.read_first_years) {
       const [a, b] = h.read_first_years;
       $("read-first-th").title = `The topic's most cited paper per year since publication, among papers from ${a}–${b}.`;
     }
     body.innerHTML = h.topics.map(t => {
-      const f = t.forecast;
+      const f = t.forecast, c = t.change;
       const fc = !f ? "—" : `#${f.rank} of ${f.of}` + (f.likely ? ` <span class="likely">predicted to grow</span>` : "");
       const fTip = f ? `#${f.rank} of the ${f.of} topics on the map (#${f.rank_all} of all ${f.of_all} forecast topics). `
         + `"Predicted to grow" means in the forecast's top ${f.top} of all ${f.of_all}. Exploratory.` : "";
+      const fmt = v => c.unit === "share" ? `${v.toFixed(1)}%` : `${v}`;
+      const cTip = !c ? "" : c.unit === "share"
+        ? `${fmt(c.prev)} of ${prev}'s papers → ${fmt(c.now)} of ${now}'s (${plural(c.papers_prev, "paper")} → ${plural(c.papers, "paper")})`
+        : `${plural(c.papers_prev, "paper")} → ${plural(c.papers, "paper")}`;
+      const change = !c ? "—" : `<span class="arrow ${c.dir}" aria-label="${WORD[c.dir]}">${ARROW[c.dir]}</span>`
+        + `<span class="was">${fmt(c.prev)}</span> → <b>${fmt(c.now)}</b>`;
       const r = t.read_first;
       const read = r ? `<span class="title" title="${esc(r.title)}">${esc(r.title)}</span>${r.year} · ${plural(r.citations, "citation")}` : "—";
       return `
       <tr data-topic="${esc(t.topic)}" tabindex="0" title="Open ${esc(t.topic)} on the map">
         <td class="topic">${esc(t.topic)}</td>
-        <td class="crowd" title="${plural(t.papers, "paper")} in ${h.period_start.slice(0, 4)}"><span class="v ${tone(t.score)}">${sd(t.score)}</span>${crowdBar(t.score)}</td>
+        <td class="change" title="${esc(cTip)}">${change}</td>
         <td class="forecast" title="${esc(fTip)}">${fc}</td>
         <td class="read">${read}</td>
       </tr>`;
@@ -93,20 +117,7 @@
     }));
   }
 
-  // ---------------------------------------------------------------- decay panel lead
-  async function loadDecayLead() {
-    const sig = await getJSON("/api/signals");
-    if (sig.error) return;
-    const after = sig.curve.find(r => r.years_from === 0), med = sig.haircut && sig.haircut.median;
-    if (!after || med == null || !$("decay-lead")) return;
-    // The finding is the title (the chart carries the numbers); the line under it says how to read the chart.
-    const kept = after.share_of_in_sample_mean;
-    if (kept > 0.4 && kept < 0.6 && $("decay-title")) $("decay-title").textContent = "Published signals keep about half their edge";
-    $("decay-lead").textContent = `Return after publication as a share of what the paper reported, by years since publication`
-      + `${sig.haircut.n_signals ? `, across ${sig.haircut.n_signals} signals` : ""}. Shaded band: 95% range.`;
-  }
-
-  // ---------------------------------------------------------------- briefing: headline, button, modal
+  // ---------------------------------------------------------------- briefing: button and modal
   const mondayOf = iso => {
     const d = new Date(iso + "T00:00:00Z");
     d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
@@ -116,13 +127,8 @@
   async function loadBriefing() {
     const b = await getJSON("/api/briefing");
     if (b.error || !b.card) return;
-    const c = b.card, top = c.busiest[0], q = c.quietest;
+    const c = b.card, q = c.quietest;
     const when = periodLabel(c.unit, c.period_start);
-
-    $("headline").title = "Crowding: each area's share of papers against its usual share, in standard deviations (SD)";
-    $("headline").innerHTML = `<b>${esc(when)}:</b> most crowded is ${esc(top.area)} `
-      + `(<span class="score">${sd(top.score)}</span>); `
-      + `quietest is ${esc(q.area)} (<span class="score">${sd(q.score)}</span>).`;
 
     // "new" dot: the briefing is newer than the last one this browser opened
     const seen = store.get(SEEN_KEY);
@@ -197,5 +203,5 @@
     });
   }
 
-  loadHeading(); loadDecayLead(); loadBriefing(); loadBacktest();
+  loadHeading(); loadBriefing(); loadBacktest();
 })();

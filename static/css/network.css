@@ -27,8 +27,7 @@
   transition: fill 0.2s, transform 0.2s, filter 0.2s;
 }
 
-/* circles open a topic on click: lift them on hover so that reads as clickable.
-   The fill is the crowding colour (set inline), so emphasis is a navy ring, not a fill. */
+/* circles open a topic on click: lift them on hover so that reads as clickable */
 .net-node:hover circle:not(.next-ring) {
   stroke: var(--navy);
   stroke-width: 2.5;
@@ -52,9 +51,6 @@
 /* stroke-opacity is set per link from its strength (html_main.py) */
 .net-link { stroke: var(--link); }
 
-/* crowding score under each topic name */
-.net-label .net-val { fill: var(--muted); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
-
 .net-node, .net-link { transition: opacity 0.2s; }
 
 /* hover: fade everything that is not linked to the topic under the mouse */
@@ -64,13 +60,13 @@
 .network.focus .net-node.hl circle:not(.next-ring) { stroke: var(--navy); stroke-width: 2.5; }
 .network.focus .net-link.hl { stroke: var(--link-hover); stroke-opacity: 0.9; opacity: 1; }
 
-/* show affected path: largest circle gets a thick oxblood ring, the circles it
-   affects stay, everything else fades */
+/* show affected path (Person C): the largest circle in red, the circles linked to it
+   stay, everything else fades */
 .network.path .net-node { opacity: 0.25; }
 .network.path .net-link { opacity: 0.12; }
 .network.path .net-node.path-root,
 .network.path .net-node.path-hit { opacity: 1; }
-.network.path .net-node.path-root circle:not(.next-ring) { stroke: var(--path-root); stroke-width: 4; }
+.network.path .net-node.path-root circle:not(.next-ring):not(.hit) { fill: var(--path-root); }
 .network.path .net-link.path-link { stroke: var(--path-root); opacity: 1; }
 
 /* controls above the graph */
@@ -155,13 +151,8 @@
 .lg-size.big { width: 14px; height: 14px; margin-left: -2px; }
 .lg-line { display: inline-block; width: 22px; height: 4px; background: var(--link); border-radius: 2px; }
 .lg-line.thin { width: 14px; height: 1px; opacity: 0.6; }
-.lg-ramp {
-  display: inline-block;
-  width: 64px;
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #3f6591, #c4c2be 50%, #a3343a);
-}
+.lg-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--node); }
+.lg-dot.root { background: var(--path-root); }
 .lg-help {
   display: inline-grid;
   place-items: center;
@@ -176,7 +167,7 @@
 }
 
 /* Person A's dashed "predicted to grow" ring sits on top of the circle: keep it hollow,
-   or it hides the crowding colour underneath */
+   or it hides the circle colour underneath */
 .net-node circle.next-ring { fill: none; filter: none; stroke: var(--navy); stroke-width: 2; }
 
 /* Only the invisible .hit circle takes the mouse (html_main.py). It never changes size on

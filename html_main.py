@@ -59,15 +59,14 @@ __CSS_LINKS__
   <header class="site-head">
     <div class="brand">
       <h1>Research Lifecycle Radar</h1>
-      <p class="headline" id="headline"></p>
     </div>
     <div class="head-actions">
       <button type="button" class="head-btn" id="brief-btn" aria-haspopup="dialog">
         <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 11v-1a7 7 0 0 1 14 0v1"/><rect x="2.5" y="11" width="3.5" height="6" rx="1"/><rect x="14" y="11" width="3.5" height="6" rx="1"/></svg>
         <span>Weekly briefing</span><span class="new-dot" id="brief-new" hidden title="New since your last visit"></span></button>
-      <button type="button" class="head-btn ghost" id="help-btn" aria-haspopup="dialog" aria-label="How to read this page" title="How to read this page">
-        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M7.8 7.9a2.3 2.3 0 1 1 3.2 2.1c-.6.3-1 .8-1 1.5v.4"/><circle class="dot" cx="10" cy="14.3" r="0.6"/></svg>
-        <span>Guide</span></button>
+      <button type="button" class="head-btn ghost" id="heading-btn" aria-haspopup="dialog">
+        <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 15l4.5-4.5 3 3L17 7"/><path d="M12.5 7H17v4.5"/></svg>
+        <span>Where research is heading</span></button>
     </div>
   </header>
 
@@ -76,6 +75,8 @@ __CSS_LINKS__
       <div class="panel-head">
         <h2>Research topic network</h2>
         <div class="net-controls">
+          <button type="button" class="path-btn active" id="path-btn" aria-pressed="true"
+            title="The biggest topic in the selected year, in red, and the topics whose papers cite the same earlier work as it. Press play to watch which tightly linked topics grow next.">Hide affected path</button>
           <div class="year-control">
             <button type="button" class="play-btn" id="play-btn" aria-label="Play years">&#9654;</button>
             <input type="range" id="year-slider" step="1" aria-label="Year">
@@ -86,7 +87,7 @@ __CSS_LINKS__
       <div class="net-legend" aria-label="Legend">
         <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
         <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker and darker means more shared that year; dotted means none."><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
-        <span class="lg" title="Is the topic taking more than its usual share of papers that year? Compared with its own share over the five years before."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
+        <span class="lg" id="lg-path" title="Red: the biggest topic in the selected year. Bright: the topics linked to it by shared citations. Faded: the rest."><i class="lg-dot root"></i><i class="lg-dot"></i>biggest topic and its links</span>
         <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
         <!-- shown instead of the items above while a topic is open: a hint until a cloud is
              clicked, then the arrow key (radar.js sets .arrows-on and the hint text) -->
@@ -102,38 +103,6 @@ __CSS_LINKS__
         <div id="dock"></div>
       </div>
     </section>
-
-    <div class="below">
-      <!-- Person D (live.js): crowding now, Person A's forecast, a paper to start with -->
-      <section class="panel" id="heading-panel">
-        <div class="panel-head"><h2>Where research is heading</h2><span class="sub" id="heading-period"></span></div>
-        <table class="data-table opens-topic" id="heading">
-          <thead><tr>
-            <th>Topic</th>
-            <th title="This year's share of papers vs the topic's usual share, in standard deviations (SD): 0 is normal, +2 SD crowded, −2 SD quiet. The bar grows right when busier and left when quieter; the shaded middle is the normal range (±2 SD).">Crowding vs usual</th>
-            <th title="Person A's growth forecast: the topic's rank among the 8 topics on the map. Exploratory: it did not pass its pre-registered test.">Forecast rank <span class="badge warn">exploratory</span></th>
-            <th id="read-first-th" title="The topic's most cited paper per year since publication, among papers from the last five years.">Read first</th>
-          </tr></thead>
-          <tbody></tbody>
-        </table>
-      </section>
-
-      <!-- Person A (radar.js draws the chart and calculator) -->
-      <div class="below-col">
-        <section class="panel" id="decay-panel">
-          <div class="panel-head"><h2 id="decay-title">What happens to a published edge</h2></div>
-          <p class="lead" id="decay-lead"></p>
-          <div class="decay-plot" id="decay-plot"></div>
-        </section>
-
-        <!-- Person A (radar.js fills it): what a paper's claimed return is worth after publication -->
-        <section class="panel" id="haircut-panel">
-          <div class="panel-head"><h2>Haircut calculator</h2></div>
-          <p class="lead">Type the monthly return a paper claims to see how much history says survives publication.</p>
-          <div class="haircut" id="haircut"></div>
-        </section>
-      </div>
-    </div>
 
     <!-- Person A: "Inside a topic" (radar.js moves it into #dock beside the map while a topic is open) -->
     <section class="panel" id="zoom-panel">
@@ -157,39 +126,21 @@ __CSS_LINKS__
 
   <div class="scrim" id="scrim" hidden></div>
 
-  <!-- the ? button: how to read it, how it was tested, data and caveats -->
-  <aside class="drawer" id="help-drawer" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+  <!-- "Where research is heading", opened from the header (live.js) -->
+  <aside class="drawer wide" id="heading-drawer" role="dialog" aria-modal="true" aria-labelledby="heading-title" hidden>
     <div class="dlg-head">
-      <h2 id="help-title">About this radar</h2>
+      <div><h2 id="heading-title">Where research is heading</h2><span class="sub" id="heading-period"></span></div>
       <button type="button" class="close-btn" data-close aria-label="Close">&times;</button>
     </div>
-    <section class="dlg-section">
-      <h3>How to read the map</h3>
-      <ul class="key-list">
-        <li><span class="key"><i class="lg-size"></i><i class="lg-size big"></i></span><span><b>Circle size</b>: research articles on the topic in the selected year, on one scale across years. Drag the slider or press play to move through the years.</span></li>
-        <li><span class="key"><i class="lg-line"></i></span><span><b>Lines</b>: the two topics' papers cite the same earlier work. Thicker and darker means more shared that year, so weak links are hairlines; dotted means none.</span></li>
-        <li><span class="key"><span class="lg-ramp"></span></span><span><b>Colour</b>: crowding. Red means the topic is taking more than its usual share of that year's papers, blue less, plain grey about its usual share, compared with its own share over the five years before. Scores are in standard deviations (SD): beyond ±2 SD is unusual. Pale grey: no score.</span></li>
-        <li><span class="key"><i class="lg-ring"></i></span><span><b>Dashed ring</b>: predicted to grow over the next three years (the forecast's top <span class="fc-top">5</span> of all <span class="fc-n">25</span> topics; ranks elsewhere on the page are among the 8 on the map). The forecast uses data up to 2025, so the rings show only from 2025 on. Exploratory: the forecast did not pass its test.</span></li>
-        <li><span class="key"><i class="lg-island"></i></span><span><b>Click a circle</b> to open its sub-topics. Each dot is a paper and similar papers sit together; each outlined island is a sub-topic, sized by its papers in the last five years. Rings mark suggested reading. Arrows are direct citations between sub-topics, from the cited to the citing side. Click an island to focus it, a paper for its citation trail.</span></li>
-      </ul>
-    </section>
-    <section class="dlg-section">
-      <h3>How we tested it</h3>
-      <p class="sub">Every claim was tested on data the model had not seen, against simple rules, with the pass rule written down before the run. For the forecasts, the grey bars are 200 simulated worlds where no topic truly grows; the line is the real result.</p>
-      <div class="tests-grid" id="tests-grid"></div>
-    </section>
-    <section class="dlg-section">
-      <h3>Data and caveats</h3>
-      <ul class="caveats">
-        <li><b>OpenAlex sample.</b> The map and the crowding score use 380 quant-finance papers sampled at random each year from OpenAlex (2000–2026), so sizes show each topic's share of attention, not every paper written.</li>
-        <li><b>2026 is a partial year</b> (353 of 380 papers so far). Crowding compares shares, so it still works, but counts for 2026 are lower.</li>
-        <li><b>Topics</b> are 25 groups found automatically from the papers' text; the map shows the 8 the team chose.</li>
-        <li><b>Tagging accuracy.</b> Gemini's arXiv tags were right on the area for 92% of 50 papers checked by hand. That check used the earlier live areas, not the map's topics, and the arXiv feed isn't on the map yet.</li>
-        <li><b>Forecasts are exploratory.</b> The topic and sub-topic growth forecasts did not pass their pre-registered tests.</li>
-        <li><b>Citations</b> show who builds on whom, not cause and effect.</li>
-        <li><b>The haircut</b> applies a historical average as an assumption, not a prediction for any one signal.</li>
-      </ul>
-    </section>
+    <table class="data-table opens-topic" id="heading">
+      <thead><tr>
+        <th>Topic</th>
+        <th id="change-th" title="The topic's share of the year's sampled papers, this year against last year. Shares, not counts, so a partial year does not look like a fall. Level: within half a percentage point.">vs last year</th>
+        <th title="Person A's growth forecast: the topic's rank among the 8 topics on the map. Exploratory: it did not pass its pre-registered test.">Forecast rank <span class="badge warn">exploratory</span></th>
+        <th id="read-first-th" title="The topic's most cited paper per year since publication, among papers from the last five years.">Read first</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
   </aside>
 
   <!-- the Weekly briefing button (live.js) -->
@@ -295,26 +246,21 @@ function setYear(year) {
   document.dispatchEvent(new CustomEvent("yearchange", { detail: year }));
 }
 
-// Circle colour: D's crowding score for that area and year (its share of the year's
-// papers vs its share over the five years before). Warm = crowded, cool = quiet,
-// on a +-3 scale; plain grey at 0; pale grey where there is no score (before 2003).
+// Crowding colour (D's score: an area's share of papers vs its usual share). The map no
+// longer uses it; live.js colours the briefing's chips with it. Warm = crowded, cool =
+// quiet, on a +-3 scale; plain grey at 0; pale grey where there is no score.
 const CROWD_MAX = 3;
 // Piecewise (not a spline), so 0 is exactly the plain grey in the middle.
 const crowdRamp = d3.piecewise(d3.interpolateRgb, ["#3f6591", "#c4c2be", "#a3343a"]);
 const crowdColour = s => s == null ? "#e3ded6"
   : crowdRamp((Math.max(-CROWD_MAX, Math.min(CROWD_MAX, s)) + CROWD_MAX) / (2 * CROWD_MAX));
-const crowdWord = s => s == null ? "no crowding score" : s >= 2 ? "crowded" : s >= 1 ? "busier than usual"
-  : s <= -2 ? "quiet" : s <= -1 ? "quieter than usual" : "about its usual share";
 
 async function loadNetwork() {
-  const [net, crowd] = await Promise.all([getJSON("/api/network"),
-    getJSON("/api/crowding/history").catch(() => ({}))]);
+  const net = await getJSON("/api/network");
   const box = document.getElementById("network");
   const LINE = 15;  // label line height (13px text)
   const years = net.slider_years;
-  const scores = crowd.scores || {};
   const countFor = (d, y = yearState.year) => d.by_year[String(y)] || 0;
-  const crowdFor = (d, y = yearState.year) => (scores[d.id] || {})[String(y)];
 
   // Line thickness and strength: that year's shared links, on one scale across years.
   // Curved (power 1.5) so weak links are hairlines and only strong ones stand out.
@@ -334,6 +280,13 @@ async function loadNetwork() {
 
   const STEP_MS = 900;
   let playing = null, view = null;
+  // the affected path is on by default; the button turns it off and on
+  let pathOn = true;
+  const pathBtn = document.getElementById("path-btn");
+  pathBtn.addEventListener("click", () => {
+    pathOn = !pathOn;
+    if (view) { view.clearHover(); view.drawPath(); }
+  });
 
   // Links count as "there" in a year only if that year had shared work.
   const active = l => countFor(l) > 0;
@@ -354,7 +307,7 @@ async function loadNetwork() {
       // lay out for the biggest the circle gets in any year, so it never overlaps
       d.rMax = radius(d3.max(years, y => countFor(d, y)));
       d.r = d.rMax;
-      d.space = d.rMax + 14 + (d.lines.length + 1) * LINE / 2;  // name lines + the score line
+      d.space = d.rMax + 14 + (d.lines.length + 1) * LINE / 2;  // name lines and a little room
     });
 
     // keep circles and their labels inside the box
@@ -402,8 +355,6 @@ async function loadNetwork() {
     const label = node.append("text").attr("class", "net-label").attr("text-anchor", "middle");
     label.selectAll("tspan.name").data(d => d.lines).join("tspan").attr("class", "name")
       .attr("x", 0).attr("dy", (t, i) => i === 0 ? 0 : LINE).text(t => t);
-    // the crowding score under the name, so the colour is not the only way to read it
-    const score = label.append("tspan").attr("class", "net-val").attr("x", 0).attr("dy", LINE);
     const nodeTitle = node.append("title");
     // The mouse target: an invisible circle on top, a little bigger than the visible one and
     // never scaled on hover. If the visible circle took the mouse, its hover grow would move
@@ -423,39 +374,54 @@ async function loadNetwork() {
       .attr("x1", l => lineEnds(l).x1).attr("y1", l => lineEnds(l).y1)
       .attr("x2", l => lineEnds(l).x2).attr("y2", l => lineEnds(l).y2);
 
-    // Hovering a topic highlights it and the topics it is linked to that year.
+    // Hovering a topic highlights it and the topics it is linked to that year
+    // (not while the affected path is shown: that is its own highlight).
     const clearHover = () => { box.classList.remove("focus"); node.classed("hl", false); link.classed("hl", false); };
     node.on("mouseenter", (e, d) => {
+      if (pathOn) return;
       const near = neighbours(d.id);
       box.classList.add("focus");
       node.classed("hl", n => n.id === d.id || near.has(n.id));
       link.classed("hl", l => active(l) && touches(l, d.id));
     }).on("mouseleave", clearHover);
 
+    // Affected path (Person C): the biggest circle in the selected year in red, the topics
+    // linked to it that year kept bright, the rest faded. Played through the years, it shows
+    // how topics tightly linked to the leader grow into the next big ones.
+    const drawPath = () => {
+      box.classList.toggle("path", pathOn);
+      pathBtn.classList.toggle("active", pathOn);
+      pathBtn.setAttribute("aria-pressed", pathOn);
+      pathBtn.textContent = pathOn ? "Hide affected path" : "Show affected path";
+      const root = net.nodes.reduce((a, b) => countFor(b) > countFor(a) ? b : a);
+      const hits = neighbours(root.id);
+      node.classed("path-root", d => pathOn && d === root)
+        .classed("path-hit", d => pathOn && hits.has(d.id));
+      link.classed("path-link", l => pathOn && active(l) && touches(l, root.id));
+    };
+
     // Redraw everything for one year.
     const drawYear = (year, ms) => {
       net.nodes.forEach(d => { d.r = radius(countFor(d, year)); });
       const t = sel => ms ? sel.transition().duration(ms) : sel;
-      t(circle).attr("r", d => d.r).style("fill", d => crowdColour(crowdFor(d, year)));
+      t(circle).attr("r", d => d.r);
       t(hit).attr("r", d => d.r + 6);
       t(label).attr("y", d => d.r + 20);  // clears the dashed forecast ring (r + 4)
-      score.text(d => { const c = crowdFor(d, year);
-        return c == null ? "" : `${c > 0.05 ? "+" : c < -0.05 ? "−" : ""}${Math.abs(c).toFixed(1)} SD`; });
       t(link).attr("stroke-width", l => width(countFor(l, year)))
         .attr("stroke-opacity", l => linkOpacity(countFor(l, year)));
       placeLinks(t(link));
       link.classed("quiet", l => countFor(l, year) === 0);
       nodeTitle.text(d => {
-        const c = crowdFor(d, year), n = countFor(d, year);
+        const n = countFor(d, year);
         return `${d.id}\n${n} article${n === 1 ? "" : "s"} in ${year} · ${d.articles} in total`
-          + `\n${crowdWord(c)}${c == null ? "" : ` (crowding ${c > 0 ? "+" : ""}${c.toFixed(1)} SD vs its usual share)`}`
           + "\nClick to explore its papers";
       });
       linkTitle.text(l => { const n = countFor(l, year);
         return `${l.source} and ${l.target}\n${n} paper pair${n === 1 ? "" : "s"} in ${year} cite${n === 1 ? "s" : ""} the same earlier work`; });
+      drawPath();  // the biggest circle can change between years
     };
 
-    return { node, link, drawYear, clearHover };
+    return { node, link, drawYear, drawPath, clearHover };
   }
 
   document.addEventListener("yearchange", e => { if (view) view.drawYear(e.detail, playing ? STEP_MS * 0.8 : 400); });

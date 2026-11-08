@@ -1,5 +1,7 @@
-/* Layout: a header with the headline, the map filling the first screen, and two
-   panels below it ("Where research is heading" and "What happens to a published edge"). */
+/* Layout: a header (title and buttons) and the map filling the rest of the window, so
+   nothing scrolls. "Where research is heading" and the briefing open from the header. */
+
+body { display: flex; flex-direction: column; height: 100vh; }
 
 .site-head {
   display: flex;
@@ -10,39 +12,31 @@
 }
 .brand { min-width: 0; }
 .brand h1 { margin: 0; font-size: 20px; font-weight: 700; color: var(--navy); letter-spacing: -0.01em; }
-.headline { margin: 2px 0 0; font-size: 14px; color: var(--text); }
-.headline:empty { display: none; }
 .head-actions { display: flex; align-items: center; gap: 8px; flex: none; }
 
 main {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
-  padding: 12px var(--gutter) 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 12px var(--gutter) var(--gutter);
 }
 
-/* the map gets the first screen: header (~70px) + gaps */
-.map-panel { height: calc(100vh - 90px); min-height: 520px; overflow: hidden; }
+/* the map takes all the height left under the header */
+.map-panel { flex: 1; min-height: 0; overflow: hidden; }
 .map-body { position: relative; display: flex; flex: 1; min-height: 0; margin-top: 8px; }
-.map-body .network { flex: 1; min-width: 0; margin-top: 0; }
+.map-body .network { flex: 1; min-width: 0; min-height: 0; margin-top: 0; }
 
-.below {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;  /* columns keep their own height; radar.js sizes the decay chart so they end level */
-}
-
-/* internal view (?full) only */
+/* internal view (?full) only: it scrolls, the normal view does not */
 body:not(.full-view) .full-only { display: none; }  /* beats .panel's display */
-
-@media (max-width: 1100px) {
-  .below { grid-template-columns: 1fr; }
-}
+body.full-view { height: auto; }
+body.full-view .map-panel { flex: none; height: calc(100vh - 90px); }
+.full-only { margin-top: 16px; }
 
 @media (max-width: 720px) {
   :root { --gutter: 16px; }
+  body { height: auto; }
   .site-head { flex-wrap: wrap; align-items: flex-start; }
-  .map-panel { height: auto; min-height: 0; }
+  .map-panel { flex: none; }
   .map-body .network { min-height: 460px; }
 }

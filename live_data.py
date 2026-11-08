@@ -2,8 +2,8 @@
 
 Reads D's committed outputs in data/, so the page runs offline from a fresh clone:
 
-  get_heading()    "Where research is heading": crowding, forecast and a paper per map topic
-                   (the paper: most cited per year over the last five years)
+  get_heading()    "Where research is heading": change on last year, forecast and a paper per
+                   map topic (the paper: most cited per year over the last five years)
   get_crowding_history()  crowding score per area and year (colours the map)
   get_crowding()   crowding score per research-map area for the latest period
                    (crowding.csv + crowding_meta.json; a year for OpenAlex, a week for arXiv)
@@ -123,10 +123,38 @@ def _read_first(latest_year, years=READ_FIRST_YEARS):
     return out
 
 
+FLAT_SHARE = 0.5   # a change under half a percentage point of the year's papers counts as level
+
+
+def _papers_per_year():
+    """All sampled papers per year (OpenAlex), every area: the denominator for shares."""
+    out = {}
+    for r in _rows("network_nodes.csv") or []:
+        out[r["year"]] = out.get(r["year"], 0) + 1
+    return out
+
+
+def _change(now, prev, total_now, total_prev):
+    """Up or down on last year. With yearly totals (OpenAlex) this compares the share of
+    each year's papers, so a partial year does not look like a fall; without them (arXiv
+    weeks, equal length) it compares counts."""
+    if total_now and total_prev:
+        a, b = round(100 * now / total_now, 1), round(100 * prev / total_prev, 1)
+        unit = "share"
+    else:
+        a, b, unit = now, prev, "papers"
+    d = round(a - b, 1)
+    flat = FLAT_SHARE if unit == "share" else 0
+    return {"unit": unit, "now": a, "prev": b, "diff": d,
+            "dir": "up" if d > flat else "down" if d < -flat else "flat",
+            "papers": now, "papers_prev": prev}
+
+
 def get_heading():
-    """"Where research is heading": the map's topics with crowding now, Person A's
-    growth forecast ranked among the map's topics (radar_data.map_rank, the same rank
-    the drill-down shows) and a paper to read first (_read_first)."""
+    """"Where research is heading": the map's topics with their change on last year
+    (_change), Person A's growth forecast ranked among the map's topics
+    (radar_data.map_rank, the same rank the drill-down shows) and a paper to read first
+    (_read_first). Sorted by the change, biggest rise first."""
     from radar_data import map_rank
     crowd = get_crowding()
     if "error" in crowd:
@@ -138,19 +166,24 @@ def get_heading():
     passed = next((t["passed"] for t in fc.get("tests", []) if t.get("key") == "H11"), None)
     latest = int(crowd["period_start"][:4])
     reading = _read_first(latest) if crowd["source"] == "openalex" else {}
+    totals = _papers_per_year() if crowd["unit"] == "year" else {}
+    prev_label = (crowd.get("prev_start") or "")[:4] if crowd["unit"] == "year" else crowd.get("prev_start")
     rows = []
     for t in crowd["topics"]:
         g = growth.get(t["topic"])
         rows.append({
             "topic": t["topic"], "score": t["score"], "papers": t["papers"],
+            "change": _change(t["papers"], t["papers_prev"], totals.get(str(latest)),
+                              totals.get(prev_label)),
             "forecast": None if g is None or t["topic"] not in on_map else {
                 "rank": on_map[t["topic"]], "of": len(on_map),
                 "rank_all": g["rank"], "of_all": len(growth), "top": top,
                 "likely": bool(g["predicted_boom"])},
             "read_first": reading.get(t["topic"]) or t["example"],
         })
-    return {"period_start": crowd["period_start"], "unit": crowd["unit"],
-            "forecast_passed": passed, "read_first_years": [latest - READ_FIRST_YEARS + 1, latest],
+    rows.sort(key=lambda r: r["change"]["diff"], reverse=True)
+    return {"period_start": crowd["period_start"], "prev_start": crowd.get("prev_start"),
+            "unit": crowd["unit"], "forecast_passed": passed, "read_first_years": [latest - READ_FIRST_YEARS + 1, latest],
             "topics": rows}
 
 

@@ -64,7 +64,7 @@ def test_routes_return_json(server, path):
 
 def test_page_loads_live_panels_and_audio(server):
     _, _, page = get(server + "/")
-    for needle in [b'id="heading-panel"', b'id="help-drawer"', b'id="brief-modal"',
+    for needle in [b'id="heading-drawer"', b'id="heading-btn"', b'id="brief-modal"',
                    b"/static/js/live.js", b"/static/css/live.css"]:
         assert needle in page
     status, ctype, audio = get(server + "/media/briefing.mp3")
@@ -87,10 +87,24 @@ def test_page_title_and_no_year_watermark(server):
 def test_heading_covers_the_map_topics_with_forecast_and_reading():
     h = live_data.get_heading()
     assert len(h["topics"]) == 8
-    scores = [t["score"] for t in h["topics"]]
-    assert scores == sorted(scores, reverse=True)
+    diffs = [t["change"]["diff"] for t in h["topics"]]
+    assert diffs == sorted(diffs, reverse=True)              # biggest rise first
     assert h["forecast_passed"] is False                     # labelled exploratory on the page
     assert all(t["read_first"] and t["read_first"]["title"] for t in h["topics"])
+
+
+def test_heading_change_compares_shares_of_each_years_papers():
+    """Up/down on last year uses shares, so the partial latest year does not look like a fall."""
+    h = live_data.get_heading()
+    totals = live_data._papers_per_year()
+    now, prev = h["period_start"][:4], h["prev_start"][:4]
+    for t in h["topics"]:
+        c = t["change"]
+        assert c["unit"] == "share"
+        assert c["now"] == round(100 * c["papers"] / totals[now], 1)
+        assert c["prev"] == round(100 * c["papers_prev"] / totals[prev], 1)
+        assert c["dir"] == ("up" if c["diff"] > live_data.FLAT_SHARE else
+                            "down" if c["diff"] < -live_data.FLAT_SHARE else "flat")
 
 
 def test_heading_forecast_ranks_match_the_drill_down():
@@ -142,4 +156,6 @@ def test_briefing_card_has_a_date_for_the_new_dot():
 
 def test_cut_parts_are_gone(server):
     _, _, page = get(server + "/")
-    assert b'id="path-btn"' not in page and b'id="research"' not in page
+    assert b'id="research"' not in page
+    # the affected path (Person C) is back, on by default, in place of crowding colours
+    assert b'id="path-btn"' in page and b"lg-ramp" not in page
