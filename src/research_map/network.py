@@ -14,13 +14,17 @@ geometric mean of both reference-list lengths, so papers with very long
 reference lists do not link to everything.  Edges are undirected and listed
 once, with ``source_id < target_id``.
 
-Lifecycle stages compare each group's share of the corpus in the last
+Lifecycle stages compare each group's share of the sampled papers in the last
 ``window`` years with the ``window`` years before.  Shares, not counts, so a
-year in which OpenAlex indexed more papers overall does not look like growth:
+year in which OpenAlex indexed more papers overall does not look like growth.
+A change only counts if it is larger than chance: a Fisher exact test on the
+two windows' paper counts, with a Benjamini-Hochberg correction across groups
+(false discovery rate ``alpha``):
 
-* emerging  - share grew by at least ``EMERGING_GROWTH`` from a below-median base
-* saturated - share grew by at most ``SATURATED_GROWTH`` (flat or shrinking)
-* peaking   - everything else (still growing, at high volume or modestly)
+* emerging  - share grew significantly, by at least ``EMERGING_GROWTH``, from a
+  below-median base
+* saturated - share fell significantly
+* peaking   - no significant change, or significant growth from a large base
 """
 
 from __future__ import annotations
@@ -31,11 +35,12 @@ from collections.abc import Mapping, Sequence
 import numpy as np
 import pandas as pd
 import scipy.sparse as sp
+from scipy.stats import false_discovery_control, fisher_exact
 
 from src.common import contracts
 
 EMERGING_GROWTH = 0.25
-SATURATED_GROWTH = 0.05
+DEFAULT_ALPHA = 0.05
 DEFAULT_WINDOW = 3
 DEFAULT_K = 5
 DEFAULT_MIN_SHARED = 2
@@ -62,7 +67,7 @@ def coupling_edges(
     rows: list[int] = []
     cols: list[int] = []
     for row, refs in enumerate(references):
-        for ref in set(refs or ()):
+        for ref in dict.fromkeys(refs or ()):  # de-duplicate, keeping a fixed order
             rows.append(row)
             cols.append(vocab.setdefault(ref, len(vocab)))
     if not rows:
@@ -75,6 +80,7 @@ def coupling_edges(
     shared = (incidence @ incidence.T).tocsr()
     shared.setdiag(0)
     shared.eliminate_zeros()
+    shared.sort_indices()  # ties in strength go to the earlier paper, every run
     lengths = np.asarray(incidence.sum(axis=1)).ravel()
 
     pairs: dict[tuple[int, int], tuple[int, float]] = {}
@@ -101,49 +107,77 @@ def coupling_edges(
                              ignore_index=True)
 
 
-def group_shares(years: Sequence[int], groups: Sequence[int], n_groups: int) -> pd.DataFrame:
-    """Share of each year's papers whose strongest group is ``g`` (years x groups)."""
+def group_counts(years: Sequence[int], groups: Sequence[int], n_groups: int) -> pd.DataFrame:
+    """Papers per year whose strongest group is ``g`` (years x groups)."""
     frame = pd.DataFrame({"year": years, "group": groups})
-    counts = pd.crosstab(frame["year"], frame["group"]).reindex(
+    return pd.crosstab(frame["year"], frame["group"]).reindex(
         columns=range(n_groups), fill_value=0
     )
+
+
+def group_shares(years: Sequence[int], groups: Sequence[int], n_groups: int) -> pd.DataFrame:
+    """Share of each year's papers whose strongest group is ``g`` (years x groups)."""
+    counts = group_counts(years, groups, n_groups)
     return counts.div(counts.sum(axis=1), axis=0)
 
 
 def lifecycle_stages(
-    shares: pd.DataFrame,
+    counts: pd.DataFrame,
     *,
     window: int = DEFAULT_WINDOW,
     last_year: int | None = None,
+    alpha: float = DEFAULT_ALPHA,
 ) -> pd.DataFrame:
     """Current stage per group from the change in share between two windows.
 
-    Returns ``group, prior_share, recent_share, growth, stage``.
+    ``counts`` is papers per year (rows) and group (columns), as from
+    :func:`group_counts`.  Returns ``group, prior_papers, recent_papers,
+    prior_share, recent_share, growth, p_value, q_value, stage``; ``q_value``
+    is the p-value after the Benjamini-Hochberg correction.
     """
     if window < 1:
         raise ValueError("window must be at least 1")
-    last = int(last_year if last_year is not None else shares.index.max())
+    if not 0 < alpha < 1:
+        raise ValueError("alpha must be between 0 and 1")
+    last = int(last_year if last_year is not None else counts.index.max())
     recent_years = range(last - window + 1, last + 1)
     prior_years = range(last - 2 * window + 1, last - window + 1)
-    missing = [y for y in [*prior_years, *recent_years] if y not in shares.index]
+    missing = [y for y in [*prior_years, *recent_years] if y not in counts.index]
     if missing:
         raise ValueError(f"no papers for years {missing}")
 
-    recent = shares.loc[list(recent_years)].mean()
-    prior = shares.loc[list(prior_years)].mean()
-    growth = (recent / prior.replace(0, np.nan)) - 1
-    growth = growth.fillna(np.inf).where(recent > 0, -1.0)  # appeared / vanished
-    small_base = recent < recent.median()
+    recent = counts.loc[list(recent_years)].sum().to_numpy(dtype=np.int64)
+    prior = counts.loc[list(prior_years)].sum().to_numpy(dtype=np.int64)
+    n_recent, n_prior = int(recent.sum()), int(prior.sum())
+    recent_share = recent / n_recent
+    prior_share = prior / n_prior
+    with np.errstate(divide="ignore", invalid="ignore"):
+        growth = np.where(
+            prior_share > 0, recent_share / prior_share - 1,
+            np.where(recent_share > 0, np.inf, 0.0),  # new group / no papers at all
+        )
+
+    p_values = np.array([
+        fisher_exact([[r, n_recent - r], [q, n_prior - q]])[1]
+        for r, q in zip(recent, prior)
+    ])
+    q_values = false_discovery_control(p_values, method="bh")
+    significant = q_values < alpha
+    small_base = recent_share < np.median(recent_share)
 
     stage = np.where(
-        (growth >= EMERGING_GROWTH) & small_base, "emerging",
-        np.where(growth <= SATURATED_GROWTH, "saturated", "peaking"),
+        significant & (growth >= EMERGING_GROWTH) & small_base, "emerging",
+        np.where(significant & (growth < 0), "saturated", "peaking"),
     )
     return pd.DataFrame({
-        "group": shares.columns.astype(int),
-        "prior_share": prior.to_numpy(),
-        "recent_share": recent.to_numpy(),
-        "growth": growth.to_numpy(),
+        "group": counts.columns.astype(int),
+        "prior_papers": prior,
+        "recent_papers": recent,
+        "prior_share": prior_share,
+        "recent_share": recent_share,
+        "growth": growth,
+        "p_value": p_values,
+        "q_value": q_values,
         "stage": stage,
     })
 
@@ -177,14 +211,15 @@ def build_network(
     k: int = DEFAULT_K,
     min_shared: int = DEFAULT_MIN_SHARED,
     window: int = DEFAULT_WINDOW,
+    alpha: float = DEFAULT_ALPHA,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Return ``(nodes, edges, stages)`` for papers that have encodings."""
     merged = papers.merge(encodings[["paper_id", "top_topic"]], on="paper_id", how="inner")
     if merged.empty:
         raise ValueError("no papers have encodings; run build_encodings first")
     top = merged["top_topic"].astype(int).to_numpy()
-    shares = group_shares(merged["year"].astype(int).to_numpy(), top, len(names))
-    stages = lifecycle_stages(shares, window=window)
+    counts = group_counts(merged["year"].astype(int).to_numpy(), top, len(names))
+    stages = lifecycle_stages(counts, window=window, alpha=alpha)
     stages.insert(1, "name", stages["group"].map(names))
     stage_of = dict(zip(stages["group"], stages["stage"]))
 
@@ -202,6 +237,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                         help="minimum shared references for an edge")
     parser.add_argument("--window", type=int, default=DEFAULT_WINDOW,
                         help="years per window for lifecycle stages")
+    parser.add_argument("--alpha", type=float, default=DEFAULT_ALPHA,
+                        help="false discovery rate for a stage change to count")
     args = parser.parse_args(argv)
 
     from src.research_map.encoding.fetch import load_cache, load_manifest, works_to_frame
@@ -213,7 +250,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     encodings = contracts.load("paper_encodings")
     nodes, edges, stages = build_network(
         papers, encodings, load_group_names(),
-        k=args.k, min_shared=args.min_shared, window=args.window,
+        k=args.k, min_shared=args.min_shared, window=args.window, alpha=args.alpha,
     )
     nodes_path = contracts.save("network_nodes", nodes)
     edges_path = contracts.save("network_edges", edges[["source_id", "target_id"]])
@@ -221,7 +258,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     linked = len(set(edges["source_id"]) | set(edges["target_id"]))
     print(f"Wrote {nodes_path} ({len(nodes)} papers) and {edges_path} ({len(edges)} edges; "
           f"{linked / len(nodes):.0%} of papers have at least one)")
-    with pd.option_context("display.width", 200, "display.float_format", "{:.3f}".format):
+    with pd.option_context("display.width", 220, "display.float_format", "{:.4f}".format):
         print(stages.sort_values("growth", ascending=False).to_string(index=False))
     return 0
 

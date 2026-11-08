@@ -43,40 +43,68 @@ def test_coupling_ignores_duplicate_refs_and_self_links_and_handles_empty():
         coupling_edges(["A"], [[]], k=0)
 
 
+def test_coupling_does_not_depend_on_reference_order():
+    rng = np.random.default_rng(1)
+    refs = [list(rng.choice(12, 5, replace=False).astype(str)) for _ in range(40)]
+    ids = [f"P{i:02d}" for i in range(40)]
+    forward = coupling_edges(ids, refs, k=2, min_shared=2)
+    backward = coupling_edges(ids, [r[::-1] for r in refs], k=2, min_shared=2)
+    pd.testing.assert_frame_equal(forward, backward)
+
+
 def test_group_shares_rows_sum_to_one():
     shares = group_shares([2020, 2020, 2021, 2021], [0, 1, 1, 1], n_groups=3)
     assert shares.loc[2020].tolist() == [0.5, 0.5, 0.0]
     assert shares.loc[2021].tolist() == [0.0, 1.0, 0.0]
 
 
-def make_shares():
-    # columns: 0 small and growing fast, 1 big and growing modestly, 2 shrinking, 3 big flat
-    prior = [0.02, 0.40, 0.20, 0.38]
-    recent = [0.06, 0.48, 0.10, 0.36]
-    years = list(range(2018, 2024))
+def make_counts(prior, recent):
+    """Papers per year for 2018-2023: three years of ``prior``, three of ``recent``."""
     rows = [prior] * 3 + [recent] * 3
-    return pd.DataFrame(rows, index=years, columns=range(4))
+    return pd.DataFrame(rows, index=range(2018, 2024), columns=range(len(prior)))
 
 
 def test_lifecycle_stages_follow_the_rule():
-    stages = lifecycle_stages(make_shares(), window=3).set_index("group")
+    # 1000 papers a year. 0: small, growing fast. 1: large, growing. 2: shrinking.
+    # 3: large, 38% -> 36%, which is within chance at this sample size.
+    counts = make_counts([20, 400, 200, 380], [60, 480, 100, 360])
+    stages = lifecycle_stages(counts, window=3).set_index("group")
     assert stages.loc[0, "stage"] == "emerging"
-    assert stages.loc[1, "stage"] == "peaking"
+    assert stages.loc[1, "stage"] == "peaking"  # significant growth from a large base
     assert stages.loc[2, "stage"] == "saturated"
-    assert stages.loc[3, "stage"] == "saturated"
+    assert stages.loc[3, "stage"] == "peaking"  # change not larger than chance
     assert stages.loc[0, "growth"] == pytest.approx(2.0)
+    assert (stages.loc[0, "prior_papers"], stages.loc[0, "recent_papers"]) == (60, 180)
+    assert stages.loc[3, "q_value"] > 0.05
+    assert (stages["q_value"] >= stages["p_value"] - 1e-12).all()
+
+
+def test_small_noisy_group_is_not_emerging():
+    # 3 -> 9 papers is +200%, but chance alone can produce that
+    counts = make_counts([1, 499, 500], [3, 497, 500])
+    stage = lifecycle_stages(counts, window=3).set_index("group").loc[0]
+    assert stage["growth"] == pytest.approx(2.0)
+    assert stage["p_value"] > 0.05 and stage["stage"] == "peaking"
 
 
 def test_lifecycle_handles_new_and_vanished_groups_and_validates():
-    shares = make_shares()
-    shares[4] = [0, 0, 0, 0.01, 0.01, 0.01]
-    shares[5] = [0.01, 0.01, 0.01, 0, 0, 0]
-    stages = lifecycle_stages(shares, window=3).set_index("group")
-    assert stages.loc[4, "stage"] == "emerging" and stages.loc[5, "stage"] == "saturated"
+    counts = make_counts([0, 30, 470, 500], [30, 0, 470, 500])
+    stages = lifecycle_stages(counts, window=3).set_index("group")
+    assert stages.loc[0, "stage"] == "emerging" and np.isinf(stages.loc[0, "growth"])
+    assert stages.loc[1, "stage"] == "saturated" and stages.loc[1, "growth"] == -1.0
+    assert set(stages.loc[[2, 3], "stage"]) == {"peaking"}
     with pytest.raises(ValueError, match="no papers"):
-        lifecycle_stages(shares, window=4)
+        lifecycle_stages(counts, window=4)
     with pytest.raises(ValueError):
-        lifecycle_stages(shares, window=0)
+        lifecycle_stages(counts, window=0)
+    with pytest.raises(ValueError):
+        lifecycle_stages(counts, alpha=0)
+
+
+def test_group_with_no_papers_in_either_window_is_stable():
+    stage = lifecycle_stages(make_counts([0, 500, 500], [0, 500, 500]),
+                             window=3).set_index("group").loc[0]
+    assert stage["growth"] == 0 and stage["stage"] == "peaking"
 
 
 def test_build_nodes_matches_contract(tmp_path, monkeypatch):
@@ -113,8 +141,9 @@ def test_build_network_end_to_end():
     area = dict(zip(nodes["paper_id"], nodes["area"]))
     assert len(edges) > 0
     assert all(area[s] == area[t] for s, t in zip(edges["source_id"], edges["target_id"]))
-    assert list(stages.columns) == ["group", "name", "prior_share", "recent_share",
-                                    "growth", "stage"]
+    assert list(stages.columns) == ["group", "name", "prior_papers", "recent_papers",
+                                    "prior_share", "recent_share", "growth", "p_value",
+                                    "q_value", "stage"]
 
 
 def test_build_network_requires_encodings():
