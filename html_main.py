@@ -16,8 +16,9 @@ import mimetypes
 import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
+import radar_data  # Person A: topic radar and signal decay (data/app/*.json)
 import research_data as data
 
 PORT = int(os.environ.get("PORT", "8000"))
@@ -31,6 +32,7 @@ CSS_FILES = [
     "table.css",
     "network.css",
     "research.css",
+    "radar.css",  # Person A: topic drill-down, signals, tests
 ]
 CSS_LINKS = "\n".join(
     f'<link rel="stylesheet" href="/static/css/{name}">' for name in CSS_FILES
@@ -74,6 +76,56 @@ __CSS_LINKS__
         <thead><tr><th>Topic</th><th class="num">Articles</th><th class="num" id="year-col">This year</th></tr></thead>
         <tbody></tbody>
       </table>
+    </section>
+
+    <!-- Person A: topic drill-down (radar.js). Click a circle above, or pick a topic. -->
+    <section class="panel radar-wide" id="zoom-panel">
+      <div class="panel-head">
+        <h2 id="zoom-title">Inside a topic</h2>
+        <select id="zoom-select" aria-label="Topic"></select>
+      </div>
+      <div class="sub" id="zoom-sub">Click a circle on the map (or pick a topic here) to open its sub-topic map: one island per sub-topic, with similar sub-topics placed close together. Each dot is a paper, and inside an island similar papers sit together (t-SNE on SPECTER2 paper vectors). Island size follows the last five years of papers, so press play to watch sub-topics grow, shrink and emerge. Arrows are direct citations between sub-topics (from the cited to the citing side), with moving dots showing the direction. Click an island to see who it built on and who it fed; hover a paper for its citations; click a paper for its citation trail. Rings mark suggested reading. Citations show who builds on whom, not cause and effect.</div>
+      <div class="zoom-side" id="zoom-side"></div>
+    </section>
+
+    <!-- Person A: what's next, signal decay, and how each claim was tested (radar.js) -->
+    <section class="panel radar-wide" id="next-panel">
+      <div class="panel-head"><h2>What could be next</h2><span class="badge warn">exploratory</span></div>
+      <div class="sub" id="next-sub"></div>
+      <div class="next-grid">
+        <div><h3>Topics</h3><ol class="rank-list" id="next-topics"></ol></div>
+        <div><h3>Sub-topics</h3><ol class="rank-list" id="next-subtopics"></ol></div>
+      </div>
+    </section>
+
+    <section class="panel radar-wide" id="decay-panel">
+      <div class="panel-head"><h2>What happens to an edge once it is published</h2></div>
+      <div class="sub">Average return of 208 published trading signals, as a share of their in-sample return, by years since publication. Shaded: 95% interval.</div>
+      <div class="decay-body">
+        <div class="decay-plot" id="decay-plot"></div>
+        <div class="haircut">
+          <h3>Haircut calculator</h3>
+          <label>Paper claims <input type="number" id="hc-input" value="1.0" step="0.1" min="0"> % a month</label>
+          <div id="hc-out"></div>
+          <div class="sub" id="hc-caveat"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel radar-wide" id="signals-panel">
+      <div class="panel-head"><h2>Signals right now</h2><span class="sub" id="signals-asof"></span></div>
+      <div class="sub">Momentum: average return over the last 12 months (past winners kept winning, H9). Volatility: next month's forecast (H10 model). Kept: share of the edge that survived publication.</div>
+      <table class="data-table" id="signals-table">
+        <thead><tr><th>Signal</th><th class="num">12-month mean</th><th class="num">Vol forecast</th><th class="num">Kept after publication</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="sub" id="portfolio-line"></div>
+    </section>
+
+    <section class="panel radar-wide" id="tests-panel">
+      <div class="panel-head"><h2>How we tested it</h2></div>
+      <div class="sub">Every claim was tested on data the model had not seen, against simple rules, with the pass rule written down before the run. For the forecasts, the grey bars are 200 simulated worlds where no topic truly grows; the line is the real result.</div>
+      <div class="tests-grid" id="tests-grid"></div>
     </section>
   </main>
 
@@ -363,6 +415,7 @@ async function loadResearch() {
 
 loadNetwork(); loadResearch();
 </script>
+<script src="/static/js/radar.js"></script>
 </body>
 </html>
 """.replace("__CSS_LINKS__", CSS_LINKS)
@@ -396,8 +449,14 @@ class Handler(BaseHTTPRequestHandler):
         routes = {
             "/api/network": data.get_topic_network,
             "/api/research": data.get_research_snapshot,
+            "/api/topics": radar_data.get_topics,
+            "/api/forecasts": radar_data.get_forecasts,
+            "/api/signals": radar_data.get_signals,
         }
-        if url.path in ("/", "/index.html"):
+        if url.path == "/api/topic":
+            name = parse_qs(url.query).get("name", [""])[0]
+            self._json(radar_data.get_topic(name))
+        elif url.path in ("/", "/index.html"):
             self._send(200, PAGE, "text/html; charset=utf-8")
         elif url.path.startswith("/static/"):
             self._static(unquote(url.path[len("/static/"):]))
