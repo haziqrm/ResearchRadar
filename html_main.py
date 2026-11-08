@@ -1,16 +1,14 @@
-"""Stock tracker and research prediction website.
+"""Research topic network website.
 
 Run:  py html_main.py      then open http://localhost:8000
 
 The page loads its data from JSON endpoints. Those endpoints call
-synthetic_data.py, so swapping in real data means changing that module only.
+research_data.py, which reads the research map's CSVs in data/ and keeps
+the 8 trading-relevant areas (see research_data.AREAS).
 
-  GET /api/network     topics (sized by paper count) and knock-on links
-  GET /api/research    this week's research topic snapshot
-  GET /api/account     account value summary (not shown on the page now)
-  GET /api/stocks      most traded stocks today (not shown on the page now)
+  GET /api/network     areas (sized by article count) and the links between them
+  GET /api/research    articles per area, in total and this year vs last year
 
-The knock-on links are read from data/topic_links.csv.
 Styles live in static/css/, one file per component (see CSS_FILES).
 """
 import json
@@ -20,7 +18,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
-import synthetic_data as data  # swap this import for the live data module
+import research_data as data
 
 PORT = int(os.environ.get("PORT", "8000"))
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -56,23 +54,24 @@ __CSS_LINKS__
         <h2>Research topic network</h2>
         <div class="net-controls">
           <button type="button" class="path-btn" id="path-btn" aria-pressed="false">Show affected path</button>
-          <div class="toggle" id="week-toggle">
-            <button type="button" data-week="last">Last week</button>
-            <button type="button" data-week="this" class="active">This week</button>
+          <div class="year-control">
+            <button type="button" class="play-btn" id="play-btn" aria-label="Play years">&#9654;</button>
+            <input type="range" id="year-slider" step="1" aria-label="Year">
+            <span class="year-label" id="year-label"></span>
           </div>
         </div>
       </div>
-      <div class="sub">Circle size shows how many research papers are out on a topic. Arrows show knock-on effects of one topic on another. Show affected path highlights the largest topic and the topics it affects directly.</div>
+      <div class="sub">Circle size shows how many research articles came out on a topic in the selected year. Lines link topics whose papers cite the same earlier work; thicker means more shared that year, faint means none. Drag the slider or press play to watch the years change.</div>
       <div class="network" id="network"></div>
     </section>
 
     <section class="panel">
       <div class="panel-head">
         <h2>Research topics</h2>
-        <span class="sub" id="research-week"></span>
+        <span class="sub" id="research-range"></span>
       </div>
       <table class="data-table research" id="research">
-        <thead><tr><th>Topic</th><th class="num">Popularity</th><th class="num">Papers</th></tr></thead>
+        <thead><tr><th>Topic</th><th class="num">Articles</th><th class="num" id="year-col">This year</th></tr></thead>
         <tbody></tbody>
       </table>
     </section>
@@ -82,8 +81,6 @@ __CSS_LINKS__
 <script>
 const getJSON = url => fetch(url).then(r => r.json());
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const parseDay = iso => new Date(iso + "T00:00:00");
-const dayLabel = iso => parseDay(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
 // ---------------------------------------------------------------- network
 
@@ -143,15 +140,29 @@ function bestLayout(nodes, links, W, H, fit, finish) {
   return new Map(best.ns.map(n => [n.id, { x: n.x, y: n.y }]));
 }
 
+// The selected year is shared by the network and the table. The slider
+// sets it; anything listening for "yearchange" redraws for that year.
+const yearState = { year: null };
+function setYear(year) {
+  yearState.year = year;
+  document.dispatchEvent(new CustomEvent("yearchange", { detail: year }));
+}
+
 async function loadNetwork() {
   const net = await getJSON("/api/network");
   const box = document.getElementById("network");
   const W = box.clientWidth, H = box.clientHeight, LINE = 12;
+  const years = net.slider_years;
+  const countFor = (d, y = yearState.year) => d.by_year[String(y)] || 0;
 
-  const maxPapers = d3.max(net.nodes, n => Math.max(n.papers, n.papers_last_week));
-  const radius = d3.scaleSqrt().domain([0, maxPapers]).range([5, Math.min(W, H) / 11]);
-  let week = "this";
-  const papersFor = d => week === "this" ? d.papers : d.papers_last_week;
+  // One scale for every year, so circle sizes can be compared across years.
+  const R_MIN = 4, R_MAX = Math.min(W, H) / 9;
+  const peak = d3.max(net.nodes, d => d3.max(years, y => countFor(d, y))) || 1;
+  const radius = d3.scaleSqrt().domain([0, peak]).range([R_MIN, R_MAX]);
+
+  // Line thickness: that year's shared links, on one scale across years.
+  const peakLink = d3.max(net.links, l => d3.max(years, y => countFor(l, y))) || 1;
+  const width = n => n === 0 ? 1 : 1.5 + 6 * n / peakLink;
 
   // Label each circle with the same topic name as the research table,
   // wrapped onto short lines under the circle.
@@ -164,9 +175,9 @@ async function loadNetwork() {
 
   net.nodes.forEach(d => {
     d.lines = wrap(d.id);
-    d.r = radius(papersFor(d));
-    // lay out for the bigger of the two weeks so switching never overlaps
-    d.rMax = radius(Math.max(d.papers, d.papers_last_week));
+    // lay out for the biggest the circle gets in any year, so it never overlaps
+    d.rMax = radius(d3.max(years, y => countFor(d, y)));
+    d.r = d.rMax;
     d.space = d.rMax + 14 + d.lines.length * LINE / 2;
   });
 
@@ -201,73 +212,69 @@ async function loadNetwork() {
   const svg = d3.select(box).append("svg")
     .attr("viewBox", [0, 0, W, H]).attr("width", "100%").attr("height", "100%");
 
-  const defs = svg.append("defs");
-  [["net-arrow", "net-arrowhead"], ["net-arrow-path", "net-arrowhead-path"]].forEach(([id, cls]) =>
-    defs.append("marker")
-      .attr("id", id).attr("viewBox", "0 -5 10 10")
-      .attr("refX", 10).attr("refY", 0)
-      .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto")
-      .append("path").attr("d", "M0,-5L10,0L0,5").attr("class", cls));
+  // Big faint year in the background, so you can see where the animation is.
+  const yearMark = svg.append("text").attr("class", "net-year")
+    .attr("x", W - 12).attr("y", H - 12).attr("text-anchor", "end");
 
+  // Links have no direction: two areas whose papers cite the same earlier work.
   const link = svg.append("g").selectAll("line").data(net.links).join("line")
-    .attr("class", "net-link")
-    .attr("stroke-width", d => 1 + d.strength * 3)
-    .attr("marker-end", "url(#net-arrow)");
+    .attr("class", "net-link");
+  const linkTitle = link.append("title");
 
   const node = svg.append("g").selectAll("g").data(net.nodes).join("g")
     .attr("class", "net-node")
     .attr("transform", d => `translate(${d.x},${d.y})`);
-  const circle = node.append("circle").attr("r", d => d.r);
-  const label = node.append("text").attr("class", "net-label")
-    .attr("text-anchor", "middle").attr("y", d => d.r + 13);
+  const circle = node.append("circle");
+  const label = node.append("text").attr("class", "net-label").attr("text-anchor", "middle");
   label.selectAll("tspan").data(d => d.lines).join("tspan")
     .attr("x", 0).attr("dy", (t, i) => i === 0 ? 0 : LINE).text(t => t);
-  const title = node.append("title");
-  const setTitles = () => title.text(d => `${d.id}\n${papersFor(d)} papers ${week === "this" ? "this" : "last"} week`);
-  setTitles();
+  const nodeTitle = node.append("title");
 
-  // stop each line at the edge of the circle so the arrowhead shows
+  // stop each line at the edge of both circles
   const lineEnds = l => {
     const s = byId.get(l.source), t = byId.get(l.target);
     const dx = t.x - s.x, dy = t.y - s.y, dist = Math.hypot(dx, dy) || 1;
     return {
       x1: s.x + dx / dist * s.r, y1: s.y + dy / dist * s.r,
-      x2: t.x - dx / dist * (t.r + 2), y2: t.y - dy / dist * (t.r + 2),
+      x2: t.x - dx / dist * t.r, y2: t.y - dy / dist * t.r,
     };
   };
   const placeLinks = sel => sel
     .attr("x1", l => lineEnds(l).x1).attr("y1", l => lineEnds(l).y1)
     .attr("x2", l => lineEnds(l).x2).attr("y2", l => lineEnds(l).y2);
-  placeLinks(link);
 
-  // Hovering a topic highlights it and the topics it is linked to.
-  const linked = new Set(net.links.map(l => l.source + "|" + l.target));
-  const isLinked = (a, b) => a === b || linked.has(a + "|" + b) || linked.has(b + "|" + a);
+  // Links count as "there" in a year only if that year had shared work.
+  const active = l => countFor(l) > 0;
+  const touches = (l, id) => l.source === id || l.target === id;
+  const neighbours = id => new Set(net.links.filter(l => active(l) && touches(l, id))
+    .map(l => l.source === id ? l.target : l.source));
+
+  // Hovering a topic highlights it and the topics it is linked to that year.
   let pathOn = false;
   node.on("mouseenter", (e, d) => {
     if (pathOn) return;
+    const near = neighbours(d.id);
     box.classList.add("focus");
-    node.classed("hl", n => isLinked(d.id, n.id));
-    link.classed("hl", l => l.source === d.id || l.target === d.id);
+    node.classed("hl", n => n.id === d.id || near.has(n.id));
+    link.classed("hl", l => active(l) && touches(l, d.id));
   }).on("mouseleave", () => {
     box.classList.remove("focus");
     node.classed("hl", false); link.classed("hl", false);
   });
 
-  // Show affected path: the largest circle this week, and the circles its
-  // arrows point to (the topics it has a knock-on effect on).
+  // Show affected path: the largest circle in the selected year, and the
+  // topics linked to it that year.
   const pathBtn = document.getElementById("path-btn");
   const drawPath = () => {
     box.classList.toggle("path", pathOn);
     pathBtn.classList.toggle("active", pathOn);
     pathBtn.setAttribute("aria-pressed", pathOn);
     pathBtn.textContent = pathOn ? "Hide affected path" : "Show affected path";
-    const root = net.nodes.reduce((a, b) => papersFor(b) > papersFor(a) ? b : a);
-    const hits = new Set(net.links.filter(l => l.source === root.id).map(l => l.target));
+    const root = net.nodes.reduce((a, b) => countFor(b) > countFor(a) ? b : a);
+    const hits = neighbours(root.id);
     node.classed("path-root", d => pathOn && d === root)
         .classed("path-hit", d => pathOn && hits.has(d.id));
-    link.classed("path-link", l => pathOn && l.source === root.id)
-        .attr("marker-end", l => pathOn && l.source === root.id ? "url(#net-arrow-path)" : "url(#net-arrow)");
+    link.classed("path-link", l => pathOn && active(l) && touches(l, root.id));
   };
   pathBtn.addEventListener("click", () => {
     pathOn = !pathOn;
@@ -275,39 +282,83 @@ async function loadNetwork() {
     drawPath();
   });
 
-  // Last week / this week: circles grow or shrink to that week's paper count.
-  document.querySelectorAll("#week-toggle button").forEach(btn =>
-    btn.addEventListener("click", () => {
-      week = btn.dataset.week;
-      document.querySelectorAll("#week-toggle button").forEach(b => b.classList.toggle("active", b === btn));
-      net.nodes.forEach(d => { d.r = radius(papersFor(d)); });
-      circle.transition().duration(600).attr("r", d => d.r);
-      label.transition().duration(600).attr("y", d => d.r + 13);
-      placeLinks(link.transition().duration(600));
-      setTitles();
-      if (pathOn) drawPath();  // the largest circle can change between weeks
-    }));
+  // Redraw everything for one year.
+  const drawYear = (year, ms) => {
+    net.nodes.forEach(d => { d.r = radius(countFor(d, year)); });
+    const t = sel => ms ? sel.transition().duration(ms) : sel;
+    t(circle).attr("r", d => d.r);
+    t(label).attr("y", d => d.r + 13);
+    t(link).attr("stroke-width", l => width(countFor(l, year)));
+    placeLinks(t(link));
+    link.classed("quiet", l => countFor(l, year) === 0);
+    yearMark.text(year);
+    nodeTitle.text(d => `${d.id}\n${countFor(d, year)} articles in ${year}\n${d.articles} in total`);
+    linkTitle.text(l => `${l.source} and ${l.target}\n${countFor(l, year)} paper pairs in ${year} cite the same earlier work`);
+    if (pathOn) drawPath();  // the largest circle can change between years
+  };
+  document.addEventListener("yearchange", e => drawYear(e.detail, playing ? STEP_MS * 0.8 : 400));
+
+  // ---- slider and play button
+  const slider = document.getElementById("year-slider");
+  const yearLabel = document.getElementById("year-label");
+  const playBtn = document.getElementById("play-btn");
+  slider.min = years[0];
+  slider.max = years[years.length - 1];
+  slider.value = slider.max;
+
+  const STEP_MS = 900;
+  let playing = null;
+  const stop = () => {
+    clearInterval(playing); playing = null;
+    playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Play years");
+  };
+  const show = y => { slider.value = y; yearLabel.textContent = y; setYear(+y); };
+
+  slider.addEventListener("input", () => { stop(); show(slider.value); });
+  playBtn.addEventListener("click", () => {
+    if (playing) return stop();
+    if (+slider.value >= +slider.max) show(slider.min);  // start again from the beginning
+    playBtn.textContent = "❚❚"; playBtn.setAttribute("aria-label", "Pause");
+    playing = setInterval(() => {
+      const next = +slider.value + 1;
+      if (next > +slider.max) return stop();
+      show(next);
+    }, STEP_MS);
+  });
+
+  drawYear(+slider.value, 0);
+  yearLabel.textContent = slider.value;
+  yearState.year = +slider.value;
 }
 
 // ---------------------------------------------------------------- research table
 
-function paperChange(r) {
-  const diff = r.papers_change;
-  if (diff > 0) return `<span class="arrow up" title="Up ${diff} from last week">&#9650;</span>`;
-  if (diff < 0) return `<span class="arrow down" title="Down ${-diff} from last week">&#9660;</span>`;
-  return `<span class="arrow same" title="Same as last week">&ndash;</span>`;
+function yearChange(now, before, prevYear) {
+  const diff = now - before;
+  if (diff > 0) return `<span class="arrow up" title="Up ${diff} from ${prevYear}">&#9650;</span>`;
+  if (diff < 0) return `<span class="arrow down" title="Down ${-diff} from ${prevYear}">&#9660;</span>`;
+  return `<span class="arrow same" title="Same as ${prevYear}">&ndash;</span>`;
 }
 
 async function loadResearch() {
   const snap = await getJSON("/api/research");
-  document.getElementById("research-week").textContent = "Week of " + dayLabel(snap.week_start);
-  document.querySelector("#research tbody").innerHTML = snap.topics.map(r => `
-    <tr>
-      <td>${esc(r.topic)}</td>
-      <td class="num"><div class="pop-bar">${r.popularity}
-        <span class="track"><i class="fill" style="width:${r.popularity}%"></i></span></div></td>
-      <td class="num papers">${r.papers} ${paperChange(r)}</td>
-    </tr>`).join("");
+  const most = Math.max(...snap.topics.map(r => r.articles), 1);
+  document.getElementById("research-range").textContent = `Articles ${snap.first_year}–${snap.this_year}`;
+  const count = (r, y) => r.by_year[String(y)] || 0;
+
+  // The last column follows the slider: that year's articles, arrow vs the year before.
+  const render = year => {
+    document.getElementById("year-col").textContent = year;
+    document.querySelector("#research tbody").innerHTML = snap.topics.map(r => `
+      <tr>
+        <td>${esc(r.topic)}</td>
+        <td class="num"><div class="pop-bar">${r.articles}
+          <span class="track"><i class="fill" style="width:${(100 * r.articles / most).toFixed(1)}%"></i></span></div></td>
+        <td class="num papers" title="${count(r, year - 1)} in ${year - 1}">${count(r, year)} ${yearChange(count(r, year), count(r, year - 1), year - 1)}</td>
+      </tr>`).join("");
+  };
+  document.addEventListener("yearchange", e => render(e.detail));
+  render(yearState.year || snap.this_year);
 }
 
 loadNetwork(); loadResearch();
@@ -345,8 +396,6 @@ class Handler(BaseHTTPRequestHandler):
         routes = {
             "/api/network": data.get_topic_network,
             "/api/research": data.get_research_snapshot,
-            "/api/account": data.get_account,
-            "/api/stocks": data.get_most_traded,
         }
         if url.path in ("/", "/index.html"):
             self._send(200, PAGE, "text/html; charset=utf-8")
