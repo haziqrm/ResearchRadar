@@ -1,4 +1,4 @@
-/* Network: research topics as circles, knock-on effects as arrows. */
+/* Network: research areas as circles, shared-reference links as lines. */
 
 :root {
   --node: var(--slate);
@@ -40,15 +40,6 @@
   stroke-opacity: 0.9;
 }
 
-/* arrowheads take the colour of the line they sit on (normal, hover and
-   affected path); the first value is a fallback for older browsers */
-.net-arrowhead,
-.net-arrowhead-path {
-  fill: var(--link);
-  fill: context-stroke;
-}
-
-/* fade with opacity (not stroke-opacity) so arrowheads fade with their line */
 .net-node, .net-link { transition: opacity 0.2s; }
 
 /* hover: fade everything that is not linked to the topic under the mouse */
@@ -88,22 +79,45 @@
 .path-btn:hover { background: rgba(99, 32, 36, 0.08); }
 .path-btn.active { background: var(--path-root); color: #fff; }
 
-/* last week / this week switch */
-.toggle {
+/* year slider with a play button */
+.year-control {
   display: inline-flex;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
+  align-items: center;
+  gap: 8px;
 }
 
-.toggle button {
-  padding: 4px 10px;
-  border: 0;
+.play-btn {
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
   background: var(--panel);
-  color: var(--muted);
-  font: 12px var(--font);
+  color: var(--slate);
+  font: 11px var(--font);
   cursor: pointer;
 }
 
-.toggle button + button { border-left: 1px solid var(--line); }
-.toggle button.active { background: var(--slate); color: #fff; }
+.play-btn:hover { border-color: var(--slate); }
+
+#year-slider {
+  width: 180px;
+  accent-color: var(--slate);
+  cursor: pointer;
+}
+
+.year-label {
+  min-width: 36px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* big faint year in the corner of the graph */
+.net-year {
+  fill: var(--line);
+  font: 700 64px var(--font);
+  pointer-events: none;
+}
+
+/* a link with no shared work in the selected year */
+.net-link.quiet { opacity: 0.2; stroke-dasharray: 3 4; }
