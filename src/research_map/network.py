@@ -12,7 +12,8 @@ only about a quarter of sampled papers cite another sampled paper.  Each paper
 keeps its ``k`` strongest partners, ranked by shared references divided by the
 geometric mean of both reference-list lengths, so papers with very long
 reference lists do not link to everything.  Edges are undirected and listed
-once, with ``source_id < target_id``.
+once, with ``source_id < target_id``; ``shared`` and ``strength`` are written
+too, so the app can keep only the strongest links or weight them.
 
 Lifecycle stages compare each group's share of the sampled papers in the last
 ``window`` years with the ``window`` years before.  Shares, not counts, so a
@@ -21,10 +22,14 @@ A change only counts if it is larger than chance: a Fisher exact test on the
 two windows' paper counts, with a Benjamini-Hochberg correction across groups
 (false discovery rate ``alpha``):
 
-* emerging  - share grew significantly, by at least ``EMERGING_GROWTH``, from a
-  below-median base
+* emerging  - share grew significantly, by at least ``EMERGING_GROWTH``,
+  whatever the group's size
 * saturated - share fell significantly
-* peaking   - no significant change, or significant growth from a large base
+* peaking   - no significant change (stable), or significant growth below
+  ``EMERGING_GROWTH``
+
+So the stages read as growing, stable and shrinking.  "Peaking" does not test
+whether growth is slowing.
 """
 
 from __future__ import annotations
@@ -163,10 +168,9 @@ def lifecycle_stages(
     ])
     q_values = false_discovery_control(p_values, method="bh")
     significant = q_values < alpha
-    small_base = recent_share < np.median(recent_share)
 
     stage = np.where(
-        significant & (growth >= EMERGING_GROWTH) & small_base, "emerging",
+        significant & (growth >= EMERGING_GROWTH), "emerging",
         np.where(significant & (growth < 0), "saturated", "peaking"),
     )
     return pd.DataFrame({
@@ -253,7 +257,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         k=args.k, min_shared=args.min_shared, window=args.window, alpha=args.alpha,
     )
     nodes_path = contracts.save("network_nodes", nodes)
-    edges_path = contracts.save("network_edges", edges[["source_id", "target_id"]])
+    edges_path = contracts.save("network_edges", edges.assign(strength=edges["strength"].round(4)))
 
     linked = len(set(edges["source_id"]) | set(edges["target_id"]))
     print(f"Wrote {nodes_path} ({len(nodes)} papers) and {edges_path} ({len(edges)} edges; "

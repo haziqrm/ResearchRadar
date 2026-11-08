@@ -65,18 +65,28 @@ def make_counts(prior, recent):
 
 
 def test_lifecycle_stages_follow_the_rule():
-    # 1000 papers a year. 0: small, growing fast. 1: large, growing. 2: shrinking.
-    # 3: large, 38% -> 36%, which is within chance at this sample size.
+    # 1000 papers a year. 0: small, growing fast. 1: large, growing by 20%.
+    # 2: shrinking. 3: large, 38% -> 36%, which is within chance at this sample size.
     counts = make_counts([20, 400, 200, 380], [60, 480, 100, 360])
     stages = lifecycle_stages(counts, window=3).set_index("group")
     assert stages.loc[0, "stage"] == "emerging"
-    assert stages.loc[1, "stage"] == "peaking"  # significant growth from a large base
+    assert stages.loc[1, "q_value"] < 0.05
+    assert stages.loc[1, "stage"] == "peaking"  # significant, but below 25% growth
     assert stages.loc[2, "stage"] == "saturated"
     assert stages.loc[3, "stage"] == "peaking"  # change not larger than chance
     assert stages.loc[0, "growth"] == pytest.approx(2.0)
     assert (stages.loc[0, "prior_papers"], stages.loc[0, "recent_papers"]) == (60, 180)
     assert stages.loc[3, "q_value"] > 0.05
     assert (stages["q_value"] >= stages["p_value"] - 1e-12).all()
+
+
+def test_large_group_growing_significantly_is_emerging():
+    # the biggest group doubling its share is emerging, whatever its size
+    counts = make_counts([300, 100, 100, 100, 100, 100, 100, 100],
+                         [600, 60, 60, 60, 60, 60, 50, 50])
+    stages = lifecycle_stages(counts, window=3).set_index("group")
+    assert stages.loc[0, "recent_share"] == stages["recent_share"].max()
+    assert stages.loc[0, "stage"] == "emerging"
 
 
 def test_small_noisy_group_is_not_emerging():
@@ -140,6 +150,9 @@ def test_build_network_end_to_end():
     # edges only join papers from the same reference pool, so the same group
     area = dict(zip(nodes["paper_id"], nodes["area"]))
     assert len(edges) > 0
+    validate("network_edges", edges)  # coupling output is already the contract shape
+    assert (edges["shared"] >= 2).all()
+    assert ((edges["strength"] > 0) & (edges["strength"] <= 1)).all()
     assert all(area[s] == area[t] for s, t in zip(edges["source_id"], edges["target_id"]))
     assert list(stages.columns) == ["group", "name", "prior_papers", "recent_papers",
                                     "prior_share", "recent_share", "growth", "p_value",
