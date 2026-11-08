@@ -36,14 +36,15 @@
     side: document.getElementById("zoom-side"),
     select: document.getElementById("zoom-select"),
   };
-  const PAD = 24, BAR = 34, FLY_MS = 750, BACK_MS = 450, MOVE_MS = 350;
-  // links to other topics live in the side panel, so the map only needs room for the bar
+  const PAD = 24, BAR = 0, FLY_MS = 750, BACK_MS = 450, MOVE_MS = 350;
+  // the bar (back button, topic name, reading) sits in the row above the map, beside the
+  // legend and the slider, so the map needs no room for it
   const TOP = BAR + 16;
   const WINDOW = 5;  // islands are sized by their papers in the last five years
   const NAMED = 5;   // clouds named on the map before one is picked; the rest on hover
   const IN_COLOUR = "#617891", OUT_COLOUR = "#632024";  // builds on (slate) / built on by (oxblood); key in html_main.py
   const overlay = d3.select(box).append("div").attr("class", "topic-map");
-  const bar = overlay.append("div").attr("class", "topic-bar");
+  const bar = d3.select(".map-panel .panel-head").insert("div", ":first-child").attr("class", "topic-bar");
   bar.append("button").attr("type", "button").attr("class", "path-btn back-btn").text("← All topics")
     .on("click", () => closeTopic());
   const barTitle = bar.append("span").attr("class", "topic-name");
@@ -56,8 +57,11 @@
   const readPop = overlay.append("div").attr("class", "reading-pop").attr("role", "dialog")
     .attr("aria-label", "Suggested reading").property("hidden", true);
   const svg = overlay.append("svg");
-  const gHull = svg.append("g"), gFlow = svg.append("g");
-  const gLink = svg.append("g"), gTrail = svg.append("g"), gDot = svg.append("g"), gLabel = svg.append("g");
+  const layer = svg.append("g");  // moved by the zoom (static/js/mapzoom.js)
+  const gHull = layer.append("g"), gFlow = layer.append("g");
+  const gLink = layer.append("g"), gTrail = layer.append("g"), gDot = layer.append("g"), gLabel = layer.append("g");
+  const zoomCtl = MapZoom.controls(overlay.node(), () => subZoom);
+  const subZoom = MapZoom.attach(svg, layer, 1, 1, zoomCtl.show);
   const tip = overlay.append("div").attr("class", "radar-tip");
 
   function colourFor(subs) {
@@ -495,6 +499,8 @@
     document.getElementById("zoom-title").textContent = name;
     barTitle.text(name);
     svg.attr("viewBox", [0, 0, zoom.W, zoom.H]);
+    subZoom.size(zoom.W, zoom.H);
+    subZoom.reset(0);  // each topic opens at its normal size
     box.style.setProperty("--zx", `${zoom.origin.x}px`);
     box.style.setProperty("--zy", `${zoom.origin.y}px`);
     box.classList.add("zoomed");
@@ -557,6 +563,8 @@
       if (Math.abs(box.clientWidth - zoom.W) < 2 && Math.abs(box.clientHeight - zoom.H) < 2) return;
       zoom.W = box.clientWidth; zoom.H = box.clientHeight;
       svg.attr("viewBox", [0, 0, zoom.W, zoom.H]);
+      subZoom.size(zoom.W, zoom.H);
+      subZoom.reset(0);
       drawTopic();
     }, 150);
   }).observe(box);

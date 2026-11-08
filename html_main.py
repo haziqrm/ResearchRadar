@@ -80,6 +80,20 @@ __CSS_LINKS__
   <main>
     <section class="panel map-panel">
       <div class="panel-head">
+        <div class="net-legend" aria-label="Legend">
+          <span class="lg" title="__LG_SIZE_TITLE__"><i class="lg-size"></i><i class="lg-size big"></i>__LG_SIZE__</span>
+          <span class="lg" title="__LG_LINE_TITLE__"><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
+          <span class="lg" id="lg-path" title="Red: the biggest topic in the selected __PERIOD__. Bright: the topics linked to it by shared citations. Faded: the rest."><i class="lg-dot root"></i><i class="lg-dot"></i>biggest topic and its links</span>
+          <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
+          <!-- shown instead of the items above while a topic is open: a hint until a cloud is
+               clicked, then the arrow key (radar.js sets .arrows-on and the hint text) -->
+          <span class="lg-flow-hint" id="lg-flow-hint"></span>
+          <span class="lg-flow" title="Arrows are direct citations between sub-topics, from the cited to the citing side. They show who builds on whom, not cause and effect.">
+            <span class="lg"><svg class="lg-arrow" viewBox="0 0 30 12" aria-hidden="true"><line x1="1" y1="6" x2="17" y2="6" stroke="#617891"/><path d="M12.5,2 L18,6 L12.5,10" stroke="#617891"/><circle cx="24" cy="6" r="4.5"/></svg>builds on</span>
+            <span class="lg"><svg class="lg-arrow" viewBox="0 0 30 12" aria-hidden="true"><circle cx="6" cy="6" r="4.5"/><line x1="12" y1="6" x2="28" y2="6" stroke="#632024"/><path d="M23.5,2 L29,6 L23.5,10" stroke="#632024"/></svg>built on by</span>
+            <span class="lg">number on an arrow = citations</span>
+          </span>
+        </div>
         <div class="net-controls">
           <button type="button" class="path-btn active" id="path-btn" aria-pressed="true"
             title="The biggest topic in the selected __PERIOD__, in red, and the topics whose papers cite the same earlier work as it. Press play to watch which tightly linked topics grow next.">Hide affected path</button>
@@ -93,20 +107,6 @@ __CSS_LINKS__
             <a href="/monthly" class="path-btn__MONTH_ON__" title="arXiv q-fin papers tagged by Gemini, by month, Dec 2024 on"__MONTH_CUR__>By month</a>
           </div>
         </div>
-      </div>
-      <div class="net-legend" aria-label="Legend">
-        <span class="lg" title="__LG_SIZE_TITLE__"><i class="lg-size"></i><i class="lg-size big"></i>__LG_SIZE__</span>
-        <span class="lg" title="__LG_LINE_TITLE__"><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
-        <span class="lg" id="lg-path" title="Red: the biggest topic in the selected __PERIOD__. Bright: the topics linked to it by shared citations. Faded: the rest."><i class="lg-dot root"></i><i class="lg-dot"></i>biggest topic and its links</span>
-        <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
-        <!-- shown instead of the items above while a topic is open: a hint until a cloud is
-             clicked, then the arrow key (radar.js sets .arrows-on and the hint text) -->
-        <span class="lg-flow-hint" id="lg-flow-hint"></span>
-        <span class="lg-flow" title="Arrows are direct citations between sub-topics, from the cited to the citing side. They show who builds on whom, not cause and effect.">
-          <span class="lg"><svg class="lg-arrow" viewBox="0 0 30 12" aria-hidden="true"><line x1="1" y1="6" x2="17" y2="6" stroke="#617891"/><path d="M12.5,2 L18,6 L12.5,10" stroke="#617891"/><circle cx="24" cy="6" r="4.5"/></svg>builds on</span>
-          <span class="lg"><svg class="lg-arrow" viewBox="0 0 30 12" aria-hidden="true"><circle cx="6" cy="6" r="4.5"/><line x1="12" y1="6" x2="28" y2="6" stroke="#632024"/><path d="M23.5,2 L29,6 L23.5,10" stroke="#632024"/></svg>built on by</span>
-          <span class="lg">number on an arrow = citations</span>
-        </span>
       </div>
       <div class="map-body">
         <div class="network" id="network"></div>
@@ -186,6 +186,7 @@ __CSS_LINKS__
   </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="/static/js/mapzoom.js"></script>
 <script>
 const getJSON = url => fetch(url).then(r => r.json());
 // Which data the map shows: OpenAlex by year (/) or Gemini-tagged arXiv by month (/monthly).
@@ -298,6 +299,8 @@ async function loadNetwork() {
 
   const STEP_MS = 900;
   let playing = null, view = null;
+  let mapZoom = null;
+  const zoomCtl = MapZoom.controls(box, () => mapZoom);
   // the affected path is on by default; the button turns it off and on
   let pathOn = true;
   const pathBtn = document.getElementById("path-btn");
@@ -360,13 +363,17 @@ async function loadNetwork() {
     if (old) old.remove();
     const svg = d3.select(box).insert("svg", ":first-child")
       .attr("viewBox", [0, 0, W, H]).attr("width", "100%").attr("height", "100%");
+    // everything goes in one layer, which the zoom moves (a resize redraws at normal size)
+    const layer = svg.append("g");
+    mapZoom = MapZoom.attach(svg, layer, W, H, zoomCtl.show);
+    zoomCtl.show(1);
 
     // Links have no direction: two areas whose papers cite the same earlier work.
-    const link = svg.append("g").selectAll("line").data(net.links).join("line")
+    const link = layer.append("g").selectAll("line").data(net.links).join("line")
       .attr("class", "net-link");
     const linkTitle = link.append("title");
 
-    const node = svg.append("g").selectAll("g").data(net.nodes).join("g")
+    const node = layer.append("g").selectAll("g").data(net.nodes).join("g")
       .attr("class", "net-node")
       .attr("transform", d => `translate(${d.x},${d.y})`);
     const circle = node.append("circle");

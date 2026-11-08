@@ -134,16 +134,16 @@
 /* a link with no shared work in the selected year */
 .net-link.quiet { opacity: 0.2; stroke-dasharray: 3 4; }
 
-/* no title on the map: the controls sit on the right */
-.map-panel .panel-head { justify-content: flex-end; }
+/* no title on the map: the legend on the left, the controls on the right, one row */
+.map-panel .panel-head { justify-content: space-between; align-items: center; gap: 6px 18px; }
+.map-panel .panel-head .net-legend { margin-right: auto; }  /* after the topic bar, if open */
 
-/* legend under the title: size, line, colour (the explanations are in the tooltips) */
+/* legend: size, line, colour (the explanations are in the tooltips) */
 .net-legend {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 18px;
-  margin-top: 2px;
   font-size: 12px;
   color: var(--muted);
 }

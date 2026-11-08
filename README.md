@@ -1,113 +1,54 @@
-# Research Lifecycle Radar
+# Research Radar
 
-We map where quant-finance research is heading and measure how fast published trading
-signals stop working, using only free public data.
+A map of quantitative finance research: which topics are growing, which are fading, and how they connect. Everything runs on free public data.
 
-## Team and folders
+## What it does
 
-| | Role | Folder | Outputs |
-|---|---|---|---|
-| A | Signal decay | `src/signal_decay/` | `factors.csv`, `papers.csv`, `decay_results.csv` |
-| B | Research map | `src/research_map/` | `network_nodes.csv`, `network_edges.csv`, `area_forecasts.csv` |
-| C | Frontend and pitch | `src/app/` | Streamlit app, demo |
-| D | Live layer and decision | `src/live/` | `crowding.csv`, `backtest_results.csv`, `briefing.txt/.mp3` |
+- **Topic map.** Each circle is a research topic, sized by its number of papers. The lines between topics show papers that cite the same earlier work. Drag the slider (or press play) to watch topics grow and shrink, by year (2000 to now) or by month (recent arXiv papers).
+- **Inside a topic.** Click a circle to see its sub-topics as clusters of individual papers, the citations between them, and suggested reading.
+- **Where research is heading.** A ranking of which topics are likely to grow over the next three years.
+- **Fad check.** Each topic's share of papers over time, so booms and fades are easy to see.
+- **Research briefing.** A short written and audio summary of what's moving.
 
-Full per-person plans: [docs/roadmap/](docs/roadmap/). Where D's outputs differ from the plan (crowding is a z-score, new files, arXiv volume): [docs/live_layer.md](docs/live_layer.md). Challenge briefs we're judged against: [docs/challenges/](docs/challenges/).
+## Run it
 
-## Measured results
-
-- **Tag accuracy (D):** Gemini's area tags on arXiv papers were 92% correct (46 of 50) in a
-  random sample checked by hand. Signal tags haven't been checked: none of the 50 sampled
-  papers had one. Details: [docs/live_layer.md](docs/live_layer.md#tag-accuracy-d4).
-
-## Repo rules (to avoid merge conflicts)
-
-- One branch per person (`a/...`, `b/...`, `c/...`, `d/...`); merge to `main` small and often. **`main` must always run** (`pytest` passes).
-- Only edit files in your own folder and your own `data/` outputs.
-- Shared files: `requirements.txt` (append to your section, don't reorder), `src/common/contracts.py`, `main.py` (stage list) and this README. Announce changes to these before pushing.
-- Never commit keys. Copy `.env.example` to `.env`.
-- Raw downloads and API caches go in `data/raw/` or `data/cache/` (git-ignored).
-- IDE settings (`.idea/`, `.vscode/`) are git-ignored because they hold per-machine paths.
-
-## The area list (discovered research groups)
-
-Areas are not a hand-written list. B discovers research groups from the papers'
-SPECTER2 embeddings, freezes them, and names them by hand. Every `area` column
-(B's network and forecast files, D's crowding) must use the `name` values in
-`data/groups.csv` (`data/sample/groups.csv` until real output exists).
-
-```python
-from src.common.contracts import area_names
-area_names()          # current group names; AREAS still works and returns the same list
-```
-
-To place new papers (for example D's arXiv papers) into the groups:
-
-```python
-from src.research_map.encoding.groups import assign_groups
-assign_groups(titles, abstracts)   # columns: area, area_score, group_ids, group_scores
-```
-
-This needs the B packages (`torch`, `transformers`, `adapters`) and downloads
-SPECTER2 on first use. The frozen model is `data/group_model.npz`. B only refits
-the groups (`--refit-groups`) when the corpus changes a lot; that renumbers and
-renames them, so B announces it first.
-
-## File contracts (fixed)
-
-| File | Owner | Columns |
-|---|---|---|
-| `data/factors.csv` | A | date, signal, return |
-| `data/papers.csv` | A | signal, paper, publication_date, date_rule, ken_french_column, source_verified |
-| `data/decay_results.csv` | A | signal, paper, publication_date, source, pre_mean, post_mean, share_kept, half_life_months, ci_low, ci_high, early_citations (key: source + signal) |
-| `data/groups.csv` | B | group_id, name, keywords |
-| `data/network_nodes.csv` | B | paper_id, title, year, area, citations, lifecycle_stage |
-| `data/network_edges.csv` | B | source_id, target_id, shared, strength |
-| `data/area_forecasts.csv` | B | area, year, growth_score, boom_probability, predicted_boom, actual_boom |
-| `data/paper_encodings.csv` | B | paper_id, top_topic, topic_ids, topic_scores, topic_labels, model, text_quality |
-| `data/crowding.csv` | D | date, area, paper_count, crowding_score |
-| `data/backtest_results.csv` | D | date, strategy, monthly_return, cumulative_return |
-| `data/briefing.txt`, `data/briefing.mp3` | D | text and audio |
-
-The code version is `src/common/contracts.py`:
-
-```python
-from src.common.contracts import load, save
-
-df = load("decay_results")   # real data/decay_results.csv if present, else data/sample/
-save("crowding", my_df)      # validates columns and area names (from groups.csv), then writes data/crowding.csv
-```
-
-Made-up sample files for every contract are in `data/sample/`, so the app can be built before real data lands.
-
-## Setup
+Python 3.12.
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+.venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
-pytest
+python html_main.py             # open http://localhost:8000
 ```
 
-Python 3.12. Versions in `requirements.txt` are pinned; pin anything you add.
+The site reads the committed files in `data/`, so it works offline from a fresh clone. With a `GEMINI_API_KEY` in `.env`, it also fetches new arXiv papers and tags them every 2 hours while it runs. Set `LIVE_REFRESH=0` to turn that off.
 
-## Run the website
+Run the tests with `pytest`. Rebuild every data file with `python main.py` (this is slow and calls live APIs).
 
-```bash
-python html_main.py       # then open http://localhost:8000 (set PORT to change it)
+## Tech stack
+
+- **Data:** OpenAlex (10,232 papers, 2000–2026) and the arXiv q-fin feed
+- **Models:** SPECTER2 (Hugging Face `transformers`), scikit-learn, Gemini (`google-genai`), ElevenLabs for the audio
+- **Site:** a plain Python HTTP server with D3.js, no framework
+
+## Models
+
+1. **Topics.** Each paper's title and abstract is turned into a vector with SPECTER2, a model pre-trained on scientific papers. PCA and a Gaussian mixture group the vectors into 25 topics, which we named by hand. The map shows the 8 largest. The fitted groups are frozen in `data/group_model.npz`, so new papers can be placed in the same topics.
+2. **Growth forecast.** A ridge regression ranks topics by how much their share of papers will grow over the next three years. Its seven features describe each topic's recent history: past growth, acceleration, current share, volatility, links to other topics, how spread out its papers are, and how cleanly they fit the topic.
+3. **arXiv tagging.** Gemini places each new arXiv paper into one of the topics. This is what feeds the monthly view.
+
+## Evaluation
+
+- **Growth forecast:** tested walk-forward from 2010 to 2022, so each year's forecast only uses earlier papers, and the topics are refitted each time so nothing leaks from the future. The rank correlation with actual growth was 0.30 (random scores 0). Of its top 5 picks, an average of 1.6 really were top-5 growers, against 1.0 for random picks. It also beat simply following past growth (0.30 against 0.15), but that gap was not significant after correcting for multiple tests (p = 0.07). So we show the forecast as exploratory, not proven.
+- **Gemini tags:** 46 of 50 randomly sampled papers (92%) were tagged correctly when checked by hand.
+
+## Layout
+
 ```
-
-It reads only committed files in `data/`, so it runs offline from a fresh clone. The page leads with the research map (circles coloured by crowding, with a year slider). Clicking a topic opens "Inside a topic" beside it. Below the map are "Where research is heading" (crowding now, the exploratory forecast and a paper to read first) and "What happens to a published edge" (decay curve and haircut calculator). The header has the weekly briefing (audio, holdings, backtest) and a **?** drawer with how to read the map, the tests and the caveats. Add `?full` to the URL for the internal "What could be next" panel. Details: `docs/live_layer.md`.
-
-## Rebuild every output
-
-```bash
-python main.py            # runs each stage in order: A, then B, then D
-python main.py --list     # shows which stages exist yet
-python main.py --only d   # one stage
+html_main.py          the website (server and page)
+static/               CSS and JS (radar.js: topic drill-down, fads.js: Fad check)
+src/research_map/     embeddings, topic groups, citation network
+src/topic_radar/      growth forecast and its tests
+src/live/             arXiv feed, Gemini tagging, briefing
+data/                 every file the site reads
 ```
-
-Each stage is a runner module: A `src.signal_decay.run_decay` then `src.signal_decay.combined`, B `src.research_map.run_map`, D `src.live.run_live`. Stages that aren't written yet are skipped. Some stages call live APIs and need keys in `.env`.
-
-GitHub Actions runs `pytest` on every push and pull request (`.github/workflows/tests.yml`). Don't merge to `main` while it's red.
