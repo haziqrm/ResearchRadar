@@ -385,6 +385,30 @@ accuracy figure, and none of the 50 had a signal, so it says nothing about signa
   `src.research_map.run_map` (B) and `src.live.run_live` (D). B's name was chosen by D;
   change it in `main.py` if B prefers another.
 
+### Monthly map at /monthly (2026-11-08)
+- **What it is.** `/monthly` is the main page with the map switched to arXiv papers by
+  calendar month: the papers Gemini tagged into the 8 map areas
+  (`data/arxiv_map_tags.csv`), Dec 2024 to now. `monthly_data.py` serves
+  `/api/network/monthly` and `/api/crowding/history/monthly`. The main page (`/`) is
+  unchanged. It's an alias for now, so the team can compare the two views before
+  deciding which one the main page uses.
+- **What changes and what doesn't.** On `/monthly` the slider steps through months, and
+  the newest month is marked partial, e.g. "Nov 2026 (to 5 Nov)". The slider starts on
+  the last complete month. Circle size is the area's papers that month, on one scale
+  across months. Colour is crowding with `src.live.crowding`'s method, using a 1-month
+  window against the 6 months before (`monthly_data.BASELINE`). There's no score for
+  the first 3 months. Everything else on the page (sub-topics, rings, "Where research
+  is heading", briefing) stays OpenAlex by year and follows the month's year.
+- **Links are still OpenAlex's, over all years.** arXiv gives no reference lists, so the
+  links are the same in every month, and the tooltip says so.
+- **Deviation: "none" vs not-yet-tagged.** The tags CSV merged in PR #6 had a blank area
+  for papers Gemini put in "none". Main's `map_tags` reads a blank as "not tagged yet",
+  so crowding and this view would have left out 2,175 papers. The CSV now says `none`
+  for them. No other column changed.
+- **Why the map's JS changed.** The slider used to step through years by adding 1. It
+  now steps through the positions in `slider_years`, so the same code handles
+  "YYYY-MM". `MAP_MODE` in the page picks the endpoints. On `/` it behaves as before.
+
 ### Briefing: numbers come from code, Gemini only rewords
 - Plan: "Gemini text, ElevenLabs audio". Built: **code computes every fact**, a fixed
   template turns them into text, and Gemini (optional) only rewords it to sound natural

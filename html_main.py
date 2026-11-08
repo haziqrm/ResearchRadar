@@ -9,6 +9,10 @@ the 8 trading-relevant areas (see research_data.AREAS).
   GET /api/network     areas (sized by article count) and the links between them
   GET /api/research    articles per area, in total and this year vs last year (not on the page now)
 
+  GET /monthly         the same page, but the map shows Gemini-tagged arXiv papers by
+                       month (monthly_data.py): /api/network/monthly and
+                       /api/crowding/history/monthly. The rest of the page stays yearly.
+
 Person D's live layer (live_data.py, static/js/live.js): /api/heading,
 /api/crowding/history, /api/crowding, /api/backtest, /api/briefing, and the
 briefing audio at /media/briefing.mp3.
@@ -23,6 +27,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
 import live_data  # Person D: crowding, backtest and briefing
+import monthly_data  # Person D: the map by month from Gemini-tagged arXiv papers
 import radar_data  # Person A: topic radar and signal decay (data/app/*.json)
 import research_data as data
 
@@ -49,7 +54,7 @@ PAGE = r"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research Lifecycle Radar</title>
+<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
@@ -74,7 +79,7 @@ __CSS_LINKS__
   <main>
     <section class="panel map-panel">
       <div class="panel-head">
-        <h2>Research topic network</h2>
+        <h2>Research topic network</h2>__MAP_SUB__
         <div class="net-controls">
           <div class="year-control">
             <button type="button" class="play-btn" id="play-btn" aria-label="Play years">&#9654;</button>
@@ -84,9 +89,9 @@ __CSS_LINKS__
         </div>
       </div>
       <div class="net-legend" aria-label="Legend">
-        <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
-        <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker and darker means more shared that year; dotted means none."><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
-        <span class="lg" title="Is the topic taking more than its usual share of papers that year? Compared with its own share over the five years before."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
+        <span class="lg" title="__LG_SIZE_TITLE__"><i class="lg-size"></i><i class="lg-size big"></i>__LG_SIZE__</span>
+        <span class="lg" title="__LG_LINE_TITLE__"><i class="lg-line thin"></i><i class="lg-line"></i>shared citations</span>
+        <span class="lg" title="__LG_CROWD_TITLE__"><span class="lg-ramp"></span>quiet &rarr; crowded</span>
         <span class="lg" id="lg-ring" title="Predicted to grow over the next three years (the forecast's top topics), from 2025 data, so shown from 2025 on. Exploratory: the forecast did not pass its test."><i class="lg-ring"></i>predicted to grow</span>
         <!-- shown instead of the items above while a topic is open: a hint until a cloud is
              clicked, then the arrow key (radar.js sets .arrows-on and the hint text) -->
@@ -180,7 +185,7 @@ __CSS_LINKS__
     </section>
     <section class="dlg-section">
       <h3>Data and caveats</h3>
-      <ul class="caveats">
+      <ul class="caveats">__CAVEAT__
         <li><b>OpenAlex sample.</b> The map and the crowding score use 380 quant-finance papers sampled at random each year from OpenAlex (2000–2026), so sizes show each topic's share of attention, not every paper written.</li>
         <li><b>2026 is a partial year</b> (353 of 380 papers so far). Crowding compares shares, so it still works, but counts for 2026 are lower.</li>
         <li><b>Topics</b> are 25 groups found automatically from the papers' text; the map shows the 8 the team chose.</li>
@@ -227,6 +232,8 @@ __CSS_LINKS__
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
 const getJSON = url => fetch(url).then(r => r.json());
+// Which data the map shows: OpenAlex by year (/) or Gemini-tagged arXiv by month (/monthly).
+const MAP_MODE = __MAP_MODE__;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 // ---------------------------------------------------------------- network
@@ -307,14 +314,20 @@ const crowdWord = s => s == null ? "no crowding score" : s >= 2 ? "crowded" : s 
   : s <= -2 ? "quiet" : s <= -1 ? "quieter than usual" : "about its usual share";
 
 async function loadNetwork() {
-  const [net, crowd] = await Promise.all([getJSON("/api/network"),
-    getJSON("/api/crowding/history").catch(() => ({}))]);
+  const [net, crowd] = await Promise.all([getJSON(MAP_MODE.network),
+    getJSON(MAP_MODE.crowding).catch(() => ({}))]);
   const box = document.getElementById("network");
   const LINE = 15;  // label line height (13px text)
+  // The slider's periods: years, or "YYYY-MM" months on /monthly. The slider moves
+  // through their positions; the rest of the page follows the period's year.
   const years = net.slider_years;
+  const monthly = MAP_MODE.unit === "month";
+  const labelOf = p => (net.labels || {})[p] || String(p);
+  const yearOf = p => monthly ? +String(p).slice(0, 4) : +p;
+  let period = null;
   const scores = crowd.scores || {};
-  const countFor = (d, y = yearState.year) => d.by_year[String(y)] || 0;
-  const crowdFor = (d, y = yearState.year) => (scores[d.id] || {})[String(y)];
+  const countFor = (d, y = period) => d.by_year[String(y)] || 0;
+  const crowdFor = (d, y = period) => (scores[d.id] || {})[String(y)];
 
   // Line thickness and strength: that year's shared links, on one scale across years.
   // Curved (power 1.5) so weak links are hairlines and only strong ones stand out.
@@ -447,32 +460,41 @@ async function loadNetwork() {
       link.classed("quiet", l => countFor(l, year) === 0);
       nodeTitle.text(d => {
         const c = crowdFor(d, year), n = countFor(d, year);
-        return `${d.id}\n${n} article${n === 1 ? "" : "s"} in ${year} · ${d.articles} in total`
+        return `${d.id}\n${n} ${monthly ? "paper" : "article"}${n === 1 ? "" : "s"} in ${labelOf(year)} · ${d.articles} in total`
           + `\n${crowdWord(c)}${c == null ? "" : ` (crowding ${c > 0 ? "+" : ""}${c.toFixed(1)} SD vs its usual share)`}`
           + "\nClick to explore its papers";
       });
       linkTitle.text(l => { const n = countFor(l, year);
-        return `${l.source} and ${l.target}\n${n} paper pair${n === 1 ? "" : "s"} in ${year} cite${n === 1 ? "s" : ""} the same earlier work`; });
+        return monthly
+          ? `${l.source} and ${l.target}\n${n} OpenAlex paper pair${n === 1 ? "" : "s"} (all years) cite${n === 1 ? "s" : ""} the same earlier work`
+          : `${l.source} and ${l.target}\n${n} paper pair${n === 1 ? "" : "s"} in ${year} cite${n === 1 ? "s" : ""} the same earlier work`; });
     };
 
     return { node, link, drawYear, clearHover };
   }
 
-  document.addEventListener("yearchange", e => { if (view) view.drawYear(e.detail, playing ? STEP_MS * 0.8 : 400); });
+  document.addEventListener("yearchange", () => { if (view) view.drawYear(period, playing ? STEP_MS * 0.8 : 400); });
 
   // ---- slider and play button
   const slider = document.getElementById("year-slider");
   const yearLabel = document.getElementById("year-label");
   const playBtn = document.getElementById("play-btn");
-  slider.min = years[0];
-  slider.max = years[years.length - 1];
-  slider.value = slider.max;
+  const playLabel = monthly ? "Play months" : "Play years";
+  slider.setAttribute("aria-label", monthly ? "Month" : "Year");
+  playBtn.setAttribute("aria-label", playLabel);
+  slider.min = 0;
+  slider.max = years.length - 1;
+  const startAt = years.indexOf(net.start);
+  slider.value = startAt >= 0 ? startAt : years.length - 1;
 
   const stop = () => {
     clearInterval(playing); playing = null;
-    playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Play years");
+    playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", playLabel);
   };
-  const show = y => { slider.value = y; yearLabel.textContent = y; setYear(+y); };
+  const show = i => {
+    slider.value = i; period = years[+i];
+    yearLabel.textContent = labelOf(period); setYear(yearOf(period));
+  };
 
   slider.addEventListener("input", () => { stop(); show(slider.value); });
   playBtn.addEventListener("click", () => {
@@ -485,8 +507,9 @@ async function loadNetwork() {
       show(next);
     }, STEP_MS);
   });
-  yearLabel.textContent = slider.value;
-  yearState.year = +slider.value;
+  period = years[+slider.value];
+  yearLabel.textContent = labelOf(period);
+  yearState.year = yearOf(period);
 
   // Measure the box whenever it changes: on first load it can still be 0 wide, and the
   // side panel or the window can change it later. Sizes too small to draw are skipped.
@@ -496,7 +519,7 @@ async function loadNetwork() {
     if (W < 80 || H < 80 || (Math.abs(W - drawn[0]) < 2 && Math.abs(H - drawn[1]) < 2)) return;
     drawn = [W, H];
     view = build(W, H);
-    view.drawYear(yearState.year, 0);
+    view.drawYear(period, 0);
   };
   new ResizeObserver(() => { clearTimeout(timer); timer = setTimeout(render, 120); }).observe(box);
   render();
@@ -509,6 +532,47 @@ loadNetwork();
 </body>
 </html>
 """.replace("__CSS_LINKS__", CSS_LINKS)
+
+# What differs between the main page and /monthly: the map's data and its wording.
+YEARLY = {
+    "__TITLE__": "Research Lifecycle Radar",
+    "__MAP_SUB__": "",
+    "__LG_SIZE_TITLE__": "Circle size: how many research articles came out on the topic in the selected year.",
+    "__LG_SIZE__": "articles that year",
+    "__LG_LINE_TITLE__": "Lines link topics whose papers cite the same earlier work. Thicker and darker means more shared that year; dotted means none.",
+    "__LG_CROWD_TITLE__": "Is the topic taking more than its usual share of papers that year? Compared with its own share over the five years before.",
+    "__CAVEAT__": "",
+    "__MAP_MODE__": json.dumps({"unit": "year", "network": "/api/network",
+                                "crowding": "/api/crowding/history"}),
+}
+MONTHLY = {
+    "__TITLE__": "Research Lifecycle Radar · monthly",
+    "__MAP_SUB__": ('<span class="sub map-source">arXiv papers tagged by Gemini, by month'
+                    ' · <a href="/">OpenAlex by year</a></span>'),
+    "__LG_SIZE_TITLE__": "Circle size: how many arXiv q-fin papers Gemini put in the topic that month.",
+    "__LG_SIZE__": "papers that month",
+    "__LG_LINE_TITLE__": "Lines link topics whose OpenAlex papers cite the same earlier work, over all years (arXiv gives no reference lists), so they are the same in every month.",
+    "__LG_CROWD_TITLE__": ("Is the topic taking more than its usual share of that month's arXiv papers?"
+                           f" Compared with its own share over the {monthly_data.BASELINE} months before."),
+    "__CAVEAT__": ("\n        <li><b>This is the monthly view.</b> The map shows arXiv q-fin papers"
+                   " (Dec 2024 on) that Gemini tagged into the 8 topics, by month; most papers fit"
+                   " none of them and only count towards the total. Circle colour compares a topic's"
+                   f" share of the month with its share over the {monthly_data.BASELINE} months before."
+                   " Lines are OpenAlex's, over all years. The rest of the page is still OpenAlex by year.</li>"),
+    "__MAP_MODE__": json.dumps({"unit": "month", "network": "/api/network/monthly",
+                                "crowding": "/api/crowding/history/monthly"}),
+}
+
+
+def build_page(parts):
+    page = PAGE
+    for key, value in parts.items():
+        page = page.replace(key, value)
+    return page
+
+
+MAIN_PAGE = build_page(YEARLY)
+MONTHLY_PAGE = build_page(MONTHLY)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -547,12 +611,16 @@ class Handler(BaseHTTPRequestHandler):
             "/api/heading": live_data.get_heading,
             "/api/backtest": live_data.get_backtest,
             "/api/briefing": live_data.get_briefing,
+            "/api/network/monthly": monthly_data.get_network,
+            "/api/crowding/history/monthly": monthly_data.get_crowding_history,
         }
         if url.path == "/api/topic":
             name = parse_qs(url.query).get("name", [""])[0]
             self._json(radar_data.get_topic(name))
         elif url.path in ("/", "/index.html"):
-            self._send(200, PAGE, "text/html; charset=utf-8")
+            self._send(200, MAIN_PAGE, "text/html; charset=utf-8")
+        elif url.path in ("/monthly", "/monthly/"):
+            self._send(200, MONTHLY_PAGE, "text/html; charset=utf-8")
         elif url.path == "/media/briefing.mp3" and live_data.AUDIO_FILE.is_file():
             self._send(200, live_data.AUDIO_FILE.read_bytes(), "audio/mpeg")
         elif url.path.startswith("/static/"):
