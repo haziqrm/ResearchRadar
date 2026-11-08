@@ -37,25 +37,19 @@
     select: document.getElementById("zoom-select"),
   };
   const PAD = 24, BAR = 34, FLY_MS = 750, BACK_MS = 450, MOVE_MS = 350;
-  // links to other topics sit in a band under the buttons, so they never cover the islands
-  const PORT_ROWS = 4, PORT_ROW = 14, PORT_BAND = 30 + PORT_ROWS * PORT_ROW, TOP = BAR + PORT_BAND;
+  // links to other topics live in the side panel, so the map only needs room for the bar
+  const TOP = BAR + 16;
   const WINDOW = 5;  // islands are sized by their papers in the last five years
+  const NAMED = 5;   // clouds named on the map before one is picked; the rest on hover
+  const IN_COLOUR = "#617891", OUT_COLOUR = "#632024";  // builds on (slate) / feeds (oxblood)
   const overlay = d3.select(box).append("div").attr("class", "topic-map");
   const bar = overlay.append("div").attr("class", "topic-bar");
   bar.append("button").attr("type", "button").attr("class", "path-btn back-btn").text("← All topics")
     .on("click", () => closeTopic());
-  // citation arrows stay hidden unless asked for (or an island is clicked)
-  const flowsBtn = bar.append("button").attr("type", "button").attr("class", "path-btn flows-btn")
-    .text("Show citation flows")
-    .on("click", () => {
-      zoom.showFlows = !zoom.showFlows;
-      flowsBtn.classed("active", zoom.showFlows).text(zoom.showFlows ? "Hide citation flows" : "Show citation flows");
-      drawTopic();
-    });
   const barTitle = bar.append("span").attr("class", "topic-name");
   const barWindow = bar.append("span").attr("class", "sub");
   const svg = overlay.append("svg");
-  const gHull = svg.append("g"), gFlow = svg.append("g"), gPort = svg.append("g"), gParticle = svg.append("g");
+  const gHull = svg.append("g"), gFlow = svg.append("g");
   const gLink = svg.append("g"), gTrail = svg.append("g"), gDot = svg.append("g"), gLabel = svg.append("g");
   const tip = overlay.append("div").attr("class", "radar-tip");
 
@@ -174,179 +168,122 @@
     return [...out].map(([key, n]) => { const [from, to] = key.split(">").map(Number); return { key, from, to, n }; });
   }
 
+  // a curve from the edge of one island to the edge of the other, bowed away from the
+  // middle of the map so arrows fan outwards instead of crossing through the centre
   function arrowGeometry(f, geo) {
     const A = geo.get(f.from), B = geo.get(f.to);
     const dx = B.cx - A.cx, dy = B.cy - A.cy, d = Math.hypot(dx, dy) || 1;
     const ra = A.reach * Math.max(A.k, 0.3) + 6, rb = B.reach * Math.max(B.k, 0.3) + 10;
     const x1 = A.cx + dx / d * ra, y1 = A.cy + dy / d * ra, x2 = B.cx - dx / d * rb, y2 = B.cy - dy / d * rb;
-    const mx = (x1 + x2) / 2 - dy / d * d * 0.18, my = (y1 + y2) / 2 + dx / d * d * 0.18;
-    return { x1, y1, x2, y2, mx, my };
+    let nx = -dy / d, ny = dx / d;
+    const midX = (x1 + x2) / 2, midY = (y1 + y2) / 2;
+    if (nx * (midX - zoom.W / 2) + ny * (midY - (TOP + zoom.H) / 2) < 0) { nx = -nx; ny = -ny; }
+    const mx = midX + nx * d * 0.18, my = midY + ny * d * 0.18;
+    // the curve's own midpoint, for the count
+    return { x1, y1, x2, y2, mx, my, lx: 0.25 * x1 + 0.5 * mx + 0.25 * x2, ly: 0.25 * y1 + 0.5 * my + 0.25 * y2 };
   }
 
-  function drawFlows(t, geo, year, lo, colour, fly) {
-    const sel0 = zoom.selected;
-    // one arrow per pair of sub-topics, pointing the way most citations go (A->B and
-    // B->A drawn separately doubled the lines and crossed each other)
+  // the focused island's strongest links: one arrow per pair, the way most citations go
+  // (A->B and B->A drawn separately doubled the lines and crossed each other)
+  function focusFlows(t, geo, year, lo, sel) {
+    if (sel == null) return [];
     const pairs = new Map();
-    flows(t, year, lo).filter(f => geo.has(f.from) && geo.has(f.to)).forEach(f => {
-      const k = f.from < f.to ? `${f.from}~${f.to}` : `${f.to}~${f.from}`;
-      const p = pairs.get(k) || { key: k, total: 0, dirs: [] };
-      p.total += f.n; p.dirs.push(f);
-      pairs.set(k, p);
+    flows(t, year, lo).filter(f => (f.from === sel || f.to === sel) && geo.has(f.from) && geo.has(f.to)).forEach(f => {
+      const other = f.from === sel ? f.to : f.from;
+      const p = pairs.get(other) || { other, dirs: [] };
+      p.dirs.push(f);
+      pairs.set(other, p);
     });
-    const fs = [...pairs.values()].map(p => {
+    return [...pairs.values()].map(p => {
       const main = p.dirs.reduce((a, b) => b.n > a.n ? b : a);
       const back = p.dirs.find(d => d !== main);
-      return { key: p.key, from: main.from, to: main.to, n: p.total, fwd: main.n, back: back ? back.n : 0 };
-    })
-      .filter(f => sel0 == null || f.from === sel0 || f.to === sel0)
-      .sort((a, b) => b.n - a.n).slice(0, sel0 != null ? 8 : 5);
-    zoom.flows = fs;
-    const w = d3.scaleSqrt().domain([1, Math.max(4, d3.max(fs, f => f.n) || 1)]).range([1.2, 6]);
-    const sel = zoom.selected;
-    const on = f => sel == null || f.from === sel || f.to === sel;
+      return { key: `${sel}~${p.other}`, other: p.other, from: main.from, to: main.to,
+        fwd: main.n, back: back ? back.n : 0, n: main.n + (back ? back.n : 0), into: main.to === sel };
+    }).sort((a, b) => b.n - a.n).slice(0, 6);
+  }
+
+  function drawFlows(t, geo, year, fs, fly) {
+    const w = d3.scaleSqrt().domain([1, Math.max(4, d3.max(fs, f => f.fwd) || 1)]).range([1.4, 5]);
     const g = gFlow.selectAll("g.flow").data(fs, f => f.key).join(enter => {
       const e = enter.append("g").attr("class", "flow");
       e.append("path").attr("class", "flow-line");
       e.append("path").attr("class", "flow-head");
+      e.append("text").attr("class", "flow-count");
       e.append("title");
       return e;
     });
-    g.attr("opacity", f => on(f) ? (fly ? 0 : 1) : 0.08)
-      .call(s => fly && s.transition().delay(FLY_MS).duration(400).attr("opacity", f => on(f) ? 1 : 0.08));
+    g.attr("opacity", fly ? 0 : 1).call(s => fly && s.transition().delay(FLY_MS).duration(400).attr("opacity", 1));
     g.each(function (f) {
-      const a = arrowGeometry(f, geo), c = colour.get(f.from), sw = w(f.n);
-      f.path = `M${a.x1},${a.y1}Q${a.mx},${a.my} ${a.x2},${a.y2}`;
+      const a = arrowGeometry(f, geo), c = f.into ? IN_COLOUR : OUT_COLOUR, sw = w(f.fwd);
       const ux = a.x2 - a.mx, uy = a.y2 - a.my, ul = Math.hypot(ux, uy) || 1, hx = ux / ul, hy = uy / ul;
       const hl = 6 + sw, hw = 3 + sw * 0.7;
       const el = d3.select(this);
-      el.select(".flow-line").attr("d", f.path).attr("stroke", c).attr("stroke-width", sw);
+      el.select(".flow-line").attr("d", `M${a.x1},${a.y1}Q${a.mx},${a.my} ${a.x2},${a.y2}`).attr("stroke", c).attr("stroke-width", sw);
       el.select(".flow-head").attr("fill", c).attr("d",
         `M${a.x2 + hx * 2},${a.y2 + hy * 2}L${a.x2 - hx * hl - hy * hw},${a.y2 - hy * hl + hx * hw}`
         + `L${a.x2 - hx * hl + hy * hw},${a.y2 - hy * hl - hx * hw}Z`);
-      el.select("title").text(`${label(t, f.from)} → ${label(t, f.to)}: ${f.fwd} citation${f.fwd === 1 ? "" : "s"} `
-        + `from ${label(t, f.to)} papers to ${label(t, f.from)} papers, up to ${year}`
+      el.select(".flow-count").attr("x", a.lx).attr("y", a.ly).attr("dy", "0.35em").attr("fill", c).text(f.fwd);
+      el.select("title").text(`${label(t, f.to)} papers cite ${label(t, f.from)} papers ${f.fwd} time${f.fwd === 1 ? "" : "s"}, up to ${year}`
         + (f.back ? ` (and ${f.back} the other way)` : ""));
     });
-    return fs.filter(on).map(f => ({ key: f.key, path: f.path, n: f.n, colour: colour.get(f.from) }));
   }
 
-  // other topics this one builds on (left, arrows in) and that build on it (right, arrows out)
-  function drawPorts(t, geo, year, fly, withArrows = true) {
+  // other topics this one builds on ("out": its papers cite them) and that build on it ("in"),
+  // limited to the focused island when there is one; listed in the side panel
+  function externalLinks(t, year, sel) {
     const agg = new Map();
     t.papers.forEach(p => {
-      if (p.y > year) return;
+      if (p.y > year || (sel != null && p.s !== sel)) return;
       t.ext[p._i].forEach(e => {
         const k = `${e.dir}|${e.topic}`;
-        if (!agg.has(k)) agg.set(k, { dir: e.dir, topic: e.topic, n: 0, by: new Map() });
-        const a = agg.get(k);
-        a.n += e.n;
-        a.by.set(p.s, (a.by.get(p.s) || 0) + e.n);
+        if (!agg.has(k)) agg.set(k, { dir: e.dir, topic: e.topic, n: 0 });
+        agg.get(k).n += e.n;
       });
     });
-    const sel = zoom.selected;
-    const side = dir => [...agg.values()].filter(a => a.dir === dir && (sel == null || a.by.has(sel)))
-      .sort((a, b) => b.n - a.n).slice(0, PORT_ROWS);
-    const ports = [];
-    [["out", 10, "start"], ["in", zoom.W - 10, "end"]].forEach(([dir, px, anchor]) => {
-      side(dir).forEach((a, i, arr) => {
-        const py = BAR + 30 + i * PORT_ROW;
-        ports.push({ ...a, key: `${dir}|${a.topic}`, px, py, anchor });
-      });
-    });
-    // small headings over the two lists in the band
-    const heads = [["out", 10, "start", "Builds on"], ["in", zoom.W - 10, "end", "Built on by"]]
-      .filter(([dir]) => ports.some(p => p.dir === dir));
-    gPort.selectAll("text.port-head").data(heads, h => h[0]).join("text").attr("class", "port-head")
-      .attr("x", h => h[1]).attr("y", BAR + 14).attr("text-anchor", h => h[2]).text(h => h[3]);
-    const w = d3.scaleSqrt().domain([1, Math.max(4, d3.max(ports, p => d3.max([...p.by.values()])) || 1)]).range([1, 6]);
-    const arrows = [];
-    ports.forEach(p => {
-      const into = p.dir === "out";  // this topic's papers cite that topic: knowledge flows in
-      // default: one arrow to the island that uses it most; focused: the arrow to that island
-      p.arrows = [...p.by].filter(([s]) => withArrows && geo.has(s) && geo.get(s).n > 0 && (sel == null || s === sel))
-        .sort((a, b) => b[1] - a[1]).slice(0, 1).map(([s, n]) => {
-        const g = geo.get(s), r = g.reach * Math.max(g.k, 0.3) + 6;
-        const dx = g.cx - p.px, dy = g.cy - p.py, d = Math.hypot(dx, dy) || 1;
-        const ix = g.cx - dx / d * r, iy = g.cy - dy / d * r;
-        const sx = p.px + (into ? 40 : -40), sy = p.py + 7, mx = (sx + ix) / 2, my = (sy + iy) / 2;
-        const path = into ? `M${sx},${sy}Q${mx},${my} ${ix},${iy}` : `M${ix},${iy}Q${mx},${my} ${sx},${sy}`;
-        const a = { key: `${p.key}>${s}`, path, n, colour: into ? "#617891" : "#632024", s };
-        arrows.push(a);
-        return a;
-      });
-    });
-    const g = gPort.selectAll("g.port").data(ports, p => p.key).join(enter => {
-      const e = enter.append("g").attr("class", "port");
-      e.append("g").attr("class", "port-arrows");
-      e.append("text").attr("class", "port-label");
-      return e;
-    }).attr("opacity", fly ? 0 : 1)
-      .call(s => fly && s.transition().delay(FLY_MS).duration(400).attr("opacity", 1));
-    g.select(".port-label").attr("x", p => p.px).attr("y", p => p.py).attr("dy", "0.35em")
-      .attr("text-anchor", p => p.anchor).attr("class", p => `port-label ${p.dir}`)
-      .text(p => `${p.topic} · ${p.n}`)
-      .on("click", (e, p) => { e.stopPropagation(); openTopic(p.topic, { x: p.px, y: p.py }); })
-      .selectAll("title").data(p => [p]).join("title")
-      .text(p => p.dir === "out" ? `Papers here cite ${p.topic} ${p.n} times (up to ${year}). Click to open it.`
-        : `${p.topic} papers cite papers here ${p.n} times (up to ${year}). Click to open it.`);
-    g.select(".port-arrows").selectAll("path").data(p => p.arrows, a => a.key).join("path")
-      .attr("class", "port-arrow").attr("d", a => a.path).attr("stroke", a => a.colour).attr("stroke-width", a => w(a.n));
-    return arrows;
+    const side = dir => [...agg.values()].filter(a => a.dir === dir).sort((a, b) => b.n - a.n).slice(0, 5);
+    return { out: side("out"), in: side("in") };
   }
 
-  // moving dots show which way knowledge flows
-  function drawParticles(arrows) {
-    const per = a => Math.min(a.n, zoom.selected != null ? 3 : 2);
-    const parts = arrows.flatMap(a => d3.range(per(a)).map(k => ({ a, off: k / per(a) + Math.random() * 0.1, key: `${a.key}:${k}` })));
-    gParticle.selectAll("circle").data(parts, p => p.key).join("circle")
-      .attr("class", "particle").attr("r", 2.2).attr("fill", p => p.a.colour);
-    startParticles();
-  }
-
-  let particleTimer = null;
-  function startParticles() {
-    if (particleTimer) return;
-    const probe = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    particleTimer = d3.timer(elapsed => {
-      gParticle.selectAll("circle").each(function (p) {
-        probe.setAttribute("d", p.a.path);
-        const len = probe.getTotalLength();
-        const pt = probe.getPointAtLength(((elapsed / 2200 + p.off) % 1) * len);
-        this.setAttribute("cx", pt.x);
-        this.setAttribute("cy", pt.y);
-      });
-    });
-  }
-  function stopParticles() { if (particleTimer) { particleTimer.stop(); particleTimer = null; } }
-
-  // Island labels: try above the cluster, then below, then across its middle, and take
-  // the first spot that doesn't hit a label already placed (biggest clusters first).
+  // Island labels. Each label tries spots around its island (above, below, beside, further
+  // out) and takes the one that covers the fewest dots of other islands and no label already
+  // shown; one placed away from its island gets a thin leader line back to it. Labels that
+  // only appear on hover are placed too (so they have a spot) but don't block others.
   const measure = document.createElement("canvas").getContext("2d");
-  function placeLabels(gs) {
-    measure.font = `600 11px ${getComputedStyle(document.body).fontFamily}`;
+  function placeLabels(gs, visible, allPts) {
+    measure.font = `600 12px ${getComputedStyle(document.body).fontFamily}`;
     const placed = [];
-    const hits = b => placed.reduce((n, o) => n + Math.max(0, Math.min(b.x1, o.x1) - Math.max(b.x0, o.x0))
-      * Math.max(0, Math.min(b.y1, o.y1) - Math.max(b.y0, o.y0)), 0);
-    gs.slice().sort((a, b) => b.n - a.n).forEach(g => {
-      g.text = (g.sub && g.sub.predicted_boom ? "▲ " : "") + g.name + ` · ${g.n}` + (g.g && g.g.emerging ? "  ↑ emerging" : "");
-      const w = measure.measureText(g.text).width + 6, h = 13;
-      const ys = g.pts.map(p => p[1]);
-      const cx = g.other ? d3.median(g.pts, p => p[0]) : g.g.cx;
-      const x = Math.max(w / 2 + 4, Math.min(zoom.W - w / 2 - 4, cx));
-      const tries = [d3.min(ys) - 10, d3.max(ys) + 16, d3.median(ys) + 4]
-        .map(y => Math.max(TOP + 10, Math.min(zoom.H - 6, y)))
-        .map(y => ({ y, b: { x0: x - w / 2, x1: x + w / 2, y0: y - h + 2, y1: y + 3 } }));
-      let best = tries.find(c => hits(c.b) === 0);
-      if (!best) {  // all taken: step down from the top spot until it is clear
-        best = tries.reduce((a, c) => hits(c.b) < hits(a.b) ? c : a);
-        for (let k = 1; k < 8 && hits(best.b) > 0; k++) {
-          const y = Math.min(zoom.H - 6, tries[0].y + k * h);
-          best = { y, b: { ...best.b, y0: y - h + 2, y1: y + 3 } };
-        }
-      }
-      placed.push(best.b);
-      g.lx = x; g.ly = best.y;
+    const overlap = (b, o) => Math.max(0, Math.min(b.x1, o.x1) - Math.max(b.x0, o.x0)) * Math.max(0, Math.min(b.y1, o.y1) - Math.max(b.y0, o.y0));
+    const order = gs.slice().sort((a, b) => (visible.has(b.id) - visible.has(a.id)) || b.n - a.n);
+    order.forEach(g => {
+      g.text = g.name;
+      const w = measure.measureText(g.text).width + 6, h = 14;
+      const xs = g.pts.map(p => p[0]), ys = g.pts.map(p => p[1]);
+      const x0 = d3.min(xs), x1 = d3.max(xs), y0 = d3.min(ys), y1 = d3.max(ys), cx = g.g.cx, cy = g.g.cy;
+      const spots = [[cx, y0 - 8], [cx, y1 + 16], [x0 - w / 2 - 8, cy + 4], [x1 + w / 2 + 8, cy + 4]];
+      for (let k = 1; k <= 3; k++) spots.push([cx, y0 - 8 - k * 16], [cx, y1 + 16 + k * 16]);
+      spots.push([cx, cy + 4]);
+      const cands = spots.map(([x, y], i) => {
+        x = Math.max(w / 2 + 4, Math.min(zoom.W - w / 2 - 4, x));
+        y = Math.max(TOP + 12, Math.min(zoom.H - 6, y));
+        const b = { x0: x - w / 2, x1: x + w / 2, y0: y - h + 3, y1: y + 4 };
+        let foreign = 0, own = 0;
+        allPts.forEach(([px, py, s]) => {
+          if (px >= b.x0 - 2 && px <= b.x1 + 2 && py >= b.y0 - 2 && py <= b.y1 + 2) s === g.id ? own++ : foreign++;
+        });
+        const hit = placed.reduce((n, o) => n + overlap(b, o), 0);
+        return { x, y, b, score: hit * 100 + foreign * 25 + own * 4 + i * 3 };
+      });
+      const best = cands.reduce((a, c) => c.score < a.score ? c : a);
+      if (visible.has(g.id)) placed.push(best.b);
+      g.lx = best.x; g.ly = best.y;
+      // leader line when the label ended up away from its dots
+      const near = d3.least(g.pts, p => Math.hypot(p[0] - best.x, p[1] - (best.y - 4)));
+      const gap = near ? Math.hypot(near[0] - best.x, near[1] - (best.y - 4)) : 0;
+      const clear = best.b.x1 < x0 - 4 || best.b.x0 > x1 + 4 || best.b.y1 < y0 - 4 || best.b.y0 > y1 + 4;
+      if (near && clear && gap > 26) {
+        const ex = Math.max(best.b.x0, Math.min(best.b.x1, near[0])), ey = near[1] < best.b.y0 ? best.b.y1 : near[1] > best.b.y1 ? best.b.y0 - 1 : best.y - 4;
+        g.leader = [ex, ey, near[0], near[1]];
+      } else g.leader = null;
     });
   }
 
@@ -408,6 +345,12 @@
     return { trail: hop, exits: exits.length };
   }
 
+  // a hidden island name appears while the pointer is on its cloud, dots or side-panel row
+  function hoverLabel(id) {
+    gLabel.selectAll("g.hl").filter(g => !zoom.labelShown || !zoom.labelShown(g.id))
+      .interrupt().transition().duration(120).attr("opacity", g => g.id === id ? 1 : 0);
+  }
+
   // fly: true when opening, so dots start at the clicked circle and spread out
   function drawTopic(fly = false) {
     const t = zoom.data;
@@ -427,60 +370,67 @@
     const sel = zoom.selected;
     const o = zoom.origin;
 
-    barWindow.text(`papers from ${lo}–${year}`);
+    // only the focused island's links are drawn; none while a paper's trail is shown
+    const fs = zoom.pinned != null ? [] : focusFlows(t, geo, year, t.y0, sel);
+    const partners = new Set(fs.map(f => f.other));
+    const key = `<span class="flow-key"><span style="color:${IN_COLOUR}">← builds on</span> · <span style="color:${OUT_COLOUR}">feeds →</span></span>`;
+    barWindow.html(`papers from ${lo}–${year} · `
+      + (sel == null ? "click a cloud to see who it builds on and feeds"
+        : fs.length ? key : "no citations between this and other sub-topics yet"));
 
-    // outlines from the papers in the window, at their current (scaled) positions
-    // Every cluster is named, including the grey "other" papers and the non-English
-    // cluster (which used to be left blank); only real sub-topics get an outline.
+    // outlines from the papers in the window, at their current (scaled) positions; only
+    // real sub-topics get an outline and a name (the grey "other" papers stay unnamed)
     const named = d3.groups(recent, p => p.s)
       .map(([id, ps]) => ({ id, n: ps.length, sub: subById.get(id), g: geo.get(id), pts: ps.map(pos), other: id === OTHER }))
-      .filter(g => g.other ? g.n >= 5 : g.sub)
-      .map(g => ({ ...g, d: g.other ? null : outlinePath(g.pts),
-        name: g.other ? "other small sub-topics" : HIDE_LABEL.test(g.sub.label) ? "non-English titles" : label(t, g.id) }));
+      .filter(g => !g.other && g.sub)
+      .map(g => ({ ...g, d: outlinePath(g.pts),
+        name: HIDE_LABEL.test(g.sub.label) ? "non-English titles" : label(t, g.id) }));
     const groups = named.filter(g => g.d);
-    placeLabels(named);
+    // named up front: the biggest few, or once one is picked, it and the islands it links to
+    const visible = new Set(sel != null ? [sel, ...partners]
+      : named.filter(g => !HIDE_LABEL.test(g.sub.label)).sort((a, b) => b.n - a.n).slice(0, NAMED).map(g => g.id));
+    placeLabels(named, visible, recent.map(p => [...pos(p), p.s]));
+    const faded = id => sel != null && sel !== id && !partners.has(id);
     const hulls = gHull.selectAll("path").data(groups, g => g.id).join(enter => enter.append("path").attr("opacity", 0))
-      .attr("class", g => "hull" + (sel != null && sel !== g.id ? " dim" : "") + (g.g.emerging ? " emerging" : ""))
+      .attr("class", g => "hull" + (faded(g.id) ? " dim" : "") + (g.g.emerging ? " emerging" : ""))
       .attr("d", g => g.d).attr("stroke", g => colour.get(g.id)).attr("fill", g => colour.get(g.id))
+      .on("mouseenter", (e, g) => hoverLabel(g.id))
+      .on("mouseleave", () => hoverLabel(null))
       .on("click", (e, g) => { e.stopPropagation(); zoom.selected = zoom.selected === g.id ? null : g.id; drawTopic(); });
-    const labels = gLabel.selectAll("text").data(named, g => g.id).join(enter => enter.append("text").attr("opacity", 0))
-      .attr("class", g => "hull-label" + (g.other ? " other" : ""))
-      .attr("text-anchor", "middle")
-      .attr("x", g => g.lx).attr("y", g => g.ly)
-      .attr("fill", g => g.other ? "#8f8579" : colour.get(g.id))
-      .text(g => g.text);
-    const labelOpacity = g => sel != null && sel !== g.id ? 0.2 : 1;
+    zoom.labelShown = id => visible.has(id);
+    const labels = gLabel.selectAll("g.hl").data(named, g => g.id).join(enter => {
+      const e = enter.append("g").attr("class", "hl").attr("opacity", 0);
+      e.append("line").attr("class", "leader");
+      e.append("text").attr("class", "hull-label").attr("text-anchor", "middle");
+      return e;
+    });
+    labels.select("text").attr("x", g => g.lx).attr("y", g => g.ly).attr("fill", g => colour.get(g.id))
+      .classed("focus", g => g.id === sel).text(g => g.text);
+    labels.select("line").attr("stroke", g => colour.get(g.id)).attr("display", g => g.leader ? null : "none")
+      .attr("x1", g => g.leader ? g.leader[0] : 0).attr("y1", g => g.leader ? g.leader[1] : 0)
+      .attr("x2", g => g.leader ? g.leader[2] : 0).attr("y2", g => g.leader ? g.leader[3] : 0);
+    const labelOpacity = g => visible.has(g.id) ? 1 : 0;
     if (fly) {
       hulls.attr("opacity", 0).transition().delay(FLY_MS * 0.7).duration(400).attr("opacity", 1);
       labels.attr("opacity", 0).transition().delay(FLY_MS * 0.8).duration(400).attr("opacity", labelOpacity);
     } else {
       hulls.attr("opacity", 1);
-      labels.attr("opacity", labelOpacity);
+      labels.interrupt().attr("opacity", labelOpacity);
     }
 
-    const flowsOn = zoom.showFlows || zoom.selected != null;
-    let arrows = [];
-    if (zoom.pinned != null) { gFlow.selectAll("*").remove(); gPort.selectAll("*").remove(); }
-    else {
-      if (flowsOn) arrows = drawFlows(t, geo, year, t.y0, colour, fly);
-      else gFlow.selectAll("*").remove();
-      // other topics are listed in the band at the top (filtered to the focused island);
-      // lines from there to the islands only bundled up and crossed the map, so none
-      drawPorts(t, geo, year, fly, false);
-      if (flowsOn && !zoom.flows.length) barWindow.text(`papers from ${lo}–${year} · no citations between these sub-topics yet`);
-    }
-    drawParticles(zoom.selected != null ? arrows : []);  // moving dots only when focused
+    drawFlows(t, geo, year, fs, fly);
     gLink.selectAll("line").remove();
     const trail = drawTrail(t, shown, pos, x, y);
 
     const cls = p => "paper-dot" + (p.y > year ? " later" : p.y < lo ? " past" : "") + (p.seed != null ? " seed" : "")
-      + (trail ? (trail.trail.has(p._i) ? " trail" : " dim") : sel != null && sel !== p.s ? " dim" : "")
+      + (trail ? (trail.trail.has(p._i) ? " trail" : " dim") : sel == null || sel === p.s ? "" : partners.has(p.s) ? " faint" : " dim")
       + (zoom.pinned === p._i ? " pinned" : "");
     const dots = gDot.selectAll("circle").data(t.papers, p => p.id).join("circle")
       .attr("class", cls)
       .attr("fill", p => colour.get(p.s) || colour.get(OTHER))
       .on("mouseenter", (e, p) => {
         const s = subById.get(p.s);
+        hoverLabel(p.s);
         const n = paperLines(t, p, shown, pos);
         tip.html(`<b>${esc(p.t)}</b><br>${p.y} · ${esc(s ? s.label : "other")}`
           + `<br>cites ${n.cites} · cited by ${n.citedBy} here (direct) · ${n.shared} shared-reference links`
@@ -492,7 +442,7 @@
         const [mx, my] = d3.pointer(e, overlay.node());
         tip.style("left", `${Math.max(4, Math.min(mx + 12, zoom.W - 290))}px`).style("top", `${my + 12}px`);
       })
-      .on("mouseleave", () => { tip.style("opacity", 0); gLink.selectAll("line").remove(); })
+      .on("mouseleave", () => { tip.style("opacity", 0); gLink.selectAll("line").remove(); hoverLabel(null); })
       .on("click", (e, p) => { e.stopPropagation(); zoom.pinned = zoom.pinned === p._i ? null : p._i; drawTopic(); });
     const r = p => p.y < lo ? 1.8 : p.seed != null ? 4.5 : 3;
     if (fly) {
@@ -551,6 +501,10 @@
     const all = flows(t, t.y1, t.y0);  // every year, for the focus lists
     const fedBy = sel == null ? [] : all.filter(f => f.to === sel).sort((a, b) => b.n - a.n);
     const fed = sel == null ? [] : all.filter(f => f.from === sel).sort((a, b) => b.n - a.n);
+    const ext = externalLinks(t, year, sel);
+    const extList = (xs, dir) => xs.length ? xs.map(a => `<li><button type="button" class="ext-link ${dir}" data-topic="${esc(a.topic)}"
+        title="${dir === "out" ? `Papers here cite ${esc(a.topic)} ${a.n} times` : `${esc(a.topic)} papers cite papers here ${a.n} times`} (up to ${year}). Click to open it.">${esc(a.topic)}</button> <span class="sub">${a.n}</span></li>`).join("")
+      : `<li class="sub">none in the sample</li>`;
     const flowList = (fs, key) => fs.length ? fs.map(f => `<li><span class="swatch-inline" style="background:${colour.get(f[key])}"></span>${esc(label(t, f[key]))} <span class="sub">${f.n}</span></li>`).join("") : `<li class="sub">none in the sample</li>`;
     zoom.side.innerHTML = `
       <div class="sub">${t.n} papers in the sample · showing ${lo}–${year} · stage: ${esc(t.stage || "–")} · ${rank}</div>
@@ -575,18 +529,27 @@
           <div class="flow-cols"><div><div class="sub">built on (it cites them)</div><ul class="flow-list">${flowList(fedBy, "from")}</ul></div>
           <div><div class="sub">fed (they cite it)</div><ul class="flow-list">${flowList(fed, "to")}</ul></div></div>
           <div class="tl" id="zoom-timeline"></div>` : ""}
+          <h3>Other topics${sel != null ? ` linked to ${esc(label(t, sel))}` : ""}</h3>
+          <div class="flow-cols"><div><div class="sub">builds on (cites them)</div><ul class="flow-list">${extList(ext.out, "out")}</ul></div>
+          <div><div class="sub">built on by (they cite it)</div><ul class="flow-list">${extList(ext.in, "in")}</ul></div></div>
           <h3>Suggested reading${sel != null ? " in this sub-topic" : ""}</h3>
           ${seeds.length ? `<ol class="seed-list">${seeds.map(p => `<li>${esc(p.t)} <span class="sub">(${p.y})</span></li>`).join("")}</ol>`
             : `<div class="sub">No suggested papers here.</div>`}
-          <div class="sub key-line" title="Arrows inside the map are direct citations between sub-topics, from the cited to the citing side. The band at the top lists the topics this one builds on (left) and that build on it (right). They show who builds on whom, not cause and effect.">How to read the arrows ⓘ</div>
+          <div class="sub key-line" title="Click a cloud to see its arrows: direct citations between it and other sub-topics, pointing from the cited to the citing side. Slate arrows come in (it builds on them), oxblood arrows go out (they build on it); the number is how many citations. They show who builds on whom, not cause and effect.">How to read the arrows ⓘ</div>
         </div>
       </div>`;
     if (sel != null) timeline(document.getElementById("zoom-timeline"), t, sel, colour);
-    zoom.side.querySelectorAll(".sub-row[data-id]").forEach(row => row.addEventListener("click", () => {
-      const id = +row.dataset.id;
-      zoom.selected = zoom.selected === id ? null : id;
-      drawTopic();
-    }));
+    zoom.side.querySelectorAll(".sub-row[data-id]").forEach(row => {
+      row.addEventListener("click", () => {
+        const id = +row.dataset.id;
+        zoom.selected = zoom.selected === id ? null : id;
+        drawTopic();
+      });
+      row.addEventListener("mouseenter", () => hoverLabel(+row.dataset.id));
+      row.addEventListener("mouseleave", () => hoverLabel(null));
+    });
+    zoom.side.querySelectorAll(".ext-link").forEach(b => b.addEventListener("click", () =>
+      openTopic(b.dataset.topic, { x: zoom.W / 2, y: zoom.H / 2 })));
   }
 
   // origin: {x, y} in map-box pixels where the papers fly out from (the clicked circle)
@@ -623,15 +586,12 @@
     dock.classList.remove("topic-open");
     document.body.classList.remove("topic-open");
     zoom.pinned = null;
-    stopParticles();
     tip.style("opacity", 0);
     gHull.selectAll("path").transition().duration(200).attr("opacity", 0);
     gFlow.selectAll("g").transition().duration(200).attr("opacity", 0);
-    gPort.selectAll("g").transition().duration(200).attr("opacity", 0);
-    gParticle.selectAll("circle").remove();
     gTrail.selectAll("*").remove();
     gLink.selectAll("line").remove();
-    gLabel.selectAll("text").transition().duration(200).attr("opacity", 0);
+    gLabel.selectAll("g.hl").interrupt().transition().duration(200).attr("opacity", 0);
     box.classList.remove("zoomed");
     gDot.selectAll("circle").interrupt().transition().duration(BACK_MS).ease(d3.easeCubicIn)
       .attr("cx", o.x).attr("cy", o.y).attr("r", 0);
@@ -766,9 +726,12 @@
   }
 
   // ---------------------------------------------------------------- decay curve and haircut
-  function drawDecay(sig) {
+  // h: the chart's height in viewBox units (it is 640 wide); fitDecay picks it so the
+  // right-hand column ends level with the table beside it
+  const DECAY_H = 292;
+  function drawDecay(sig, h = DECAY_H) {
     const rows = sig.curve.map(r => ({ ...r, mid: (r.years_from + r.years_to) / 2 }));
-    const w = 640, h = 292, m = { t: 16, r: 16, b: 42, l: 48 };
+    const w = 640, m = { t: 16, r: 16, b: 42, l: 48 };
     const x = d3.scaleLinear().domain(d3.extent(rows, r => r.mid)).nice().range([m.l, w - m.r]);
     const y = d3.scaleLinear().domain([0, Math.max(1.2, d3.max(rows, r => r.ci_high))]).nice().range([h - m.b, m.t]);
     const s = d3.select("#decay-plot").html("").append("svg").attr("viewBox", `0 0 ${w} ${h}`);
@@ -819,9 +782,33 @@
       s.append("text").attr("class", "zone-label note").attr("x", x(last.mid)).attr("y", Math.min(yBot - 6, y(last.ci_low) + 16))
         .attr("text-anchor", "end").text(`Wider band: only ${last.n_signals} signals are this old`);
     }
-
-    drawHaircut(sig.haircut);
   }
+
+  // Grow (or shrink) the decay chart so the decay and calculator cards together are as tall
+  // as the heading table, instead of leaving a gap under the shorter column. Side by side
+  // only; stacked on a narrow screen it keeps its usual shape.
+  let decaySig = null, decayH = DECAY_H;
+  function fitDecay() {
+    if (!decaySig) return;
+    const table = document.getElementById("heading-panel"), col = document.querySelector(".below-col");
+    const plot = document.querySelector("#decay-plot svg");
+    if (!table || !col || !plot) return;
+    const sideBySide = table.getBoundingClientRect().top === col.getBoundingClientRect().top;
+    const W = plot.getBoundingClientRect().width;
+    if (!W) return;
+    let h = DECAY_H;
+    if (sideBySide) {
+      const slack = table.getBoundingClientRect().height - col.getBoundingClientRect().height;
+      const px = plot.getBoundingClientRect().height + slack;
+      // between a wide strip and a square, so the chart never looks squashed or stretched
+      h = Math.max(640 * 0.3, Math.min(640, px * 640 / W));
+    }
+    if (Math.abs(h - decayH) < 0.5) return;
+    decayH = h;
+    drawDecay(decaySig, h);
+  }
+  const decayFit = new ResizeObserver(() => fitDecay());
+  window.addEventListener("resize", () => fitDecay());
 
   // ---------------------------------------------------------------- haircut calculator
   // Builds its own markup inside #haircut, so the page HTML only needs the empty box.
@@ -950,7 +937,16 @@
       drawTests(fc);
       syncRings();
     } else showError(document.getElementById("tests-grid"), fc);
-    if (!sig.error) { drawDecay(sig); drawSignals(sig); } else showError(document.getElementById("decay-plot"), sig);
+    if (!sig.error) {
+      decaySig = sig;
+      drawDecay(sig, decayH);
+      drawHaircut(sig.haircut);
+      drawSignals(sig);
+      // observing fires once straight away, and again whenever the table or calculator resizes
+      ["heading-panel", "haircut-panel"].forEach(id => { const el = document.getElementById(id); if (el) decayFit.observe(el); });
+      setTimeout(fitDecay, 0);
+      setTimeout(fitDecay, 800);  // after the heading table has loaded
+    } else showError(document.getElementById("decay-plot"), sig);
     zoom.select.value = topicNames.includes(DEFAULT_TOPIC) ? DEFAULT_TOPIC : topicNames[0];
     zoom.side.innerHTML = `<div class="sub">No topic open yet: click a circle on the map above, or pick one from the list.</div>`;
   })();

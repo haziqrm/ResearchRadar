@@ -30,7 +30,7 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 16px;
-  align-items: start;
+  align-items: start;  /* columns keep their own height; radar.js sizes the decay chart so they end level */
 }
 
 /* internal view (?full) only */

@@ -130,13 +130,15 @@
 /* a link with no shared work in the selected year */
 .net-link.quiet { opacity: 0.2; stroke-dasharray: 3 4; }
 
+.map-panel .panel-head h2 { margin-bottom: 4px; }
+
 /* legend under the title: size, line, colour (the explanations are in the tooltips) */
 .net-legend {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 18px;
-  margin-top: 6px;
+  margin-top: 2px;
   font-size: 12px;
   color: var(--muted);
 }

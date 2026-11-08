@@ -119,9 +119,10 @@
     const c = b.card, top = c.busiest[0], q = c.quietest;
     const when = periodLabel(c.unit, c.period_start);
 
-    $("headline").innerHTML = `<b>${esc(when)}:</b> ${esc(top.area)} is the most crowded area `
-      + `(<span class="score" title="Standard deviations above its usual share of papers">${sd(top.score)}</span> vs its usual share); `
-      + `${esc(q.area)} is the quietest (<span class="score">${sd(q.score)}</span>).`;
+    $("headline").title = "Crowding: each area's share of papers against its usual share, in standard deviations (SD)";
+    $("headline").innerHTML = `<b>${esc(when)}:</b> most crowded is ${esc(top.area)} `
+      + `(<span class="score">${sd(top.score)}</span>); `
+      + `quietest is ${esc(q.area)} (<span class="score">${sd(q.score)}</span>).`;
 
     // "new" dot: the briefing is newer than the last one this browser opened
     const seen = store.get(SEEN_KEY);
