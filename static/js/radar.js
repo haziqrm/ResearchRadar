@@ -13,12 +13,13 @@
   const showError = (el, res) => { el.innerHTML = `<div class="sub">${esc(res.error)}</div>`; };
 
   let topicNames = [];
+  let topicSize = new Map();
   let forecastByTopic = new Map();
 
   // ---------------------------------------------------------------- map-only layout
   // The map fills the screen; the topics table and the open topic's details float in a dock
   // on the right. Set MAP_ONLY to false to get the full page (with the panels below) back.
-  const MAP_ONLY = true;
+  const MAP_ONLY = !new URLSearchParams(location.search).has("full");  // ?full shows every panel (D)
   const dock = document.createElement("div");
   dock.id = "dock";
   if (MAP_ONLY) {
@@ -48,6 +49,8 @@
     select: document.getElementById("zoom-select"),
   };
   const PAD = 24, BAR = 34, FLY_MS = 750, BACK_MS = 450, MOVE_MS = 350;
+  // links to other topics sit in a band under the buttons, so they never cover the islands
+  const PORT_ROWS = 4, PORT_ROW = 14, PORT_BAND = 30 + PORT_ROWS * PORT_ROW, TOP = BAR + PORT_BAND;
   const WINDOW = 5;  // islands are sized by their papers in the last five years
   const overlay = d3.select(box).append("div").attr("class", "topic-map");
   const bar = overlay.append("div").attr("class", "topic-bar");
@@ -64,7 +67,6 @@
   const barTitle = bar.append("span").attr("class", "topic-name");
   const barWindow = bar.append("span").attr("class", "sub");
   const svg = overlay.append("svg");
-  const yearMark = svg.append("text").attr("class", "net-year").attr("text-anchor", "end");
   const gHull = svg.append("g"), gFlow = svg.append("g"), gPort = svg.append("g"), gParticle = svg.append("g");
   const gLink = svg.append("g"), gTrail = svg.append("g"), gDot = svg.append("g"), gLabel = svg.append("g");
   const tip = overlay.append("div").attr("class", "radar-tip");
@@ -91,20 +93,27 @@
   }
 
   // best-fit outline: a smooth contour around where the papers are dense (it can bend
-  // inwards, unlike a hull); small sub-topics fall back to the rounded hull
+  // inwards, unlike a hull); small sub-topics fall back to the rounded hull. Only the
+  // outer edge of each piece is kept (no holes) and slivers under a quarter of the
+  // biggest piece are dropped, so a sub-topic reads as one clean blob.
   function outlinePath(points) {
     if (points.length < 8) return hullPath(points);
     const density = d3.contourDensity().x(p => p[0]).y(p => p[1])
-      .size([zoom.W, zoom.H]).cellSize(3).bandwidth(8);
+      .size([zoom.W, zoom.H]).cellSize(4).bandwidth(12);
     const contours = density.contours(points);
-    return d3.geoPath()(contours(contours.max * 0.04));
+    const rings = contours(contours.max * 0.05).coordinates
+      .map(poly => poly[0]).map(r => ({ r, a: Math.abs(d3.polygonArea(r)) }));
+    const biggest = d3.max(rings, x => x.a) || 0;
+    const keep = rings.filter(x => x.a >= biggest * 0.25);
+    if (!keep.length) return hullPath(points);
+    return keep.map(x => d3.line().curve(d3.curveBasisClosed)(x.r.slice(0, -1))).join("");
   }
 
   // positions (x in 0..1, v in 0..max) fitted into the box, aspect kept
   function scales(t) {
     const vMax = d3.max(t.papers, p => p.v) || 1;
-    const k = Math.min(zoom.W - 2 * PAD, (zoom.H - BAR - PAD) / vMax);
-    const ox = (zoom.W - k) / 2, oy = BAR + (zoom.H - BAR - PAD - k * vMax) / 2;
+    const k = Math.min(zoom.W - 2 * PAD, (zoom.H - TOP - PAD) / vMax);
+    const ox = (zoom.W - k) / 2, oy = TOP + (zoom.H - TOP - PAD - k * vMax) / 2;
     return { x: p => ox + k * p.x, y: p => oy + k * p.v };
   }
 
@@ -145,7 +154,8 @@
     const all = windowTotal(t, year), before = windowTotal(t, year - WINDOW);
     for (const [s, ps] of d3.group(t.papers, p => p.s)) {
       const cx = d3.mean(ps, p => x(p)), cy = d3.mean(ps, p => y(p));
-      const reach = d3.max(ps, p => Math.hypot(x(p) - cx, y(p) - cy)) || 4;
+      // 80th percentile, not the max: one stray paper shouldn't push arrows far off the island
+      const reach = d3.quantile(ps.map(p => Math.hypot(x(p) - cx, y(p) - cy)).sort(d3.ascending), 0.8) || 4;
       const n = windowCount(t, s, year), prev = windowCount(t, s, year - WINDOW);
       const k = Math.min(1, t.scaleK * Math.sqrt(n / t.total.get(s)));
       const share = n / (all || 1), shareBefore = prev / (before || 1);
@@ -176,11 +186,24 @@
 
   function drawFlows(t, geo, year, lo, colour, fly) {
     const sel0 = zoom.selected;
-    const fs = flows(t, year, lo).filter(f => geo.has(f.from) && geo.has(f.to))
-      .filter(f => sel0 != null ? (f.from === sel0 || f.to === sel0) : f.n >= 2)
-      .sort((a, b) => b.n - a.n).slice(0, sel0 != null ? 12 : 8);
+    // one arrow per pair of sub-topics, pointing the way most citations go (A->B and
+    // B->A drawn separately doubled the lines and crossed each other)
+    const pairs = new Map();
+    flows(t, year, lo).filter(f => geo.has(f.from) && geo.has(f.to)).forEach(f => {
+      const k = f.from < f.to ? `${f.from}~${f.to}` : `${f.to}~${f.from}`;
+      const p = pairs.get(k) || { key: k, total: 0, dirs: [] };
+      p.total += f.n; p.dirs.push(f);
+      pairs.set(k, p);
+    });
+    const fs = [...pairs.values()].map(p => {
+      const main = p.dirs.reduce((a, b) => b.n > a.n ? b : a);
+      const back = p.dirs.find(d => d !== main);
+      return { key: p.key, from: main.from, to: main.to, n: p.total, fwd: main.n, back: back ? back.n : 0 };
+    })
+      .filter(f => sel0 == null || f.from === sel0 || f.to === sel0)
+      .sort((a, b) => b.n - a.n).slice(0, sel0 != null ? 8 : 5);
     zoom.flows = fs;
-    const w = d3.scaleSqrt().domain([1, Math.max(4, d3.max(fs, f => f.n) || 1)]).range([1.5, 9]);
+    const w = d3.scaleSqrt().domain([1, Math.max(4, d3.max(fs, f => f.n) || 1)]).range([1.2, 6]);
     const sel = zoom.selected;
     const on = f => sel == null || f.from === sel || f.to === sel;
     const g = gFlow.selectAll("g.flow").data(fs, f => f.key).join(enter => {
@@ -202,8 +225,9 @@
       el.select(".flow-head").attr("fill", c).attr("d",
         `M${a.x2 + hx * 2},${a.y2 + hy * 2}L${a.x2 - hx * hl - hy * hw},${a.y2 - hy * hl + hx * hw}`
         + `L${a.x2 - hx * hl + hy * hw},${a.y2 - hy * hl - hx * hw}Z`);
-      el.select("title").text(`${label(t, f.from)} → ${label(t, f.to)}: ${f.n} citation${f.n === 1 ? "" : "s"} `
-        + `from ${label(t, f.to)} papers to ${label(t, f.from)} papers, up to ${year}`);
+      el.select("title").text(`${label(t, f.from)} → ${label(t, f.to)}: ${f.fwd} citation${f.fwd === 1 ? "" : "s"} `
+        + `from ${label(t, f.to)} papers to ${label(t, f.from)} papers, up to ${year}`
+        + (f.back ? ` (and ${f.back} the other way)` : ""));
     });
     return fs.filter(on).map(f => ({ key: f.key, path: f.path, n: f.n, colour: colour.get(f.from) }));
   }
@@ -223,14 +247,19 @@
     });
     const sel = zoom.selected;
     const side = dir => [...agg.values()].filter(a => a.dir === dir && (sel == null || a.by.has(sel)))
-      .sort((a, b) => b.n - a.n).slice(0, 4);
+      .sort((a, b) => b.n - a.n).slice(0, PORT_ROWS);
     const ports = [];
     [["out", 10, "start"], ["in", zoom.W - 10, "end"]].forEach(([dir, px, anchor]) => {
       side(dir).forEach((a, i, arr) => {
-        const py = BAR + 40 + i * Math.min(46, (zoom.H - BAR - 80) / Math.max(arr.length - 1, 1));
+        const py = BAR + 30 + i * PORT_ROW;
         ports.push({ ...a, key: `${dir}|${a.topic}`, px, py, anchor });
       });
     });
+    // small headings over the two lists in the band
+    const heads = [["out", 10, "start", "Builds on"], ["in", zoom.W - 10, "end", "Built on by"]]
+      .filter(([dir]) => ports.some(p => p.dir === dir));
+    gPort.selectAll("text.port-head").data(heads, h => h[0]).join("text").attr("class", "port-head")
+      .attr("x", h => h[1]).attr("y", BAR + 14).attr("text-anchor", h => h[2]).text(h => h[3]);
     const w = d3.scaleSqrt().domain([1, Math.max(4, d3.max(ports, p => d3.max([...p.by.values()])) || 1)]).range([1, 6]);
     const arrows = [];
     ports.forEach(p => {
@@ -241,8 +270,8 @@
         const g = geo.get(s), r = g.reach * Math.max(g.k, 0.3) + 6;
         const dx = g.cx - p.px, dy = g.cy - p.py, d = Math.hypot(dx, dy) || 1;
         const ix = g.cx - dx / d * r, iy = g.cy - dy / d * r;
-        const sx = p.px + (into ? 70 : -70), mx = (sx + ix) / 2, my = (p.py + iy) / 2 - 20;
-        const path = into ? `M${sx},${p.py}Q${mx},${my} ${ix},${iy}` : `M${ix},${iy}Q${mx},${my} ${sx},${p.py}`;
+        const sx = p.px + (into ? 40 : -40), sy = p.py + 7, mx = (sx + ix) / 2, my = (sy + iy) / 2;
+        const path = into ? `M${sx},${sy}Q${mx},${my} ${ix},${iy}` : `M${ix},${iy}Q${mx},${my} ${sx},${sy}`;
         const a = { key: `${p.key}>${s}`, path, n, colour: into ? "#617891" : "#632024", s };
         arrows.push(a);
         return a;
@@ -257,7 +286,7 @@
       .call(s => fly && s.transition().delay(FLY_MS).duration(400).attr("opacity", 1));
     g.select(".port-label").attr("x", p => p.px).attr("y", p => p.py).attr("dy", "0.35em")
       .attr("text-anchor", p => p.anchor).attr("class", p => `port-label ${p.dir}`)
-      .text(p => p.dir === "out" ? `${p.topic} (${p.n}) →` : `→ ${p.topic} (${p.n})`)
+      .text(p => `${p.topic} · ${p.n}`)
       .on("click", (e, p) => { e.stopPropagation(); openTopic(p.topic, { x: p.px, y: p.py }); })
       .selectAll("title").data(p => [p]).join("title")
       .text(p => p.dir === "out" ? `Papers here cite ${p.topic} ${p.n} times (up to ${year}). Click to open it.`
@@ -291,6 +320,36 @@
     });
   }
   function stopParticles() { if (particleTimer) { particleTimer.stop(); particleTimer = null; } }
+
+  // Island labels: try above the cluster, then below, then across its middle, and take
+  // the first spot that doesn't hit a label already placed (biggest clusters first).
+  const measure = document.createElement("canvas").getContext("2d");
+  function placeLabels(gs) {
+    measure.font = `600 11px ${getComputedStyle(document.body).fontFamily}`;
+    const placed = [];
+    const hits = b => placed.reduce((n, o) => n + Math.max(0, Math.min(b.x1, o.x1) - Math.max(b.x0, o.x0))
+      * Math.max(0, Math.min(b.y1, o.y1) - Math.max(b.y0, o.y0)), 0);
+    gs.slice().sort((a, b) => b.n - a.n).forEach(g => {
+      g.text = (g.sub && g.sub.predicted_boom ? "▲ " : "") + g.name + ` · ${g.n}` + (g.g && g.g.emerging ? "  ↑ emerging" : "");
+      const w = measure.measureText(g.text).width + 6, h = 13;
+      const ys = g.pts.map(p => p[1]);
+      const cx = g.other ? d3.median(g.pts, p => p[0]) : g.g.cx;
+      const x = Math.max(w / 2 + 4, Math.min(zoom.W - w / 2 - 4, cx));
+      const tries = [d3.min(ys) - 10, d3.max(ys) + 16, d3.median(ys) + 4]
+        .map(y => Math.max(TOP + 10, Math.min(zoom.H - 6, y)))
+        .map(y => ({ y, b: { x0: x - w / 2, x1: x + w / 2, y0: y - h + 2, y1: y + 3 } }));
+      let best = tries.find(c => hits(c.b) === 0);
+      if (!best) {  // all taken: step down from the top spot until it is clear
+        best = tries.reduce((a, c) => hits(c.b) < hits(a.b) ? c : a);
+        for (let k = 1; k < 8 && hits(best.b) > 0; k++) {
+          const y = Math.min(zoom.H - 6, tries[0].y + k * h);
+          best = { y, b: { ...best.b, y0: y - h + 2, y1: y + 3 } };
+        }
+      }
+      placed.push(best.b);
+      g.lx = x; g.ly = best.y;
+    });
+  }
 
   const label = (t, s) => {
     const sub = t.subtopics.find(u => u.id === s);
@@ -367,25 +426,28 @@
     const sel = zoom.selected;
     const o = zoom.origin;
 
-    yearMark.attr("x", zoom.W - 12).attr("y", zoom.H - 12).text(year);
     barWindow.text(`papers from ${lo}–${year}`);
 
     // outlines from the papers in the window, at their current (scaled) positions
-    const groups = d3.groups(recent.filter(p => p.s !== OTHER), p => p.s)
-      .map(([id, ps]) => ({ id, n: ps.length, sub: subById.get(id), g: geo.get(id), pts: ps.map(pos) }))
-      .filter(g => g.sub && !HIDE_LABEL.test(g.sub.label))
-      .map(g => ({ ...g, d: outlinePath(g.pts) }))
-      .filter(g => g.d);
+    // Every cluster is named, including the grey "other" papers and the non-English
+    // cluster (which used to be left blank); only real sub-topics get an outline.
+    const named = d3.groups(recent, p => p.s)
+      .map(([id, ps]) => ({ id, n: ps.length, sub: subById.get(id), g: geo.get(id), pts: ps.map(pos), other: id === OTHER }))
+      .filter(g => g.other ? g.n >= 5 : g.sub)
+      .map(g => ({ ...g, d: g.other ? null : outlinePath(g.pts),
+        name: g.other ? "other small sub-topics" : HIDE_LABEL.test(g.sub.label) ? "non-English titles" : label(t, g.id) }));
+    const groups = named.filter(g => g.d);
+    placeLabels(named);
     const hulls = gHull.selectAll("path").data(groups, g => g.id).join(enter => enter.append("path").attr("opacity", 0))
       .attr("class", g => "hull" + (sel != null && sel !== g.id ? " dim" : "") + (g.g.emerging ? " emerging" : ""))
       .attr("d", g => g.d).attr("stroke", g => colour.get(g.id)).attr("fill", g => colour.get(g.id))
       .on("click", (e, g) => { e.stopPropagation(); zoom.selected = zoom.selected === g.id ? null : g.id; drawTopic(); });
-    const labels = gLabel.selectAll("text").data(groups, g => g.id).join(enter => enter.append("text").attr("opacity", 0))
-      .attr("class", "hull-label").attr("text-anchor", "middle")
-      .attr("x", g => g.g.cx)
-      .attr("y", g => Math.max(BAR + 10, d3.min(g.pts, p => p[1]) - 10))
-      .attr("fill", g => colour.get(g.id))
-      .text(g => (g.sub.predicted_boom ? "▲ " : "") + label(t, g.id) + ` · ${g.n}` + (g.g.emerging ? "  ↑ emerging" : ""));
+    const labels = gLabel.selectAll("text").data(named, g => g.id).join(enter => enter.append("text").attr("opacity", 0))
+      .attr("class", g => "hull-label" + (g.other ? " other" : ""))
+      .attr("text-anchor", "middle")
+      .attr("x", g => g.lx).attr("y", g => g.ly)
+      .attr("fill", g => g.other ? "#8f8579" : colour.get(g.id))
+      .text(g => g.text);
     const labelOpacity = g => sel != null && sel !== g.id ? 0.2 : 1;
     if (fly) {
       hulls.attr("opacity", 0).transition().delay(FLY_MS * 0.7).duration(400).attr("opacity", 1);
@@ -401,9 +463,12 @@
     else {
       if (flowsOn) arrows = drawFlows(t, geo, year, t.y0, colour, fly);
       else gFlow.selectAll("*").remove();
-      arrows = arrows.concat(drawPorts(t, geo, year, fly, flowsOn));
+      // other topics are listed in the band at the top (filtered to the focused island);
+      // lines from there to the islands only bundled up and crossed the map, so none
+      drawPorts(t, geo, year, fly, false);
+      if (flowsOn && !zoom.flows.length) barWindow.text(`papers from ${lo}–${year} · no citations between these sub-topics yet`);
     }
-    drawParticles(arrows);
+    drawParticles(zoom.selected != null ? arrows : []);  // moving dots only when focused
     gLink.selectAll("line").remove();
     const trail = drawTrail(t, shown, pos, x, y);
 
@@ -496,7 +561,7 @@
               <span class="counts">${g.n ?? 0}</span>
               <span class="counts">${s.prior} → ${s.recent}</span>
             </div>`; }).join("")}
-          <div class="sub">▲ and #rank: predicted top 15 of 75 sub-topics (exploratory, did not pass its test). ↑ emerging: its share of this topic's papers is at least 1.5× what it was in the five years before.</div>
+          <div class="sub key-line"><span title="Predicted top 15 of 75 sub-topics. Exploratory: the forecast did not pass its test.">▲ / #rank = forecast</span> · <span title="Its share of this topic's papers is at least 1.5× what it was in the five years before.">↑ = emerging</span></div>
         </div>
         <div>
           ${sel != null ? `
@@ -507,7 +572,7 @@
           <h3>Suggested reading${sel != null ? " in this sub-topic" : ""}</h3>
           ${seeds.length ? `<ol class="seed-list">${seeds.map(p => `<li>${esc(p.t)} <span class="sub">(${p.y})</span></li>`).join("")}</ol>`
             : `<div class="sub">No suggested papers here.</div>`}
-          <div class="sub">Arrows inside the map: direct citations between sub-topics, from the cited to the citing side. Left edge: topics this one builds on; right edge: topics that build on it. They show who builds on whom, not cause and effect.</div>
+          <div class="sub key-line" title="Arrows inside the map are direct citations between sub-topics, from the cited to the citing side. The band at the top lists the topics this one builds on (left) and that build on it (right). They show who builds on whom, not cause and effect.">How to read the arrows ⓘ</div>
         </div>
       </div>`;
     if (sel != null) timeline(document.getElementById("zoom-timeline"), t, sel, colour);
@@ -530,6 +595,8 @@
     zoom.selected = null;
     zoom.pinned = null;
     zoom.open = true;
+    hover.classed("on", false);
+    hideHint();
     dock.classList.add("topic-open");
     zoom.select.value = name;
     document.getElementById("zoom-title").textContent = name;
@@ -583,6 +650,17 @@
   });
   zoom.select.addEventListener("change", () => { scrollToMap(); openTopic(zoom.select.value); });
   document.addEventListener("yearchange", () => drawTopic());
+  let resizeTimer = null;
+  new ResizeObserver(() => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (!zoom.open || box.clientWidth < 80 || box.clientHeight < 80) return;
+      if (Math.abs(box.clientWidth - zoom.W) < 2 && Math.abs(box.clientHeight - zoom.H) < 2) return;
+      zoom.W = box.clientWidth; zoom.H = box.clientHeight;
+      svg.attr("viewBox", [0, 0, zoom.W, zoom.H]);
+      drawTopic();
+    }, 150);
+  }).observe(box);
   svg.on("click", () => {  // empty space: drop the pinned paper, then the focus
     if (zoom.pinned != null) zoom.pinned = null; else zoom.selected = null;
     drawTopic();
@@ -592,7 +670,35 @@
     if (!node || zoom.open) return;
     const d = d3.select(node).datum();
     const name = d && (d.id || d.name);
-    if (topicNames.includes(name)) openTopic(name, circleCentre(node));
+    if (topicNames.includes(name)) { hideHint(); openTopic(name, circleCentre(node)); }
+  });
+
+  // ---------------------------------------------------------------- "you can click this"
+  // A hint in the corner of the map until the first topic is opened, and a small label
+  // under the mouse on each circle saying what a click does.
+  const hint = d3.select(box).append("div").attr("class", "map-hint")
+    .html(`<span class="map-hint-dot"></span>Click a circle to explore its papers`);
+  function hideHint() {
+    hint.classed("gone", true);
+    try { localStorage.setItem("radar-hint-seen", "1"); } catch (_) { /* private mode */ }
+  }
+  try { if (localStorage.getItem("radar-hint-seen")) hint.classed("gone", true); } catch (_) { /* ignore */ }
+  const hover = d3.select(box).append("div").attr("class", "node-cta");
+  box.addEventListener("mouseover", e => {
+    const node = e.target.closest(".net-node");
+    if (!node || zoom.open) return;
+    const d = d3.select(node).datum();
+    const name = d && (d.id || d.name);
+    if (!topicNames.includes(name)) return;
+    const c = circleCentre(node);
+    const n = topicSize.get(name);
+    hover.html(`Explore ${n ? `${n} papers` : "papers"} <span aria-hidden="true">→</span>`);
+    const w = hover.node().offsetWidth / 2 + 6;  // centred on the circle, kept inside the map
+    hover.style("left", `${Math.max(w, Math.min(box.clientWidth - w, c.x))}px`).style("top", `${c.y}px`).classed("on", true);
+  });
+  box.addEventListener("mouseout", e => {
+    const node = e.target.closest(".net-node");
+    if (node && !node.contains(e.relatedTarget)) hover.classed("on", false);
   });
   document.addEventListener("keydown", e => {
     if (e.key !== "Escape" || !zoom.open) return;
@@ -747,6 +853,7 @@
     const [topics, fc, sig] = await Promise.all([getJSON("/api/topics"), getJSON("/api/forecasts"), getJSON("/api/signals")]);
     if (topics.error) { showError(zoom.side, topics); return; }
     topicNames = topics.topics.map(t => t.name);
+    topicSize = new Map(topics.topics.map(t => [t.name, t.n]));
     zoom.select.innerHTML = topics.topics.slice().sort((a, b) => a.name.localeCompare(b.name))
       .map(t => `<option value="${esc(t.name)}">${esc(t.name)}${t.predicted_boom ? " ▲" : ""}</option>`).join("");
     if (!fc.error) {

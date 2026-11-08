@@ -9,6 +9,9 @@ the 8 trading-relevant areas (see research_data.AREAS).
   GET /api/network     areas (sized by article count) and the links between them
   GET /api/research    articles per area, in total and this year vs last year
 
+Person D's live panels (live_data.py, static/js/live.js): /api/crowding,
+/api/backtest, /api/briefing, and the briefing audio at /media/briefing.mp3.
+
 Styles live in static/css/, one file per component (see CSS_FILES).
 """
 import json
@@ -18,6 +21,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
+import live_data  # Person D: crowding, backtest and briefing
 import radar_data  # Person A: topic radar and signal decay (data/app/*.json)
 import research_data as data
 
@@ -33,6 +37,7 @@ CSS_FILES = [
     "network.css",
     "research.css",
     "radar.css",  # Person A: topic drill-down, signals, tests
+    "live.css",  # Person D: crowding, backtest, briefing
 ]
 CSS_LINKS = "\n".join(
     f'<link rel="stylesheet" href="/static/css/{name}">' for name in CSS_FILES
@@ -43,7 +48,7 @@ PAGE = r"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stock Tracker</title>
+<title>Research Lifecycle Radar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
@@ -63,7 +68,12 @@ __CSS_LINKS__
           </div>
         </div>
       </div>
-      <div class="sub">Circle size shows how many research articles came out on a topic in the selected year. Lines link topics whose papers cite the same earlier work; thicker means more shared that year, faint means none. Drag the slider or press play to watch the years change.</div>
+      <div class="net-legend" aria-label="Legend">
+        <span class="lg" title="Circle size: how many research articles came out on the topic in the selected year (from a sample of 380 OpenAlex quant-finance papers a year), on one scale across years."><i class="lg-size"></i><i class="lg-size big"></i>articles that year</span>
+        <span class="lg" title="Lines link topics whose papers cite the same earlier work. Thicker means more shared that year; dotted means none."><i class="lg-line"></i>shared citations</span>
+        <span class="lg" title="Colour: is the topic taking more than its usual share of papers? Warm = crowded, cool = quiet, compared with its own share over the five years before. Grey: no score."><span class="lg-ramp"></span>quiet &rarr; crowded</span>
+        <span class="lg-help" tabindex="0" title="Drag the slider or press play to move through the years. Click a circle to open its sub-topics and papers.">?</span>
+      </div>
       <div class="network" id="network"></div>
     </section>
 
@@ -127,6 +137,35 @@ __CSS_LINKS__
       <div class="sub">Every claim was tested on data the model had not seen, against simple rules, with the pass rule written down before the run. For the forecasts, the grey bars are 200 simulated worlds where no topic truly grows; the line is the real result.</div>
       <div class="tests-grid" id="tests-grid"></div>
     </section>
+
+    <!-- Person D: crowding score, allocation backtest and spoken briefing (live.js) -->
+    <div class="live-row radar-wide">
+      <section class="panel" id="crowding-panel">
+        <div class="panel-head"><h2 id="crowding-title">Crowded now</h2></div>
+        <div class="sub" id="crowding-sub"></div>
+        <table class="data-table research" id="crowding">
+          <thead><tr><th>Area</th><th class="num">Crowding</th><th class="num" id="crowding-papers">Papers</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section class="panel" id="backtest-panel">
+        <div class="panel-head"><h2>Does trading on decay help?</h2><span class="sub" id="bt-range"></span></div>
+        <div class="live-chart" id="bt-chart"></div>
+        <table class="data-table" id="backtest">
+          <thead><tr><th>Strategy</th><th class="num">Sharpe (95% CI)</th><th class="num">vs equal weight</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="sub">Cumulative return after costs. Walk-forward: each month uses only past returns. Market (table only) is before costs, for scale.</div>
+      </section>
+
+      <section class="panel" id="briefing-panel">
+        <div class="panel-head"><h2 id="brief-title">Briefing</h2><span class="sub" id="brief-source"></span></div>
+        <audio id="brief-audio" controls preload="none" hidden></audio>
+        <div id="brief-card"></div>
+        <details class="brief-text"><summary>Read the briefing</summary><p id="brief-text"></p></details>
+      </section>
+    </div>
   </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
@@ -200,17 +239,25 @@ function setYear(year) {
   document.dispatchEvent(new CustomEvent("yearchange", { detail: year }));
 }
 
-async function loadNetwork() {
-  const net = await getJSON("/api/network");
-  const box = document.getElementById("network");
-  const W = box.clientWidth, H = box.clientHeight, LINE = 12;
-  const years = net.slider_years;
-  const countFor = (d, y = yearState.year) => d.by_year[String(y)] || 0;
+// Circle colour: D's crowding score for that area and year (its share of the year's
+// papers vs its share over the five years before). Warm = crowded, cool = quiet,
+// on a +-3 scale; grey where there is no score (before 2003).
+const CROWD_MAX = 3;
+const crowdRamp = d3.interpolateRgbBasis(["#4f7199", "#e6e0d6", "#a3343a"]);
+const crowdColour = s => s == null ? "#cfc8be"
+  : crowdRamp((Math.max(-CROWD_MAX, Math.min(CROWD_MAX, s)) + CROWD_MAX) / (2 * CROWD_MAX));
+const crowdWord = s => s == null ? "no crowding score" : s >= 2 ? "crowded" : s >= 1 ? "busier than usual"
+  : s <= -2 ? "quiet" : s <= -1 ? "quieter than usual" : "about its usual share";
 
-  // One scale for every year, so circle sizes can be compared across years.
-  const R_MIN = 4, R_MAX = Math.min(W, H) / 9;
-  const peak = d3.max(net.nodes, d => d3.max(years, y => countFor(d, y))) || 1;
-  const radius = d3.scaleSqrt().domain([0, peak]).range([R_MIN, R_MAX]);
+async function loadNetwork() {
+  const [net, crowd] = await Promise.all([getJSON("/api/network"),
+    getJSON("/api/crowding/history").catch(() => ({}))]);
+  const box = document.getElementById("network");
+  const LINE = 12;
+  const years = net.slider_years;
+  const scores = crowd.scores || {};
+  const countFor = (d, y = yearState.year) => d.by_year[String(y)] || 0;
+  const crowdFor = (d, y = yearState.year) => (scores[d.id] || {})[String(y)];
 
   // Line thickness: that year's shared links, on one scale across years.
   const peakLink = d3.max(net.links, l => d3.max(years, y => countFor(l, y))) || 1;
@@ -225,75 +272,8 @@ async function loadNetwork() {
     return lines;
   }, []);
 
-  net.nodes.forEach(d => {
-    d.lines = wrap(d.id);
-    // lay out for the biggest the circle gets in any year, so it never overlaps
-    d.rMax = radius(d3.max(years, y => countFor(d, y)));
-    d.r = d.rMax;
-    d.space = d.rMax + 14 + d.lines.length * LINE / 2;
-  });
-
-  // keep circles and their labels inside the box
-  const fit = d => {
-    const half = Math.max(d.rMax, 50);
-    d.x = Math.max(half + 8, Math.min(W - half - 8, d.x));
-    d.y = Math.max(d.rMax + 12, Math.min(H - d.rMax - 8 - d.lines.length * LINE, d.y));
-  };
-
-  // A layout settles in the middle of the box. Stretch it so the circles
-  // (and their labels) reach the edges.
-  const stretch = (ns, padLo, padHi, size, get, set) => {
-    const a = d3.least(ns, d => get(d)), b = d3.greatest(ns, d => get(d));
-    const from0 = get(a), from1 = get(b);
-    const to0 = padLo(a), to1 = size - padHi(b);
-    if (from1 - from0 < 1 || to1 <= to0) return;
-    ns.forEach(d => set(d, to0 + (get(d) - from0) * (to1 - to0) / (from1 - from0)));
-  };
-  const fillBox = ns => {
-    stretch(ns, d => Math.max(d.rMax, 50) + 8, d => Math.max(d.rMax, 50) + 8, W,
-            d => d.x, (d, v) => { d.x = v; });
-    stretch(ns, d => d.rMax + 12, d => d.rMax + 8 + d.lines.length * LINE, H,
-            d => d.y, (d, v) => { d.y = v; });
-    ns.forEach(fit);
-  };
-
-  const pos = bestLayout(net.nodes, net.links, W, H, fit, fillBox);
-  net.nodes.forEach(d => Object.assign(d, pos.get(d.id)));
-  const byId = new Map(net.nodes.map(d => [d.id, d]));
-
-  const svg = d3.select(box).append("svg")
-    .attr("viewBox", [0, 0, W, H]).attr("width", "100%").attr("height", "100%");
-
-  // Big faint year in the background, so you can see where the animation is.
-  const yearMark = svg.append("text").attr("class", "net-year")
-    .attr("x", W - 12).attr("y", H - 12).attr("text-anchor", "end");
-
-  // Links have no direction: two areas whose papers cite the same earlier work.
-  const link = svg.append("g").selectAll("line").data(net.links).join("line")
-    .attr("class", "net-link");
-  const linkTitle = link.append("title");
-
-  const node = svg.append("g").selectAll("g").data(net.nodes).join("g")
-    .attr("class", "net-node")
-    .attr("transform", d => `translate(${d.x},${d.y})`);
-  const circle = node.append("circle");
-  const label = node.append("text").attr("class", "net-label").attr("text-anchor", "middle");
-  label.selectAll("tspan").data(d => d.lines).join("tspan")
-    .attr("x", 0).attr("dy", (t, i) => i === 0 ? 0 : LINE).text(t => t);
-  const nodeTitle = node.append("title");
-
-  // stop each line at the edge of both circles
-  const lineEnds = l => {
-    const s = byId.get(l.source), t = byId.get(l.target);
-    const dx = t.x - s.x, dy = t.y - s.y, dist = Math.hypot(dx, dy) || 1;
-    return {
-      x1: s.x + dx / dist * s.r, y1: s.y + dy / dist * s.r,
-      x2: t.x - dx / dist * t.r, y2: t.y - dy / dist * t.r,
-    };
-  };
-  const placeLinks = sel => sel
-    .attr("x1", l => lineEnds(l).x1).attr("y1", l => lineEnds(l).y1)
-    .attr("x2", l => lineEnds(l).x2).attr("y2", l => lineEnds(l).y2);
+  const STEP_MS = 900;
+  let playing = null, pathOn = false, view = null;
 
   // Links count as "there" in a year only if that year had shared work.
   const active = l => countFor(l) > 0;
@@ -301,54 +281,136 @@ async function loadNetwork() {
   const neighbours = id => new Set(net.links.filter(l => active(l) && touches(l, id))
     .map(l => l.source === id ? l.target : l.source));
 
-  // Hovering a topic highlights it and the topics it is linked to that year.
-  let pathOn = false;
-  node.on("mouseenter", (e, d) => {
-    if (pathOn) return;
-    const near = neighbours(d.id);
-    box.classList.add("focus");
-    node.classed("hl", n => n.id === d.id || near.has(n.id));
-    link.classed("hl", l => active(l) && touches(l, d.id));
-  }).on("mouseleave", () => {
-    box.classList.remove("focus");
-    node.classed("hl", false); link.classed("hl", false);
-  });
+  // Draw the whole map for a box of W x H. Called again whenever the box changes size
+  // (first layout, the side panel opening or closing, the window resizing).
+  function build(W, H) {
+    // One scale for every year, so circle sizes can be compared across years.
+    const R_MIN = 4, R_MAX = Math.min(W, H) / 9;
+    const peak = d3.max(net.nodes, d => d3.max(years, y => countFor(d, y))) || 1;
+    const radius = d3.scaleSqrt().domain([0, peak]).range([R_MIN, R_MAX]);
+
+    net.nodes.forEach(d => {
+      d.lines = wrap(d.id);
+      // lay out for the biggest the circle gets in any year, so it never overlaps
+      d.rMax = radius(d3.max(years, y => countFor(d, y)));
+      d.r = d.rMax;
+      d.space = d.rMax + 14 + d.lines.length * LINE / 2;
+    });
+
+    // keep circles and their labels inside the box
+    const fit = d => {
+      const half = Math.max(d.rMax, 50);
+      d.x = Math.max(half + 8, Math.min(W - half - 8, d.x));
+      d.y = Math.max(d.rMax + 12, Math.min(H - d.rMax - 8 - d.lines.length * LINE, d.y));
+    };
+
+    // A layout settles in the middle of the box. Stretch it so the circles
+    // (and their labels) reach the edges.
+    const stretch = (ns, padLo, padHi, size, get, set) => {
+      const a = d3.least(ns, d => get(d)), b = d3.greatest(ns, d => get(d));
+      const from0 = get(a), from1 = get(b);
+      const to0 = padLo(a), to1 = size - padHi(b);
+      if (from1 - from0 < 1 || to1 <= to0) return;
+      ns.forEach(d => set(d, to0 + (get(d) - from0) * (to1 - to0) / (from1 - from0)));
+    };
+    const fillBox = ns => {
+      stretch(ns, d => Math.max(d.rMax, 50) + 8, d => Math.max(d.rMax, 50) + 8, W,
+              d => d.x, (d, v) => { d.x = v; });
+      stretch(ns, d => d.rMax + 12, d => d.rMax + 8 + d.lines.length * LINE, H,
+              d => d.y, (d, v) => { d.y = v; });
+      ns.forEach(fit);
+    };
+
+    const pos = bestLayout(net.nodes, net.links, W, H, fit, fillBox);
+    net.nodes.forEach(d => Object.assign(d, pos.get(d.id)));
+    const byId = new Map(net.nodes.map(d => [d.id, d]));
+
+    const old = box.querySelector(":scope > svg");
+    if (old) old.remove();
+    const svg = d3.select(box).insert("svg", ":first-child")
+      .attr("viewBox", [0, 0, W, H]).attr("width", "100%").attr("height", "100%");
+
+    // Links have no direction: two areas whose papers cite the same earlier work.
+    const link = svg.append("g").selectAll("line").data(net.links).join("line")
+      .attr("class", "net-link");
+    const linkTitle = link.append("title");
+
+    const node = svg.append("g").selectAll("g").data(net.nodes).join("g")
+      .attr("class", "net-node")
+      .attr("transform", d => `translate(${d.x},${d.y})`);
+    const circle = node.append("circle");
+    const label = node.append("text").attr("class", "net-label").attr("text-anchor", "middle");
+    label.selectAll("tspan").data(d => d.lines).join("tspan")
+      .attr("x", 0).attr("dy", (t, i) => i === 0 ? 0 : LINE).text(t => t);
+    const nodeTitle = node.append("title");
+
+    // stop each line at the edge of both circles
+    const lineEnds = l => {
+      const s = byId.get(l.source), t = byId.get(l.target);
+      const dx = t.x - s.x, dy = t.y - s.y, dist = Math.hypot(dx, dy) || 1;
+      return {
+        x1: s.x + dx / dist * s.r, y1: s.y + dy / dist * s.r,
+        x2: t.x - dx / dist * t.r, y2: t.y - dy / dist * t.r,
+      };
+    };
+    const placeLinks = sel => sel
+      .attr("x1", l => lineEnds(l).x1).attr("y1", l => lineEnds(l).y1)
+      .attr("x2", l => lineEnds(l).x2).attr("y2", l => lineEnds(l).y2);
+
+    // Hovering a topic highlights it and the topics it is linked to that year.
+    const clearHover = () => { box.classList.remove("focus"); node.classed("hl", false); link.classed("hl", false); };
+    node.on("mouseenter", (e, d) => {
+      if (pathOn) return;
+      const near = neighbours(d.id);
+      box.classList.add("focus");
+      node.classed("hl", n => n.id === d.id || near.has(n.id));
+      link.classed("hl", l => active(l) && touches(l, d.id));
+    }).on("mouseleave", clearHover);
+
+    // Redraw everything for one year.
+    const drawYear = (year, ms) => {
+      net.nodes.forEach(d => { d.r = radius(countFor(d, year)); });
+      const t = sel => ms ? sel.transition().duration(ms) : sel;
+      t(circle).attr("r", d => d.r).style("fill", d => crowdColour(crowdFor(d, year)));
+      t(label).attr("y", d => d.r + 13);
+      t(link).attr("stroke-width", l => width(countFor(l, year)));
+      placeLinks(t(link));
+      link.classed("quiet", l => countFor(l, year) === 0);
+      nodeTitle.text(d => {
+        const c = crowdFor(d, year);
+        return `${d.id}\n${countFor(d, year)} articles in ${year} · ${d.articles} in total`
+          + `\n${crowdWord(c)}${c == null ? "" : ` (crowding ${c > 0 ? "+" : ""}${c.toFixed(1)})`}`
+          + "\nClick to explore its papers";
+      });
+      linkTitle.text(l => `${l.source} and ${l.target}\n${countFor(l, year)} paper pairs in ${year} cite the same earlier work`);
+      if (pathOn) drawPath();  // the largest circle can change between years
+    };
+
+    return { node, link, drawYear, clearHover };
+  }
 
   // Show affected path: the largest circle in the selected year, and the
   // topics linked to it that year.
   const pathBtn = document.getElementById("path-btn");
-  const drawPath = () => {
+  function drawPath() {
     box.classList.toggle("path", pathOn);
     pathBtn.classList.toggle("active", pathOn);
     pathBtn.setAttribute("aria-pressed", pathOn);
     pathBtn.textContent = pathOn ? "Hide affected path" : "Show affected path";
+    if (!view) return;
     const root = net.nodes.reduce((a, b) => countFor(b) > countFor(a) ? b : a);
     const hits = neighbours(root.id);
-    node.classed("path-root", d => pathOn && d === root)
+    view.node.classed("path-root", d => pathOn && d === root)
         .classed("path-hit", d => pathOn && hits.has(d.id));
-    link.classed("path-link", l => pathOn && active(l) && touches(l, root.id));
-  };
+    view.link.classed("path-link", l => pathOn && active(l) && touches(l, root.id));
+  }
   pathBtn.addEventListener("click", () => {
     pathOn = !pathOn;
-    box.classList.remove("focus"); node.classed("hl", false); link.classed("hl", false);
+    if (view) view.clearHover();
     drawPath();
   });
 
-  // Redraw everything for one year.
-  const drawYear = (year, ms) => {
-    net.nodes.forEach(d => { d.r = radius(countFor(d, year)); });
-    const t = sel => ms ? sel.transition().duration(ms) : sel;
-    t(circle).attr("r", d => d.r);
-    t(label).attr("y", d => d.r + 13);
-    t(link).attr("stroke-width", l => width(countFor(l, year)));
-    placeLinks(t(link));
-    link.classed("quiet", l => countFor(l, year) === 0);
-    yearMark.text(year);
-    nodeTitle.text(d => `${d.id}\n${countFor(d, year)} articles in ${year}\n${d.articles} in total`);
-    linkTitle.text(l => `${l.source} and ${l.target}\n${countFor(l, year)} paper pairs in ${year} cite the same earlier work`);
-    if (pathOn) drawPath();  // the largest circle can change between years
-  };
-  document.addEventListener("yearchange", e => drawYear(e.detail, playing ? STEP_MS * 0.8 : 400));
+  document.addEventListener("yearchange", e => { if (view) view.drawYear(e.detail, playing ? STEP_MS * 0.8 : 400); });
 
   // ---- slider and play button
   const slider = document.getElementById("year-slider");
@@ -358,8 +420,6 @@ async function loadNetwork() {
   slider.max = years[years.length - 1];
   slider.value = slider.max;
 
-  const STEP_MS = 900;
-  let playing = null;
   const stop = () => {
     clearInterval(playing); playing = null;
     playBtn.textContent = "▶"; playBtn.setAttribute("aria-label", "Play years");
@@ -377,10 +437,22 @@ async function loadNetwork() {
       show(next);
     }, STEP_MS);
   });
-
-  drawYear(+slider.value, 0);
   yearLabel.textContent = slider.value;
   yearState.year = +slider.value;
+
+  // Measure the box whenever it changes: on first load it can still be 0 wide, and the
+  // side panel or the window can change it later. Sizes too small to draw are skipped.
+  let drawn = [0, 0], timer = null;
+  const render = () => {
+    const W = box.clientWidth, H = box.clientHeight;
+    if (W < 80 || H < 80 || (Math.abs(W - drawn[0]) < 2 && Math.abs(H - drawn[1]) < 2)) return;
+    drawn = [W, H];
+    view = build(W, H);
+    view.drawYear(yearState.year, 0);
+    if (pathOn) drawPath();
+  };
+  new ResizeObserver(() => { clearTimeout(timer); timer = setTimeout(render, 120); }).observe(box);
+  render();
 }
 
 // ---------------------------------------------------------------- research table
@@ -416,6 +488,7 @@ async function loadResearch() {
 loadNetwork(); loadResearch();
 </script>
 <script src="/static/js/radar.js"></script>
+<script src="/static/js/live.js"></script>
 </body>
 </html>
 """.replace("__CSS_LINKS__", CSS_LINKS)
@@ -452,12 +525,18 @@ class Handler(BaseHTTPRequestHandler):
             "/api/topics": radar_data.get_topics,
             "/api/forecasts": radar_data.get_forecasts,
             "/api/signals": radar_data.get_signals,
+            "/api/crowding": live_data.get_crowding,
+            "/api/crowding/history": live_data.get_crowding_history,
+            "/api/backtest": live_data.get_backtest,
+            "/api/briefing": live_data.get_briefing,
         }
         if url.path == "/api/topic":
             name = parse_qs(url.query).get("name", [""])[0]
             self._json(radar_data.get_topic(name))
         elif url.path in ("/", "/index.html"):
             self._send(200, PAGE, "text/html; charset=utf-8")
+        elif url.path == "/media/briefing.mp3" and live_data.AUDIO_FILE.is_file():
+            self._send(200, live_data.AUDIO_FILE.read_bytes(), "audio/mpeg")
         elif url.path.startswith("/static/"):
             self._static(unquote(url.path[len("/static/"):]))
         elif url.path in routes:

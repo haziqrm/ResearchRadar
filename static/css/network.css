@@ -19,10 +19,23 @@
 
 .net-node circle {
   fill: var(--node);
-  stroke: var(--panel);
-  stroke-width: 1.5;
-  transition: fill 0.2s;
+  stroke: #fff;
+  stroke-width: 2;
+  filter: drop-shadow(0 1px 2px rgba(37, 52, 79, 0.22));
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill 0.2s, transform 0.2s, filter 0.2s;
 }
+
+/* circles open a topic on click: lift them on hover so that reads as clickable.
+   The fill is the crowding colour (set inline), so emphasis is a navy ring, not a fill. */
+.net-node:hover circle:not(.next-ring) {
+  stroke: var(--navy);
+  stroke-width: 2.5;
+  transform: scale(1.06);
+  filter: drop-shadow(0 4px 10px rgba(37, 52, 79, 0.35));
+}
+.net-node:hover .net-label { font-weight: 600; }
 
 .net-label {
   fill: var(--text);
@@ -46,16 +59,16 @@
 .network.focus .net-node { opacity: 0.25; }
 .network.focus .net-link { opacity: 0.15; }
 .network.focus .net-node.hl { opacity: 1; }
-.network.focus .net-node.hl circle { fill: var(--node-hover); }
+.network.focus .net-node.hl circle:not(.next-ring) { stroke: var(--navy); stroke-width: 2.5; }
 .network.focus .net-link.hl { stroke: var(--link-hover); opacity: 1; }
 
-/* show affected path: largest circle in oxblood, the circles it affects
-   stay blue, everything else fades */
+/* show affected path: largest circle gets a thick oxblood ring, the circles it
+   affects stay, everything else fades */
 .network.path .net-node { opacity: 0.25; }
 .network.path .net-link { opacity: 0.12; }
 .network.path .net-node.path-root,
 .network.path .net-node.path-hit { opacity: 1; }
-.network.path .net-node.path-root circle { fill: var(--path-root); }
+.network.path .net-node.path-root circle:not(.next-ring) { stroke: var(--path-root); stroke-width: 4; }
 .network.path .net-link.path-link { stroke: var(--path-root); opacity: 1; }
 
 /* controls above the graph */
@@ -112,12 +125,51 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* big faint year in the corner of the graph */
-.net-year {
-  fill: var(--line);
-  font: 700 64px var(--font);
-  pointer-events: none;
-}
-
 /* a link with no shared work in the selected year */
 .net-link.quiet { opacity: 0.2; stroke-dasharray: 3 4; }
+
+/* legend under the title: size, line, colour (the explanations are in the tooltips) */
+.net-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.net-legend .lg { display: inline-flex; align-items: center; gap: 6px; cursor: help; }
+.lg-size {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b9b2a8;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1px #d8d1c6;
+}
+.lg-size.big { width: 14px; height: 14px; margin-left: -2px; }
+.lg-line { display: inline-block; width: 22px; height: 3px; background: var(--link); border-radius: 2px; }
+.lg-ramp {
+  display: inline-block;
+  width: 64px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #4f7199, #e6e0d6 50%, #a3343a);
+}
+.lg-help {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--slate);
+  cursor: help;
+}
+
+/* Person A's dashed "predicted to grow" ring sits on top of the circle: keep it hollow,
+   or it hides the crowding colour underneath */
+.net-node circle.next-ring { fill: none; filter: none; stroke: var(--oxblood); stroke-width: 2; }

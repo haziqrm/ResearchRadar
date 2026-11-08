@@ -1,0 +1,87 @@
+/* Live layer (Person D): crowding, backtest and briefing panels.
+   Uses the tokens from base.css and the table styles from table.css / research.css. */
+
+/* the three panels share one full-width row below the map (hidden in map-only mode,
+   like Person A's panels, because the row also has .radar-wide) */
+.live-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.live-row > .panel { overflow: visible; }
+@media (max-width: 1280px) { .live-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 960px) { .live-row { grid-template-columns: 1fr; } }
+
+/* crowding score bar, centred on zero */
+.zbar {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 6px;
+  background: var(--line);
+}
+.zbar::after {            /* the zero line */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--muted);
+}
+.zbar i { position: absolute; top: 0; bottom: 0; display: block; }
+.zbar i.pos { background: var(--slate); }
+.zbar i.neg { background: #c9b9a6; }
+.zbar i.pos.strong { background: var(--oxblood); }
+#crowding td:first-child { min-width: 120px; }
+#crowding tr { cursor: default; }
+
+/* backtest chart */
+.live-chart { margin: 4px 0 8px; }
+.live-chart svg { display: block; overflow: visible; }
+.live-chart .axis text { fill: var(--muted); font: 10px var(--font); }
+.live-chart .axis path, .live-chart .axis line { stroke: var(--line); }
+.live-chart .zero { stroke: var(--muted); stroke-dasharray: 2 3; }
+.live-chart .series { fill: none; stroke-width: 1.6; }
+.live-chart .series.decay_tilt { stroke: var(--oxblood); stroke-width: 2.2; }
+.live-chart .series.equal_weight { stroke: var(--slate); }
+.live-chart .series.naive_insample { stroke: #b8a68f; }
+.live-chart .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); }
+.live-chart .legend .key::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 3px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.live-chart .legend .key.decay_tilt::before { background: var(--oxblood); }
+.live-chart .legend .key.equal_weight::before { background: var(--slate); }
+.live-chart .legend .key.naive_insample::before { background: #b8a68f; }
+#backtest td.num { white-space: nowrap; }
+#backtest td .sub { display: block; font-size: 11px; }
+#backtest tr.ours td:first-child { font-weight: 700; color: var(--oxblood); }
+#backtest .sig { font-weight: 700; }
+
+/* briefing */
+#brief-audio { width: 100%; margin: 4px 0 10px; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.card-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  background: var(--row-hover);
+  border: 1px solid var(--line);
+}
+.card-grid b { color: var(--navy); }
+.held { margin: 2px 0; padding-left: 16px; }
+.brief-text { margin-top: 10px; }
+.brief-text summary { cursor: pointer; color: var(--slate); font-size: 13px; }
+.brief-text p { margin: 6px 0 0; font-size: 13px; }
+
+@media (max-width: 720px) {
+  .zbar { width: 48px; }
+  #crowding td:first-child { min-width: 0; }
+  .card-grid { grid-template-columns: 1fr; }
+}
