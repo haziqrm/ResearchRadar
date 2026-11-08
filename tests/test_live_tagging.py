@@ -1,13 +1,10 @@
 import json
 
-import numpy as np
 import pandas as pd
 import pytest
 
-from src.common import contracts
-from src.common.contracts import AREAS
-from src.live import crowding as cr
 from src.live import tagging as tg
+from src.live.tagging import AREAS  # D's original 8 areas, kept for the signal match
 
 SIGNALS = ["Size", "Value", "Momentum", "Short-term reversal", "Long-term reversal",
            "Profitability", "Investment"]
@@ -182,45 +179,3 @@ def test_committed_gemini_tags_survive_a_keyless_run(tmp_path):
                          "tagger": "gemini"}
     assert tags["b"]["area"] == "" and tags["b"]["confidence"] == 0.0
     assert tg.committed_gemini_tags(tmp_path / "missing.csv") == {}
-
-
-# --- crowding --------------------------------------------------------------
-def tagged_frame(weeks, per_week, surge_area=None, surge=0, start="2025-01-06"):
-    """Same mix of areas every week; optionally extra papers in the last week."""
-    rows = []
-    mondays = pd.date_range(start, periods=weeks, freq="7D")
-    for i, monday in enumerate(mondays):
-        for area in AREAS:
-            k = per_week + (surge if area == surge_area and i == weeks - 1 else 0)
-            rows += [{"published": monday.strftime("%Y-%m-%d"), "area": area}] * k
-    rows.append({"published": mondays[0].strftime("%Y-%m-%d"), "area": ""})  # untagged
-    return pd.DataFrame(rows)
-
-
-def test_crowding_matches_contract_and_flat_is_zero():
-    out = cr.crowding_scores(cr.weekly_counts(tagged_frame(40, 5)))
-    contracts.validate("crowding", out)
-    assert out["date"].nunique() == 40 - cr.WINDOW_WEEKS - cr.MIN_BASELINE_WEEKS + 1
-    assert np.allclose(out["crowding_score"], 0)
-    assert (out["paper_count"] == 5).all()
-
-
-def test_crowding_flags_a_surge():
-    out = cr.crowding_scores(cr.weekly_counts(tagged_frame(40, 5, "Crypto and DeFi", 15)))
-    last = out[out["date"] == out["date"].max()].set_index("area")["crowding_score"]
-    assert last["Crypto and DeFi"] > 2
-    assert (last.drop("Crypto and DeFi") < 0).all()
-
-
-def test_overall_growth_alone_is_not_crowding():
-    small = tagged_frame(20, 2)
-    big = tagged_frame(20, 6, start="2025-05-26")      # 20 weeks after small starts
-    out = cr.crowding_scores(cr.weekly_counts(pd.concat([small, big])))
-    assert np.allclose(out["crowding_score"], 0)
-
-
-def test_weeks_with_no_papers_are_filled():
-    df = pd.DataFrame({"published": ["2025-01-06", "2025-01-27"],
-                       "area": [AREAS[0], AREAS[0]]})
-    counts = cr.weekly_counts(df)
-    assert len(counts) == 4 and counts[AREAS[0]].tolist() == [1, 0, 0, 1]

@@ -14,8 +14,12 @@ import importlib.util
 # stage -> module with a main(argv) function. Order is the dependency order.
 STAGES: dict[str, str] = {
     "fetch": "src.live.arxiv_feed",
-    "tag": "src.live.tagging",
-    "crowding": "src.live.crowding",
+    # Gemini tags arXiv papers into the 8 map areas. Free tier: 20 requests a day, so a
+    # run stops at the quota and the next one carries on from the cache. The older
+    # src.live.tagging (D's original areas, for the paper -> signal match) is no longer
+    # a stage; run it by hand if needed.
+    "map_tags": "src.live.map_tags",
+    "crowding": "src.live.crowding",       # OpenAlex by year (default); --source arxiv later
     "backtest": "src.live.backtest",
     "briefing": "src.live.briefing",
 }

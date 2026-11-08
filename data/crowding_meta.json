@@ -1,0 +1,7 @@
+{
+  "source": "openalex",
+  "unit": "year",
+  "window": 1,
+  "baseline": 5,
+  "min_baseline": 3
+}

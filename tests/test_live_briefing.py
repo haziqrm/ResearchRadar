@@ -5,10 +5,10 @@ from src.live import briefing as br
 
 def card(significant=False, held=True):
     return {
-        "week": "2026-11-02",
-        "busiest": [{"area": "Market microstructure", "score": 2.3, "papers_4w": 30},
-                    {"area": "LLMs in finance", "score": 1.1, "papers_4w": 21}],
-        "quietest": {"area": "Machine learning for returns", "score": -1.8, "papers_4w": 11},
+        "period_start": "2026-11-02", "unit": "week", "window": 4, "source": "arxiv",
+        "busiest": [{"area": "Market microstructure", "score": 2.3, "papers": 30},
+                    {"area": "LLMs in finance", "score": 1.1, "papers": 21}],
+        "quietest": {"area": "Machine learning for returns", "score": -1.8, "papers": 11},
         "example_paper": {"arxiv_id": "1", "title": "TensorLOB", "published": "2026-11-02"},
         "allocation": {"for_month": "October 2026", "data_through": "2026-09-30",
                        "held": [{"signal": "Value", "weight": 0.52, "expected_edge_net": 0.0012},
@@ -25,17 +25,17 @@ def test_crowding_facts_sums_last_four_weeks():
     rows = [{"date": w, "area": a, "paper_count": n, "crowding_score": s}
             for i, w in enumerate(weeks)
             for a, n, s in [("A", 10, 0.5 + i), ("B", 1, -1.0), ("C", 3, 0.0)]]
-    f = br.crowding_facts(pd.DataFrame(rows))
-    assert f["week"] == weeks[-1]
+    f = br.crowding_facts(pd.DataFrame(rows), 4)
+    assert f["period_start"] == weeks[-1]
     assert [r["area"] for r in f["busiest"]] == ["A", "C", "B"]
-    assert f["busiest"][0]["papers_4w"] == 40      # 4 weeks, not 5
+    assert f["busiest"][0]["papers"] == 40      # 4 weeks, not 5
     assert f["quietest"]["area"] == "B"
 
 
 def test_template_has_facts_and_caveat():
     text = br.template_text(card())
     assert "week of 2 November 2026" in text
-    assert "right now is Market microstructure: 30 papers" in text
+    assert "right now is Market microstructure: 30 papers in the last 4 weeks" in text
     assert text.index("TensorLOB") < text.index("quietest")   # example is the busiest area's
     assert "most crowded area right now" in text and "busiest" not in text
     assert "LLMs in finance is also above its usual share, at plus 1.1." in text
@@ -61,7 +61,7 @@ def test_template_negative_and_quiet_wording():
 
 def test_most_papers_named_when_not_the_most_crowded():
     c = card()
-    c["most_papers"] = {"area": "Portfolio and risk", "score": -1.3, "papers_4w": 49}
+    c["most_papers"] = {"area": "Portfolio and risk", "score": -1.3, "papers": 49}
     text = br.template_text(c)
     assert "Portfolio and risk still has the most papers, 49, but that's below" in text
 
@@ -73,9 +73,9 @@ def test_crowding_facts_most_papers():
     weeks = pd.date_range("2026-10-05", periods=4, freq="7D").strftime("%Y-%m-%d")
     rows = [{"date": w, "area": a, "paper_count": n, "crowding_score": s}
             for w in weeks for a, n, s in [("A", 2, 2.0), ("B", 9, -1.0)]]
-    f = br.crowding_facts(pd.DataFrame(rows))
+    f = br.crowding_facts(pd.DataFrame(rows), 4)
     assert f["busiest"][0]["area"] == "A"
-    assert f["most_papers"] == {"area": "B", "score": -1.0, "papers_4w": 36}
+    assert f["most_papers"] == {"area": "B", "score": -1.0, "papers": 36}
 
 
 def test_half_up_rounds_like_people_expect():
@@ -90,3 +90,22 @@ def test_same_numbers_guards_the_rewrite():
     assert br.same_numbers(base, base.replace("So, what", "Now, what"))
     assert not br.same_numbers(base, base.replace("30 papers", "31 papers"))
     assert not br.same_numbers(base, base + " Up 5 percent.")
+
+
+def test_yearly_openalex_wording():
+    c = card()
+    c.update({"period_start": "2026-01-01", "unit": "year", "window": 1, "source": "openalex"})
+    text = br.template_text(c)
+    assert "research radar for 2026 so far, from a sample of OpenAlex" in text
+    assert "Market microstructure: 30 papers in this year's sample" in text
+    assert 'Its most cited paper this year is called "TensorLOB"' in text
+    assert "week" not in text
+
+
+def test_most_cited_paper_picks_the_area_and_year():
+    nodes = pd.DataFrame({"paper_id": ["W1", "W2", "W3", "W4"],
+                          "title": ["old", "  low  cited ", "top", "other area"],
+                          "year": [2025, 2026, 2026, 2026], "area": ["A", "A", "A", "B"],
+                          "citations": [500, 1, 9, 99]})
+    assert br.most_cited_paper(nodes, "A", 2026)["paper_id"] == "W3"
+    assert br.most_cited_paper(nodes, "C", 2026) is None

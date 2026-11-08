@@ -14,12 +14,58 @@ python -m src.live.keys              # check the Gemini and ElevenLabs keys
 | Stage | Module | Writes | Committed? |
 |---|---|---|---|
 | fetch | `src/live/arxiv_feed.py` | `data/cache/arxiv/papers.csv` (+ raw XML) | No (cache) |
-| tag | `src/live/tagging.py` | `data/arxiv_tagged.csv`, `data/tag_audit.csv` | Yes |
-| crowding | `src/live/crowding.py` | `data/crowding.csv` | Yes |
+| map_tags | `src/live/map_tags.py` | `data/arxiv_map_tags.csv` (Gemini cache in `data/cache/arxiv/`) | Not yet (partial, see below) |
+| crowding | `src/live/crowding.py` | `data/crowding.csv`, `data/crowding_meta.json` | Yes |
 | backtest | `src/live/backtest.py` | `data/backtest_results.csv`, `data/backtest_summary.csv`, `data/backtest_weights.csv` | Yes |
 | briefing | `src/live/briefing.py` | `data/briefing.txt`, `data/briefing.mp3`, `data/briefing_card.json` | Yes |
 
+`src/live/tagging.py` (D's original 8 areas plus the paper -> signal match) is no longer a
+stage. Its committed outputs `arxiv_tagged.csv` and `tag_audit.csv` are kept as they were.
+
+On the website, D's panels are `live_data.py` (standard library only), `static/js/live.js`
+and `static/css/live.css`: **Crowded in <year>**, **Does trading on decay help?** and the
+**Briefing**, served at `/api/crowding`, `/api/backtest`, `/api/briefing` and
+`/media/briefing.mp3`.
+
 ## Differences from the plan
+
+### Crowding now uses B's areas and OpenAlex, by year (2026-11-08)
+- **Why it changed:** the shared area list in `contracts.py` is now B's 25 groups
+  (`groups.csv`). D's old crowding used D's own 8 areas ("Factor and anomaly research"
+  and so on), so `crowding.csv` no longer passed `contracts.validate()`.
+- **Areas:** the 8 B areas the team chose for the site (`src.live.map_tags.MAP_AREAS`,
+  checked by a test to equal `research_data.AREAS`). Shares are of **all** papers: the
+  other 17 B areas count towards the total only.
+- **Source, for now: OpenAlex.** `python -m src.live.crowding` reads B's
+  `network_nodes.csv` (380 sampled papers a year). One period is a **calendar year**:
+  the area's share this year vs its share over the **5 years before** (at least 3), same
+  Poisson z-score as before. `date` is `YYYY-01-01`; `crowding.csv` covers 2003-2026.
+  2026 is the year so far (353 of 380 papers sampled).
+- **It is not weekly any more.** 380 papers a year is about 0.3 per area per week, too
+  few for a weekly score. The weekly view comes back with arXiv (below).
+- `data/crowding_meta.json` (new, not a contract) says which source and period
+  `crowding.csv` came from (`source`, `unit`, `window`, `baseline`). The briefing and
+  the site read it to say "2026 so far" or "this week".
+- **arXiv later:** `python -m src.live.crowding --source arxiv` scores weekly from
+  `data/arxiv_map_tags.csv` (4-week window vs 52 weeks, as before). It needs every
+  arXiv paper tagged into the 8 map areas first. `map_tags` keeps `area = "none"` for
+  "none of the 8" and `""` for not tagged yet; untagged papers are left out.
+- **Gemini quota:** the key is on the **free tier, 20 requests a day** (50 papers per
+  request). On 2026-11-08, 308 of 3,687 papers were tagged before the daily limit. At
+  1,000 papers a day the rest takes about 4 days, or minutes with billing on.
+  `map_tags` now stops cleanly at the daily limit and the next run carries on from the
+  cache. `arxiv_map_tags.csv` is not committed until the tagging is complete.
+- **Briefing:** the card now has `period_start`, `unit`, `window`, `source`, and
+  `papers` (was `week` and `papers_4w`); `taggers` is gone. The example paper is the
+  area's **most cited paper this year** (OpenAlex) or its newest one (arXiv). The text
+  says "for 2026 so far, from a sample of OpenAlex quant-finance papers". Regenerated on
+  2026-11-08 with the template text (Gemini over quota) and new ElevenLabs audio.
+- **Backtest:** rerun on 2026-11-08; inputs (A's `factors.csv`, `papers.csv`) hadn't
+  changed, and neither did the results.
+- The tag accuracy (92% area, 50 papers) was measured on D's old 8 areas, **not** on
+  the map areas; it hasn't been rechecked.
+- The sections below describe the earlier weekly arXiv version where they mention
+  weeks.
 
 ### Backtest: built on real data, without decay_results.csv
 - The plan said to write the backtest against the **sample** `decay_results.csv`, then

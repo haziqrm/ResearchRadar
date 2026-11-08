@@ -29,7 +29,7 @@ import pandas as pd
 from dotenv import load_dotenv
 
 from src.common import contracts
-from src.common.contracts import AREAS, DATA_DIR, ROOT
+from src.common.contracts import DATA_DIR, ROOT
 from src.live import CACHE_DIR
 from src.live.arxiv_feed import load_papers
 
@@ -97,7 +97,10 @@ AREA_KEYWORDS: dict[str, list[str]] = {
                            r"mean-variance", r"asset allocation", r"risk management",
                            r"\bcvar\b", r"systemic risk", r"credit risk", r"risk measures?"],
 }
-assert set(AREA_KEYWORDS) == set(AREAS), "AREA_KEYWORDS must cover exactly the shared AREAS"
+# D's original 8 live areas. The shared list in contracts.py is now B's 25 groups, and
+# crowding uses the research-map areas (src.live.map_tags), so arxiv_tagged.csv keeps
+# these only for the paper -> signal match. It is not a contract file.
+AREAS = list(AREA_KEYWORDS)
 
 # Extra wording per signal; a signal not listed here matches its own name.
 SIGNAL_KEYWORDS: dict[str, list[str]] = {

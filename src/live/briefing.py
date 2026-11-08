@@ -1,13 +1,15 @@
-"""This week's spoken briefing: crowding, the current allocation and one caveat.
+"""The spoken briefing: crowding, the current allocation and one caveat.
 
 Usage:
     python -m src.live.briefing [--no-gemini] [--no-audio]
 
 1. Facts (the "decision card") are computed in code, never by a model:
-     - the 3 most crowded areas this week and the quietest one, by crowding score
-       (share of papers vs the area's usual share), plus the area with the most
-       papers when that's a different one (crowding.csv)
-     - the newest tagged paper in the most crowded area (arxiv_tagged.csv)
+     - the 3 most crowded areas in the latest period and the quietest one, by
+       crowding score (share of papers vs the area's usual share), plus the area
+       with the most papers when that's a different one (crowding.csv). The period
+       is a year for OpenAlex or a week for arXiv (crowding_meta.json).
+     - an example paper in the most crowded area: the most cited one this year
+       (OpenAlex, network_nodes.csv) or the newest one (arXiv, arxiv_map_tags.csv)
      - the allocation for next month: decay_tilt weights from the backtest's own
        rule, applied to every return up to the latest month in factors.csv
      - the caveat: decay_tilt vs equal weight from backtest_summary.csv
@@ -35,8 +37,9 @@ from dotenv import load_dotenv
 from src.common import contracts
 from src.common.contracts import DATA_DIR, ROOT
 from src.live import backtest as bt
-from src.live.crowding import WINDOW_WEEKS
-from src.live.tagging import DEFAULT_MODEL, TAGGED_CSV
+from src.live.crowding import NODES_CSV, load_meta
+from src.live.map_tags import MAP_TAGS_CSV
+from src.live.tagging import DEFAULT_MODEL
 
 TEXT_PATH = DATA_DIR / "briefing.txt"
 AUDIO_PATH = DATA_DIR / "briefing.mp3"
@@ -59,33 +62,44 @@ def half_up(x: float, places: int = 0) -> float:
     return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
 
 
-def crowding_facts(crowding: pd.DataFrame) -> dict:
+def crowding_facts(crowding: pd.DataFrame, window: int) -> dict:
     """'busiest'/'quietest' rank by crowding score (share vs usual), not by paper count;
-    'most_papers' is the area with the most papers in the window, for contrast."""
+    'most_papers' is the area with the most papers in the last `window` periods."""
     crowding = crowding.copy()
-    week = crowding["date"].max()
-    weeks = sorted(crowding["date"].unique())[-WINDOW_WEEKS:]
-    window = crowding[crowding["date"].isin(weeks)].groupby("area")["paper_count"].sum()
-    latest = crowding[crowding["date"] == week].sort_values("crowding_score", ascending=False)
+    latest_date = crowding["date"].max()
+    periods = sorted(crowding["date"].unique())[-window:]
+    counts = crowding[crowding["date"].isin(periods)].groupby("area")["paper_count"].sum()
+    latest = crowding[crowding["date"] == latest_date].sort_values("crowding_score",
+                                                                   ascending=False)
     rows = [{"area": r.area, "score": half_up(float(r.crowding_score), 1),
-             "papers_4w": int(window.get(r.area, 0))} for r in latest.itertuples()]
-    most = max(rows, key=lambda r: r["papers_4w"])
-    return {"week": week, "busiest": rows[:N_BUSY], "quietest": rows[-1],
+             "papers": int(counts.get(r.area, 0))} for r in latest.itertuples()]
+    most = max(rows, key=lambda r: r["papers"])
+    return {"period_start": latest_date, "busiest": rows[:N_BUSY], "quietest": rows[-1],
             "most_papers": most}
 
 
-def newest_paper(tagged: pd.DataFrame, area: str) -> dict | None:
-    hits = tagged[tagged["area"] == area].sort_values("published")
+def _title(t) -> str:
+    return " ".join(str(t).split())
+
+
+def most_cited_paper(nodes: pd.DataFrame, area: str, year: int) -> dict | None:
+    """OpenAlex: the most cited paper in the area that year (B's network_nodes.csv)."""
+    hits = nodes[(nodes["area"] == area) & (nodes["year"].astype(int) == year)]
+    if hits.empty:
+        return None
+    r = hits.sort_values("citations", ascending=False).iloc[0]
+    return {"paper_id": r["paper_id"], "title": _title(r["title"]), "year": int(r["year"]),
+            "citations": int(r["citations"])}
+
+
+def newest_paper(tags: pd.DataFrame, area: str) -> dict | None:
+    """arXiv: the newest paper Gemini put in the area (arxiv_map_tags.csv)."""
+    hits = tags[tags["area"] == area].sort_values("published")
     if hits.empty:
         return None
     r = hits.iloc[-1]
-    return {"arxiv_id": r["arxiv_id"], "title": " ".join(str(r["title"]).split()),
+    return {"arxiv_id": r["arxiv_id"], "title": _title(r["title"]),
             "published": str(r["published"])[:10]}
-
-
-def tagger_share(tagged: pd.DataFrame) -> dict:
-    counts = tagged["tagger"].value_counts()
-    return {k: int(v) for k, v in counts.items()}
 
 
 def allocation_facts(returns: pd.DataFrame, pub: pd.Series) -> dict:
@@ -111,13 +125,19 @@ def caveat_facts(summary: pd.DataFrame) -> dict:
 
 
 def build_card() -> dict:
-    tagged = pd.read_csv(TAGGED_CSV, dtype=str, keep_default_na=False)
+    meta = load_meta()
     returns, _, pub = bt.load_inputs()
-    card = {**crowding_facts(contracts.load("crowding"))}
-    card["example_paper"] = newest_paper(tagged, card["busiest"][0]["area"])
+    card = {"source": meta["source"], "unit": meta["unit"], "window": meta["window"],
+            **crowding_facts(contracts.load("crowding"), meta["window"])}
+    top = card["busiest"][0]["area"]
+    if meta["source"] == "openalex":
+        year = pd.Timestamp(card["period_start"]).year
+        card["example_paper"] = most_cited_paper(pd.read_csv(NODES_CSV), top, year)
+    else:
+        tags = pd.read_csv(MAP_TAGS_CSV, dtype=str, keep_default_na=False)
+        card["example_paper"] = newest_paper(tags, top)
     card["allocation"] = allocation_facts(returns, pub)
     card["caveat"] = caveat_facts(pd.read_csv(bt.SUMMARY_CSV))
-    card["taggers"] = tagger_share(tagged)
     return card
 
 
@@ -141,22 +161,31 @@ def _cap(s: str) -> str:
 
 def template_text(card: dict) -> str:
     """Conversational text meant to be heard, not read. Every number comes from card."""
-    week = pd.Timestamp(card["week"])
+    start = pd.Timestamp(card["period_start"])
     top, rest = card["busiest"][0], card["busiest"][1:]
     q = card["quietest"]
-    lines = [f"Here's your research radar for the week of {week.day} {week:%B %Y}."]
+    if card.get("unit") == "year":
+        lines = [f"Here's your research radar for {start.year} so far, from a sample of "
+                 f"OpenAlex quant-finance papers."]
+        span = "in this year's sample"
+        example = "Its most cited paper this year is"
+    else:
+        lines = [f"Here's your research radar for the week of {start.day} {start:%B %Y}."]
+        n = card.get("window", 4)
+        span = f"in the last {n} weeks" if n > 1 else "this week"
+        example = "One of the newest is"
     # Scores compare an area with its own usual share of papers, so say "crowded
     # compared with usual", not "busiest": the area with the most papers can score low.
     lines.append(f"Compared with its usual share of papers, the most crowded area right "
-                 f"now is {top['area']}: {top['papers_4w']} papers in the last "
-                 f"{WINDOW_WEEKS} weeks, a crowding score of {_signed(top['score'])}.")
+                 f"now is {top['area']}: {top['papers']} papers {span}, a crowding score "
+                 f"of {_signed(top['score'])}.")
     if card.get("example_paper"):
-        lines.append(f"One of the newest is called \"{card['example_paper']['title']}\".")
+        lines.append(f"{example} called \"{card['example_paper']['title']}\".")
     most = card.get("most_papers")
     if most and most["area"] != top["area"]:
         where = "below" if most["score"] < 0 else "closer to"
         lines.append(f"For scale, {most['area']} still has the most papers, "
-                     f"{most['papers_4w']}, but that's {where} its usual share.")
+                     f"{most['papers']}, but that's {where} its usual share.")
     if rest:
         names = _join([r["area"] for r in rest])
         scores = _join([_signed(r["score"]) for r in rest])
