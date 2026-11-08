@@ -16,6 +16,8 @@ venv/
 data/raw/
 data/cache/
 *.parquet
+# B's paper embeddings (~30 MB) are shared so others can use them without re-embedding
+!data/paper_vectors.parquet
 
 # IDE / OS (per-machine settings cause merge conflicts)
 .idea/
