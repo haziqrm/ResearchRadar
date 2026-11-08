@@ -72,9 +72,28 @@
 /* ---- "Where research is heading" ---- */
 #heading td { vertical-align: top; }
 #heading td.topic { font-weight: 600; color: var(--navy); }
-#heading td.crowd { width: 92px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+/* crowding: value first, then a bar on a soft track (shaded middle = the normal ±2 SD range) */
+#heading td.crowd { width: 172px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+#heading td.crowd .v { display: inline-block; width: 58px; margin-right: 8px; text-align: right; font-weight: 700; color: var(--text); }
+#heading td.crowd .v.hot { color: #8e2a30; }
+#heading td.crowd .v.cold { color: #34557d; }
+#heading .cbar { position: relative; display: inline-block; width: 92px; height: 10px; vertical-align: 0; border-radius: 5px; background: #f1ebe2; }
+#heading .cbar .normal { position: absolute; top: 0; bottom: 0; background: #e6dfd4; }
+#heading .cbar .zero { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1.5px; margin-left: -0.75px; background: #8f877c; border-radius: 1px; }
+#heading .cbar .fill { position: absolute; top: 1px; bottom: 1px; z-index: 1; }
+#heading .cbar .fill.pos { border-radius: 0 4px 4px 0; }
+#heading .cbar .fill.neg { border-radius: 4px 0 0 4px; }
+#heading tbody tr:hover .cbar .fill { filter: saturate(1.15) brightness(0.95); }
 #heading td.forecast { white-space: nowrap; }
-#heading td.forecast .likely { color: var(--up); font-weight: 600; }
+/* one navy tag for the forecast, so red/blue only ever mean crowding */
+#heading td.forecast .likely {
+  margin-left: 6px;
+  padding: 1px 7px;
+  background: #e3e9f2;
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 600;
+}
 #heading td.read { font-size: 12px; color: var(--muted); max-width: 300px; }
 #heading td.read .title {
   display: -webkit-box;
@@ -84,18 +103,18 @@
   color: var(--text);
 }
 #heading tbody tr:hover td { background: var(--row-hover); }
-#heading tbody tr:hover td.crowd { filter: brightness(0.97); }
 #heading tbody tr:focus-visible { outline: 2px solid var(--navy); outline-offset: -2px; }
-#heading th .badge { margin-left: 4px; font-size: 10px; padding: 0 5px; vertical-align: 1px; }
+#heading th .badge { margin-left: 4px; font-size: 11px; padding: 0 5px; vertical-align: 1px; }
 #heading th[title] { cursor: help; }
 
 /* ---- "What happens to a published edge": one line on top ---- */
-.lead { margin: 0 0 4px; font-size: 15px; color: var(--navy); }
+.lead { margin: -6px 0 4px; font-size: 13px; color: var(--muted); }
 .lead b { font-weight: 700; }
 /* half-width column: chart on top, calculator underneath */
-#decay-panel .decay-body { grid-template-columns: 1fr; gap: 8px; }
-#decay-panel .haircut { display: grid; grid-template-columns: minmax(150px, 0.8fr) 1.2fr; gap: 4px 16px; align-items: start; }
-#decay-panel .haircut h3 { grid-column: 1 / -1; margin: 0; }
+/* right-hand column: the decay chart, with the calculator as its own card underneath */
+.below-col { display: grid; gap: 16px; min-width: 0; }
+#decay-panel .decay-plot { margin-top: 8px; }
+#haircut-panel .haircut { display: grid; grid-template-columns: minmax(150px, 0.8fr) 1.2fr; gap: 4px 24px; align-items: start; margin-top: 6px; }
 
 /* ---- drawer (?) and modal (Weekly briefing) ---- */
 .scrim {
@@ -164,7 +183,7 @@
   border: 1px solid var(--line);
 }
 .card-grid .wide { grid-column: 1 / -1; }
-.card-grid .label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.card-grid .label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 .card-grid b { color: var(--navy); }
 .card-grid ol, .card-grid ul { margin: 0; padding-left: 18px; }
 .card-grid li { margin: 1px 0; }
@@ -187,7 +206,7 @@
 /* backtest chart (inside the modal) */
 .live-chart { margin: 4px 0 8px; }
 .live-chart svg { display: block; overflow: visible; }
-.live-chart .axis text { fill: var(--muted); font: 10px var(--font); }
+.live-chart .axis text { fill: var(--muted); font: 12px var(--font); }
 .live-chart .axis path, .live-chart .axis line { stroke: var(--line); }
 .live-chart .zero { stroke: var(--muted); stroke-dasharray: 2 3; }
 .live-chart .series { fill: none; stroke-width: 1.6; }
@@ -207,11 +226,16 @@
 .live-chart .legend .key.equal_weight::before { background: var(--slate); }
 .live-chart .legend .key.naive_insample::before { background: #b8a68f; }
 #backtest td.num { white-space: nowrap; }
-#backtest td .sub { display: block; font-size: 11px; }
+#backtest td .sub { display: block; font-size: 12px; }
 #backtest tr.ours td:first-child { font-weight: 700; color: var(--oxblood); }
 #backtest .sig { font-weight: 700; }
 
 @media (max-width: 720px) {
   .card-grid { grid-template-columns: 1fr; }
   #heading td.read { max-width: none; }
+  /* phones: narrower bar with the value under it, calculator in one column */
+  #heading td.crowd { width: auto; }
+  #heading .cbar { width: 72px; display: block; margin-top: 6px; }
+  #heading td.crowd .v { width: auto; margin: 0; text-align: left; font-size: 13px; }
+  #haircut-panel .haircut { grid-template-columns: 1fr; }
 }

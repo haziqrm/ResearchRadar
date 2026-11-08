@@ -15,7 +15,7 @@
 
   /* text */
   --text: #2b1f17;
-  --muted: #7a6858;
+  --muted: #66574a;   /* secondary text: dark enough to read at 12px */
 
   /* meaning: green and red for price changes */
   --up: #1a7f37;
@@ -37,7 +37,7 @@ body {
   font: 14px/1.5 var(--font);
 }
 
-h2 { margin: 0 0 12px; font-size: 16px; font-weight: 500; }
+h2 { margin: 0 0 12px; font-size: 18px; font-weight: 600; color: var(--navy); letter-spacing: -0.005em; }
 
 /* helpers used across components */
 .up { color: var(--up); }

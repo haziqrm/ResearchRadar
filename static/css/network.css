@@ -3,7 +3,7 @@
 :root {
   --node: var(--slate);
   --node-hover: var(--navy);
-  --link: #617971;
+  --link: #8a8178;   /* warm grey: links sit behind the topics */
   --link-hover: var(--navy);
   --path-root: var(--oxblood);   /* the largest circle in "show affected path" */
 }
@@ -39,7 +39,8 @@
 
 .net-label {
   fill: var(--text);
-  font-size: 11px;
+  font-size: 13px;
+  font-weight: 500;
   pointer-events: none;
   /* outline in the box colour so labels stay readable where arrows cross */
   paint-order: stroke;
@@ -48,10 +49,11 @@
   stroke-linejoin: round;
 }
 
-.net-link {
-  stroke: var(--link);
-  stroke-opacity: 0.9;
-}
+/* stroke-opacity is set per link from its strength (html_main.py) */
+.net-link { stroke: var(--link); }
+
+/* crowding score under each topic name */
+.net-label .net-val { fill: var(--muted); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
 
 .net-node, .net-link { transition: opacity 0.2s; }
 
@@ -60,7 +62,7 @@
 .network.focus .net-link { opacity: 0.15; }
 .network.focus .net-node.hl { opacity: 1; }
 .network.focus .net-node.hl circle:not(.next-ring) { stroke: var(--navy); stroke-width: 2.5; }
-.network.focus .net-link.hl { stroke: var(--link-hover); opacity: 1; }
+.network.focus .net-link.hl { stroke: var(--link-hover); stroke-opacity: 0.9; opacity: 1; }
 
 /* show affected path: largest circle gets a thick oxblood ring, the circles it
    affects stay, everything else fades */
@@ -149,13 +151,14 @@
   box-shadow: 0 0 0 1px #d8d1c6;
 }
 .lg-size.big { width: 14px; height: 14px; margin-left: -2px; }
-.lg-line { display: inline-block; width: 22px; height: 3px; background: var(--link); border-radius: 2px; }
+.lg-line { display: inline-block; width: 22px; height: 4px; background: var(--link); border-radius: 2px; }
+.lg-line.thin { width: 14px; height: 1px; opacity: 0.6; }
 .lg-ramp {
   display: inline-block;
   width: 64px;
   height: 8px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #4f7199, #e6e0d6 50%, #a3343a);
+  background: linear-gradient(90deg, #3f6591, #c4c2be 50%, #a3343a);
 }
 .lg-help {
   display: inline-grid;

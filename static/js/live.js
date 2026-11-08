@@ -18,6 +18,18 @@
   const sd = s => s == null ? "–" : `${signed(s, 1)} SD`;
   const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
   const chip = s => `<span class="chip" style="background:${colour(s)};color:${ink(s)}">${sd(s)}</span>`;
+  // Table bar: on a soft track from −5 to +5 SD, with the "normal" ±2 SD zone shaded and a
+  // zero line. The bar grows right (busier) or left (quieter) and is rounded at its outer end.
+  const BAR_MAX = 5, NORMAL = 2;
+  const pos = v => (Math.max(-BAR_MAX, Math.min(BAR_MAX, v)) + BAR_MAX) / (2 * BAR_MAX) * 100;
+  const tone = s => s == null ? "none" : s >= NORMAL ? "hot" : s <= -NORMAL ? "cold" : "normal";
+  const crowdBar = s => {
+    const track = `<i class="normal" style="left:${pos(-NORMAL)}%;width:${pos(NORMAL) - pos(-NORMAL)}%"></i><i class="zero"></i>`;
+    if (s == null) return `<span class="cbar">${track}</span>`;
+    const w = Math.abs(pos(s) - 50);
+    const fill = s >= 0 ? `left:50%;width:${w}%` : `right:50%;width:${w}%`;
+    return `<span class="cbar">${track}<i class="fill ${s >= 0 ? "pos" : "neg"}" style="${fill};background:${colour(s)}"></i></span>`;
+  };
   const periodLabel = (unit, start) => unit === "year" ? `${start.slice(0, 4)} so far` : "This week";
   const SEEN_KEY = "radar-briefing-seen";
   const store = {
@@ -63,7 +75,7 @@
     }
     body.innerHTML = h.topics.map(t => {
       const f = t.forecast;
-      const fc = !f ? "—" : `#${f.rank} of ${f.of}` + (f.likely ? ` · <span class="likely">predicted to grow</span>` : "");
+      const fc = !f ? "—" : `#${f.rank} of ${f.of}` + (f.likely ? ` <span class="likely">predicted to grow</span>` : "");
       const fTip = f ? `#${f.rank} of the ${f.of} topics on the map (#${f.rank_all} of all ${f.of_all} forecast topics). `
         + `"Predicted to grow" means in the forecast's top ${f.top} of all ${f.of_all}. Exploratory.` : "";
       const r = t.read_first;
@@ -71,7 +83,7 @@
       return `
       <tr data-topic="${esc(t.topic)}" tabindex="0" title="Open ${esc(t.topic)} on the map">
         <td class="topic">${esc(t.topic)}</td>
-        <td class="crowd" style="background:${colour(t.score)};color:${ink(t.score)}" title="${plural(t.papers, "paper")} in ${h.period_start.slice(0, 4)}">${sd(t.score)}</td>
+        <td class="crowd" title="${plural(t.papers, "paper")} in ${h.period_start.slice(0, 4)}"><span class="v ${tone(t.score)}">${sd(t.score)}</span>${crowdBar(t.score)}</td>
         <td class="forecast" title="${esc(fTip)}">${fc}</td>
         <td class="read">${read}</td>
       </tr>`;
@@ -86,9 +98,12 @@
     const sig = await getJSON("/api/signals");
     if (sig.error) return;
     const after = sig.curve.find(r => r.years_from === 0), med = sig.haircut && sig.haircut.median;
-    if (!after || med == null) return;
-    $("decay-lead").innerHTML = `Published signals keep <b>about half</b> their in-sample return on average `
-      + `(${Math.round(after.share_of_in_sample_mean * 100)}% in the first five years); the typical one keeps ${Math.round(med * 100)}%.`;
+    if (!after || med == null || !$("decay-lead")) return;
+    // The finding is the title (the chart carries the numbers); the line under it says how to read the chart.
+    const kept = after.share_of_in_sample_mean;
+    if (kept > 0.4 && kept < 0.6 && $("decay-title")) $("decay-title").textContent = "Published signals keep about half their edge";
+    $("decay-lead").textContent = `Return after publication as a share of what the paper reported, by years since publication`
+      + `${sig.haircut.n_signals ? `, across ${sig.haircut.n_signals} signals` : ""}. Shaded band: 95% range.`;
   }
 
   // ---------------------------------------------------------------- briefing: headline, button, modal

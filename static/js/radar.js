@@ -768,37 +768,96 @@
   // ---------------------------------------------------------------- decay curve and haircut
   function drawDecay(sig) {
     const rows = sig.curve.map(r => ({ ...r, mid: (r.years_from + r.years_to) / 2 }));
-    const w = 640, h = 280, m = { t: 16, r: 16, b: 34, l: 48 };
+    const w = 640, h = 292, m = { t: 16, r: 16, b: 42, l: 48 };
     const x = d3.scaleLinear().domain(d3.extent(rows, r => r.mid)).nice().range([m.l, w - m.r]);
     const y = d3.scaleLinear().domain([0, Math.max(1.2, d3.max(rows, r => r.ci_high))]).nice().range([h - m.b, m.t]);
     const s = d3.select("#decay-plot").html("").append("svg").attr("viewBox", `0 0 ${w} ${h}`);
-    s.append("g").attr("class", "axis").attr("transform", `translate(0,${h - m.b})`)
-      .call(d3.axisBottom(x).ticks(6).tickFormat(d => d > 0 ? `+${d}` : d));
+    const x0 = x(0), yTop = m.t, yBot = h - m.b;
+    // the years after publication get a light background, so the two zones read at a glance
+    s.append("rect").attr("class", "after-zone").attr("x", x0).attr("y", yTop)
+      .attr("width", w - m.r - x0).attr("height", yBot - yTop);
+    s.append("g").attr("class", "axis").attr("transform", `translate(0,${yBot})`)
+      .call(d3.axisBottom(x).ticks(6).tickFormat(d => d === 0 ? "published" : d > 0 ? `+${d}` : d));
     s.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")));
-    s.append("text").attr("class", "pub-label").attr("x", w - m.r).attr("y", h - 4).attr("text-anchor", "end").attr("fill", "currentColor").text("years since publication");
-    s.append("text").attr("class", "pub-label").attr("x", m.l + 4).attr("y", y(1) - 5).attr("fill", "currentColor")
+    s.append("text").attr("class", "zone-label").attr("x", w - m.r).attr("y", h - 4).attr("text-anchor", "end").text("years since publication");
+    s.append("text").attr("class", "zone-label").attr("x", x0 - 6).attr("y", yTop + 14).attr("text-anchor", "end").text("Paper's sample period");
+    s.append("text").attr("class", "zone-label").attr("x", x0 + 6).attr("y", yTop + 14).text("After publication");
+    s.append("line").attr("class", "ref-line").attr("x1", m.l).attr("x2", w - m.r).attr("y1", y(1)).attr("y2", y(1));
+    s.append("text").attr("class", "zone-label").attr("x", w - m.r - 4).attr("y", y(1) - 6).attr("text-anchor", "end")
       .text("100% = the return the paper reported");
     s.append("path").attr("class", "ci-band").attr("d", d3.area().x(r => x(r.mid)).y0(r => y(r.ci_low)).y1(r => y(r.ci_high))(rows));
-    s.append("line").attr("class", "pub-line").attr("x1", x(0)).attr("x2", x(0)).attr("y1", m.t).attr("y2", h - m.b);
-    s.append("text").attr("class", "pub-label").attr("x", x(0) + 4).attr("y", m.t + 10).text("published");
-    s.append("line").attr("stroke", "var(--line)").attr("x1", m.l).attr("x2", w - m.r).attr("y1", y(1)).attr("y2", y(1));
+    s.append("line").attr("class", "pub-line").attr("x1", x0).attr("x2", x0).attr("y1", yTop).attr("y2", yBot);
     s.append("path").attr("class", "curve-line").attr("d", d3.line().x(r => x(r.mid)).y(r => y(r.share_of_in_sample_mean))(rows));
     s.selectAll(".curve-dot").data(rows).join("circle").attr("class", "curve-dot").attr("r", 3.5)
       .attr("cx", r => x(r.mid)).attr("cy", r => y(r.share_of_in_sample_mean))
       .append("title").text(r => `${r.years_from} to ${r.years_to} years: ${pct(r.share_of_in_sample_mean)} of in-sample (95%: ${pct(r.ci_low)}–${pct(r.ci_high)}), ${r.n_signals} signals`);
 
-    const hc = sig.haircut, input = document.getElementById("hc-input"), out = document.getElementById("hc-out");
+    // The finding, written on the chart: an arrow from 100% down to the first years after publication.
+    const first = rows.find(r => r.years_from === 0);
+    if (first) {
+      const ax = x(first.mid) + (x(first.mid) - x0) * 0.9, ay = y(first.share_of_in_sample_mean);
+      const note = s.append("g").attr("class", "finding");
+      note.append("line").attr("x1", ax).attr("x2", ax).attr("y1", y(1) + 4).attr("y2", ay - 6);
+      note.append("path").attr("d", `M${ax - 4},${ay - 12}L${ax},${ay - 5}L${ax + 4},${ay - 12}`);
+      const tx = ax + 8, ty = (y(1) + ay) / 2 - 10;
+      note.append("text").attr("class", "big").attr("x", tx).attr("y", ty).text(`Loses ${pct(1 - first.share_of_in_sample_mean)}`);
+      note.append("text").attr("x", tx).attr("y", ty + 16).text(`keeps ${pct(first.share_of_in_sample_mean)} in the first ${first.years_to} years`);
+      if (sig.haircut && sig.haircut.median != null)
+        note.append("text").attr("x", tx).attr("y", ty + 31).text(`typical signal keeps ${pct(sig.haircut.median)}`);
+    }
+    // Context notes, only when the data shows them.
+    const pre = rows.filter(r => r.years_to <= 0);
+    if (pre.length >= 2 && pre[0].share_of_in_sample_mean - pre[pre.length - 1].share_of_in_sample_mean > 0.1) {
+      // under the band, starting at the first point, on two short lines
+      const p = pre[pre.length - 1], t = s.append("text").attr("class", "zone-label note")
+        .attr("x", x(pre[0].mid)).attr("y", y(p.ci_low) + 28);
+      t.append("tspan").text("Already fading");
+      t.append("tspan").attr("x", x(pre[0].mid)).attr("dy", 15).text("before publication");
+    }
+    const last = rows[rows.length - 1];
+    if (first && last !== first && last.n_signals < first.n_signals * 0.6) {
+      s.append("text").attr("class", "zone-label note").attr("x", x(last.mid)).attr("y", Math.min(yBot - 6, y(last.ci_low) + 16))
+        .attr("text-anchor", "end").text(`Wider band: only ${last.n_signals} signals are this old`);
+    }
+
+    drawHaircut(sig.haircut);
+  }
+
+  // ---------------------------------------------------------------- haircut calculator
+  // Builds its own markup inside #haircut, so the page HTML only needs the empty box.
+  function drawHaircut(hc) {
+    const box = document.getElementById("haircut");
+    if (!box || !hc) return;
+    box.innerHTML = `
+      <div class="hc-in">
+        <label for="hc-input">The paper claims</label>
+        <div class="hc-field"><input type="number" id="hc-input" value="1.0" step="0.1" min="0"><span>% a month</span></div>
+        <div class="hc-err" role="alert"></div>
+      </div>
+      <div class="hc-out" aria-live="polite"></div>
+      <div class="sub hc-foot">Based on ${hc.n_signals} published signals. ${pct(hc.share_below_zero)} lost money after
+        publication; ${pct(hc.share_above_one)} did better than the paper said.</div>`;
+    const input = box.querySelector("input"), out = box.querySelector(".hc-out"), err = box.querySelector(".hc-err");
+    const f2 = v => v.toFixed(2);
+    // One big number (the median), then the middle half of signals as a bar from 0 to the claim.
     const show = () => {
-      const c = +input.value || 0;
-      const row = (name, key) => `<div class="hc-row"><span>${name}</span><span><b>${(c * hc[key]).toFixed(2)}%</b>
-        <span class="sub"> (${(c * hc[key + "_ci_low"]).toFixed(2)}–${(c * hc[key + "_ci_high"]).toFixed(2)})</span></span></div>`;
-      out.innerHTML = `<div class="sub">What history says survives after publication, per month:</div>
-        ${row("Typical (median)", "median")}${row("Worse quarter (p25)", "p25")}${row("Better quarter (p75)", "p75")}
-        <div class="sub">${pct(hc.share_below_zero)} of ${hc.n_signals} signals lost money after publication; ${pct(hc.share_above_one)} did better than claimed.</div>`;
+      const c = parseFloat(input.value);
+      if (input.value.trim() === "" || isNaN(c) || c < 0) { err.textContent = "Enter a return of 0 or more"; return; }
+      err.textContent = "";
+      const med = c * hc.median, lo = c * hc.p25, hi = c * hc.p75;
+      const top = Math.max(c, hi, 1e-9), at = v => Math.max(0, Math.min(100, v / top * 100));
+      out.innerHTML = `<div class="hc-label">Expect after publication</div>
+        <div class="hc-big"><b>${f2(med)}%</b> a month</div>
+        <div class="sub" title="95% interval for the median">typical signal, 95% range ${f2(c * hc.median_ci_low)}–${f2(c * hc.median_ci_high)}%</div>
+        <div class="hc-scale" role="img" aria-label="Middle half of signals keep ${f2(lo)}% to ${f2(hi)}% a month">
+          <i class="iqr" style="left:${at(lo)}%;width:${at(hi) - at(lo)}%"></i>
+          <i class="claim" style="left:${at(c)}%" title="What the paper claims"></i>
+          <i class="med" style="left:${at(med)}%"></i>
+        </div>
+        <div class="hc-ends"><span>Worse quarter <b>${f2(lo)}%</b></span><span>Better quarter <b>${f2(hi)}%</b></span></div>`;
     };
     input.addEventListener("input", show);
     show();
-    document.getElementById("hc-caveat").textContent = hc.caveat;
   }
 
   // ---------------------------------------------------------------- signals table
