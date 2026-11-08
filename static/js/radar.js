@@ -68,34 +68,14 @@
     return map;
   }
 
-  // dashed, rounded outline around a sub-topic: pad each dot, take the hull, smooth it
+  // dashed, rounded outline around a sub-topic: pad every dot, take the hull, smooth it.
+  // Every dot is inside, and one or two papers still get a small round border.
   function hullPath(points, pad = 9) {
-    if (points.length < 3) return null;
-    const cx = d3.median(points, p => p[0]), cy = d3.median(points, p => p[1]);
-    const dist = points.map(p => Math.hypot(p[0] - cx, p[1] - cy));
-    const cut = d3.quantile([...dist].sort(d3.ascending), 0.85);  // ignore far-flung strays
-    const core = points.filter((p, i) => dist[i] <= cut);
+    if (!points.length) return null;
     const padded = [];
-    core.forEach(([x, y]) => { for (let k = 0; k < 8; k++) padded.push([x + pad * Math.cos(k * Math.PI / 4), y + pad * Math.sin(k * Math.PI / 4)]); });
+    points.forEach(([x, y]) => { for (let k = 0; k < 12; k++) padded.push([x + pad * Math.cos(k * Math.PI / 6), y + pad * Math.sin(k * Math.PI / 6)]); });
     const hull = d3.polygonHull(padded);
     return hull ? d3.line().curve(d3.curveCatmullRomClosed.alpha(0.5))(hull) : null;
-  }
-
-  // best-fit outline: a smooth contour around where the papers are dense (it can bend
-  // inwards, unlike a hull); small sub-topics fall back to the rounded hull. Only the
-  // outer edge of each piece is kept (no holes) and slivers under a quarter of the
-  // biggest piece are dropped, so a sub-topic reads as one clean blob.
-  function outlinePath(points) {
-    if (points.length < 8) return hullPath(points);
-    const density = d3.contourDensity().x(p => p[0]).y(p => p[1])
-      .size([zoom.W, zoom.H]).cellSize(4).bandwidth(12);
-    const contours = density.contours(points);
-    const rings = contours(contours.max * 0.05).coordinates
-      .map(poly => poly[0]).map(r => ({ r, a: Math.abs(d3.polygonArea(r)) }));
-    const biggest = d3.max(rings, x => x.a) || 0;
-    const keep = rings.filter(x => x.a >= biggest * 0.25);
-    if (!keep.length) return hullPath(points);
-    return keep.map(x => d3.line().curve(d3.curveBasisClosed)(x.r.slice(0, -1))).join("");
   }
 
   // Positions (x, v) fitted into the box. The papers' own extent is fitted (not the 0..1
@@ -351,14 +331,15 @@
     const lo = year - WINDOW + 1;
     const { x, y } = scales(t);
     const geo = islandGeometry(t, x, y, year);
+    // older papers share their island's scale, so they sit inside its border too
     const pos = p => {
-      const g = geo.get(p.s), k = p.y < lo ? Math.max(g.k, 0.3) : g.k;
-      return [g.cx + (x(p) - g.cx) * Math.max(k, 0.05), g.cy + (y(p) - g.cy) * Math.max(k, 0.05)];
+      const g = geo.get(p.s), k = Math.max(g.k, 0.05);
+      return [g.cx + (x(p) - g.cx) * k, g.cy + (y(p) - g.cy) * k];
     };
     const colour = colourFor(t.subtopics);
     const subById = new Map(t.subtopics.map(s => [s.id, s]));
-    const recent = t.papers.filter(p => p.y >= lo && p.y <= year);
-    const shown = new Set(t.papers.filter(p => p.y <= year).map(p => p._i));
+    const upToYear = t.papers.filter(p => p.y <= year);
+    const shown = new Set(upToYear.map(p => p._i));
     const sel = zoom.selected;
     const o = zoom.origin;
 
@@ -375,18 +356,20 @@
       : zoom.pinned != null ? "Showing one paper's citation trail. Click it again to go back to the arrows"
       : "No citations between this and other sub-topics yet";
 
-    // outlines from the papers in the window, at their current (scaled) positions; only
-    // real sub-topics get an outline and a name (the grey "other" papers stay unnamed)
-    const named = d3.groups(recent, p => p.s)
-      .map(([id, ps]) => ({ id, n: ps.length, sub: subById.get(id), g: geo.get(id), pts: ps.map(pos), other: id === OTHER }))
+    // outlines around every paper shown so far (older ones too), at their current (scaled)
+    // positions, so no coloured dot sits outside its border; n is the window's papers, which
+    // picks the names shown. Only real sub-topics get an outline and a name (the grey
+    // "other" papers stay unnamed)
+    const named = d3.groups(upToYear, p => p.s)
+      .map(([id, ps]) => ({ id, n: geo.get(id).n, sub: subById.get(id), g: geo.get(id), pts: ps.map(pos), other: id === OTHER }))
       .filter(g => !g.other && g.sub)
-      .map(g => ({ ...g, d: outlinePath(g.pts),
+      .map(g => ({ ...g, d: hullPath(g.pts),
         name: HIDE_LABEL.test(g.sub.label) ? "non-English titles" : label(t, g.id) }));
     const groups = named.filter(g => g.d);
     // named up front: the biggest few, or once one is picked, it and the islands it links to
     const visible = new Set(sel != null ? [sel, ...partners]
       : named.filter(g => !HIDE_LABEL.test(g.sub.label)).sort((a, b) => b.n - a.n).slice(0, NAMED).map(g => g.id));
-    placeLabels(named, visible, recent.map(p => [...pos(p), p.s]));
+    placeLabels(named, visible, upToYear.map(p => [...pos(p), p.s]));
     const faded = id => sel != null && sel !== id && !partners.has(id);
     const hulls = gHull.selectAll("path").data(groups, g => g.id).join(enter => enter.append("path").attr("opacity", 0))
       .attr("class", g => "hull" + (faded(g.id) ? " dim" : "") + (g.g.emerging ? " emerging" : ""))

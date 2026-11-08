@@ -1,6 +1,15 @@
 /* Base: design tokens, reset, typography and small shared helpers.
    Change colours and fonts here to restyle the whole site. */
 
+/* Heading font: Valencia Serial Heavy (static/fonts) */
+@font-face {
+  font-family: "Valencia Serial";
+  src: url("/static/fonts/ValenciaSerialHeavy.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* brand */
   --navy: #25344f;
@@ -26,6 +35,7 @@
   --radius: 0;   /* corner rounding for every box, button and bar */
   --gutter: 24px;
   --font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Valencia Serial", Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; }

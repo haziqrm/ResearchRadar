@@ -65,7 +65,7 @@ __CSS_LINKS__
 <body>
   <header class="site-head">
     <div class="brand">
-      <h1>Research Lifecycle Radar</h1>
+      <h1>Research Radar</h1>
     </div>
     <div class="head-actions">
       <button type="button" class="head-btn" id="brief-btn" aria-haspopup="dialog">
@@ -507,7 +507,7 @@ loadNetwork();
 
 # What differs between the main page and /monthly: the map's data and its wording.
 YEARLY = {
-    "__TITLE__": "Research Lifecycle Radar",
+    "__TITLE__": "Research Radar",
     "__PERIOD__": "year",
     "__YEAR_ON__": " active", "__YEAR_CUR__": ' aria-current="page"',
     "__MONTH_ON__": "", "__MONTH_CUR__": "",
@@ -517,7 +517,7 @@ YEARLY = {
     "__MAP_MODE__": json.dumps({"unit": "year", "network": "/api/network"}),
 }
 MONTHLY = {
-    "__TITLE__": "Research Lifecycle Radar · monthly",
+    "__TITLE__": "Research Radar · monthly",
     "__PERIOD__": "month",
     "__YEAR_ON__": "", "__YEAR_CUR__": "",
     "__MONTH_ON__": " active", "__MONTH_CUR__": ' aria-current="page"',

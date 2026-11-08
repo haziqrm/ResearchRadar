@@ -80,7 +80,7 @@ def test_crowding_history_colours_the_map():
 
 def test_page_title_and_no_year_watermark(server):
     _, _, page = get(server + "/")
-    assert b"<title>Research Lifecycle Radar</title>" in page
+    assert b"<title>Research Radar</title>" in page
     assert b"net-year" not in page and b"net-legend" in page
 
 
