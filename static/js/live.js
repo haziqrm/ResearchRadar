@@ -1,5 +1,5 @@
 // Live layer (Person D): "Where research is heading" (a drawer from the header) and the
-// Weekly briefing modal. Data: live_data.py (/api/heading, /api/briefing, /api/backtest)
+// Research briefing modal. Data: live_data.py (/api/heading, /api/briefing, /api/backtest)
 // and Person A's /api/signals. Uses d3 and crowdColour() from the page, so the briefing's
 // chips match the map circles. Rows carry data-topic; radar.js opens that topic on click.
 (() => {
@@ -65,6 +65,7 @@
     if (lastFocus) lastFocus.focus();
   }
   scrim.addEventListener("click", closeDialog);
+  window.radarDialog = { open: openDialog, close: closeDialog };  // Fad check (fads.js)
   document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeDialog));
   // capture phase: Escape closes the dialog first, without also closing an open topic
   document.addEventListener("keydown", e => {

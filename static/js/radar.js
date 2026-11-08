@@ -365,13 +365,13 @@
     // only the focused island's links are drawn; none while a paper's trail is shown
     const fs = zoom.pinned != null ? [] : focusFlows(t, geo, year, t.y0, sel);
     const partners = new Set(fs.map(f => f.other));
-    // The legend row above (html_main.py) shows a hint until a cloud with arrows is
-    // picked, then the arrow key, so the key appears exactly when the arrows do.
+    // The legend row above (html_main.py) stays empty until a cloud with arrows is
+    // picked, then shows the arrow key, so the key appears exactly when the arrows do.
     barWindow.text(`papers from ${lo}–${year}`);
     const legend = document.querySelector(".net-legend");
     if (legend) legend.classList.toggle("arrows-on", sel != null && fs.length > 0);
     const hintEl = document.getElementById("lg-flow-hint");
-    if (hintEl) hintEl.textContent = sel == null ? "Click a cloud to see what it builds on and what builds on it"
+    if (hintEl) hintEl.textContent = sel == null ? ""
       : zoom.pinned != null ? "Showing one paper's citation trail. Click it again to go back to the arrows"
       : "No citations between this and other sub-topics yet";
 
@@ -482,7 +482,7 @@
     readPop.html(`
       <div class="rp-head">
         <div><h3>Suggested reading</h3>
-          <div class="sub">${name ? `in ${esc(name)}` : `across ${esc(t.name)} · click a cloud for one sub-topic`}</div></div>
+          <div class="sub">${name ? `in ${esc(name)}` : `across ${esc(t.name)}`}</div></div>
         <button type="button" class="close-btn rp-close" aria-label="Close">&times;</button>
       </div>
       ${list.length ? `<ol class="rp-list">${list.join("")}</ol>` : `<div class="sub">No papers from the last ${READ_YEARS} years here.</div>`}

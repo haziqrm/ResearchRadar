@@ -26,6 +26,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
+import fad_data  # Fad check (optional add-on, fad_data.py says how to remove it)
 import live_data  # Person D: crowding, backtest and briefing
 import monthly_data  # Person D: the map by month from Gemini-tagged arXiv papers
 import radar_data  # Person A: topic radar and signal decay (data/app/*.json)
@@ -44,6 +45,7 @@ CSS_FILES = [
     "research.css",
     "radar.css",  # Person A: topic drill-down, signals, tests
     "live.css",  # Person D: crowding, backtest, briefing
+    "fads.css",  # Fad check (optional add-on)
 ]
 CSS_LINKS = "\n".join(
     f'<link rel="stylesheet" href="/static/css/{name}">' for name in CSS_FILES
@@ -68,7 +70,7 @@ __CSS_LINKS__
     <div class="head-actions">
       <button type="button" class="head-btn" id="brief-btn" aria-haspopup="dialog">
         <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 11v-1a7 7 0 0 1 14 0v1"/><rect x="2.5" y="11" width="3.5" height="6" rx="1"/><rect x="14" y="11" width="3.5" height="6" rx="1"/></svg>
-        <span>Weekly briefing</span><span class="new-dot" id="brief-new" hidden title="New since your last visit"></span></button>
+        <span>Research briefing</span><span class="new-dot" id="brief-new" hidden title="New since your last visit"></span></button>
       <button type="button" class="head-btn ghost" id="heading-btn" aria-haspopup="dialog">
         <svg class="ico" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 15l4.5-4.5 3 3L17 7"/><path d="M12.5 7H17v4.5"/></svg>
         <span>Where research is heading</span></button>
@@ -78,7 +80,6 @@ __CSS_LINKS__
   <main>
     <section class="panel map-panel">
       <div class="panel-head">
-        <h2>Research topic network</h2>
         <div class="net-controls">
           <button type="button" class="path-btn active" id="path-btn" aria-pressed="true"
             title="The biggest topic in the selected __PERIOD__, in red, and the topics whose papers cite the same earlier work as it. Press play to watch which tightly linked topics grow next.">Hide affected path</button>
@@ -152,10 +153,10 @@ __CSS_LINKS__
     </table>
   </aside>
 
-  <!-- the Weekly briefing button (live.js) -->
+  <!-- the Research briefing button (live.js) -->
   <div class="modal" id="brief-modal" role="dialog" aria-modal="true" aria-labelledby="brief-title" hidden>
     <div class="dlg-head">
-      <div><h2 id="brief-title">Weekly briefing</h2><span class="sub" id="brief-date"></span></div>
+      <div><h2 id="brief-title">Research briefing</h2><span class="sub" id="brief-date"></span></div>
       <button type="button" class="close-btn" data-close aria-label="Close">&times;</button>
     </div>
     <audio id="brief-audio" controls preload="none" hidden></audio>
@@ -499,6 +500,7 @@ loadNetwork();
 </script>
 <script src="/static/js/radar.js"></script>
 <script src="/static/js/live.js"></script>
+<script src="/static/js/fads.js"></script><!-- Fad check (optional add-on) -->
 </body>
 </html>
 """.replace("__CSS_LINKS__", CSS_LINKS)
@@ -575,6 +577,7 @@ class Handler(BaseHTTPRequestHandler):
             "/api/briefing": live_data.get_briefing,
             "/api/network/monthly": monthly_data.get_network,
             "/api/crowding/history/monthly": monthly_data.get_crowding_history,
+            "/api/fads": fad_data.get_fads,  # Fad check (optional add-on)
         }
         if url.path == "/api/topic":
             name = parse_qs(url.query).get("name", [""])[0]

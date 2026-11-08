@@ -1,0 +1,36 @@
+/* Fad check (optional add-on, static/js/fads.js). Delete with it. */
+.fad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.fad-card {
+  border: 1px solid #e7e1d8;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.fad-card:hover { background: var(--row-hover); }
+.fad-name { font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+.fad-tag {
+  display: inline-block;
+  margin: 4px 0 2px;
+  padding: 0 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid currentColor;
+}
+.fad-tag.booming { color: var(--oxblood); }
+.fad-tag.past-fad { color: var(--down); }
+.fad-tag.fading { color: var(--slate); }
+.fad-tag.steady { color: var(--muted); }
+.fad-spark { display: block; width: 100%; height: auto; margin: 4px 0; overflow: visible; }
+.fad-dot { fill: #d8d0c4; }
+.fad-line { fill: none; stroke: var(--slate); stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.fad-line.booming { stroke: var(--oxblood); }
+.fad-nums { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.fad-nums b { color: var(--text); }
+.fad-key { margin: 14px 0 0; font-size: 12px; line-height: 1.6; color: var(--muted); }
+.fad-key b { color: var(--text); }

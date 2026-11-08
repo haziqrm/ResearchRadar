@@ -1,5 +1,5 @@
 /* Live layer (Person D): header buttons, the "Where research is heading" drawer and the
-   Weekly briefing modal. Uses the tokens from base.css and table styles from table.css. */
+   Research briefing modal. Uses the tokens from base.css and table styles from table.css. */
 
 /* ---- header buttons ---- */
 .head-btn {
@@ -101,7 +101,7 @@
 #heading th .badge { margin-left: 4px; font-size: 11px; padding: 0 5px; vertical-align: 1px; }
 #heading th[title] { cursor: help; }
 
-/* ---- drawer (Where research is heading) and modal (Weekly briefing) ---- */
+/* ---- drawer (Where research is heading) and modal (Research briefing) ---- */
 .scrim {
   position: fixed;
   inset: 0;

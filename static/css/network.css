@@ -90,6 +90,14 @@
 .path-btn:hover { background: rgba(99, 32, 36, 0.08); }
 .path-btn.active { background: var(--path-root); color: #fff; }
 
+/* By year / By month: two path-btn links joined into one switch (/ and /monthly) */
+.mode-switch { display: inline-flex; margin-left: 4px; }
+.mode-switch .path-btn { text-decoration: none; line-height: normal; }
+.mode-switch .path-btn + .path-btn { border-left-width: 0; }
+.mode-switch .path-btn:first-child { border-radius: 999px 0 0 999px; padding-left: 12px; }
+.mode-switch .path-btn:last-child { border-radius: 0 999px 999px 0; padding-right: 12px; }
+.mode-switch .path-btn.active { cursor: default; }
+
 /* year slider with a play button */
 .year-control {
   display: inline-flex;
@@ -126,7 +134,8 @@
 /* a link with no shared work in the selected year */
 .net-link.quiet { opacity: 0.2; stroke-dasharray: 3 4; }
 
-.map-panel .panel-head h2 { margin-bottom: 4px; }
+/* no title on the map: the controls sit on the right */
+.map-panel .panel-head { justify-content: flex-end; }
 
 /* legend under the title: size, line, colour (the explanations are in the tooltips) */
 .net-legend {
@@ -188,6 +197,7 @@
 .lg-flow, .lg-flow-hint { display: none; }
 .lg-flow { align-items: center; gap: 6px 18px; flex-wrap: wrap; }
 body.topic-open .net-legend > .lg { display: none; }
+body.topic-open .net-legend { min-height: 18px; }  /* keeps its height while the hint is empty */
 body.topic-open .net-legend:not(.arrows-on) > .lg-flow-hint { display: inline; }
 body.topic-open .net-legend.arrows-on > .lg-flow { display: inline-flex; }
 .lg-flow .lg { white-space: nowrap; cursor: default; }

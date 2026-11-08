@@ -268,7 +268,7 @@ def make_audio(text: str, key: str, voice_id: str, model_id: str, path: Path = A
 
 
 def main(argv: list[str] | None = None) -> Path:
-    parser = argparse.ArgumentParser(description="Write this week's briefing.")
+    parser = argparse.ArgumentParser(description="Write the research briefing.")
     parser.add_argument("--no-gemini", action="store_true", help="use the template text")
     parser.add_argument("--no-audio", action="store_true", help="skip ElevenLabs")
     args = parser.parse_args(argv)
