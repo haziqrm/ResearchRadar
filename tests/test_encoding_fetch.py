@@ -167,7 +167,7 @@ def test_yearly_sample_takes_each_year_and_records_population(tmp_path):
     assert all(c[3] == 9 and c[4] == SELECT_FIELDS for c in samples)
 
     manifest = load_manifest(tmp_path)
-    assert manifest["years"]["2020"] == {"population": 500, "sampled": 4}
+    assert manifest["years"]["2020"] == {"population": 500, "sampled": 4, "excluded": 0}
     assert manifest["paper_ids"] == result.papers["paper_id"].tolist()
 
 
@@ -191,3 +191,20 @@ def test_corpus_filter():
     assert f.endswith("from_publication_date:2010-01-01")
     with pytest.raises(ValueError):
         corpus_filter([])
+
+
+def test_junk_records_are_dropped_and_counted(tmp_path):
+    from src.research_map.encoding.fetch import fetch_yearly_sample, is_junk, load_manifest
+
+    junk = complete_work(50, 2026)
+    junk["title"] = "LAB #4061 NEUTRAL: VIDEO SCOUT: Wyckoff Theory"
+    assert is_junk(junk) and not is_junk(complete_work(1))
+    client = FakeSampler({2026: [complete_work(1, 2026), junk]}, {2026: 900})
+    result = fetch_yearly_sample("f", [2026], 5, client=client, cache_dir=tmp_path)
+    assert result.papers["paper_id"].tolist() == ["W1"]
+    assert result.excluded == {2026: 1}
+    assert load_manifest(tmp_path)["years"]["2026"] == {"population": 900, "sampled": 1,
+                                                       "excluded": 1}
+    assert "W50" not in load_cache(tmp_path)
+    q = fetch_papers("q", 5, client=FakeClient([junk, complete_work(2)]), cache_dir=tmp_path)
+    assert q["paper_id"].tolist() == ["W2"]

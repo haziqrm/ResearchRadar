@@ -18,8 +18,9 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from collections.abc import Callable, Iterable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
 
@@ -63,6 +64,16 @@ QUANT_TOPICS: dict[str, str] = {
     "T11059": "Market Dynamics and Volatility",
     "T11270": "Complex Systems and Time Series Analysis",
 }
+
+
+# Auto-generated records that are not research papers (bot-uploaded trading
+# logs titled "LAB #1234 NEUTRAL: ..." appear in 2026).  Extend as new kinds show up.
+JUNK_TITLE = re.compile(r"^\s*LAB #\d+\b")
+
+
+def is_junk(work: Mapping[str, Any]) -> bool:
+    title = work.get("title") or work.get("display_name") or ""
+    return isinstance(title, str) and bool(JUNK_TITLE.match(title))
 
 
 def corpus_filter(
@@ -228,7 +239,7 @@ def fetch_papers(
             select=list(SELECT_FIELDS),
         ):
             paper_id = _short_id(work)
-            if paper_id is None or paper_id in seen:
+            if paper_id is None or paper_id in seen or is_junk(work):
                 continue
             seen.add(paper_id)
             matched.append(cache.add(work))
@@ -241,7 +252,8 @@ def fetch_papers(
 class YearlySample:
     papers: pd.DataFrame
     population: dict[int, int]  # works matching the corpus filter, per year
-    sampled: dict[int, int]  # works in the sample, per year
+    sampled: dict[int, int]  # works kept in the sample, per year
+    excluded: dict[int, int] = field(default_factory=dict)  # junk records dropped, per year
 
 
 def fetch_yearly_sample(
@@ -277,11 +289,12 @@ def fetch_yearly_sample(
 
     matched: list[Mapping[str, Any]] = []
     sampled: dict[int, int] = {}
+    excluded: dict[int, int] = {}
     seen: set[str] = set()
     with _CacheWriter(cache_dir) as cache:
         for year in years:
             size = min(per_year, population[year])
-            taken = 0
+            taken = junk = 0
             if size:
                 for work in client.sample_works(
                     f"{filters},publication_year:{year}", size,
@@ -291,21 +304,28 @@ def fetch_yearly_sample(
                     if paper_id is None or paper_id in seen:
                         continue
                     seen.add(paper_id)
+                    if is_junk(work):
+                        junk += 1
+                        continue
                     matched.append(cache.add(work))
                     taken += 1
-            sampled[year] = taken
-            progress(f"  {year}: sampled {taken} of {population[year]}")
+            sampled[year], excluded[year] = taken, junk
+            note = f" ({junk} junk records dropped)" if junk else ""
+            progress(f"  {year}: sampled {taken} of {population[year]}{note}")
 
     manifest = {
         "filters": filters,
         "seed": seed,
         "per_year": per_year,
-        "years": {str(y): {"population": population[y], "sampled": sampled[y]} for y in years},
+        "years": {
+            str(y): {"population": population[y], "sampled": sampled[y], "excluded": excluded[y]}
+            for y in years
+        },
         "paper_ids": [_short_id(w) for w in matched],
     }
     (Path(cache_dir) / MANIFEST_FILE).write_text(json.dumps(manifest, indent=1), encoding="utf-8")
     logger.info("Sampled %d papers (%d written to cache)", len(matched), cache.new_count)
-    return YearlySample(works_to_frame(matched), population, sampled)
+    return YearlySample(works_to_frame(matched), population, sampled, excluded)
 
 
 def load_manifest(cache_dir: Path | str = CACHE_DIR) -> dict[str, Any]:
