@@ -32,7 +32,10 @@ CONTRACTS: dict[str, tuple[str, list[str]]] = {
     "groups": ("B", ["group_id", "name", "keywords"]),
     "network_nodes": ("B", ["paper_id", "title", "year", "area", "citations",
                             "lifecycle_stage"]),
-    "network_edges": ("B", ["source_id", "target_id"]),
+    # Undirected links between papers that cite the same earlier work. `shared` is
+    # the number of references in common; `strength` (0 to 1) is shared divided by
+    # the geometric mean of both reference-list lengths. Use it to filter or weight.
+    "network_edges": ("B", ["source_id", "target_id", "shared", "strength"]),
     "area_forecasts": ("B", ["area", "year", "growth_score", "boom_probability",
                              "predicted_boom", "actual_boom"]),
     # topic_ids / topic_scores are ";"-separated, topic_labels are " | "-separated,

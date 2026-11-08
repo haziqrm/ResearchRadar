@@ -56,7 +56,7 @@ renames them, so B announces it first.
 | `data/decay_results.csv` | A | signal, paper, publication_date, pre_mean, post_mean, half_life_months, ci_low, ci_high, early_citations |
 | `data/groups.csv` | B | group_id, name, keywords |
 | `data/network_nodes.csv` | B | paper_id, title, year, area, citations, lifecycle_stage |
-| `data/network_edges.csv` | B | source_id, target_id |
+| `data/network_edges.csv` | B | source_id, target_id, shared, strength |
 | `data/area_forecasts.csv` | B | area, year, growth_score, boom_probability, predicted_boom, actual_boom |
 | `data/paper_encodings.csv` | B | paper_id, top_topic, topic_ids, topic_scores, topic_labels, model, text_quality |
 | `data/crowding.csv` | D | date, area, paper_count, crowding_score |

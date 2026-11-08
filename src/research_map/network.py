@@ -12,7 +12,8 @@ only about a quarter of sampled papers cite another sampled paper.  Each paper
 keeps its ``k`` strongest partners, ranked by shared references divided by the
 geometric mean of both reference-list lengths, so papers with very long
 reference lists do not link to everything.  Edges are undirected and listed
-once, with ``source_id < target_id``.
+once, with ``source_id < target_id``; ``shared`` and ``strength`` are written
+too, so the app can keep only the strongest links or weight them.
 
 Lifecycle stages compare each group's share of the sampled papers in the last
 ``window`` years with the ``window`` years before.  Shares, not counts, so a
@@ -253,7 +254,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         k=args.k, min_shared=args.min_shared, window=args.window, alpha=args.alpha,
     )
     nodes_path = contracts.save("network_nodes", nodes)
-    edges_path = contracts.save("network_edges", edges[["source_id", "target_id"]])
+    edges_path = contracts.save("network_edges", edges.assign(strength=edges["strength"].round(4)))
 
     linked = len(set(edges["source_id"]) | set(edges["target_id"]))
     print(f"Wrote {nodes_path} ({len(nodes)} papers) and {edges_path} ({len(edges)} edges; "

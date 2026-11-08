@@ -140,6 +140,9 @@ def test_build_network_end_to_end():
     # edges only join papers from the same reference pool, so the same group
     area = dict(zip(nodes["paper_id"], nodes["area"]))
     assert len(edges) > 0
+    validate("network_edges", edges)  # coupling output is already the contract shape
+    assert (edges["shared"] >= 2).all()
+    assert ((edges["strength"] > 0) & (edges["strength"] <= 1)).all()
     assert all(area[s] == area[t] for s, t in zip(edges["source_id"], edges["target_id"]))
     assert list(stages.columns) == ["group", "name", "prior_papers", "recent_papers",
                                     "prior_share", "recent_share", "growth", "p_value",
